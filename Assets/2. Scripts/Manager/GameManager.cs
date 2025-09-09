@@ -12,6 +12,10 @@ public class GameManager : MonoBehaviour
     // Managers=========================
    private static CommandManager commandManager;
     public static CommandManager Command => commandManager;
+
+    private static CharacterManager characterManager;
+    public static CharacterManager Character => characterManager;
+
     private void Awake()
     {
         if (instance != null) { Destroy(this); return; }
@@ -29,6 +33,7 @@ public class GameManager : MonoBehaviour
     private void InitManagers()
     {
         commandManager = CreateChildManager<CommandManager>("CommandManager");
+        characterManager = CreateChildManager<CharacterManager>("CharacterManager");
     }
     private T CreateChildManager<T>(string goName) where T : Component
     {
