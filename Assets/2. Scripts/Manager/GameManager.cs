@@ -10,8 +10,8 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance => instance;
 
     // Managers=========================
-    /*private static ResourceManager resourceManager;
-    public static ResourceManager Resource => resourceManager;*/
+    private static ResourceManager resourceManager;
+    public static ResourceManager Resource => resourceManager;
     private void Awake()
     {
         if (instance != null) { Destroy(this); return; }
@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
 
     private void InitManagers()
     {
-        //resourceManager = CreateChildManager<ResourceManager>("ResourceManager");
+        resourceManager = CreateChildManager<ResourceManager>("ResourceManager");
     }
     private T CreateChildManager<T>(string goName) where T : Component
     {
