@@ -3,73 +3,109 @@
     "maps": [
         {
             "name": "TestPlayer",
-            "id": "a2ac6e05-87af-4eea-b945-6a06d4ea5e16",
+            "id": "7a742182-385f-4297-864b-b014a4c198d6",
             "actions": [
                 {
-                    "name": "Movement",
-                    "type": "Value",
-                    "id": "3f6faf8d-b98d-427a-bbca-0df8bf40ffad",
-                    "expectedControlType": "Vector2",
+                    "name": "MoveToFowardDirection",
+                    "type": "Button",
+                    "id": "b72d20e6-9491-4c82-81cc-04ad669a0cd1",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": true
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "MoveToBackDirection",
+                    "type": "Button",
+                    "id": "7f562248-240c-4501-bd92-13f471c4cc9d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "MoveToLeftDirection",
+                    "type": "Button",
+                    "id": "27645bf9-807b-41b8-a84c-76b208d1319f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "MoveToRightDirection",
+                    "type": "Button",
+                    "id": "2390af89-bd42-4fb0-a777-7b191a8b536b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Kick",
+                    "type": "Button",
+                    "id": "c4b571f7-ab5f-45a5-8249-87ed68531f34",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
                 {
-                    "name": "2D Vector",
-                    "id": "4ee97f31-57b0-40f0-a211-001153482956",
-                    "path": "2DVector",
+                    "name": "",
+                    "id": "26f02613-3fc0-4798-b592-dca0d7385bdc",
+                    "path": "<Keyboard>/x",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
-                    "action": "Movement",
-                    "isComposite": true,
+                    "groups": "Desktop",
+                    "action": "Kick",
+                    "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "up",
-                    "id": "d47e65aa-0e6f-4be3-aea4-81a908d7e735",
-                    "path": "<Keyboard>/w",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Movement",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "down",
-                    "id": "83d4cdbb-cf11-4795-9463-7fdd09214665",
-                    "path": "<Keyboard>/s",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Movement",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "left",
-                    "id": "7e97a973-6957-4424-a9ce-6aee7c69e459",
-                    "path": "<Keyboard>/a",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Movement",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "right",
-                    "id": "c0936f0f-4e02-41f6-8f34-7005dfcef4e1",
+                    "name": "",
+                    "id": "8ea68929-d74c-4242-98e3-939dd751a55f",
                     "path": "<Keyboard>/d",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
-                    "action": "Movement",
+                    "groups": "Desktop",
+                    "action": "MoveToRightDirection",
                     "isComposite": false,
-                    "isPartOfComposite": true
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b719dd36-44e9-4bf6-9b8a-9ba5b6da2b5f",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Desktop",
+                    "action": "MoveToBackDirection",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "da5fc227-c573-4299-8817-11fe4a4299ff",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Desktop",
+                    "action": "MoveToFowardDirection",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "dba073c5-3fa6-4312-b296-919226f900c8",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Desktop",
+                    "action": "MoveToLeftDirection",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }
