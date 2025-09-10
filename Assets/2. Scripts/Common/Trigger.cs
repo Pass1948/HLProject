@@ -9,6 +9,6 @@ public class Trigger : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GameManager.SceneLoadManager.LoadScene(testScene);
+        GameManager.SceneLoad.LoadScene(testScene);
     }
 }
