@@ -6,133 +6,100 @@ using UnityEngine.SceneManagement;
 
 public class EventManager : MonoBehaviour
 {
-    /* 이벤트 타입별 멀티캐스트 델리게이트 체인 */
-    private readonly Dictionary<EventType, Action<Component, object>> _handlers =
-        new Dictionary<EventType, Action<Component, object>>();
-
-    /* 리스너별 구독 목록(역인덱스) → 제거 편의성/정리 */
-    private readonly Dictionary<IEventListener, List<(EventType evt, Action<Component, object> cb)>> _reverse =
-        new Dictionary<IEventListener, List<(EventType, Action<Component, object>)>>();
+    // 이벤트 리스너 리스트를 Dictionary를 통해 관리 EventType은 IN과 OUT으로 두가지 분류의 리스트로 관리
+    private Dictionary<EventType, List<IEventListener>> listeners = new Dictionary<EventType, List<IEventListener>>();
 
     private void OnEnable()
     {
-        SceneManager.sceneLoaded += OnSceneLoaded;
-    }
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded += SceneManagerSceneLoaded;
 
+    }
     private void OnDisable()
     {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded -= SceneManagerSceneLoaded;
     }
-
-    private void OnSceneLoaded(Scene _, LoadSceneMode __)
+    private void SceneManagerSceneLoaded(Scene arg0, LoadSceneMode arg1)
     {
-        /* 씬 전환 시 파괴된 리스너 정리 */
+        //씬이 바뀜에 따라 이벤트 의존성을 제거해준다.
         RefreshListeners();
     }
 
-    /* IEventListener를 델리게이트로 래핑해 구독(약참조로 자동 해제 지원) */
-    public void AddListener(EventType evt, IEventListener listener)
+    public void AddListener(EventType eventType, IEventListener listener)       // 이벤트 받는 역할
     {
-        if (listener == null) return;
+        List<IEventListener> ListenList = null;
 
-        var weak = new WeakReference<IEventListener>(listener);
-        Action<Component, object> wrapper = null;
-
-        wrapper = (sender, param) =>
+        if (listeners.TryGetValue(eventType, out ListenList))
         {
-            /* 파괴/소멸 감지: 살아있지 않으면 자기 자신을 구독 해제 */
-            if (!weak.TryGetTarget(out var target) || target == null || target.Equals(null))
-            {
-                UnsubscribeInternal(evt, wrapper);
-                if (_reverse.TryGetValue(listener, out var list))
-                {
-                    list.RemoveAll(t => t.evt == evt && t.cb == wrapper);
-                    if (list.Count == 0) _reverse.Remove(listener);
-                }
-                return;
-            }
-            target.OnEvent(evt, sender, param);
-        };
-
-        if (_handlers.TryGetValue(evt, out var chain)) _handlers[evt] = chain + wrapper;
-        else _handlers[evt] = wrapper;
-
-        if (!_reverse.TryGetValue(listener, out var subs))
-        {
-            subs = new List<(EventType, Action<Component, object>)>();
-            _reverse[listener] = subs;
+            //해당 이벤트 키값이 존재한다면, 이벤트를 추가해준다.
+            ListenList.Add(listener);
+            return;
         }
-        subs.Add((evt, wrapper));
+        ListenList = new List<IEventListener>();
+        ListenList.Add(listener);
+        listeners.Add(eventType, ListenList);
+
     }
 
-    /* 델리게이트 직접 구독 경로(원하면 인터페이스 없이 바로 연결) */
-    public void AddHandler(EventType evt, Action<Component, object> handler)
+    // object Param 을 구체화 하는 것을 권장
+    public void PostNotification(EventType eventType, Component Sender, object Param = null) // 이벤트 발생역할
     {
-        if (handler == null) return;
-        if (_handlers.TryGetValue(evt, out var chain)) _handlers[evt] = chain + handler;
-        else _handlers[evt] = handler;
-        /* 역인덱스는 인터페이스 리스너에만 유지 */
+        List<IEventListener> ListenList = null;
+        //이벤트 리스너(대기자)가 없으면 그냥 리턴.
+        if (!listeners.TryGetValue(eventType, out ListenList))
+            return;
+        //모든 이벤트 리스너(대기자)에게 이벤트 전송.
+        for (int i = 0; i < ListenList.Count; i++)
+        {
+            if (ListenList[i] != null)
+            {
+                ListenList[i].OnEvent(eventType, Sender, Param);
+            }
+        }
     }
 
-    /* 특정 이벤트에서 해당 리스너 제거 */
+
+    public void RemoveEvent(EventType eventType)        // 모든이벤트 삭제
+    {
+        listeners.Remove(eventType);
+    }
+
     public void RemoveListener(EventType evt, IEventListener listener)
     {
-        if (listener == null) return;
-        if (!_reverse.TryGetValue(listener, out var list)) return;
-
-        for (int i = list.Count - 1; i >= 0; --i)
-        {
-            var (e, cb) = list[i];
-            if (e != evt) continue;
-            UnsubscribeInternal(e, cb);
-            list.RemoveAt(i);
-        }
-        if (list.Count == 0) _reverse.Remove(listener);
+        if (!listeners.TryGetValue(evt, out var set)) return;
+        set.Remove(listener);
+        if (set.Count == 0) listeners.Remove(evt);
     }
 
-    /* 리스너가 구독한 모든 이벤트에서 제거 */
+    // 리스너가 자신이 등록된 모든 이벤트에서 제거될 때 사용
     public void RemoveTarget(IEventListener listener)
     {
-        if (listener == null) return;
-        if (!_reverse.TryGetValue(listener, out var list)) return;
-
-        foreach (var (evt, cb) in list) UnsubscribeInternal(evt, cb);
-        _reverse.Remove(listener);
-    }
-
-    /* 이벤트 타입 전체 제거 */
-    public void RemoveEvent(EventType evt)
-    {
-        _handlers.Remove(evt);
-        foreach (var kv in _reverse) kv.Value.RemoveAll(t => t.evt == evt);
-    }
-
-    /* 이벤트 브로드캐스트: sender는 보통 this, param은 DTO(강타입) 권장 */
-    public void Post(EventType evt, Component sender, object param = null)
-    {
-        if (_handlers.TryGetValue(evt, out var chain)) chain?.Invoke(sender, param);
-    }
-
-    /* 파괴/소멸된 유니티 오브젝트 리스너 정리 */
-    public void RefreshListeners()
-    {
-        var dead = new List<IEventListener>();
-        foreach (var kv in _reverse)
+        var keys = new List<EventType>(listeners.Keys);
+        foreach (var k in keys)
         {
-            var l = kv.Key;
-            if (l == null || l.Equals(null)) dead.Add(l);
+            var set = listeners[k];
+            set.Remove(listener);
+            if (set.Count == 0) listeners.Remove(k);
         }
-        foreach (var d in dead) RemoveTarget(d);
     }
 
-    /* 내부 구독 해제 도우미 */
-    private void UnsubscribeInternal(EventType evt, Action<Component, object> cb)
+    private void RefreshListeners()     // Scene전환시 모든 이벤트 초기화
     {
-        if (_handlers.TryGetValue(evt, out var chain))
+        //임시 Dictionary 생성
+        Dictionary<EventType, List<IEventListener>> TmpListeners = new Dictionary<EventType, List<IEventListener>>();
+
+        //씬이 바뀜에 따라 리스너가 Null이 된 부분을 삭제해준다. 
+        foreach (KeyValuePair<EventType, List<IEventListener>> Item in listeners)
         {
-            chain -= cb;
-            if (chain == null) _handlers.Remove(evt);
-            else _handlers[evt] = chain;
+            for (int i = Item.Value.Count - 1; i >= 0; i--)
+            {
+                if (Item.Value[i] == null)
+                    Item.Value.RemoveAt(i);
+            }
+
+            if (Item.Value.Count > 0)
+                TmpListeners.Add(Item.Key, Item.Value);
         }
+        //살아있는 리스너는 다시 넣어준다.
+        listeners = TmpListeners;
     }
 }

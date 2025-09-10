@@ -1,12 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-// CommandManagerÀÇ »óÅÂÆĞÅÏ ±¸Á¶¸¦ ÂüÁ¶ÇÏ¿© ±¸Á¶ Çü¼º
+// ì»¤ë§¨ë“œì˜ ìµœì†Œ ê³„ì•½: ì‹¤í–‰ë§Œ ì •ì˜
 public interface ICommand
 {
-    void OnEnter();
-
-    // Ãë¼Ò¿ë
-    void Undo();
+    void Execute();
 }
