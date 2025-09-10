@@ -16,13 +16,7 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: e6445bbf615d6a74d8a6db6fda2a64e5
-  m_SerializeEntries:
-  - m_GUID: 91eb1ec440cc2b84c9369af1eea1127f
-    m_Address: Assets/3. Prefabs/TestPrefabs/TempPrefab.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Test
-    FlaggedDuringContentUpdateRestriction: 0
+  m_SerializeEntries: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: da2e725cf633ca44aa7bbd95410fd679, type: 2}
   m_SchemaSet:
