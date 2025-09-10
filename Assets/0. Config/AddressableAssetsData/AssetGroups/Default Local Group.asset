@@ -23,6 +23,38 @@ MonoBehaviour:
     m_SerializedLabels:
     - Test
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e5297285752c22b43a470aee14ac8764
+    m_Address: Assets/3. Prefabs/TestPrefabs/TempPrefab 1.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Test
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2663790aec51b954eb886240cd906590
+    m_Address: Assets/3. Prefabs/TestPrefabs/TempPrefab 2.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Test
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 91740f18b49564a48964de95cbebc9e4
+    m_Address: Assets/3. Prefabs/TestPrefabs/TempPrefab 3.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1d9b657fe49f653488eb24c86e8d7bc1
+    m_Address: Assets/3. Prefabs/TestPrefabs/TempPrefab 4.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d16a4a854fc2eb5479f8b252584f5576
+    m_Address: Assets/3. Prefabs/TestPrefabs/TempPrefab 5.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fc87b72fe91ba0b459d9e9b015fe69cf
+    m_Address: Assets/3. Prefabs/TestPrefabs/TempPrefab 6.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: da2e725cf633ca44aa7bbd95410fd679, type: 2}
   m_SchemaSet:
