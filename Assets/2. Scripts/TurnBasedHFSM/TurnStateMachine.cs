@@ -6,6 +6,14 @@ public sealed class TurnStateMachine
 {
     public ITurnState Current { get; private set; }
 
+    // 초기 상태 지정용
+    public void Set(ITurnState initial)
+    {
+        if (Current != null) Current.OnExit();
+        Current = initial;
+        Current?.OnEnter();
+    }
+
     public void Change(ITurnState next, string reason = null)   // reason: "Force"면 강제 전이
     {
         if (next == null || next == Current) return;
@@ -15,6 +23,16 @@ public sealed class TurnStateMachine
         Current?.OnEnter();
     }
 
+    // 상태기계 비우기
+    public void Clear()
+    {
+        Current?.OnExit();
+        Current = null;
+    }
+
     public void Tick(float dt) => Current?.Tick(dt);
     public void FixedTick(float fdt) => Current?.FixedTick(fdt);
+
+    // 현재 상태 타입 체크
+    public bool IsInState<T>() where T : ITurnState => Current is T;
 }

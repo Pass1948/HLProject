@@ -30,6 +30,9 @@ public class GameManager : MonoBehaviour
     private static EventManager eventManager;
     public static EventManager Event => eventManager;
 
+    private static TurnBasedManager turnBasedManager;
+    public static TurnBasedManager TurnBased => turnBasedManager;
+
     private void Awake()
     {
         if (instance != null) { Destroy(this); return; }
@@ -52,6 +55,7 @@ public class GameManager : MonoBehaviour
         characterManager = CreateChildManager<CharacterManager>("CharacterManager");
         uiManager = CreateChildManager<UIManager>("UIManager");
         eventManager = CreateChildManager<EventManager>("EventManager");
+        turnBasedManager = CreateChildManager<TurnBasedManager>("TurnBasedManager");
 
     }
     private T CreateChildManager<T>(string goName) where T : Component
