@@ -1,11 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+// ì»¤ë§¨ë“œì˜ ìµœì†Œ ê³„ì•½: ì‹¤í–‰ë§Œ ì •ì˜
 public interface ICommand
 {
-    string Describe();
-    bool CanExecute();
-    void Execute();  // »óÅÂ È®Á¤(À§Ä¡, HP µî)
-    void Undo();     // Ãë¼Ò¸¦ À§ÇÑ ¸Ş¼­µå(¼±ÅÃ»çÇ×ÀÓ)
+    void Execute();
 }
