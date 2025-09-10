@@ -3,6 +3,19 @@ public enum SceneType
     Test,
 }
 
+public enum EventType
+{
+    AchievementUnlocked,
+    OnHit,
+    OnHeal,
+
+    /* Command 파이프라인용 */
+    CommandBuffered,
+    CommandCommitted,
+    CommandExecuted,
+    CommandUndone
+}
+
 public static class Path
 {
 

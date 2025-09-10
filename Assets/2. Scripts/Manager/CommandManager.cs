@@ -6,61 +6,100 @@ using UnityEngine;
 
 public class CommandManager : MonoBehaviour
 {
-    // 현재 턴에 확정된 플랜(배치) — UI/HFSM이 편집
-    private readonly List<ICommand> _plan = new();
+    [SerializeField] private bool enableUndoAfterExecute = false;
 
-    // 직전에 실행된 배치(Undo용)
-    private readonly Stack<ICommand> _lastBatch = new();
+    private readonly Stack<GameCommand> _buffer = new Stack<GameCommand>();  // 플래닝 입력(최근 취소 LIFO)
+    private readonly Queue<GameCommand> _queue = new Queue<GameCommand>();  // 커밋 후 실행 FIFO
+    private readonly Stack<ExecutionRecord> _undo = new Stack<ExecutionRecord>(); // (선택) 실행 후 Undo
 
-    public Action<ICommand> OnPlanned;         // 플랜에 추가될 때(옵션)
-    public Action<ICommand> OnExecuted;        // 실행 후 알림(옵션)
-    public Action<ICommand> OnUndo;            // Undo 후 알림(옵션)
+    public CommandContext Context { get; private set; } = new CommandContext(0);
 
-    //플랜에 커맨드를 추가(확정). UI/HFSM만 호출
-    public void PlanAdd(ICommand cmd)
+    // 외부에서 컨텍스트 주입(턴 시작 시 RNG 시드 등)
+    public void Init(CommandContext ctx) => Context = ctx;
+
+    // 커맨드를 플래닝 버퍼에 적재(유효하지 않으면 거부)
+    public bool Buffer(GameCommand cmd)
     {
-        if (cmd == null) return;
-        _plan.Add(cmd);
-        OnPlanned?.Invoke(cmd);
-    }
-
-    //플랜의 마지막 항목을 제거(확정 후라도 Resolve 전이면 취소)
-    public bool PlanRemoveLast()
-    {
-        if (_plan.Count == 0) return false;
-        _plan.RemoveAt(_plan.Count - 1);
+        if (cmd == null || !cmd.CanExecute(Context)) return false;
+        _buffer.Push(cmd);
+        GameManager.Event?.Post(EventType.CommandBuffered, this, new CommandEventPayload(cmd));
         return true;
     }
 
-    //플랜 비우기(턴 취소/재작성 등)
-    public void PlanClear() => _plan.Clear();
-
-    //현재 플랜을 '한 배치'로 실행. 실패 커맨드는 스킵/로깅.
-    //실행된 배치는 Undo를 위해 스택에 보관.
-    public void ExecutePlan()
+    // 최근 플래닝 입력 취소(프리뷰만 적용했다면 상태 변경 없음)
+    public bool UndoBuffered()
     {
-        _lastBatch.Clear();
-        foreach (var cmd in _plan)
-        {
-            if (!cmd.CanExecute()) continue;
-            cmd.Execute();
-            _lastBatch.Push(cmd);
-            OnExecuted?.Invoke(cmd);
-        }
-        _plan.Clear(); // 실행 후 플랜 비움
+        if (_buffer.Count == 0) return false;
+        var cmd = _buffer.Pop();
+        GameManager.Event?.Post(EventType.CommandUndone, this, new CommandEventPayload(cmd));
+        return true;
     }
 
-    //직전 배치를 역순으로 되돌림(디버그/리플레이)
-    public void UndoLastBatch()
+    // 버퍼를 순서 보존하여 실행 큐로 커밋
+    public void CommitBufferToQueue()
     {
-        while (_lastBatch.Count > 0)
+        if (_buffer.Count == 0) return;
+        var arr = _buffer.ToArray(); System.Array.Reverse(arr); _buffer.Clear();
+        foreach (var c in arr)
         {
-            var cmd = _lastBatch.Pop();
-            cmd.Undo();
-            OnUndo?.Invoke(cmd);
+            _queue.Enqueue(c);
+            GameManager.Event?.Post(EventType.CommandCommitted, this, new CommandEventPayload(c));
         }
     }
 
-    //디버그/HUD용: 현재 플랜 길이
-    public int PlannedCount => _plan.Count;
+    // 버퍼를 매크로로 묶어 원자적 실행이 되도록 커밋
+    public void CommitBufferAsMacro()
+    {
+        if (_buffer.Count == 0) return;
+        var arr = _buffer.ToArray(); System.Array.Reverse(arr); _buffer.Clear();
+        var macro = new MacroCommand(arr);
+        _queue.Enqueue(macro);
+        GameManager.Event?.Post(EventType.CommandCommitted, this, new CommandEventPayload(macro));
+    }
+
+    // 큐의 다음 커맨드 실행(성공 시 선택적으로 Undo 스택에 기록)
+    public bool ExecuteNext()
+    {
+        if (_queue.Count == 0) return false;
+
+        var cmd = _queue.Dequeue();
+        var rec = cmd.Execute(Context);
+        if (!rec.Success) return false;
+
+        if (enableUndoAfterExecute && cmd.SupportsUndo) _undo.Push(rec);
+
+        GameManager.Event?.Post(EventType.CommandExecuted, this, new ExecutionEventPayload(rec));
+        return true;
+    }
+
+    // 큐를 모두 비울 때까지 실행
+    public void ExecuteAll()
+    {
+        while (ExecuteNext()) { }
+    }
+
+    // 마지막으로 실행된 커맨드를 롤백(대규모 롤백은 스냅샷 권장)
+    public bool UndoLastExecuted()
+    {
+        if (!enableUndoAfterExecute || _undo.Count == 0) return false;
+
+        var rec = _undo.Pop();
+        if (rec.Command.SupportsUndo)
+        {
+            rec.Command.Undo(Context, rec.Memento);
+            GameManager.Event?.Post(EventType.CommandUndone, this, new ExecutionEventPayload(rec));
+            return true;
+        }
+        return false;
+    }
+
+    // 전체 초기화
+    public void ClearAll()
+    {
+        _buffer.Clear(); _queue.Clear(); _undo.Clear();
+    }
+
+    // 편의 프로퍼티
+    public int BufferedCount => _buffer.Count;
+    public bool CanUndoBuffered => _buffer.Count > 0;
 }

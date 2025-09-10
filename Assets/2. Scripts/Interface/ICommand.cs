@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// CommandManager의 상태패턴 구조를 참조하여 구조 형성
 public interface ICommand
 {
-    string Describe();
-    bool CanExecute();
-    void Execute();  // 상태 확정(위치, HP 등)
-    void Undo();     // 취소를 위한 메서드(선택사항임)
+    void OnEnter();
+
+    // 취소용
+    void Undo();
 }
