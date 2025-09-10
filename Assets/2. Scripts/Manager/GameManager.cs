@@ -10,7 +10,14 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance => instance;
 
     // Managers=========================
-   private static CommandManager commandManager;
+
+    private static ResourceManager resourceManager;
+    public static ResourceManager Resource => resourceManager;
+
+    private static SceneLoadManager sceneLoadManager;
+    public static SceneLoadManager SceneLoadManager => sceneLoadManager;
+
+    private static CommandManager commandManager;
     public static CommandManager Command => commandManager;
 
     private static CharacterManager characterManager;
@@ -32,8 +39,12 @@ public class GameManager : MonoBehaviour
 
     private void InitManagers()
     {
+
+        resourceManager = CreateChildManager<ResourceManager>("ResourceManager");
+        sceneLoadManager = CreateChildManager<SceneLoadManager>("SceneLoadManager");
         commandManager = CreateChildManager<CommandManager>("CommandManager");
         characterManager = CreateChildManager<CharacterManager>("CharacterManager");
+
     }
     private T CreateChildManager<T>(string goName) where T : Component
     {
