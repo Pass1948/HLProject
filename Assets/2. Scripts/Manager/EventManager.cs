@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,100 +6,72 @@ using UnityEngine.SceneManagement;
 
 public class EventManager : MonoBehaviour
 {
-    // ÀÌº¥Æ® ¸®½º³Ê ¸®½ºÆ®¸¦ Dictionary¸¦ ÅëÇØ °ü¸® EventTypeÀº IN°ú OUTÀ¸·Î µÎ°¡Áö ºĞ·ùÀÇ ¸®½ºÆ®·Î °ü¸®
-    private Dictionary<EventType, List<IEventListener>> listeners = new Dictionary<EventType, List<IEventListener>>();
+    // ì´ë²¤íŠ¸ë³„ ë¸ë¦¬ê²Œì´íŠ¸ ì €ì¥ (íƒ€ì… ì•ˆì „)
+    private readonly Dictionary<EventType, Delegate> _handlers = new Dictionary<EventType, Delegate>();
 
-    private void OnEnable()
+    // êµ¬ë… (í˜ì´ë¡œë“œ ì—†ëŠ” ì´ë²¤íŠ¸)
+    public void Subscribe(EventType eventType, Action handler)
     {
-        UnityEngine.SceneManagement.SceneManager.sceneLoaded += SceneManagerSceneLoaded;
-
-    }
-    private void OnDisable()
-    {
-        UnityEngine.SceneManagement.SceneManager.sceneLoaded -= SceneManagerSceneLoaded;
-    }
-    private void SceneManagerSceneLoaded(Scene arg0, LoadSceneMode arg1)
-    {
-        //¾ÀÀÌ ¹Ù²ñ¿¡ µû¶ó ÀÌº¥Æ® ÀÇÁ¸¼ºÀ» Á¦°ÅÇØÁØ´Ù.
-        RefreshListeners();
-    }
-
-    public void AddListener(EventType eventType, IEventListener listener)       // ÀÌº¥Æ® ¹Ş´Â ¿ªÇÒ
-    {
-        List<IEventListener> ListenList = null;
-
-        if (listeners.TryGetValue(eventType, out ListenList))
+        if (_handlers.TryGetValue(eventType, out var del))
         {
-            //ÇØ´ç ÀÌº¥Æ® Å°°ªÀÌ Á¸ÀçÇÑ´Ù¸é, ÀÌº¥Æ®¸¦ Ãß°¡ÇØÁØ´Ù.
-            ListenList.Add(listener);
-            return;
+            _handlers[eventType] = (Action)del + handler;
         }
-        ListenList = new List<IEventListener>();
-        ListenList.Add(listener);
-        listeners.Add(eventType, ListenList);
-
-    }
-
-    // object Param À» ±¸Ã¼È­ ÇÏ´Â °ÍÀ» ±ÇÀå
-    public void PostNotification(EventType eventType, Component Sender, object Param = null) // ÀÌº¥Æ® ¹ß»ı¿ªÇÒ
-    {
-        List<IEventListener> ListenList = null;
-        //ÀÌº¥Æ® ¸®½º³Ê(´ë±âÀÚ)°¡ ¾øÀ¸¸é ±×³É ¸®ÅÏ.
-        if (!listeners.TryGetValue(eventType, out ListenList))
-            return;
-        //¸ğµç ÀÌº¥Æ® ¸®½º³Ê(´ë±âÀÚ)¿¡°Ô ÀÌº¥Æ® Àü¼Û.
-        for (int i = 0; i < ListenList.Count; i++)
+        else
         {
-            if (ListenList[i] != null)
-            {
-                ListenList[i].OnEvent(eventType, Sender, Param);
-            }
+            _handlers[eventType] = handler;
         }
     }
 
-
-    public void RemoveEvent(EventType eventType)        // ¸ğµçÀÌº¥Æ® »èÁ¦
+    // êµ¬ë… í•´ì œ (í˜ì´ë¡œë“œ ì—†ëŠ” ì´ë²¤íŠ¸)
+    public void Unsubscribe(EventType eventType, Action handler)
     {
-        listeners.Remove(eventType);
+        if (!_handlers.TryGetValue(eventType, out var del)) return;
+        del = (Action)del - handler;
+        if (del == null) _handlers.Remove(eventType);
+        else _handlers[eventType] = del;
     }
 
-    public void RemoveListener(EventType evt, IEventListener listener)
+    // ë°œí–‰ (í˜ì´ë¡œë“œ ì—†ëŠ” ì´ë²¤íŠ¸)
+    public void Publish(EventType eventType)
     {
-        if (!listeners.TryGetValue(evt, out var set)) return;
-        set.Remove(listener);
-        if (set.Count == 0) listeners.Remove(evt);
-    }
-
-    // ¸®½º³Ê°¡ ÀÚ½ÅÀÌ µî·ÏµÈ ¸ğµç ÀÌº¥Æ®¿¡¼­ Á¦°ÅµÉ ¶§ »ç¿ë
-    public void RemoveTarget(IEventListener listener)
-    {
-        var keys = new List<EventType>(listeners.Keys);
-        foreach (var k in keys)
+        if (_handlers.TryGetValue(eventType, out var del))
         {
-            var set = listeners[k];
-            set.Remove(listener);
-            if (set.Count == 0) listeners.Remove(k);
+            (del as Action)?.Invoke();
         }
     }
 
-    private void RefreshListeners()     // SceneÀüÈ¯½Ã ¸ğµç ÀÌº¥Æ® ÃÊ±âÈ­
+    // êµ¬ë… (í˜ì´ë¡œë“œ ìˆëŠ” ì´ë²¤íŠ¸) â€” íƒ€ì… ì•ˆì „
+    public void Subscribe<T>(EventType eventType, Action<T> handler)
     {
-        //ÀÓ½Ã Dictionary »ı¼º
-        Dictionary<EventType, List<IEventListener>> TmpListeners = new Dictionary<EventType, List<IEventListener>>();
-
-        //¾ÀÀÌ ¹Ù²ñ¿¡ µû¶ó ¸®½º³Ê°¡ NullÀÌ µÈ ºÎºĞÀ» »èÁ¦ÇØÁØ´Ù. 
-        foreach (KeyValuePair<EventType, List<IEventListener>> Item in listeners)
+        if (_handlers.TryGetValue(eventType, out var del))
         {
-            for (int i = Item.Value.Count - 1; i >= 0; i--)
-            {
-                if (Item.Value[i] == null)
-                    Item.Value.RemoveAt(i);
-            }
-
-            if (Item.Value.Count > 0)
-                TmpListeners.Add(Item.Key, Item.Value);
+            if (del != null && del.GetType() != typeof(Action<T>))
+                throw new InvalidOperationException($"Event {eventType} already registered with different payload type.");
+            _handlers[eventType] = (Action<T>)del + handler;
         }
-        //»ì¾ÆÀÖ´Â ¸®½º³Ê´Â ´Ù½Ã ³Ö¾îÁØ´Ù.
-        listeners = TmpListeners;
+        else
+        {
+            _handlers[eventType] = handler;
+        }
+    }
+
+    // êµ¬ë… í•´ì œ (í˜ì´ë¡œë“œ ìˆëŠ” ì´ë²¤íŠ¸)
+    public void Unsubscribe<T>(EventType eventType, Action<T> handler)
+    {
+        if (!_handlers.TryGetValue(eventType, out var del)) return;
+        if (del != null && del.GetType() != typeof(Action<T>)) return;
+
+        del = (Action<T>)del - handler;
+        if (del == null) _handlers.Remove(eventType);
+        else _handlers[eventType] = del;
+    }
+
+    // ë°œí–‰ (í˜ì´ë¡œë“œ ìˆëŠ” ì´ë²¤íŠ¸)
+    public void Publish<T>(EventType eventType, T payload)
+    {
+        if (_handlers.TryGetValue(eventType, out var del))
+        {
+            (del as Action<T>)?.Invoke(payload);
+        }
     }
 }

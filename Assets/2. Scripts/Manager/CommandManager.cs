@@ -7,6 +7,10 @@ public class CommandManager : MonoBehaviour
     private readonly Stack<ICommand> _buffer = new Stack<ICommand>();
     private readonly Queue<ICommand> _queue = new Queue<ICommand>();
 
+    // 편의 프로퍼티
+    public int BufferedCount => _buffer.Count;
+    public bool CanUndoBuffered => _buffer.Count > 0;
+
     // 버퍼에 커맨드 적재
     public bool Buffer(ICommand command)
     {
@@ -55,7 +59,5 @@ public class CommandManager : MonoBehaviour
         _queue.Clear();
     }
 
-    // 편의 프로퍼티
-    public int BufferedCount => _buffer.Count;
-    public bool CanUndoBuffered => _buffer.Count > 0;
+
 }
