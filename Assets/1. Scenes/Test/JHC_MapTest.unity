@@ -606,6 +606,8 @@ GameObject:
   - component: {fileID: 1924204316}
   - component: {fileID: 1924204315}
   - component: {fileID: 1924204314}
+  - component: {fileID: 1924204318}
+  - component: {fileID: 1924204317}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -684,9 +686,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1ad07eed0814dd4ca8ab4e4ec42900d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mapWidth: 10
+  mapHeight: 10
   mapCreator: {fileID: 1924204315}
   playerSpawner: {fileID: 1924204314}
+  obstacleSpawner: {fileID: 1924204318}
+  monsterSpawner: {fileID: 1924204317}
   tilemap: {fileID: 1426192856}
+--- !u!114 &1924204317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1924204311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61eb23c2b4d81264e9606450439d233b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  monsterPrefab: {fileID: 839233260410868668, guid: d6846055e97b9ac42a6e11a3ea4f1237,
+    type: 3}
+  numberOfMonsters: 3
+--- !u!114 &1924204318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1924204311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8639b852374971643b96afb3022fb99f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  obstaclePrefab: {fileID: 5175267955941368727, guid: 517e976be9ac3ee41a961dd8bf728615,
+    type: 3}
+  numberOfObstacles: 5
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

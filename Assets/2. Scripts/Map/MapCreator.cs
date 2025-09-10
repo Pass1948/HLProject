@@ -11,17 +11,15 @@ public class MapCreator : MonoBehaviour
     // 맵 생성
     public void GenerateMap(Tilemap tilemap)
     {
-        // 맵 크기
-        int mapWidth = 10;
-        int mapHeight = 10;
-        int[,] mapData = new int[mapWidth, mapHeight];
+        int mapWidth = MapManager.instance.mapWidth;
+        int mapHeight = MapManager.instance.mapHeight;
 
         // 일단 무작위로 생성
         for (int x = 0; x < mapWidth; x++)
         {
             for (int y = 0; y < mapHeight; y++)
             {
-                mapData[x, y] = Random.Range(0, 2); // 0 또는 1
+                MapManager.mapData[x, y] = Random.Range(0, 2); // 0: 바닥 , 1: 벽, 2: 플레이어, 3:오토바이, 4:장애물, 5: 몬스터
             }
         }
         // 크기에 맞게 그리기
@@ -30,7 +28,7 @@ public class MapCreator : MonoBehaviour
             for (int y = 0; y < mapHeight; y++)
             {
                 Vector3Int tilePosition = new Vector3Int(x, y, 0);
-                if (mapData[x, y] == 1)
+                if (MapManager.mapData[x, y] == 1)
                 {
                     tilemap.SetTile(tilePosition, wallTile);
                 }
