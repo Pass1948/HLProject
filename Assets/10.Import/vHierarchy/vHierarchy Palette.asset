@@ -79,3 +79,11 @@ MonoBehaviour:
     - Settings Icon
     customIcons: []
     enabled: 1
+  - builtinIcons: []
+    customIcons:
+    - Grid Icon
+    - Settings
+    enabled: 1
+  - builtinIcons: []
+    customIcons: []
+    enabled: 1
