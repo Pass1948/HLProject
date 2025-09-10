@@ -19,7 +19,8 @@ public class MapCreator : MonoBehaviour
         {
             for (int y = 0; y < mapHeight; y++)
             {
-                MapManager.mapData[x, y] = Random.Range(0, 2); // 0: 바닥 , 1: 벽, 2: 플레이어, 3:오토바이, 4:장애물, 5: 몬스터
+                // 0: 바닥 , 1: 벽, 2: 플레이어, 3:오토바이, 4:장애물, 5: 몬스터
+                MapManager.mapData[x, y] = Random.Range(0, 2); 
             }
         }
         // 크기에 맞게 그리기

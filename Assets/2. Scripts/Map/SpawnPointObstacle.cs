@@ -21,7 +21,7 @@ public class SpawnPointObstacle : MonoBehaviour
             int randX = Random.Range(0, MapManager.instance.mapWidth);
             int randY = Random.Range(0, MapManager.instance.mapHeight);
 
-            // 해당 좌표가 빈 공간인지 확인 / 0,1은 발판
+            // 해당 좌표가 빈 공간인지 확인 / 0,1은 빈칸(발판)
             if (MapManager.mapData[randX, randY] == 0 || MapManager.mapData[randX, randY] == 1)
             {
                 // 장애물 프리팹 생성
@@ -30,7 +30,7 @@ public class SpawnPointObstacle : MonoBehaviour
                 // 장애물을 셀 중앙으로 이동
                 GridSnapper.SnapToCellCenter(obstacleInstance.transform, tilemap, new Vector2Int(randX, randY));
 
-                // 맵 데이터에 장애물 위치를 기록
+                // 장애물 위치를 기록
                 MapManager.mapData[randX, randY] = OBSTACLE_ID;
                 
                 spawnedCount++;

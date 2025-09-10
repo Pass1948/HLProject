@@ -8,7 +8,7 @@ public class SpawnPointMonster : MonoBehaviour
     public GameObject monsterPrefab; // 몬스터 프리팹
     public int numberOfMonsters = 3; // 몬스터 갯수
 
-    // 몬스터 ID를 상수로 정의합니다.
+    // 몬스터 ID
     const int MONSTER_ID = 5;
 
     public void SpawnMonsters(Tilemap tilemap)
@@ -21,7 +21,7 @@ public class SpawnPointMonster : MonoBehaviour
             int randX = Random.Range(0, MapManager.instance.mapWidth);
             int randY = Random.Range(0, MapManager.instance.mapHeight);
 
-            // 빈 공간인지 확인
+            // 해당 좌표가 빈 공간인지 확인 / 0,1은 빈칸(발판)
             if (MapManager.mapData[randX, randY] == 0 || MapManager.mapData[randX, randY] == 1)
             {
                 // 몬스터 프리팹 생성
