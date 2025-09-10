@@ -20,4 +20,7 @@ public abstract class BaseTurnState : ITurnState
         if (fsm == null) return;
         fsm.Change(next);
     }
+    // 잠금 편의
+    protected void Lock() => locked = true;
+    protected void Unlock() => locked = false;
 }
