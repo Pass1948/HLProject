@@ -1,14 +1,14 @@
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-
 
 public class ResourceManager : MonoBehaviour
 {
     // 캐싱용 딕셔너리 (한번 로드한 에셋은 여기 저장해서 재사용한다.)
     private Dictionary<string, Object> _cache = new();
-
+    private Dictionary<string, List<Object>> _labelCache = new();
     // key 기반으로 Addressables에서 에셋 로드
     public async Task<T> LoadAssetAsync<T>(string key) where T : Object
     {
@@ -33,9 +33,13 @@ public class ResourceManager : MonoBehaviour
         var handle = Addressables.LoadAssetsAsync<T>(label, obj =>
         {
             if(!_cache.ContainsKey(obj.name))
-            {
                 _cache[obj.name] = obj;
-            }
+
+            if (!_labelCache.ContainsKey(label))
+                _labelCache[label] = new List<Object>();
+
+            if (!_labelCache.ContainsKey(obj.name))
+                _labelCache[label].Add(obj);
 
         });
 
@@ -72,5 +76,44 @@ public class ResourceManager : MonoBehaviour
     {
         var prefab = await GetLabel<T>(label, prefabName);
         return prefab != null ? Instantiate(prefab, parent) : null;
+
+    }
+
+    public async Task<List<T>> GetLabelAll<T>(string label) where T : Object
+    {
+        // 라벨이 아직 캐시에 없다면 자동으로 LoadByLabelAsync 호출
+        if (!_labelCache.ContainsKey(label))
+            await LoadByLabelAsync<T>(label);
+
+        var result = new List<T>();
+        foreach (var prefab in _labelCache[label])
+        {
+            if (prefab is T casted)
+                result.Add(casted);
+        }
+        return result;
+    }
+
+    private async Task<List<T>> CreateLabelAllAsync<T>(string label, Transform parent = null) where T : Object
+    {
+        // GetByLabel을 재사용
+        var prefabs = await GetLabelAll<T>(label);
+        if (prefabs == null) return null;
+
+        var instances = new List<T>();
+        foreach (var prefab in prefabs)
+        {
+            var obj = Instantiate(prefab, parent);
+            instances.Add(obj);
+        }
+        return instances;
+    }
+
+    public List<T> CreateLabelAll<T>(string label, Transform parent = null) where T : Object
+    {
+        var task = CreateLabelAllAsync<T>(label, parent);
+        task.Wait(); // Task가 끝날 때까지 대기
+
+        return task.Result; // List<T> 반환
     }
 }
