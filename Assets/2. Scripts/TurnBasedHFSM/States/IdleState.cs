@@ -6,8 +6,10 @@ public class IdleState : BaseTurnState
 {
     public override void OnEnter()
     {
+
     }
     public override void Tick(float dt)
     {
+
     }
 }

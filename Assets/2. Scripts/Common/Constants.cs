@@ -6,6 +6,7 @@ public enum SceneType
 public enum EventType
 {
     // 이벤트 생길시 추가
+
     // Command 파이프라인 이벤트(필요한 것만 최소 추가)
     CommandBuffered,        // 커맨드가 플래닝 버퍼에 적재됨
     CommandCommitted,       // 버퍼 → 큐(또는 매크로)로 커밋됨
