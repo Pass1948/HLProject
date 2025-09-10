@@ -1,9 +1,6 @@
 public enum SceneType
 {
     Test,
-    Intro,
-    Lobby,
-    Battle
 }
 
 public static class Path

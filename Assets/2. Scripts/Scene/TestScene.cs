@@ -6,7 +6,7 @@ public class TestScene : BaseScene
 {
     public override void SceneEnter()
     {
-        
+
     }
 
     public override void SceneExit()
