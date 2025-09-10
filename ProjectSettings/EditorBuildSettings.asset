@@ -6,8 +6,11 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/1. Scenes/TestScene.unity
+    path: Assets/1. Scenes/Test.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/1. Scenes/Test/PARKSH_TestScene.unity
+    guid: de54a42f3e1450a47b653c72d8a6b92c
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: db64a81fb2d20ba479a3d380415abe27,
       type: 2}

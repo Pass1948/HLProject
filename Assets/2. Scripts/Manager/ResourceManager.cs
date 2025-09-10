@@ -1,6 +1,5 @@
 using UnityEngine;
 
-
 public class ResourceManager : MonoBehaviour
 {
     public T Load<T>(string prefName) where T : Object
