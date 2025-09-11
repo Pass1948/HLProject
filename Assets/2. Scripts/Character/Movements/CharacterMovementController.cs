@@ -8,6 +8,7 @@ using UnityEngine.EventSystems;
 public class CharacterMovementController : MonoBehaviour 
 {
     public enum GridPlane {XY,XZ }
+
     [Header("Grid Settings")]
     [SerializeField] private Tilemap tilemap; // 이동 기준 타일맵
     [SerializeField] private GridPlane gridPlane = GridPlane.XZ; // 그리드 평면 설정
@@ -17,10 +18,9 @@ public class CharacterMovementController : MonoBehaviour
     [SerializeField] private float moveTime = 0.2f;
 
     private Vector3Int _cellPosition; // 현재 캐릭터가 있는 타일 좌표
-    private bool _isMoving = false;  // 이동 중 여부
+    public  bool _isMoving = false;  // 이동 중 여부
 
     private Pathfinding _pathfinding;
-    private LineRenderer _lineRenderer;
 
     private void Awake()
     {
@@ -31,48 +31,24 @@ public class CharacterMovementController : MonoBehaviour
         // 경로 탐색기 초기화
         _pathfinding = new Pathfinding(tilemap);
 
-        // 라인 렌더러 초기화...
-        _lineRenderer = GetComponent<LineRenderer>();
-        _lineRenderer.positionCount = 0;
-        _lineRenderer.widthMultiplier = 0.1f;
-        _lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
-        _lineRenderer.startColor = Color.red;
-        _lineRenderer.endColor = Color.green;
-
     }
     private void Update()
     {
-        if(TryGetMouseWorldOnGrid(out var mouseWorld))
+        
+        if (TryGetMouseWorldOnGrid(out var mouseWorld))
         {
             var targetCell = tilemap.WorldToCell(mouseWorld);
 
-            if(targetCell != _cellPosition)
+            if (targetCell != _cellPosition)
             {
                 var path = _pathfinding.FindPath(_cellPosition, targetCell);
-                Debug.Log($"Path Count: {path.Count}");
-                DrowPath(path);
             }
             else
             {
-                _lineRenderer.positionCount = 0;
+                
             }
         }
     }
-
-    private void DrowPath(List<Vector3Int> path)
-    {
-        if (path.Count < 2)
-        {
-            _lineRenderer.positionCount = 0;
-            return;
-        }
-        _lineRenderer.positionCount = path.Count;
-        for (int i = 0; i < path.Count; i++)
-        {
-            _lineRenderer.SetPosition(i, tilemap.GetCellCenterWorld(path[i]) + Vector3.up * 0.1f);
-        }
-    }
-
 
     private void OnMovementClick(InputValue value)
     {
@@ -100,7 +76,7 @@ public class CharacterMovementController : MonoBehaviour
             StopAllCoroutines();
             StartCoroutine(FollowPath(path));
         }
-        _lineRenderer.positionCount = 0;
+        
         
     }
 
