@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 public class AttackTestController : MonoBehaviour
 {
+    //2025 09 11
     [SerializeField] private RectTransform bullet;
 
     private Color bgNormal = new Color(0f, 0f, 0f, 1f); //검정색
