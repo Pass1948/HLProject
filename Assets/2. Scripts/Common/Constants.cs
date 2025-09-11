@@ -1,6 +1,7 @@
 public enum SceneType
 {
     Test,
+    Test2
 }
 
 public enum EventType

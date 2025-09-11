@@ -9,8 +9,6 @@ public class TestScene : BaseScene
     {
         var ui = GameManager.UI.GetUI<TestUI>();
         ui.OpenUI();
-
-
     }
 
     public override void SceneExit()
