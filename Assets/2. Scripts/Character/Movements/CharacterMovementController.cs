@@ -49,6 +49,7 @@ public class CharacterMovementController : MonoBehaviour
             if(targetCell != _cellPosition)
             {
                 var path = _pathfinding.FindPath(_cellPosition, targetCell);
+                //Debug.Log($"Path Count: {path.Count}");
                 DrowPath(path);
             }
             else
@@ -71,8 +72,6 @@ public class CharacterMovementController : MonoBehaviour
             _lineRenderer.SetPosition(i, tilemap.GetCellCenterWorld(path[i]) + Vector3.up * 0.1f);
         }
     }
-
-
 
 
     private void OnMovementClick(InputValue value)
@@ -122,7 +121,6 @@ public class CharacterMovementController : MonoBehaviour
         }
         world = default;
         return false;
-        
     }
 
     private IEnumerator FollowPath(List<Vector3Int> path)
