@@ -6,7 +6,7 @@ using System;
 
 public class TurnBasedManager : MonoBehaviour
 {
-    // 리퀘스트 재확인 테스트ㅇㄻ
+
     [HideInInspector] public TurnStateMachine turnHFSM { get; private set; }
     private readonly Dictionary<Type, ITurnState> _stateCache = new Dictionary<Type, ITurnState>();
     private void Awake()
