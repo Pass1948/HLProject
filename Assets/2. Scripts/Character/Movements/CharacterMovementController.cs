@@ -49,7 +49,7 @@ public class CharacterMovementController : MonoBehaviour
             if(targetCell != _cellPosition)
             {
                 var path = _pathfinding.FindPath(_cellPosition, targetCell);
-                Debug.Log($"Path Count: {path.Count}");
+                //Debug.Log($"Path Count: {path.Count}");
                 DrowPath(path);
             }
             else
