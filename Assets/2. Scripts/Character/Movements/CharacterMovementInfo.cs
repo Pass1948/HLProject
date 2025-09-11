@@ -5,4 +5,5 @@ using UnityEngine;
 public class CharacterMovementInfo : MonoBehaviour
 {
     [SerializeField] private Vector3Int tilemapPosition;
+
 }

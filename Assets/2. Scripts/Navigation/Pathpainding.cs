@@ -59,7 +59,7 @@ public class Pathfinding
             {
                 if (closedSet.Contains(neighbourPos) || blocked.Contains(neighbourPos))
                     continue; // 이미 방문했거나, 막힌 타일이면 무시
-
+                
                 int newGCost = currentNode.gCost + 1; // 모든 이동 비용이 1이라고 가정
                 if (!allNodes.ContainsKey(neighbourPos))
                 {

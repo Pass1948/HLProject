@@ -51991,6 +51991,7 @@ MonoBehaviour:
   gridPlane: 1
   groundY: 0
   moveTime: 0.2
+  _isMoving: 0
 --- !u!120 &1299148855
 LineRenderer:
   serializedVersion: 2

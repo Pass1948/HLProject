@@ -42,6 +42,7 @@ public class CharacterMovementController : MonoBehaviour
             if (targetCell != _cellPosition)
             {
                 var path = _pathfinding.FindPath(_cellPosition, targetCell);
+                GameManager.PathPreview.ShowPath(path, tilemap);
             }
             else
             {
@@ -55,6 +56,7 @@ public class CharacterMovementController : MonoBehaviour
         // UI 위 클릭은 무시
         if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
             return;
+        GameManager.PathPreview.ClearPath();
 
         // 버튼 액션이므로 pressed가 아니면 무시
         if (!value.isPressed) return;
@@ -98,7 +100,15 @@ public class CharacterMovementController : MonoBehaviour
         world = default;
         return false;
     }
+    // 턴매니저,맵매니저 등등 마우스로 클릭한 셀 좌표를 플레이어나 몬스터에게 전달해주는 역할을 하는 매니저가 필요할지도?
+    // 캐릭터가 직접 마우스 입력을 받지 않고.
+    // 아니면 캐릭터가 직접 받아서 처리하는게 더 간단할지도?
+    // 캐릭터가 직접 받는걸로 우선 구현.
 
+    public Vector3Int GetCellPosition()
+    {
+        return _cellPosition;
+    }
     private IEnumerator FollowPath(List<Vector3Int> path)
     {
         foreach (var cell in path)
