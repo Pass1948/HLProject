@@ -14,18 +14,11 @@ public class GameManager : MonoBehaviour
     private static ResourceManager resourceManager;
     public static ResourceManager Resource => resourceManager;
 
-    private static SceneLoadManager sceneLoadManager;
-    public static SceneLoadManager SceneLoad => sceneLoadManager;
-
-    private static CommandManager commandManager;
-
+   private static CommandManager commandManager;
     public static CommandManager Command => commandManager;
 
     private static CharacterManager characterManager;
     public static CharacterManager Character => characterManager;
-
-    private static UIManager uiManager;
-    public static UIManager UI => uiManager;
 
     private static EventManager eventManager;
     public static EventManager Event => eventManager;
@@ -46,11 +39,11 @@ public class GameManager : MonoBehaviour
 
     private void InitManagers()
     {
+
         resourceManager = CreateChildManager<ResourceManager>("ResourceManager");
-        sceneLoadManager = CreateChildManager<SceneLoadManager>("SceneLoadManager");
+
         commandManager = CreateChildManager<CommandManager>("CommandManager");
         characterManager = CreateChildManager<CharacterManager>("CharacterManager");
-        uiManager = CreateChildManager<UIManager>("UIManager");
         eventManager = CreateChildManager<EventManager>("EventManager");
 
     }

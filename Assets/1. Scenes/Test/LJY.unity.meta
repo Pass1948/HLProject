@@ -1,10 +1,5 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:Assets/1. Scenes/Test/LJY.unity.meta
-guid: 5672f405a3c3e0547b0f8d0fb6aab13d
-========
-guid: f9d0b671ba6c0a741b7d24f2dc55537b
-folderAsset: yes
->>>>>>>> Park.SH:Assets/2. Scripts/UI.meta
+guid: f9dd77ce7b57e2344a3731977ed53004
 DefaultImporter:
   externalObjects: {}
   userData: 
