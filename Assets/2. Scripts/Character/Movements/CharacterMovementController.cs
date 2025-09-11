@@ -111,56 +111,18 @@ public class CharacterMovementController : MonoBehaviour
     private bool TryGetMouseWorldOnGrid(out Vector3 world)
     {
         var mousePos = Mouse.current.position.ReadValue();
-
-        // Orthographic(2D Top-Down) 카메라일 경우: 깊이 개념이 없어서 z(또는 y)를 평면에 딱 맞춰준다.
-        if (Camera.main.orthographic)
-        {
-            // nearClipPlane을 넣어도 orthographic에서는 상관없음
-            world = Camera.main.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, Camera.main.nearClipPlane));
-
-            if (gridPlane == GridPlane.XY)
-            {
-                // 2D 타일맵: XY 평면 → z를 타일맵(혹은 캐릭터)의 z로 고정
-                world.z = tilemap.transform.position.z;
-            }
-            else
-            {
-                // 3D 바닥 그리드: XZ 평면 → y를 바닥 높이로 고정
-                world.y = groundY;
-            }
-            return true;
-        }
-        else
-        {
-            // Perspective(원근) 카메라: 반드시 레이로 '그리드 평면'에 교차시켜야 정확함
             Ray ray = Camera.main.ScreenPointToRay(mousePos);
 
-            if (gridPlane == GridPlane.XY)
-            {
-                // XY 평면(2D 타일맵)을 월드에서 z=const 로 사용 중이라 가정
-                // → z가 특정 값인 평면과의 교차점을 구한다.
-                // 하지만 Unity의 Plane은 법선+점으로 정의 → z 고정 평면은 (0,0,1) 법선을 이용
-                Plane plane = new Plane(Vector3.forward, new Vector3(0f, 0f, tilemap.transform.position.z));
-                if (plane.Raycast(ray, out float enter))
-                {
-                    world = ray.GetPoint(enter);
-                    return true;
-                }
-            }
-            else
-            {
-                // XZ 평면(3D): y=groundY인 평면과의 교차
-                Plane plane = new Plane(Vector3.up, new Vector3(0f, groundY, 0f));
-                if (plane.Raycast(ray, out float enter))
-                {
-                    world = ray.GetPoint(enter);
-                    return true;
-                }
-            }
-
-            world = default;
-            return false;
+        //XZ 평면
+        Plane plane = new Plane(Vector3.up, new Vector3(0f, groundY, 0f));
+        if (plane.Raycast(ray, out float enter))
+        {
+            world = ray.GetPoint(enter);
+            return true;
         }
+        world = default;
+        return false;
+        
     }
 
     private IEnumerator FollowPath(List<Vector3Int> path)
