@@ -24,13 +24,6 @@ public sealed class TurnStateMachine
         Current?.OnEnter();
     }
 
-    // 상태기계 비우기
-    public void Clear()
-    {
-        Current?.OnExit();
-        Current = null;
-    }
-
     public void Tick(float dt) => Current?.Tick(dt);
     public void FixedTick(float fdt) => Current?.FixedTick(fdt);
 }
