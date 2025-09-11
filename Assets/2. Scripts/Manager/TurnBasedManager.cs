@@ -46,7 +46,6 @@ public class TurnBasedManager : MonoBehaviour
     // 필요 시 외부에서 초기화 리셋
     public void ResetAll()
     {
-        turnHFSM.Clear();
         _stateCache.Clear();
     }
 
