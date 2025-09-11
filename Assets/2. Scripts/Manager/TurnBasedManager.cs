@@ -1,13 +1,17 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml;
 using Unity.VisualScripting;
 using UnityEngine;
-using System;
 
 public class TurnBasedManager : MonoBehaviour
 {
-    // 리퀘스트 재확인 테스트ㅇㄻ
+
+    // =================[States]=================
+
     [HideInInspector] public TurnStateMachine turnHFSM { get; private set; }
+
     private readonly Dictionary<Type, ITurnState> _stateCache = new Dictionary<Type, ITurnState>();
     private void Awake()
     {
@@ -25,6 +29,7 @@ public class TurnBasedManager : MonoBehaviour
     {
         turnHFSM.FixedTick(Time.fixedDeltaTime);
     }
+
     // 상태 인스턴스 가져오기(없으면 생성 후 캐시에 등록)
     public T GetState<T>() where T : ITurnState, new()
     {
