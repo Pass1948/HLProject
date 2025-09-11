@@ -10,25 +10,25 @@ public class CharacterMovementController : MonoBehaviour
     public enum GridPlane {XY,XZ }
 
     [Header("Grid Settings")]
-    [SerializeField] private Tilemap tilemap; // �̵� ���� Ÿ�ϸ�
-    [SerializeField] private GridPlane gridPlane = GridPlane.XZ; // �׸��� ��� ����
-    [SerializeField] private float groundY = 0f; // �׸��� �� ũ��
+    [SerializeField] private Tilemap tilemap; // 이동 기준 타일맵
+    [SerializeField] private GridPlane gridPlane = GridPlane.XZ; // 그리드 평면 설정
+    [SerializeField] private float groundY = 0f; // 그리드 셀 크기
 
     [Header("Movement Settings")]
     [SerializeField] private float moveTime = 0.2f;
 
-    private Vector3Int _cellPosition; // ���� ĳ���Ͱ� �ִ� Ÿ�� ��ǥ
-    public  bool _isMoving = false;  // �̵� �� ����
+    private Vector3Int _cellPosition; // 플레이어 현재 위치
+    public  bool _isMoving = false;  // 움직임 감지
 
     private Pathfinding _pathfinding;
 
     private void Awake()
     {
-        // ���� �� ĳ���͸� Ÿ�� �߽����� ����
+        // 플레이어 시작 위치를 타일의 중앙으로 설정
         _cellPosition = tilemap.WorldToCell(transform.position);
         transform.position = tilemap.GetCellCenterWorld(_cellPosition);
 
-        // ��� Ž���� �ʱ�ȭ
+        // A* 알고리즘 초기화
         _pathfinding = new Pathfinding(tilemap);
 
     }
@@ -54,24 +54,25 @@ public class CharacterMovementController : MonoBehaviour
 
     private void OnMovementClick(InputValue value)
     {
-        // UI �� Ŭ���� ����
+        // UI 가 있어도 클릭 안되게
         if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
             return;
         GameManager.PathPreview.ClearPath();
 
-        // ��ư �׼��̹Ƿ� pressed�� �ƴϸ� ����
+        // 마우스 눌렀다가 땠을 때에는 처리 하지 않음
         if (!value.isPressed) return;
 
-        // ���콺�� ����Ű�� '�׸��� ���' ���� ���� ��ǥ�� ���Ѵ�.
+        // 
         if (!TryGetMouseWorldOnGrid(out var mouseWorld)) return;
 
-        // �� ���� ��ǥ�� �� ��ǥ�� ��ȯ
+        // 마우스 위치를 셀 위치로 변환
         var targetCell = tilemap.WorldToCell(mouseWorld);
 
-        // ���� ĭ�̸� �� �� ����
+        // 위치의 변화가 없거나 같으면 무시
         if (targetCell == _cellPosition) return;
 
-        // A* ��� ã��
+        // A* 알고리즘 경로 설정
+        // _cellPosition : 시작 위치, targetCell : 목표 위치
         List<Vector3Int> path = _pathfinding.FindPath(_cellPosition, targetCell);
 
         if (path.Count > 0)
@@ -91,7 +92,7 @@ public class CharacterMovementController : MonoBehaviour
         var mousePos = Mouse.current.position.ReadValue();
             Ray ray = Camera.main.ScreenPointToRay(mousePos);
 
-        //XZ ���
+        //XZ로 설정
         Plane plane = new Plane(Vector3.up, new Vector3(0f, groundY, 0f));
         if (plane.Raycast(ray, out float enter))
         {
@@ -101,21 +102,21 @@ public class CharacterMovementController : MonoBehaviour
         world = default;
         return false;
     }
-    // �ϸŴ���,�ʸŴ��� ��� ���콺�� Ŭ���� �� ��ǥ�� �÷��̾ ���Ϳ��� �������ִ� ������ �ϴ� �Ŵ����� �ʿ�������?
-    // ĳ���Ͱ� ���� ���콺 �Է��� ���� �ʰ�.
-    // �ƴϸ� ĳ���Ͱ� ���� �޾Ƽ� ó���ϴ°� �� ����������?
-    // ĳ���Ͱ� ���� �޴°ɷ� �켱 ����.
 
+    // 현재 셀 위치를 부르는 함수
     public Vector3Int GetCellPosition()
     {
         return _cellPosition;
     }
+
+    // A* 알고리즘으로 찾은 경로를 따라 이동
     private IEnumerator FollowPath(List<Vector3Int> path)
     {
         foreach (var cell in path)
             yield return MoveRoutine(cell);
     }
 
+    // 타겟 셀 위치로 부드럽게 이동(보정)
     private IEnumerator MoveRoutine(Vector3Int targetCell)
     {
         _isMoving = true;
