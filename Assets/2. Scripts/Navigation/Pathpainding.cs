@@ -23,16 +23,20 @@ public class Pathfinding
         //탐색 후보군 (openSet) 과 이미 방문한 집합 (closedSet)
         List<Node> openSet = new List<Node>();
         HashSet<Vector3Int> closedSet = new HashSet<Vector3Int>();
+
         // 시작 노드 초기화(등록)
         Node startNode = new Node(start);
         openSet.Add(startNode);
+
         //전체 노드를 저장(같은 좌표의 노드를 재사용하기 위함)
         Dictionary<Vector3Int, Node> allNodes = new Dictionary<Vector3Int, Node>();
+
         allNodes[start] = startNode;
         while (openSet.Count > 0)
         {
             // openSet에서 fCost가 가장 낮은 노드를 선택
             Node currentNode = openSet[0];
+
             for (int i = 0; i < openSet.Count; i++)
             {
                 if (openSet[i].FCost < currentNode.FCost ||
@@ -44,6 +48,7 @@ public class Pathfinding
             // 현재 노드 처리
             openSet.Remove(currentNode);
             closedSet.Add(currentNode.Position);
+
             // 목표 지점에 착창, 도착 했으면 경로 반환
             if (currentNode.Position == goal)
             {
@@ -54,6 +59,7 @@ public class Pathfinding
             {
                 if (closedSet.Contains(neighbourPos) || blocked.Contains(neighbourPos))
                     continue; // 이미 방문했거나, 막힌 타일이면 무시
+                
                 int newGCost = currentNode.gCost + 1; // 모든 이동 비용이 1이라고 가정
                 if (!allNodes.ContainsKey(neighbourPos))
                 {
