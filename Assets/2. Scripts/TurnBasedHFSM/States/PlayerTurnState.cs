@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerTurnState : BaseTurnState
 {
+    public PlayerTurnState() { }
     public override void OnEnter()
     {
         // 대기 상태로 진입(입력 기다림)
@@ -15,5 +16,6 @@ public class PlayerTurnState : BaseTurnState
 
     public override void Tick(float dt)
     {
+
     }
 }
