@@ -11,16 +11,7 @@ public class AttackTestController : MonoBehaviour
 
     private Color bgNormal = new Color(0.6f, 1f, 0.6f, 1f);
     private Color bgSel = new Color(1f, 0.9f, 0.5f, 1f);
-
-    private TargetTest selectedTarget;
     private Button selectedAmmoBtn;
-    
-
-    //타겟지정
-    public void SelectTarget(TargetTest target)
-    {
-        selectedTarget = target;
-    }
 
     //탄환버튼 OnClick
     public void SelectAmmo(Button btn)
