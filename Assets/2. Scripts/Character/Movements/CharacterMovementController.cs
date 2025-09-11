@@ -74,8 +74,6 @@ public class CharacterMovementController : MonoBehaviour
     }
 
 
-
-
     private void OnMovementClick(InputValue value)
     {
         // UI 위 클릭은 무시
