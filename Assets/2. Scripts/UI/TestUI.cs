@@ -6,6 +6,6 @@ public class TestUI : BaseUI
 {
     private void OnEnable()
     {
-        
+        Debug.Log("Open!");
     }
 }
