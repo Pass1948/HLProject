@@ -10,6 +10,7 @@ public class MapManager : MonoBehaviour
     public static int[,] mapData;
     public int mapWidth = 10;
     public int mapHeight = 10;
+    public Vector3Int playerPos { get; set; }
     
     public MapCreator mapCreator;
     public SpawnPointPlayer playerSpawner;
@@ -17,6 +18,7 @@ public class MapManager : MonoBehaviour
     public SpawnPointMonster monsterSpawner;
     
     public Tilemap tilemap;
+    public  Vector3Int playerPos;
 
     void Awake()
     {
@@ -28,7 +30,7 @@ public class MapManager : MonoBehaviour
         playerSpawner.playerPrefab = GameManager.Resource.Load<GameObject>(Path.Player + "Player");
 
     }
-    
+
     void Start()
     {
         mapData = new int[mapWidth, mapHeight];
@@ -48,4 +50,5 @@ public class MapManager : MonoBehaviour
         //몬스터 생성
         monsterSpawner.SpawnMonsters(tilemap);
     }
+
 }

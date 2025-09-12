@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 
 public class MovementController : MonoBehaviour 
 {
-    public enum GridPlane {XY,XZ }
+    public enum GridPlane { XY,XZ }
 
     [Header("Grid Settings")]
     [SerializeField] private Tilemap tilemap; // 이동 기준 타일맵
@@ -34,7 +34,6 @@ public class MovementController : MonoBehaviour
     }
     private void Update()
     {
-        
         if (TryGetMouseWorldOnGrid(out var mouseWorld))
         {
             var targetCell = tilemap.WorldToCell(mouseWorld);
@@ -42,14 +41,22 @@ public class MovementController : MonoBehaviour
             if (targetCell != _cellPosition)
             {
                 var path = _pathfinding.FindPath(_cellPosition, targetCell);
-                GameManager.PathPreview.ShowPath(path, tilemap);
-            }
-            else
-            {
-                
+                int moveRange = GameManager.Data.playerData.playerMoveData.MoveRange;
+                PlayerMoveRange(path,tilemap,moveRange);
             }
         }
     }
+
+
+
+
+    public void PlayerMoveRange(List <Vector3Int> path, Tilemap tilemap, int moveRange)
+    {
+        GameManager.PathPreview.ShowPath(path, tilemap, moveRange);
+    }
+
+
+
     private void OnMovementClick(InputValue value)
     {
         // UI 가 있어도 클릭 안되게
@@ -73,32 +80,53 @@ public class MovementController : MonoBehaviour
         // _cellPosition : 시작 위치, targetCell : 목표 위치
         List<Vector3Int> path = _pathfinding.FindPath(_cellPosition, targetCell);
 
-        if (path.Count > 0)
+        int moveRange = GameManager.Data.playerData.playerMoveData.MoveRange;
+
+        if(path.Count > moveRange)
         {
-            StopAllCoroutines();
-            StartCoroutine(FollowPath(path));
+            return;
         }
-        
-        
+        // maxRange 보다 작거나 같을 때만 이동
+        var maxRange =GameManager.Data.playerData.playerMoveData.MoveRange;
+
+        StopAllCoroutines();
+        StartCoroutine(FollowPath(path));
+        //MapManager.instance.playerPos = targetCell;
     }
 
+
     /// <summary>
-    /// ī�޶� ����/�׸��� ��鿡 ���� ���콺�� ���� '�׸��� ���'���� ���� ��ǥ�� ��´�.
+    /// 마우스 위치, 그리드 평면에 따른 월드 좌표 변환
     /// </summary>
     private bool TryGetMouseWorldOnGrid(out Vector3 world)
     {
         var mousePos = Mouse.current.position.ReadValue();
-            Ray ray = Camera.main.ScreenPointToRay(mousePos);
+        Ray ray = Camera.main.ScreenPointToRay(mousePos);
 
-        //XZ로 설정
-        Plane plane = new Plane(Vector3.up, new Vector3(0f, groundY, 0f));
-        if (plane.Raycast(ray, out float enter))
+        // 레이를 쏴서 테그가 맵이 아니면 무시
+        if (Physics.Raycast(ray, out RaycastHit hit))
         {
-            world = ray.GetPoint(enter);
-            return true;
+            if (hit.collider.gameObject.CompareTag("TileMap"))
+            {
+                world = hit.point;
+                return true;
+            }
+            else
+            {
+                world = default;
+                return false;
+            }
+            //}
+            //    //XZ로 설정
+            //Plane plane = new Plane(Vector3.up, new Vector3(0f, groundY, 0f));
+            //if (plane.Raycast(ray, out float enter))
+            //{
+            //    world = ray.GetPoint(enter);
+            //    return true;
+            //}
         }
-        world = default;
-        return false;
+            world = default;
+            return false;
     }
 
     // 현재 셀 위치를 부르는 함수
