@@ -17,6 +17,7 @@ public class MapManager : MonoBehaviour
     public SpawnPointMonster monsterSpawner;
     
     public Tilemap tilemap;
+    public  Vector3Int playerPos;
 
     void Awake()
     {

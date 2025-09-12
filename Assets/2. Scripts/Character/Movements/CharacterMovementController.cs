@@ -101,7 +101,8 @@ public class CharacterMovementController : MonoBehaviour
             StartCoroutine(FollowPath(path));
         }
         _lineRenderer.positionCount = 0;
-        
+
+        MapManager.instance.playerPos = targetCell;
     }
 
     /// <summary>
