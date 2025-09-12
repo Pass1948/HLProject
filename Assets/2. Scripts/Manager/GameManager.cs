@@ -36,9 +36,8 @@ public class GameManager : MonoBehaviour
     private static PathPreviewManager pathPreviewManager;
     public static PathPreviewManager PathPreview => pathPreviewManager;
 
-    private static DataManager data;
-    public static DataManager Data => data;
-
+    private static MapManager mapManager;
+    public static MapManager Map => mapManager;
 
     private void Awake()
     {
@@ -64,7 +63,7 @@ public class GameManager : MonoBehaviour
         eventManager = CreateChildManager<EventManager>("EventManager");
         turnBasedManager = CreateChildManager<TurnBasedManager>("TurnBasedManager");
         pathPreviewManager = CreateChildManager<PathPreviewManager>("PathPreviewManager");
-        data = CreateChildManager<DataManager>("DataManager");
+        mapManager = CreateChildManager<MapManager>("MapManager");
     }
     private T CreateChildManager<T>(string goName) where T : Component
     {
