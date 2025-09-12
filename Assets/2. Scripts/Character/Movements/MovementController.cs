@@ -116,16 +116,17 @@ public class MovementController : MonoBehaviour
                 world = default;
                 return false;
             }
-        //}
-        //    //XZ로 설정
-        //Plane plane = new Plane(Vector3.up, new Vector3(0f, groundY, 0f));
-        //if (plane.Raycast(ray, out float enter))
-        //{
-        //    world = ray.GetPoint(enter);
-        //    return true;
-        //}
-        world = default;
-        return false;
+            //}
+            //    //XZ로 설정
+            //Plane plane = new Plane(Vector3.up, new Vector3(0f, groundY, 0f));
+            //if (plane.Raycast(ray, out float enter))
+            //{
+            //    world = ray.GetPoint(enter);
+            //    return true;
+            //}
+        }
+            world = default;
+            return false;
     }
 
     // 현재 셀 위치를 부르는 함수

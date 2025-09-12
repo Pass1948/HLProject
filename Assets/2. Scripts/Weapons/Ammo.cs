@@ -1,18 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 
-public class Ammo : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+public enum Suit { Spade, Heart, Diamond, Club }
+public enum Rank { A = 1, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, J = 11, Q = 12, K = 13 }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+//탄환 데이터
+[Serializable]
+public class Ammo
+{
+    public Suit suit;
+    public Rank rank;
+    public string Id => $"{suit}_{rank}";
 }
+

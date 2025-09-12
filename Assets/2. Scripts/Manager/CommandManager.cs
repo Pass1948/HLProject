@@ -58,6 +58,4 @@ public class CommandManager : MonoBehaviour
         _buffer.Clear();
         _queue.Clear();
     }
-
-
 }
