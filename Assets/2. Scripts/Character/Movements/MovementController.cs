@@ -91,7 +91,7 @@ public class MovementController : MonoBehaviour
 
         StopAllCoroutines();
         StartCoroutine(FollowPath(path));
-        MapManager.instance.playerPos = targetCell;
+        //MapManager.instance.playerPos = targetCell;
     }
 
 
@@ -102,22 +102,28 @@ public class MovementController : MonoBehaviour
     {
         var mousePos = Mouse.current.position.ReadValue();
         Ray ray = Camera.main.ScreenPointToRay(mousePos);
-        RaycastHit hit = new RaycastHit();
 
         // 레이를 쏴서 테그가 맵이 아니면 무시
-        if (!hit.collider.gameObject.CompareTag("TileMap"))
+        if (Physics.Raycast(ray, out RaycastHit hit))
         {
-            world = default;
-            return false;
-        }
-
-        //XZ로 설정
-        Plane plane = new Plane(Vector3.up, new Vector3(0f, groundY, 0f));
-        if (plane.Raycast(ray, out float enter))
-        {
-            world = ray.GetPoint(enter);
-            return true;
-        }
+            if (hit.collider.gameObject.CompareTag("TileMap"))
+            {
+                world = hit.point;
+                return true;
+            }
+            else
+            {
+                world = default;
+                return false;
+            }
+        //}
+        //    //XZ로 설정
+        //Plane plane = new Plane(Vector3.up, new Vector3(0f, groundY, 0f));
+        //if (plane.Raycast(ray, out float enter))
+        //{
+        //    world = ray.GetPoint(enter);
+        //    return true;
+        //}
         world = default;
         return false;
     }
