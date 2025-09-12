@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AttackEnemyState : BaseEnemyState
 {
-    public AttackEnemyState(EnemyStateMachine stateMachine) : base(stateMachine) { }
+    public AttackEnemyState(EnemyStateMachine stateMachine, EnemyController controller, EnemyAnimHandler animHandler) : base(stateMachine, controller, animHandler) { }
 
     public override void Enter()
     {
