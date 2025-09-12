@@ -45,6 +45,18 @@ public class MapManager : MonoBehaviour
         mapCreator.GenerateMap(mapData, tilemap, groundTile, wallTile);
     }
 
+    public void CreateMap()
+    {
+        grid = GameManager.Resource.Create<GameObject>(Path.Map + "Grid");
+        var temp = GameManager.Resource.Create<GameObject>(Path.Map + "Tilemap");
+        tilemap = temp.GetComponent<Tilemap>();
+        tilemap.transform.SetParent(grid.transform);
+
+        mapData = new int[mapWidth, mapHeight];
+        SpawnAll();
+        mapCreator.GenerateMap(mapData, tilemap, groundTile, wallTile);
+    }
+
     public void SpawnAll()
     {
         //플레이어 생성
@@ -71,7 +83,7 @@ public class MapManager : MonoBehaviour
         // 이전 위치를 0으로
         if (oldX >= 0 && oldY >= 0 && oldX < mapWidth && oldY < mapHeight)
         {
-            mapData[oldX, oldY] = 0;
+            mapData[oldX, oldY] = TileID.Terrain;
         }
 
         // 새로운 위치에 기록
