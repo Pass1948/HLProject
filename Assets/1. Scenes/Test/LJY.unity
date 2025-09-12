@@ -1770,7 +1770,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1114902785}
-        m_TargetAssemblyTypeName: AttackTestController, Assembly-CSharp
+        m_TargetAssemblyTypeName: AttackController, Assembly-CSharp
         m_MethodName: Fire
         m_Mode: 1
         m_Arguments:
