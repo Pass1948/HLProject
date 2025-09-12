@@ -8,91 +8,71 @@ using UnityEngine.EventSystems;
 public class CharacterMovementController : MonoBehaviour 
 {
     public enum GridPlane {XY,XZ }
+
     [Header("Grid Settings")]
-    [SerializeField] private Tilemap tilemap; // ÀÌµ¿ ±âÁØ Å¸ÀÏ¸Ê
-    [SerializeField] private GridPlane gridPlane = GridPlane.XZ; // ±×¸®µå Æò¸é ¼³Á¤
-    [SerializeField] private float groundY = 0f; // ±×¸®µå ¼¿ Å©±â
+    [SerializeField] private Tilemap tilemap; // ì´ë™ ê¸°ì¤€ íƒ€ì¼ë§µ
+    [SerializeField] private GridPlane gridPlane = GridPlane.XZ; // ê·¸ë¦¬ë“œ í‰ë©´ ì„¤ì •
+    [SerializeField] private float groundY = 0f; // ê·¸ë¦¬ë“œ ì…€ í¬ê¸°
 
     [Header("Movement Settings")]
     [SerializeField] private float moveTime = 0.2f;
 
-    private Vector3Int _cellPosition; // ÇöÀç Ä³¸¯ÅÍ°¡ ÀÖ´Â Å¸ÀÏ ÁÂÇ¥
-    private bool _isMoving = false;  // ÀÌµ¿ Áß ¿©ºÎ
+    private Vector3Int _cellPosition; // í”Œë ˆì´ì–´ í˜„ì¬ ìœ„ì¹˜
+    public  bool _isMoving = false;  // ì›€ì§ì„ ê°ì§€
 
     private Pathfinding _pathfinding;
-    private LineRenderer _lineRenderer;
 
     private void Awake()
     {
-        // ½ÃÀÛ ½Ã Ä³¸¯ÅÍ¸¦ Å¸ÀÏ Áß½ÉÀ¸·Î ½º³À
+        // í”Œë ˆì´ì–´ ì‹œì‘ ìœ„ì¹˜ë¥¼ íƒ€ì¼ì˜ ì¤‘ì•™ìœ¼ë¡œ ì„¤ì •
         _cellPosition = tilemap.WorldToCell(transform.position);
         transform.position = tilemap.GetCellCenterWorld(_cellPosition);
 
-        // °æ·Î Å½»ö±â ÃÊ±âÈ­
+        // A* ì•Œê³ ë¦¬ì¦˜ ì´ˆê¸°í™”
         _pathfinding = new Pathfinding(tilemap);
-
-        // ¶óÀÎ ·»´õ·¯ ÃÊ±âÈ­...
-        _lineRenderer = GetComponent<LineRenderer>();
-        _lineRenderer.positionCount = 0;
-        _lineRenderer.widthMultiplier = 0.1f;
-        _lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
-        _lineRenderer.startColor = Color.red;
-        _lineRenderer.endColor = Color.green;
 
     }
     private void Update()
     {
-        if(TryGetMouseWorldOnGrid(out var mouseWorld))
+        
+        if (TryGetMouseWorldOnGrid(out var mouseWorld))
         {
             var targetCell = tilemap.WorldToCell(mouseWorld);
 
-            if(targetCell != _cellPosition)
+            if (targetCell != _cellPosition)
             {
                 var path = _pathfinding.FindPath(_cellPosition, targetCell);
-                //Debug.Log($"Path Count: {path.Count}");
-                DrowPath(path);
+                GameManager.PathPreview.ShowPath(path, tilemap);
             }
             else
             {
-                _lineRenderer.positionCount = 0;
+                
             }
-        }
-    }
-
-    private void DrowPath(List<Vector3Int> path)
-    {
-        if (path.Count < 2)
-        {
-            _lineRenderer.positionCount = 0;
-            return;
-        }
-        _lineRenderer.positionCount = path.Count;
-        for (int i = 0; i < path.Count; i++)
-        {
-            _lineRenderer.SetPosition(i, tilemap.GetCellCenterWorld(path[i]) + Vector3.up * 0.1f);
         }
     }
 
 
     private void OnMovementClick(InputValue value)
     {
-        // UI À§ Å¬¸¯Àº ¹«½Ã
+        // UI ê°€ ìˆì–´ë„ í´ë¦­ ì•ˆë˜ê²Œ
         if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
             return;
+        GameManager.PathPreview.ClearPath();
 
-        // ¹öÆ° ¾×¼ÇÀÌ¹Ç·Î pressed°¡ ¾Æ´Ï¸é ¹«½Ã
+        // ë§ˆìš°ìŠ¤ ëˆŒë €ë‹¤ê°€ ë• ì„ ë•Œì—ëŠ” ì²˜ë¦¬ í•˜ì§€ ì•ŠìŒ
         if (!value.isPressed) return;
 
-        // ¸¶¿ì½º°¡ °¡¸®Å°´Â '±×¸®µå Æò¸é' À§ÀÇ ¿ùµå ÁÂÇ¥¸¦ ±¸ÇÑ´Ù.
+        // 
         if (!TryGetMouseWorldOnGrid(out var mouseWorld)) return;
 
-        // ±× ¿ùµå ÁÂÇ¥¸¦ ¼¿ ÁÂÇ¥·Î º¯È¯
+        // ë§ˆìš°ìŠ¤ ìœ„ì¹˜ë¥¼ ì…€ ìœ„ì¹˜ë¡œ ë³€í™˜
         var targetCell = tilemap.WorldToCell(mouseWorld);
 
-        // °°Àº Ä­ÀÌ¸é ÇÒ ÀÏ ¾øÀ½
+        // ìœ„ì¹˜ì˜ ë³€í™”ê°€ ì—†ê±°ë‚˜ ê°™ìœ¼ë©´ ë¬´ì‹œ
         if (targetCell == _cellPosition) return;
 
-        // A* °æ·Î Ã£±â
+        // A* ì•Œê³ ë¦¬ì¦˜ ê²½ë¡œ ì„¤ì •
+        // _cellPosition : ì‹œì‘ ìœ„ì¹˜, targetCell : ëª©í‘œ ìœ„ì¹˜
         List<Vector3Int> path = _pathfinding.FindPath(_cellPosition, targetCell);
 
         if (path.Count > 0)
@@ -100,19 +80,19 @@ public class CharacterMovementController : MonoBehaviour
             StopAllCoroutines();
             StartCoroutine(FollowPath(path));
         }
-        _lineRenderer.positionCount = 0;
+        
         
     }
 
     /// <summary>
-    /// Ä«¸Ş¶ó Á¾·ù/±×¸®µå Æò¸é¿¡ ¸ÂÃç ¸¶¿ì½º°¡ ÂïÀº '±×¸®µå Æò¸é'»óÀÇ ¿ùµå ÁÂÇ¥¸¦ ¾ò´Â´Ù.
+    /// Ä«ï¿½Ş¶ï¿½ ï¿½ï¿½ï¿½ï¿½/ï¿½×¸ï¿½ï¿½ï¿½ ï¿½ï¿½é¿¡ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ì½ºï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 'ï¿½×¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½'ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ç¥ï¿½ï¿½ ï¿½ï¿½Â´ï¿½.
     /// </summary>
     private bool TryGetMouseWorldOnGrid(out Vector3 world)
     {
         var mousePos = Mouse.current.position.ReadValue();
             Ray ray = Camera.main.ScreenPointToRay(mousePos);
 
-        //XZ Æò¸é
+        //XZë¡œ ì„¤ì •
         Plane plane = new Plane(Vector3.up, new Vector3(0f, groundY, 0f));
         if (plane.Raycast(ray, out float enter))
         {
@@ -123,12 +103,20 @@ public class CharacterMovementController : MonoBehaviour
         return false;
     }
 
+    // í˜„ì¬ ì…€ ìœ„ì¹˜ë¥¼ ë¶€ë¥´ëŠ” í•¨ìˆ˜
+    public Vector3Int GetCellPosition()
+    {
+        return _cellPosition;
+    }
+
+    // A* ì•Œê³ ë¦¬ì¦˜ìœ¼ë¡œ ì°¾ì€ ê²½ë¡œë¥¼ ë”°ë¼ ì´ë™
     private IEnumerator FollowPath(List<Vector3Int> path)
     {
         foreach (var cell in path)
             yield return MoveRoutine(cell);
     }
 
+    // íƒ€ê²Ÿ ì…€ ìœ„ì¹˜ë¡œ ë¶€ë“œëŸ½ê²Œ ì´ë™(ë³´ì •)
     private IEnumerator MoveRoutine(Vector3Int targetCell)
     {
         _isMoving = true;
