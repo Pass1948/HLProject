@@ -13,7 +13,7 @@ public class EnemyController : MonoBehaviour
     public int AttackRange = 1;
     public int HP = 30;
 
-    
+
     private void Awake()
     {
         animHandler = GetComponent<EnemyAnimHandler>();
@@ -26,6 +26,7 @@ public class EnemyController : MonoBehaviour
     private void Start()
     {
         Debug.Log(GridPos);
+        stateMachine.Init();
     }
 
     // Update is called once per frame
@@ -46,5 +47,9 @@ public class EnemyController : MonoBehaviour
     {
         TargetPos = playerPos;
         stateMachine.IdleState.StartTurn = true;
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            stateMachine.ChangeState(stateMachine.EvaluateState);
+        }
     }
 }
