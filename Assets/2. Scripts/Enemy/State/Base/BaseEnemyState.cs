@@ -5,10 +5,14 @@ using UnityEngine;
 public abstract class BaseEnemyState : IEnemyState
 {
     protected EnemyStateMachine stateMachine;
+    protected EnemyController controller;
+    protected EnemyAnimHandler animHandler;
 
-    public BaseEnemyState(EnemyStateMachine stateMachine)
+    public BaseEnemyState(EnemyStateMachine stateMachine, EnemyController controller, EnemyAnimHandler animHandler)
     {
         this.stateMachine = stateMachine;
+        this.controller = controller;
+        this.animHandler = animHandler;
     }
 
     public abstract void Enter();

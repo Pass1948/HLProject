@@ -278,6 +278,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1383267442583819238}
+  - component: {fileID: 6765548592449821717}
   m_Layer: 5
   m_Name: Bullet
   m_TagString: Untagged
@@ -306,6 +307,22 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 70, y: 210}
   m_Pivot: {x: 0.5, y: 0}
+--- !u!114 &6765548592449821717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5077723473194562185}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1746e6458c12a1f4c95fad83b13802ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bulletBg: {fileID: 3007344216301207034}
+  ammo:
+    suit: 0
+    rank: 0
 --- !u!1 &8902141047851245340
 GameObject:
   m_ObjectHideFlags: 0
