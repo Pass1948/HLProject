@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DecideEnemyState : BaseEnemyState
 {
-    public DecideEnemyState(EnemyStateMachine stateMachine) : base(stateMachine) { }
+    public DecideEnemyState(EnemyStateMachine stateMachine, EnemyController controller, EnemyAnimHandler animHandler) : base(stateMachine, controller, animHandler) { }
 
     public override void Enter()
     {
@@ -13,6 +13,17 @@ public class DecideEnemyState : BaseEnemyState
         // 무슨 행동을 할지 점수를 매겨서 결정하자 -> 일반몬스터는 이동 / 공격
         // 엘리트 -> 이동 / 공격 / + 다른거
         // 보스 -> 이동 / 공격 / + 여러 패턴들
+
+        int distance = GetDistanceTarget(stateMachine.Controller.GridPos, stateMachine.Controller.TargetPos);
+
+        //if (distance <= stateMachine.Controller.AttackRange)
+        //{
+        //    stateMachine.ChangeState(stateMachine.AttackState);
+        //}
+        //else
+        //{
+            stateMachine.ChangeState(stateMachine.MoveState);
+        //}
     }
 
     public override void Excute()
@@ -23,5 +34,11 @@ public class DecideEnemyState : BaseEnemyState
     public override void Exit()
     {
         Debug.Log("Decide : Exit");
+    }
+
+    // 타겟(플레이어)와의 거리 계산
+    private int GetDistanceTarget(Vector3Int pos, Vector3Int target)
+    {
+        return Mathf.Abs(pos.x - target.x) + Mathf.Abs(pos.y - target.y);
     }
 }
