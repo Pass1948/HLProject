@@ -50,8 +50,6 @@ public class MovementController : MonoBehaviour
             }
         }
     }
-
-
     private void OnMovementClick(InputValue value)
     {
         // UI 가 있어도 클릭 안되게

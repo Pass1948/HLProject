@@ -11,7 +11,6 @@ public class PlayerData
     [field: SerializeField][Range(0f, 10f)] private int AttackRangeModifier;
     [field: SerializeField][Range(0f, 10f)] private int AttackDamage;
     [field: SerializeField][Range(0f, 10f)] private int AttackDamageModifier;
-
     
     [field: SerializeField][Range(0f, 10f)] private float HP;
 
