@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
 using UnityEngine.EventSystems;
 
-public class CharacterMovementController : MonoBehaviour 
+public class MovementController : MonoBehaviour 
 {
     public enum GridPlane {XY,XZ }
 
