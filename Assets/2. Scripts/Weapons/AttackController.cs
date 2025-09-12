@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class AttackTestController : MonoBehaviour
+public class AttackController : MonoBehaviour
 {
     [SerializeField] private RectTransform bullet;
     private Button selectedAmmoBtn;
