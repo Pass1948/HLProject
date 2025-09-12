@@ -10,6 +10,7 @@ public class MapManager : MonoBehaviour
     public static int[,] mapData;
     public int mapWidth = 10;
     public int mapHeight = 10;
+    public Vector3Int playerPos { get; set; }
     
     public MapCreator mapCreator;
     public SpawnPointPlayer playerSpawner;
@@ -29,7 +30,7 @@ public class MapManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    
+
     void Start()
     {
         
@@ -43,4 +44,5 @@ public class MapManager : MonoBehaviour
         //몬스터 생성
         monsterSpawner.SpawnMonsters(tilemap);
     }
+
 }

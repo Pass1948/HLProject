@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
     public static SceneLoadManager SceneLoad => sceneLoadManager;
 
     private static CommandManager commandManager;
-
+    
     public static CommandManager Command => commandManager;
 
     private static CharacterManager characterManager;

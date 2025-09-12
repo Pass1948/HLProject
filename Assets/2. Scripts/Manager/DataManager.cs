@@ -4,11 +4,17 @@ using UnityEngine;
 
 public class DataManager : MonoBehaviour
 {
-    private PlayerData playerData;
-    private AutoCicleData autoCicleData;
+    public PlayerData playerData;
+    public AutoCicleData autoCicleData;
+
     private void Awake()
     {
-        playerData = new PlayerData();
+        playerData = new PlayerData 
+        {
+            playerMoveData = new PlayerMoveData(),
+            playerAttackData = new PlayerAttackData(),
+            playerConditionData = new PlayerConditionData()
+        };
         autoCicleData = new AutoCicleData();
     }
     // hp 변경시
@@ -33,5 +39,5 @@ public class DataManager : MonoBehaviour
 
     // 여기가 아닌 다른 cs파일에서는
     // GameManager.Data.함수명() 으로 접근하면 됩니다잇
-
+    
 }

@@ -12,10 +12,6 @@ public class Pathfinding
         blocked = new HashSet<Vector3Int>();
         // TODO: 필요하면 타일맵에서 벽타일을 읽어와서 bblocked에 추가해응
 
-
-
-
-
     }
     /// <summary>
     /// A * 알고리즘으로 start -> goal 까지의 경로를 구함
@@ -133,9 +129,12 @@ public class Pathfinding
         yield return new Vector3Int(nodePos.x, nodePos.y - 1, nodePos.z);
 
         // 대각선 이동 추가하려면 여기에 추가
+
+        /*
         yield return new Vector3Int(nodePos.x + 1, nodePos.y + 1, nodePos.z);
         yield return new Vector3Int(nodePos.x - 1, nodePos.y - 1, nodePos.z);
         yield return new Vector3Int(nodePos.x - 1, nodePos.y + 1, nodePos.z);
         yield return new Vector3Int(nodePos.x + 1, nodePos.y - 1, nodePos.z);
+        */
     }
 }

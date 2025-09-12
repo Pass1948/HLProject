@@ -5,21 +5,23 @@ using System;
 public class PlayerMoveData
 {
     [Header("플레이어 이동Info")]
-    [field: SerializeField][Range(0, 10)] public int MoveRange;
-    [field: SerializeField][Range(0, 10)] public int MoveRangeModifier;
+    [field: SerializeField][Range(0, 10)] public int MoveRange = 3;
+    [field: SerializeField][Range(0, 10)] public int MoveRangeModifier = 3;
 
-    [field: SerializeField][Range(0, 10)] public float HP;
+    [field: SerializeField][Range(0, 10)] public float HP = 100;
 }
+
 [Serializable]
 public class PlayerAttackData
 {
-       [Header("플레이어 공격Info")]
-    [field: SerializeField][Range(0, 10)] public int AttackRange;
-    [field: SerializeField][Range(0, 10)] public int AttackRangeModifier;
+    [Header("플레이어 공격Info")]
+    [field: SerializeField][Range(0, 10)] public int AttackRange = 7;
+    [field: SerializeField][Range(0, 10)] public int AttackRangeModifier = 10;
     [field: SerializeField][Range(0, 10)] public int AttackDamage;
     [field: SerializeField][Range(0, 10)] public int AttackDamageModifier;
     [field: SerializeField][Range(0, 20)] public int BulletCount;
 }
+
 [Serializable]
 public class PlayerConditionData
 {
@@ -30,7 +32,8 @@ public class PlayerConditionData
     [field: SerializeField][Range(0, 10)] public int FreezeTurn;
 }
 
-public class PlayerData : MonoBehaviour
+// 이 애들을 불러서
+public class PlayerData
 {
     [Header("플레이어Data")]
     [field: SerializeField] public PlayerMoveData playerMoveData;
