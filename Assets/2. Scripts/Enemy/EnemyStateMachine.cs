@@ -27,25 +27,31 @@ public class EnemyStateMachine
     public HitEnemyState HitState => hitState;
     public DieEnemyState DieState => dieState;
     public EvaluateEnemyState EvaluateState => evaluateState;
-    public DecideEnemyState DecideEnemyState => decideState;
+    public DecideEnemyState DecideState => decideState;
     public MoveEnemyState MoveState => moveState;
     public AttackEnemyState AttackState => attackState;
     public EndEnemyState EndState => endState;
     
-    public EnemyAnimHandler animHandler;
-    public EnemyStateMachine(EnemyAnimHandler animHandler)
+
+    private EnemyAnimHandler animHandler;
+    public EnemyAnimHandler AnimHandler => animHandler;
+
+    private EnemyController controller;
+    public EnemyController Controller => controller;
+
+    public EnemyStateMachine(EnemyAnimHandler animHandler, EnemyController controller)
     {
         this.animHandler = animHandler;
+        this.controller = controller;
 
-        idleState = new IdleEnemyState(this);
-        hitState = new HitEnemyState(this);
-        dieState = new DieEnemyState(this);
-        evaluateState = new EvaluateEnemyState(this);
-        decideState = new DecideEnemyState(this);
-        moveState = new MoveEnemyState(this);
-        attackState = new AttackEnemyState(this);
-        endState = new EndEnemyState(this);
-
+        idleState = new IdleEnemyState(this, Controller, AnimHandler);
+        hitState = new HitEnemyState(this, Controller, AnimHandler);
+        dieState = new DieEnemyState(this, Controller, AnimHandler);
+        evaluateState = new EvaluateEnemyState(this, Controller, AnimHandler);
+        decideState = new DecideEnemyState(this, Controller, AnimHandler);
+        moveState = new MoveEnemyState(this, Controller, AnimHandler);
+        attackState = new AttackEnemyState(this, Controller, AnimHandler);
+        endState = new EndEnemyState(this, Controller, AnimHandler);
     }
 
     public void Init()
