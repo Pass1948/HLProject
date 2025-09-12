@@ -18,20 +18,20 @@ public class SpawnPointMonster : MonoBehaviour
         while (spawnedCount < numberOfMonsters)
         {
             // 랜덤
-            int randX = Random.Range(0, MapManager.instance.mapWidth);
-            int randY = Random.Range(0, MapManager.instance.mapHeight);
+            int randX = Random.Range(0, GameManager.Map.mapWidth);
+            int randY = Random.Range(0, GameManager.Map.mapHeight);
 
             // 해당 좌표가 빈 공간인지 확인 / 0,1은 빈칸(발판)
-            if (MapManager.mapData[randX, randY] == 0 || MapManager.mapData[randX, randY] == 1)
+            if (GameManager.Map.mapData[randX, randY] == 0 || GameManager.Map.mapData[randX, randY] == 1)
             {
                 // 몬스터 프리팹 생성
-                GameObject monsterInstance = Instantiate(monsterPrefab, Vector3.zero, Quaternion.identity);
+                GameObject monsterInstance = GameManager.Resource.Create<GameObject>(Path.Enemy + "Enemy");
 
                 // 몬스터를 셀 중앙으로 이동
                 GridSnapper.SnapToCellCenter(monsterInstance.transform, tilemap, new Vector2Int(randX, randY));
 
-                // 몬스터 위치를 기록
-                MapManager.mapData[randX, randY] = MONSTER_ID;
+                // 몬스터 위치 기록
+                GameManager.Map.SetObjectPosition(randX, randY, MONSTER_ID);
                 
                 spawnedCount++;
             }
