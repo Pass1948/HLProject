@@ -11,6 +11,11 @@ public class Pathfinding
         this.tilemap = tilemap;
         blocked = new HashSet<Vector3Int>();
         // TODO: 필요하면 타일맵에서 벽타일을 읽어와서 bblocked에 추가해응
+
+
+
+
+
     }
     /// <summary>
     /// A * 알고리즘으로 start -> goal 까지의 경로를 구함
@@ -47,6 +52,7 @@ public class Pathfinding
             }
             // 현재 노드 처리
             openSet.Remove(currentNode);
+            // 노드 위치를 닫힌 집합에 추가응
             closedSet.Add(currentNode.Position);
 
             // 목표 지점에 착창, 도착 했으면 경로 반환
@@ -125,6 +131,11 @@ public class Pathfinding
         yield return new Vector3Int(nodePos.x - 1, nodePos.y, nodePos.z);
         yield return new Vector3Int(nodePos.x, nodePos.y + 1, nodePos.z);
         yield return new Vector3Int(nodePos.x, nodePos.y - 1, nodePos.z);
+
         // 대각선 이동 추가하려면 여기에 추가
+        yield return new Vector3Int(nodePos.x + 1, nodePos.y + 1, nodePos.z);
+        yield return new Vector3Int(nodePos.x - 1, nodePos.y - 1, nodePos.z);
+        yield return new Vector3Int(nodePos.x - 1, nodePos.y + 1, nodePos.z);
+        yield return new Vector3Int(nodePos.x + 1, nodePos.y - 1, nodePos.z);
     }
 }

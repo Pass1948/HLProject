@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
 using UnityEngine.EventSystems;
 
-public class CharacterMovementController : MonoBehaviour 
+public class MovementController : MonoBehaviour 
 {
     public enum GridPlane {XY,XZ }
 
@@ -50,8 +50,6 @@ public class CharacterMovementController : MonoBehaviour
             }
         }
     }
-
-
     private void OnMovementClick(InputValue value)
     {
         // UI 가 있어도 클릭 안되게

@@ -20,7 +20,7 @@ public abstract class BaseTurnState : ITurnState
     {
         if (turnManager == null)
         {
-            Debug.LogError("[BaseTurnState] TurnBasedManager가 초기화되지 않았습니다.");
+            //Debug.LogError("[BaseTurnState] TurnBasedManager가 초기화되지 않았습니다.");
             return;
         }
         turnManager.ChangeTo<T>(reason);
