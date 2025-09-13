@@ -51,3 +51,13 @@ public static class PrefKey
     public const string Score = "Score";
 
 }
+
+public static class TileID
+{
+    public const int Terrain = 0;
+    public const int Wall = 1;
+    public const int Player = 2;
+    public const int Motor = 3;
+    public const int Obstacle = 4;
+    public const int Enemy = 5;
+}
