@@ -8,13 +8,15 @@ using UnityEngine;
 public class TurnBasedManager : MonoBehaviour
 {
     [HideInInspector] public TurnStateMachine turnHFSM { get; private set; }
+    [HideInInspector] public TurnSettingValue turnSettingValue { get; private set; }
 
     private readonly Dictionary<Type, ITurnState> _stateCache = new Dictionary<Type, ITurnState>();
     private void Awake()
     {
         turnHFSM = new TurnStateMachine();
         turnHFSM.Set(new IdleState());// 초기상태 세팅
-        var comp = gameObject.AddComponent<TurnSettingValue>();
+        gameObject.AddComponent<TurnSettingValue>();
+        turnSettingValue = GetComponent<TurnSettingValue>();
     }
     private void Update()
     {
@@ -25,7 +27,7 @@ public class TurnBasedManager : MonoBehaviour
         turnHFSM.FixedTick(Time.fixedDeltaTime);
     }
 
-    // 상태 전이
+    // 타 클래스에서 상태 전이 요청용
     public void ChangeTo<T>(string reason = null) where T : ITurnState, new()
     {
         var next = GetState<T>();

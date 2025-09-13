@@ -4,9 +4,8 @@ public enum SceneType
     Test2
 }
 
-public enum EventType
+public enum EventType    // 이벤트 생길시 추가
 {
-    // 이벤트 생길시 추가
 
     // Command 파이프라인 이벤트(필요한 것만 최소 추가)
     CommandBuffered,        // 커맨드가 플래닝 버퍼에 적재됨
@@ -51,4 +50,14 @@ public static class PrefKey
 {
     public const string Score = "Score";
 
+}
+
+public static class TileID
+{
+    public const int Terrain = 0;
+    public const int Wall = 1;
+    public const int Player = 2;
+    public const int Motor = 3;
+    public const int Obstacle = 4;
+    public const int Enemy = 5;
 }

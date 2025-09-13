@@ -12,8 +12,7 @@ public class MoveEnemyState : BaseEnemyState
     {
         Debug.Log("Move : Enter");
 
-        pathfind = new Pathfinding(MapManager.instance.tilemap);
-
+        pathfind = new Pathfinding(GameManager.Map.tilemap);
         pathfind.FindPath(stateMachine.Controller.GridPos, stateMachine.Controller.TargetPos);
     }
 

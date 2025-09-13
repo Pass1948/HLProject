@@ -39,7 +39,7 @@ public class EnemyController : MonoBehaviour
         {
             //StartTurn();
             //stateMachine.ChangeState(stateMachine.EvaluateState);
-            StartTurn(MapManager.instance.playerPos);
+            //StartTurn(GameManager.Map.playerPos);
         }
     }
 

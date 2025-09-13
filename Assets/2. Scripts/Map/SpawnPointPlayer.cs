@@ -18,15 +18,15 @@ public class SpawnPointPlayer : MonoBehaviour
     public void SpawnPlayer(Tilemap tilemap)
     {
         // 맵 데이터에 플레이어와 오토바이 위치 넣기
-        MapManager.mapData[playerSpawnPoint.x, playerSpawnPoint.y] = PLAYER_ID;
-        MapManager.mapData[motorcycleSpawnPoint.x, motorcycleSpawnPoint.y] = MOTORCYCLE_ID;
-
+        GameManager.Map.mapData[playerSpawnPoint.x, playerSpawnPoint.y] = PLAYER_ID;
+        GameManager.Map.mapData[motorcycleSpawnPoint.x, motorcycleSpawnPoint.y] = MOTORCYCLE_ID;
+        
         // 플레이어 오브젝트 생성
-        GameObject playerInstance = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
+        GameObject playerInstance = GameManager.Resource.Create<GameObject>(Path.Player + "Player");
         GridSnapper.SnapToCellCenter(playerInstance.transform, tilemap, playerSpawnPoint);
 
-        // 오토바이 오브젝트 생성
-        GameObject motorcycleInstance = Instantiate(motorcyclePrefab, Vector3.zero, Quaternion.identity);
+        // 오토바이 오브젝트 생성 // 일단 플레이어 프리펩으로 넣어둠 경로 다시 설정
+        GameObject motorcycleInstance = GameManager.Resource.Create<GameObject>(Path.Player + "Player");
         GridSnapper.SnapToCellCenter(motorcycleInstance.transform, tilemap, motorcycleSpawnPoint);
     }
 }

@@ -4,13 +4,18 @@ using UnityEngine;
 
 public class IdleState : BaseTurnState
 {
+    float timer;
     public IdleState() { }
-    public override void OnEnter()
+    public override void OnEnter() 
     {
-        ChangeState<PlayerTurnState>();
+        timer =  turnSetVlaue.resetTime;
     }
     public override void Tick(float dt)
     {
-
+        timer+= dt;
+        if(timer>turnSetVlaue.turnDelayTime)
+        {
+            ChangeState<PlayerTurnState>();
+        }
     }
 }
