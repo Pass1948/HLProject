@@ -22,6 +22,15 @@ public class MovementController : MonoBehaviour
 
     private Pathfinding _pathfinding;
 
+    private void OnEnable()
+    {
+        
+    }
+    private void OnDisable()
+    {
+
+    }
+
 
     private void Start()
     {
@@ -36,7 +45,8 @@ public class MovementController : MonoBehaviour
     private void Update()
     {
         GetCellPosition();
-
+        //TODO: 마우스가 움직일 때마다 경로 미리보기(장보석,이영신)
+        //if (_isMoving == false)return;
         if (TryGetMouseWorldOnGrid(out var mouseWorld))
         {
             var targetCell = tilemap.WorldToCell(mouseWorld);
@@ -44,9 +54,10 @@ public class MovementController : MonoBehaviour
             {
                 var path = _pathfinding.FindPath(_cellPosition, targetCell);
                 int moveRange = GameManager.Data.playerData.playerMoveData.MoveRange;
-                PlayerMoveRange(path,tilemap,moveRange);
+                PlayerMoveRange(path, tilemap, moveRange);
             }
         }
+        
     }
 
     public void Init(Tilemap tilemap)
@@ -82,6 +93,11 @@ public class MovementController : MonoBehaviour
         if (!TryGetMouseWorldOnGrid(out var mouseWorld)) return;
 
         // 마우스 위치를 셀 위치로 변환
+        OnclickInfo(mouseWorld);
+    }
+
+    public void OnclickInfo(Vector3 mouseWorld)
+    {
         var targetCell = tilemap.WorldToCell(mouseWorld);
 
         // 위치의 변화가 없거나 같으면 무시
@@ -93,18 +109,16 @@ public class MovementController : MonoBehaviour
 
         int moveRange = GameManager.Data.playerData.playerMoveData.MoveRange;
 
-        if(path.Count > moveRange)
+        if (path.Count > moveRange)
         {
             return;
         }
         // maxRange 보다 작거나 같을 때만 이동
-        var maxRange =GameManager.Data.playerData.playerMoveData.MoveRange;
+        var maxRange = GameManager.Data.playerData.playerMoveData.MoveRange;
 
         StopAllCoroutines();
         StartCoroutine(FollowPath(path));
-        //MapManager.instance.playerPos = targetCell;
     }
-
 
     /// <summary>
     /// 마우스 위치, 그리드 평면에 따른 월드 좌표 변환
@@ -128,14 +142,6 @@ public class MovementController : MonoBehaviour
                 return false;
             }
         }
-        //XZ로 설정
-        //Plane plane = new Plane(Vector3.up, new Vector3(0f, groundY, 0f));
-        //if (plane.Raycast(ray, out float enter))
-        //{
-        //    world = ray.GetPoint(enter);
-        //    return true;
-        //}
-    
             world = default;
             return false;
     }
@@ -143,7 +149,6 @@ public class MovementController : MonoBehaviour
     // 현재 셀 위치를 부르는 함수
     public Vector3Int GetCellPosition()
     {
-        Debug.Log("_cellPosition : " + _cellPosition);
         return _cellPosition;
     }
 

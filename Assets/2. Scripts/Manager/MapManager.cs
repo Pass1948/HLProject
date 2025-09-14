@@ -23,6 +23,7 @@ public class MapManager : MonoBehaviour
     private TileBase groundTile;
     private TileBase wallTile;
     private TileBase moveInfoTile;
+    public int playerPosRange;
 
     GameObject grid;
 
@@ -36,10 +37,8 @@ public class MapManager : MonoBehaviour
         
         groundTile = GameManager.Resource.Load<TileBase>(Path.Map + "White");
         wallTile = GameManager.Resource.Load<TileBase>(Path.Map + "Black");
-        moveInfoTile = GameManager.Resource.Load<TileBase>(Path.Map + "MoveInfoTilemap");
         
     }
-    
     void Start()
     {
         //TODO: Test 할 시 주석 풀어주세요잉 (장보석)
@@ -48,13 +47,20 @@ public class MapManager : MonoBehaviour
         var moveInfo = GameManager.Resource.Create<GameObject>(Path.Map + "MoveInfoTilemap");
         tilemap = temp.GetComponent<Tilemap>();
         tilemap.transform.SetParent(grid.transform);
+        playerPosRange = GameManager.Data.playerData.playerMoveData.MoveRange;
         playerPos = GameManager.Data.playerData.playerMoveData.PlayerPos;
 
         mapData = new int[mapWidth, mapHeight];
         SpawnAll();
-        mapCreator.GenerateMap(mapData, tilemap, groundTile, wallTile);
-        moveRange = GameManager.Data.playerData.playerMoveData.MoveRange;
-        playerMoveInfo.ShowMoveInfoRange(playerPos, moveRange, tilemap, moveInfo);
+    }
+    private void Update()
+    {
+        playerPos = GameManager.Data.playerData.playerMoveData.PlayerPos;
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            Debug.Log($"{playerPos}");
+            playerMoveInfo.ShowMoveInfoRange(playerPos, playerPosRange,tilemap);
+        }
     }
 
     public void CreateMap()
@@ -96,6 +102,10 @@ public class MapManager : MonoBehaviour
             mapData[x, y] = objectID;
         }
     }
+    public void PlayerUpdateRange(Vector3Int playerPos, int moveRange)
+    {
+        playerMoveInfo.ShowMoveInfoRange(playerPos, moveRange, tilemap);
+    }
 
     // 이동할 때
     public void UpdateObjectPosition(int oldX, int oldY, int newX, int newY, int objectID)
@@ -124,4 +134,5 @@ public class MapManager : MonoBehaviour
         int id = mapData[cell.x, cell.y];
         return id == TileID.Terrain;
     }
+
 }
