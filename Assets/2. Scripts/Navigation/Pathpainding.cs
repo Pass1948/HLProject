@@ -10,7 +10,7 @@ public class Pathfinding
     {
         this.tilemap = tilemap;
         blocked = new HashSet<Vector3Int>();
-        // TODO: 필요하면 타일맵에서 벽타일을 읽어와서 bblocked에 추가해응
+        // TODO: 필요하면 타일맵에서 벽타일을 읽어와서 bblocked에 추가해응(장보석)
 
     }
     /// <summary>
