@@ -48,18 +48,20 @@ public class MovementController : MonoBehaviour
     {
         GetCellPosition();
         //TODO: 마우스가 움직일 때마다 경로 미리보기(장보석,이영신)
-        //if (_isMoving == false)return;
-        if (TryGetMouseWorldOnGrid(out var mouseWorld))
+
+        if (isPlayer == true)
         {
-            var targetCell = tilemap.WorldToCell(mouseWorld);
-            if (targetCell != _cellPosition)
+            if (TryGetMouseWorldOnGrid(out var mouseWorld))
             {
-                var path = _pathfinding.FindPath(_cellPosition, targetCell);
-                int moveRange = GameManager.Data.playerData.playerMoveData.MoveRange;
-                PlayerMoveRange(path, tilemap, moveRange);
+                var targetCell = tilemap.WorldToCell(mouseWorld);
+                if (targetCell != _cellPosition)
+                {
+                    var path = _pathfinding.FindPath(_cellPosition, targetCell);
+                    int moveRange = GameManager.Data.playerData.playerMoveData.MoveRange;
+                    PlayerMoveRange(path, tilemap, moveRange);
+                }
             }
         }
-
     }
 
     public void Init(Tilemap tilemap)
@@ -104,7 +106,6 @@ public class MovementController : MonoBehaviour
     {
         // 마우스 위치를 셀 위치로 변환
         var targetCell = tilemap.WorldToCell(mouseWorld);
-
         // 위치의 변화가 없거나 같으면 무시
         if (targetCell == _cellPosition) return;
 
@@ -116,6 +117,7 @@ public class MovementController : MonoBehaviour
 
         if (path.Count > moveRange)
         {
+            isPlayer = false;
             return;
         }
         // maxRange 보다 작거나 같을 때만 이동
@@ -135,8 +137,8 @@ public class MovementController : MonoBehaviour
         var mousePos = Mouse.current.position.ReadValue();
         Ray ray = Camera.main.ScreenPointToRay(mousePos);
 
-        // 레이를 쏴서 테그가 맵이 아니면 무시
-        if (Physics.Raycast(ray, out RaycastHit hit))
+            // 레이를 쏴서 테그가 맵이 아니면 무시
+            if (Physics.Raycast(ray, out RaycastHit hit))
         {
             if (hit.collider.gameObject.CompareTag("TileMap"))
             {
