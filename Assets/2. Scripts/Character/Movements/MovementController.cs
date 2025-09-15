@@ -88,7 +88,8 @@ public class MovementController : MonoBehaviour
 
         // 마우스 눌렀다가 땠을 때에는 처리 하지 않음
         if (!value.isPressed) return;
-        if (TryGetMouseWorldOnPlayer()==true) // 플레이어 클릭시 bool값이 true일 경수 움직임 진행
+        TryGetMouseWorldOnPlayer();
+        if (TryGetMouseWorldOnMoveRange() == true) // 플레이어 클릭시 bool값이 true일 경수 움직임 진행
         {
             if (!TryGetMouseWorldOnGrid(out var mouseWorld)) return;
             // 마우스 위치를 셀 위치로 변환
@@ -147,25 +148,40 @@ public class MovementController : MonoBehaviour
     }
 
     // 플레이어 클릭시 나오는 행동 메서드(작성자: 이영신)
-    private bool TryGetMouseWorldOnPlayer()
+    private bool TryGetMouseWorldOnMoveRange()
     {
         var mousePos = Mouse.current.position.ReadValue();
         Ray ray = Camera.main.ScreenPointToRay(mousePos);
         // 레이를 쏴서 테그가 맵이 아니면 무시
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
-            if (hit.collider.gameObject.CompareTag("Player"))
+            if (hit.collider.gameObject.CompareTag("TileRange"))
             {
-                // TODO: 플레이어 클릭시 이동범위 확인할수있음
                 return true;
             }
             else
             {
-                // TODO: 플레이어 아닌걸 클릭시 이동범위 사라짐
                 return false;
             }
         }
         return false;
+    }
+    // 플레이어 클릭시 나오는 행동 메서드(작성자: 이영신)
+    private void TryGetMouseWorldOnPlayer()
+    {
+        var mousePos = Mouse.current.position.ReadValue();
+        Ray ray = Camera.main.ScreenPointToRay(mousePos);
+        if (Physics.Raycast(ray, out RaycastHit hit))
+        {
+            if (hit.collider.gameObject.CompareTag("Player"))
+            {
+                // TODO: 플레이어 클릭시 이동범위 확인할수있음
+            }
+            else
+            {
+                // TODO: 다른곳 클릭시 이동범위 사라짐
+            }
+        }
     }
 
     // 현재 셀 위치를 부르는 함수
