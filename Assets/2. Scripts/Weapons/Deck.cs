@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// 덱(오토바이): 기본 12장 덱 구성
+//덱(오토바이): 기본 12장 덱 구성
 public class Deck : MonoBehaviour
 {
     //시작 덱 장수
@@ -12,23 +12,18 @@ public class Deck : MonoBehaviour
 
     //현재 덱
     [SerializeField] private List<Ammo> drawPile = new();
-    //사용/버린 탄
-    [SerializeField] private List<Ammo> discardPile = new();
-
-    public int Count => drawPile.Count;// 덱 잔량
+    //덱 잔량만 유지
+    public int Count => drawPile.Count;
 
     private void Awake()
     {
-        if (drawPile.Count == 0)
-        {
             //덱 구성
             BuildInitialDeck();
             //섞기
             Shuffle(drawPile);
-        }
     }
 
-    // 덱 상단에서 탄환 뽑기(부족하면 가진 만큼)
+    //덱 상단에서 탄환 뽑기(부족하면 가진 만큼)
     public List<Ammo> DrawAmmos(int amount)
     {
         var res = new List<Ammo>();
@@ -37,56 +32,39 @@ public class Deck : MonoBehaviour
         int take = Mathf.Min(amount, drawPile.Count);
         for (int i = 0; i < take; i++)
         {
-            int last = drawPile.Count - 1; // 맨 뒤 = 상단
+            int last = drawPile.Count - 1;
             res.Add(drawPile[last]);
             drawPile.RemoveAt(last);
         }
         return res;
     }
 
-    // 사용or버린 탄을 버린카드에 넣기
-    public void Discard(IEnumerable<Ammo> ammos)
-    {
-        if (ammos == null) return;
-        discardPile.AddRange(ammos);
-    }
-
-    // 덱이 바닥나면 버린카드를 덱으로 옮겨 섞기
-    public void Reshuffle()
-    {
-        if (drawPile.Count == 0 && discardPile.Count > 0)
-        {
-            drawPile.AddRange(discardPile);
-            discardPile.Clear();
-            Shuffle(drawPile);
-        }
-    }
-
     //외부 UI용
     public List<Ammo> GetDrawSnapshot() => new List<Ammo>(drawPile);
-    public List<Ammo> GetDiscardSnapshot() => new List<Ammo>(discardPile);
 
     //초기 덱 구성/셔플
     private void BuildInitialDeck()
     {
         drawPile.Clear();
-        discardPile.Clear();
 
-        
         if (startPool != null && startPool.Count > 0)
         {
-            var poolCopy = new List<Ammo>(startPool);
-            Shuffle(poolCopy);
-            UniqueTake(poolCopy, drawPile, initialDeckSize);
+            //중복 유지
+            drawPile.AddRange(startPool);
             return;
         }
 
-        //라이브러리에서 12장 가져옴
+        // 표준 52장 생성하고 셔플한뒤 initialDeckSize만큼 뽑음
         var library52 = BuildStandard();
         Shuffle(library52);
-        UniqueTake(library52, drawPile, initialDeckSize);
+
+        int take = Mathf.Min(initialDeckSize, library52.Count);
+        for (int i = 0; i < take; i++)
+            drawPile.Add(library52[i]);
     }
 
+    //52장 라이브러리
+    //나중에 이걸로 랜덤 덱 구성할수도 있으니 남겨놓음
     private List<Ammo> BuildStandard()
     {
         var lib = new List<Ammo>(52);
@@ -96,20 +74,8 @@ public class Deck : MonoBehaviour
         return lib;
     }
 
-    //src에서 Id 중복 없이 최대 count개를 dst로 이동
-    private void UniqueTake(List<Ammo> src, List<Ammo> dst, int count)
-    {
-        var seen = new HashSet<string>();
-        for (int i = 0; i < src.Count && dst.Count < count; i++)
-        {
-            var a = src[i];
-            if (a == null) continue;
-            if (seen.Add(a.Id))
-                dst.Add(a);
-        }
-    }
-
-    // 피셔-예이츠 셔플방식
+    //피셔-예이츠 셔플방식
+    //랜덤보다 메모리가 더 효율적임
     private void Shuffle(List<Ammo> list)
     {
         for (int i = list.Count - 1; i > 0; i--)
