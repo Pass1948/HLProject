@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -13,7 +14,8 @@ public class MapManager : MonoBehaviour
     public SpawnPointPlayer playerSpawner;
     public SpawnPointObstacle obstacleSpawner;
     public SpawnPointMonster monsterSpawner;
-    
+    private Pathfinding pathfinding;
+
     public Tilemap tilemap;
 
     private TileBase groundTile;
@@ -34,27 +36,31 @@ public class MapManager : MonoBehaviour
     
     void Start()
     {
-        grid = GameManager.Resource.Create<GameObject>(Path.Map + "Grid");
-        var temp = GameManager.Resource.Create<GameObject>(Path.Map + "Tilemap");
-        tilemap =  temp.GetComponent<Tilemap>();
-        tilemap.transform.SetParent(grid.transform);
-        
-        mapData = new int[mapWidth, mapHeight];
-        SpawnAll();
-        // 맵 생성
-        mapCreator.GenerateMap(mapData, tilemap, groundTile, wallTile);
+        //pathfinding = new Pathfinding(tilemap);
+        ////
+
+        //grid = GameManager.Resource.Create<GameObject>(Path.Map + "Grid");
+        //var temp = GameManager.Resource.Create<GameObject>(Path.Map + "Tilemap");
+        //tilemap = temp.GetComponent<Tilemap>();
+        //tilemap.transform.SetParent(grid.transform);
+
+        //mapData = new int[mapWidth, mapHeight];
+        //// 맵 생성
+        //mapCreator.GenerateMap(mapData, tilemap, groundTile, wallTile);
+        //SpawnAll();
     }
 
     public void CreateMap()
     {
+        pathfinding = new Pathfinding(tilemap);
         grid = GameManager.Resource.Create<GameObject>(Path.Map + "Grid");
         var temp = GameManager.Resource.Create<GameObject>(Path.Map + "Tilemap");
         tilemap = temp.GetComponent<Tilemap>();
         tilemap.transform.SetParent(grid.transform);
 
         mapData = new int[mapWidth, mapHeight];
-        SpawnAll();
         mapCreator.GenerateMap(mapData, tilemap, groundTile, wallTile);
+        SpawnAll();
     }
 
     public void SpawnAll()
@@ -91,5 +97,49 @@ public class MapManager : MonoBehaviour
         {
             mapData[newX, newY] = objectID;
         }
+    }
+
+    // 임시로 선언한 함수들
+
+    public List<Vector3Int> FindPath(Vector3Int start, Vector3Int dest)
+    {
+        return pathfinding.FindPath(start, dest);
+    }
+
+    public Vector2Int GetPlayerPosition()
+    {
+
+        for(int x = 0; x < mapWidth; x++)
+        {
+            for(int y = 0; y < mapHeight; y++)
+            {
+                if (mapData[x, y] == TileID.Player)
+                    return new Vector2Int(x, y);
+            }
+        }
+
+        return new Vector2Int(-1, -1);
+    }
+
+    public bool IsMovable(int x, int y)
+    {
+        if (x < 0 || y < 0 || x >= mapWidth || y >= mapHeight) return false;
+
+        return mapData[x, y] == TileID.Terrain;
+    }
+
+    public bool IsPlayer(int x, int y)
+    {
+        return mapData[x, y] == TileID.Player;
+    }
+
+    public bool IsObstacle(int x, int y)
+    {
+        return mapData[x, y] == TileID.Obstacle;
+    }
+
+    public bool IsEnemy(int x, int y)
+    {
+        return mapData[x, y] == TileID.Enemy;
     }
 }

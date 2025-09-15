@@ -9,6 +9,8 @@ public class EndEnemyState : BaseEnemyState
     public override void Enter()
     {
         Debug.Log("End : Enter");
+
+        controller.isDone = true;
     }
 
     public override void Excute()

@@ -12,21 +12,27 @@ public class EvaluateEnemyState : BaseEnemyState
     {
         Debug.Log("Evaluate : Enter");
 
-        // 행동 결정 후
-        // 행동에 맞는 상태로 전환
-        // 예시
-        // if (공격 범위 안으로 들어왔을 경우)
-           //{
-           //     // 공격 상태 전환
-           //    stateMachine.ChangeState(stateMachine.AttackState);
-           //}
-           //else  // 아닐경우
-           //{
-           //     // 이동으로 전환
-           //    stateMachine.ChangeState(stateMachine.MoveState);
-           //} 
-        
-               stateMachine.ChangeState(stateMachine.DecideState);
+        Vector3Int enemyPos = controller.GridPos;
+        Vector3Int playerPos = controller.TargetPos;
+
+        if (!GameManager.Map.IsPlayer(playerPos.x, playerPos.y))
+        {
+            Debug.Log("플레이어 못찾음 : 엔드 상태로");
+            Debug.Log(playerPos.x + ", " + playerPos.y);
+
+            stateMachine.ChangeState(stateMachine.EndState);
+            return;
+        }
+
+        int distance = GetDistanceTarget(enemyPos, playerPos);
+        if(distance <= controller.AttackRange)
+        {
+            stateMachine.ChangeState(stateMachine.AttackState);
+        }
+        else
+        {
+            stateMachine.ChangeState(stateMachine.DecideState);
+        }
 
         //int distance = GetDistanceTarget()
 
@@ -46,7 +52,7 @@ public class EvaluateEnemyState : BaseEnemyState
 
 
     // 타겟(플레이어)와의 거리 계산
-    private int GetDistanceTarget(Vector2Int pos, Vector2Int target)
+    private int GetDistanceTarget(Vector3Int pos, Vector3Int target)
     {
         return Mathf.Abs(pos.x - target.x) + Mathf.Abs(pos.y - target.y);
     }
