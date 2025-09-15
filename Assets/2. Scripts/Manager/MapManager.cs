@@ -14,7 +14,6 @@ public class MapManager : MonoBehaviour
     public Vector3Int playerPos;
 
     public MapCreator mapCreator;
-    public SpawnPointPlayer playerSpawner;
     public PlayerMoveInfo playerMoveInfo;
 
     private Pathfinding pathfinding;
@@ -36,7 +35,6 @@ public class MapManager : MonoBehaviour
         mapCreator = gameObject.AddComponent<MapCreator>();
         spawnController = gameObject.AddComponent<SpawnController>();
         spawnController.InitializeSpawnersAndPools();
-
         playerMoveInfo = gameObject.AddComponent< PlayerMoveInfo >();
         
         groundTile = GameManager.Resource.Load<TileBase>(Path.Map + "White");
@@ -54,11 +52,10 @@ public class MapManager : MonoBehaviour
         tilemap.transform.SetParent(grid.transform);
 
         var moveInfo = GameManager.Resource.Create<GameObject>(Path.Map + "MoveInfoTilemap");
-        moveInfoTilemap = moveInfo.GetComponent<Tilemap>();
+        moveInfoTilemap = moveInfo.GetComponent<Tilemap>(); 
         moveInfoTilemap.transform.SetParent(grid.transform);
 
         mapData = new int[mapWidth, mapHeight];
-        SpawnAll();
 
         spawnController.SpawnAllObjects(); // SpawnAll();에서 변경
 
@@ -94,11 +91,12 @@ public class MapManager : MonoBehaviour
     // 플레이어 이동 범위 업데이트
     public void PlayerUpdateRange(Vector3Int playerPos, int moveRange)
     {
-        playerMoveInfo.ShowMoveInfoRange(playerPos, moveRange, moveInfoTile, tilemap);
+        playerMoveInfo.ShowMoveInfoRange(playerPos, moveRange, moveInfoTile, moveInfoTilemap);
     }
 
     public void ClearPlayerRange()
     {
+        Debug.Log("Clear Player Range");
         playerMoveInfo.RemoveMoveInfoRange(moveInfoTilemap);
     }
 
