@@ -8,6 +8,11 @@ public class PathPreviewManager : MonoBehaviour
 {
     private readonly List<GameObject> activeTiles = new List<GameObject>();
 
+    private void Awake()
+    {
+        
+    }
+
     public void ShowPath(List<Vector3Int> path, Tilemap tilemap, int moveRange)
     {
         ClearPath();

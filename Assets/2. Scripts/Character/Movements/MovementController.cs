@@ -59,21 +59,9 @@ public class MovementController : MonoBehaviour
                 PlayerMoveRange(path, tilemap, moveRange);
             }
         }
-
     }
 
-    public void Init(Tilemap tilemap)
-    {
-        this.tilemap = tilemap;
-        // 플레이어 시작 위치를 타일의 중앙으로 설정
-        _cellPosition = tilemap.WorldToCell(transform.position);
-        transform.position = tilemap.GetCellCenterWorld(_cellPosition);
-
-        // A* 알고리즘 초기화
-        _pathfinding = new Pathfinding(tilemap);
-    }
-
-
+ 
     public void PlayerMoveRange(List<Vector3Int> path, Tilemap tilemap, int moveRange)
     {
         GameManager.PathPreview.ShowPath(path, tilemap, moveRange);

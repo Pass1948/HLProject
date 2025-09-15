@@ -25,7 +25,7 @@ public class SpawnPointPlayer : MonoBehaviour
         GameObject playerInstance = GameManager.Resource.Create<GameObject>(Path.Player + "Player");
         MovementController player = playerInstance.GetComponent<MovementController>();
         Debug.Log(player);
-        player.Init(tilemap);
+        
         GridSnapper.SnapToCellCenter(playerInstance.transform, tilemap, playerSpawnPoint);
 
         // 오토바이 오브젝트 생성 // 일단 플레이어 프리펩으로 넣어둠 경로 다시 설정
