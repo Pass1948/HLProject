@@ -10,7 +10,7 @@ public class MapManager : MonoBehaviour
     public int mapWidth = 10;
     public int mapHeight = 10;
 
-    public int moveRange;
+    public int moveRange = 3;
     public Vector3Int playerPos;
 
     public MapCreator mapCreator;
@@ -41,7 +41,7 @@ public class MapManager : MonoBehaviour
         
         groundTile = GameManager.Resource.Load<TileBase>(Path.Map + "White");
         wallTile = GameManager.Resource.Load<TileBase>(Path.Map + "Black");
-        moveInfoTile = GameManager.Resource.Load<TileBase>(Path.Map + "MoveInfoTile");
+        moveInfoTile = GameManager.Resource.Load<TileBase>(Path.Map + "Green");
 
     }
     void Start()
@@ -59,15 +59,6 @@ public class MapManager : MonoBehaviour
 
         mapData = new int[mapWidth, mapHeight];
         spawnController.SpawnAllObjects(); // SpawnAll();에서 변경
-    }
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            playerPos = GameManager.Data.playerData.playerMoveData.PlayerPos;
-            Debug.Log($"{playerPos}");
-            PlayerUpdateRange(playerPos,moveRange);
-        }
     }
 
     public void CreateMap()
@@ -101,6 +92,11 @@ public class MapManager : MonoBehaviour
     public void PlayerUpdateRange(Vector3Int playerPos, int moveRange)
     {
         playerMoveInfo.ShowMoveInfoRange(playerPos, moveRange, moveInfoTile, tilemap);
+    }
+
+    public void ClearPlayerRange()
+    {
+        playerMoveInfo.RemoveMoveInfoRange(moveInfoTilemap);
     }
 
     // 이동할 때
@@ -145,7 +141,8 @@ public class MapManager : MonoBehaviour
     {
         if (cell.x < 0 || cell.y < 0 || cell.x >= mapWidth || cell.y >= mapHeight) return false;
 
-        return mapData[cell.x, cell.y] == TileID.Terrain;
+        int tileID = mapData[cell.x, cell.y];
+        return tileID == TileID.Terrain;
     }
 
     public bool IsPlayer(Vector3Int cell)
