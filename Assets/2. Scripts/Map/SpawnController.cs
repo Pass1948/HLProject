@@ -99,6 +99,9 @@ public class SpawnController : MonoBehaviour
                 if (GameManager.Map.mapData[randX, randY] == TileID.Terrain &&
                     !(randX >= 0 && randX <= 3 && randY >= 0 && randY <= 3))
                 {
+                    GameObject prefab = GameManager.Resource.CreateEnemy<GameObject>("Enemy");
+                    Debug.Log(prefab);
+
                     //좌표 보정
                     GridSnapper.SnapToCellCenter(monster.transform, GameManager.Map.tilemap, new Vector2Int(randX, randY));
                     

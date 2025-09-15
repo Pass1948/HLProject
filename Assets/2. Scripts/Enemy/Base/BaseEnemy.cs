@@ -12,8 +12,8 @@ public class BaseEnemy : MonoBehaviour
     private void Awake()
     {
         GameManager.Unit.enemies.Add(this);
-        enemyModel = GetComponent<EnemyModel>();
-        animHandler = GetComponentInChildren<EnemyAnimHandler>();
+        enemyModel = new EnemyModel();
+        animHandler = GetComponent<EnemyAnimHandler>();
         controller = GetComponent<EnemyController>();
         controller.Init(enemyModel, animHandler);
     }

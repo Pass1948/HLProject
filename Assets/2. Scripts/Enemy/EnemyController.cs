@@ -22,6 +22,12 @@ public class EnemyController : MonoBehaviour
         GameManager.Event.Subscribe(EventType.CommandBuffered, StartTurn);
     }
 
+    private void Awake()
+    {
+        stateMachine = new EnemyStateMachine(animHandler, this);
+        
+    }
+
     private void Start()
     {
         stateMachine.Init();
@@ -32,7 +38,6 @@ public class EnemyController : MonoBehaviour
     {
         // 상태머신 할당, Init 초기 상태 Idle로
         animHandler = animHandle;
-        stateMachine = new EnemyStateMachine(animHandler, this);
         this.model = model;
     }
 
