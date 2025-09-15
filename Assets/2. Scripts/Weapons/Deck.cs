@@ -2,14 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// 덱(오토바이): 12장 덱 구성, 셔플, 드로우, 디스카드, 필요시 리셔플
+// 덱(오토바이): 기본 12장 덱 구성
 public class Deck : MonoBehaviour
 {
-    [SerializeField] private int initialDeckSize = 12;      // 시작 덱 장수(기획: 12)
-    [SerializeField] private List<Ammo> startPool = new();  // (선택) 시작 풀: 비어있지 않으면 여기서 최대 N장 샘플링
+    //시작 덱 장수
+    [SerializeField] private int initialDeckSize = 12;
+    //시작 풀
+    [SerializeField] private List<Ammo> startPool = new();
 
-    [SerializeField] private List<Ammo> drawPile = new();     // 현재 덱(상단=리스트 맨 뒤)
-    [SerializeField] private List<Ammo> discardPile = new();  // 사용/버린 탄(사용 탄)
+    //현재 덱
+    [SerializeField] private List<Ammo> drawPile = new();
+    //사용/버린 탄
+    [SerializeField] private List<Ammo> discardPile = new();
 
     public int Count => drawPile.Count;// 덱 잔량
 
@@ -17,8 +21,10 @@ public class Deck : MonoBehaviour
     {
         if (drawPile.Count == 0)
         {
-            BuildInitialDeck(); // 12장 덱 구성
-            Shuffle(drawPile);  // 섞기
+            //덱 구성
+            BuildInitialDeck();
+            //섞기
+            Shuffle(drawPile);
         }
     }
 
@@ -46,7 +52,7 @@ public class Deck : MonoBehaviour
     }
 
     // 덱이 바닥나면 버린카드를 덱으로 옮겨 섞기
-    public void ReshuffleIfNeeded()
+    public void Reshuffle()
     {
         if (drawPile.Count == 0 && discardPile.Count > 0)
         {
@@ -75,7 +81,7 @@ public class Deck : MonoBehaviour
             return;
         }
 
-        // 기본: 52종 라이브러리에서 12장 가져옴
+        // 52종 라이브러리에서 12장 가져옴
         var library52 = BuildStandard52Library();
         Shuffle(library52);
         UniqueTake(library52, drawPile, initialDeckSize);
