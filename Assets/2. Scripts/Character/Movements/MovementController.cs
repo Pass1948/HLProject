@@ -5,9 +5,9 @@ using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
 using UnityEngine.EventSystems;
 
-public class MovementController : MonoBehaviour 
+public class MovementController : MonoBehaviour
 {
-    public enum GridPlane { XY,XZ }
+    public enum GridPlane { XY, XZ }
 
     [Header("Grid Settings")]
     [SerializeField] private GridPlane gridPlane = GridPlane.XZ; // 그리드 평면 설정
@@ -18,13 +18,13 @@ public class MovementController : MonoBehaviour
     [SerializeField] private float moveTime = 0.2f;
 
     public Vector3Int _cellPosition; // 플레이어 현재 위치
-    public  bool _isMoving = false;  // 움직임 감지
+    public bool _isMoving = false;  // 움직임 감지
 
     private Pathfinding _pathfinding;
 
     private void OnEnable()
     {
-        
+
     }
     private void OnDisable()
     {
@@ -57,7 +57,7 @@ public class MovementController : MonoBehaviour
                 PlayerMoveRange(path, tilemap, moveRange);
             }
         }
-        
+
     }
 
     public void Init(Tilemap tilemap)
@@ -72,7 +72,7 @@ public class MovementController : MonoBehaviour
     }
 
 
-    public void PlayerMoveRange(List <Vector3Int> path, Tilemap tilemap, int moveRange)
+    public void PlayerMoveRange(List<Vector3Int> path, Tilemap tilemap, int moveRange)
     {
         GameManager.PathPreview.ShowPath(path, tilemap, moveRange);
     }
@@ -88,12 +88,12 @@ public class MovementController : MonoBehaviour
 
         // 마우스 눌렀다가 땠을 때에는 처리 하지 않음
         if (!value.isPressed) return;
-
-        // 
-        if (!TryGetMouseWorldOnGrid(out var mouseWorld)) return;
-
-        // 마우스 위치를 셀 위치로 변환
-        OnclickInfo(mouseWorld);
+        if (TryGetMouseWorldOnPlayer()==true) // 플레이어 클릭시 bool값이 true일 경수 움직임 진행
+        {
+            if (!TryGetMouseWorldOnGrid(out var mouseWorld)) return;
+            // 마우스 위치를 셀 위치로 변환
+            OnclickInfo(mouseWorld);
+        }
     }
 
     public void OnclickInfo(Vector3 mouseWorld)
@@ -142,8 +142,30 @@ public class MovementController : MonoBehaviour
                 return false;
             }
         }
-            world = default;
-            return false;
+        world = default;
+        return false;
+    }
+
+    // 플레이어 클릭시 나오는 행동 메서드(작성자: 이영신)
+    private bool TryGetMouseWorldOnPlayer()
+    {
+        var mousePos = Mouse.current.position.ReadValue();
+        Ray ray = Camera.main.ScreenPointToRay(mousePos);
+        // 레이를 쏴서 테그가 맵이 아니면 무시
+        if (Physics.Raycast(ray, out RaycastHit hit))
+        {
+            if (hit.collider.gameObject.CompareTag("Player"))
+            {
+                // TODO: 플레이어 클릭시 이동범위 확인할수있음
+                return true;
+            }
+            else
+            {
+                // TODO: 플레이어 아닌걸 클릭시 이동범위 사라짐
+                return false;
+            }
+        }
+        return false;
     }
 
     // 현재 셀 위치를 부르는 함수
