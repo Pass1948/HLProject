@@ -5,7 +5,6 @@ using UnityEngine.Tilemaps;
 
 public class MapCreator : MonoBehaviour
 {
-    
     // 맵 생성
     public void GenerateMap(int[,] mapData, Tilemap tilemap, TileBase groundTile, TileBase wallTile)
     {

@@ -23,10 +23,16 @@ public class SpawnPointPlayer : MonoBehaviour
         
         // 플레이어 오브젝트 생성
         GameObject playerInstance = GameManager.Resource.Create<GameObject>(Path.Player + "Player");
+        MovementController player = playerInstance.GetComponent<MovementController>();
+        Debug.Log(player);
+        player.Init(tilemap);
         GridSnapper.SnapToCellCenter(playerInstance.transform, tilemap, playerSpawnPoint);
 
         // 오토바이 오브젝트 생성 // 일단 플레이어 프리펩으로 넣어둠 경로 다시 설정
-        GameObject motorcycleInstance = GameManager.Resource.Create<GameObject>(Path.Player + "Player");
-        GridSnapper.SnapToCellCenter(motorcycleInstance.transform, tilemap, motorcycleSpawnPoint);
+        //GameObject motorcycleInstance = GameManager.Resource.Create<GameObject>(Path.Player + "Player");
+        //MovementController motor= playerInstance.GetComponent<MovementController>();
+        //Debug.Log(motor);
+        //motor.Init(tilemap);
+        //GridSnapper.SnapToCellCenter(motorcycleInstance.transform, tilemap, motorcycleSpawnPoint);
     }
 }

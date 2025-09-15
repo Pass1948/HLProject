@@ -9,17 +9,25 @@ public class MapManager : MonoBehaviour
     public int[,] mapData;
     public int mapWidth = 10;
     public int mapHeight = 10;
-    
+
+    public int moveRange;
+    public Vector3Int playerPos;
+
     public MapCreator mapCreator;
     public SpawnPointPlayer playerSpawner;
     public SpawnPointObstacle obstacleSpawner;
     public SpawnPointMonster monsterSpawner;
+    public PlayerMoveInfo playerMoveInfo;
+
     private Pathfinding pathfinding;
 
     public Tilemap tilemap;
+    public Tilemap moveInfoTilemap;
 
     private TileBase groundTile;
     private TileBase wallTile;
+    private TileBase moveInfoTile;
+    public int playerPosRange;
 
     GameObject grid;
 
@@ -29,25 +37,37 @@ public class MapManager : MonoBehaviour
         playerSpawner = gameObject.AddComponent<SpawnPointPlayer>();
         obstacleSpawner = gameObject.AddComponent<SpawnPointObstacle>();
         monsterSpawner = gameObject.AddComponent<SpawnPointMonster>();
+        playerMoveInfo = gameObject.AddComponent< PlayerMoveInfo >();
         
         groundTile = GameManager.Resource.Load<TileBase>(Path.Map + "White");
         wallTile = GameManager.Resource.Load<TileBase>(Path.Map + "Black");
+        moveInfoTile = GameManager.Resource.Load<TileBase>(Path.Map + "MoveInfoTile");
+
     }
-    
     void Start()
     {
-        //pathfinding = new Pathfinding(tilemap);
-        ////
+        //TODO: Test 할 시 주석 풀어주세요잉 (장보석)
+        grid = GameManager.Resource.Create<GameObject>(Path.Map + "Grid");
 
-        //grid = GameManager.Resource.Create<GameObject>(Path.Map + "Grid");
-        //var temp = GameManager.Resource.Create<GameObject>(Path.Map + "Tilemap");
-        //tilemap = temp.GetComponent<Tilemap>();
-        //tilemap.transform.SetParent(grid.transform);
+        var temp = GameManager.Resource.Create<GameObject>(Path.Map + "Tilemap");
+        tilemap = temp.GetComponent<Tilemap>();
+        tilemap.transform.SetParent(grid.transform);
 
-        //mapData = new int[mapWidth, mapHeight];
-        //// 맵 생성
-        //mapCreator.GenerateMap(mapData, tilemap, groundTile, wallTile);
-        //SpawnAll();
+        var moveInfo = GameManager.Resource.Create<GameObject>(Path.Map + "MoveInfoTilemap");
+        moveInfoTilemap = moveInfo.GetComponent<Tilemap>();
+        moveInfoTilemap.transform.SetParent(grid.transform);
+
+        mapData = new int[mapWidth, mapHeight];
+        SpawnAll();
+    }
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            playerPos = GameManager.Data.playerData.playerMoveData.PlayerPos;
+            Debug.Log($"{playerPos}");
+            PlayerUpdateRange(playerPos,moveRange);
+        }
     }
 
     public void CreateMap()
@@ -62,6 +82,12 @@ public class MapManager : MonoBehaviour
         mapCreator.GenerateMap(mapData, tilemap, groundTile, wallTile);
         SpawnAll();
     }
+    public void CreateMovePoint()
+    {
+        var temp = GameManager.Resource.Create<GameObject>(Path.Map + "Tilemap");
+        var movePointTilemap = temp.GetComponent<Tilemap>();
+        movePointTilemap.transform.SetParent(grid.transform);
+    }
 
     public void SpawnAll()
     {
@@ -73,6 +99,8 @@ public class MapManager : MonoBehaviour
 
         //몬스터 생성
         monsterSpawner.SpawnMonsters(tilemap);
+
+        
     }
     
     public void SetObjectPosition(int x, int y, int objectID)
@@ -81,6 +109,12 @@ public class MapManager : MonoBehaviour
         {
             mapData[x, y] = objectID;
         }
+    }
+
+    // 플레이어 이동 범위 업데이트
+    public void PlayerUpdateRange(Vector3Int playerPos, int moveRange)
+    {
+        playerMoveInfo.ShowMoveInfoRange(playerPos, moveRange, moveInfoTile, tilemap);
     }
 
     // 이동할 때
@@ -142,4 +176,5 @@ public class MapManager : MonoBehaviour
     {
         return mapData[x, y] == TileID.Enemy;
     }
+
 }
