@@ -92,11 +92,12 @@ public class MovementController : MonoBehaviour
         if (!value.isPressed) return;
 
         TryGetMouseWorldOnPlayer();
-        if (TryGetMouseWorldOnGrid(out var mouseWorld))
-        {
-            OnclickInfo(mouseWorld);
-        }
-
+        if(isPlayer == false)return;
+            if (TryGetMouseWorldOnGrid(out var mouseWorld))
+            {
+                OnclickInfo(mouseWorld);
+            }
+        
     }
 
     public void OnclickInfo(Vector3 mouseWorld)
@@ -122,6 +123,8 @@ public class MovementController : MonoBehaviour
 
         StopAllCoroutines();
         StartCoroutine(FollowPath(path));
+
+        isPlayer = false;
     }
 
     /// <summary>
