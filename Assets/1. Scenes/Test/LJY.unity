@@ -1198,7 +1198,6 @@ MonoBehaviour:
   bulletSlotPrefab: {fileID: 1383267442583819238, guid: 8353c870fb7277a458ff838d3364a375,
     type: 3}
   discardBg: {fileID: 366359106}
-  deck: {fileID: 1448145632}
   AmmoCount: 6
 --- !u!1 &1204360683
 GameObject:
@@ -1438,7 +1437,6 @@ MonoBehaviour:
   initialDeckSize: 12
   startPool: []
   drawPile: []
-  discardPile: []
 --- !u!1 &1593305324
 GameObject:
   m_ObjectHideFlags: 0
