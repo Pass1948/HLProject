@@ -9,7 +9,7 @@ public class BaseEnemy : MonoBehaviour
     public EnemyController controller;
     public EnemyAnimHandler animHandler;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         GameManager.Unit.enemies.Add(this);
         enemyModel = new EnemyModel();

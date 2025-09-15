@@ -4,5 +4,8 @@ using UnityEngine;
 
 public class EnemyChild : BaseEnemy
 {
-    
+    protected override void Awake()
+    {
+        base.Awake();
+    }
 }
