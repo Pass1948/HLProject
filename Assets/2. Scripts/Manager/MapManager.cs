@@ -115,7 +115,7 @@ public class MapManager : MonoBehaviour
     // 플레이어 이동 범위 업데이트
     public void PlayerUpdateRange(Vector3Int playerPos, int moveRange)
     {
-        playerMoveInfo.ShowMoveInfoRange(playerPos, moveRange, moveInfoTile, tilemap);
+        playerMoveInfo.ShowMoveInfoRange(playerPos, moveRange, moveInfoTile, moveInfoTilemap);
     }
 
     public void ClearPlayerRange()
