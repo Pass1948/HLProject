@@ -35,5 +35,4 @@ public class EnemyAnimHandler : MonoBehaviour
     {
         animator.SetTrigger(Attack);
     }
-
 }

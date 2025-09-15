@@ -9,6 +9,9 @@ public class AttackEnemyState : BaseEnemyState
     public override void Enter()
     {
         Debug.Log("Attack : Enter");
+
+        animHandler.OnAttack();
+
     }
 
     public override void Excute()
