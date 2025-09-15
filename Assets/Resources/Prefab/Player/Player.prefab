@@ -12,6 +12,9 @@ GameObject:
   - component: {fileID: 5552333829431678655}
   - component: {fileID: 942464425422479865}
   - component: {fileID: 7584174884319807590}
+  - component: {fileID: -1856612791200159872}
+  - component: {fileID: -7353883541360639586}
+  - component: {fileID: 5030179994721434972}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -105,3 +108,50 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-1856612791200159872
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8444475994722921609}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9141cbd6e524f34e83103459aa892bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerStat: {fileID: 0}
+  movementcontroller: {fileID: 0}
+  attackController: {fileID: 0}
+--- !u!114 &-7353883541360639586
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8444475994722921609}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43f39eefe5ce60d47b1b0ef183cc0941, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tilemap: {fileID: 0}
+  gridPlane: 1
+  groundY: 0
+  moveTime: 0.2
+  _isMoving: 0
+--- !u!114 &5030179994721434972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8444475994722921609}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9fc079b6f68595e4aaa52b764d593d55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slotContainer: {fileID: 0}
+  bulletSlotPrefab: {fileID: 0}
+  AmmoCount: 6

@@ -4,9 +4,8 @@ public enum SceneType
     Test2
 }
 
-public enum EventType
+public enum EventType    // 이벤트 생길시 추가
 {
-    // 이벤트 생길시 추가
 
     // Command 파이프라인 이벤트(필요한 것만 최소 추가)
     CommandBuffered,        // 커맨드가 플래닝 버퍼에 적재됨
