@@ -61,7 +61,6 @@ public class MapManager : MonoBehaviour
         SpawnAll();
     }
 
-
     public void CreateMap()
     {
         pathfinding = new Pathfinding(tilemap);
@@ -106,7 +105,7 @@ public class MapManager : MonoBehaviour
     // 플레이어 이동 범위 업데이트
     public void PlayerUpdateRange(Vector3Int playerPos, int moveRange)
     {
-        playerMoveInfo.ShowMoveInfoRange(playerPos, moveRange, moveInfoTile, moveInfoTilemap);
+        playerMoveInfo.ShowMoveInfoRange(playerPos, moveRange, moveInfoTile, tilemap);
     }
 
     public void ClearPlayerRange()
