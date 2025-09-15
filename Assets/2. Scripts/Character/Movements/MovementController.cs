@@ -19,6 +19,7 @@ public class MovementController : MonoBehaviour
 
     public Vector3Int _cellPosition; // 플레이어 현재 위치
     public bool _isMoving = false;  // 움직임 감지
+    public bool isPlayer=false;
 
     private Pathfinding _pathfinding;
 
@@ -88,17 +89,19 @@ public class MovementController : MonoBehaviour
 
         // 마우스 눌렀다가 땠을 때에는 처리 하지 않음
         if (!value.isPressed) return;
+
         TryGetMouseWorldOnPlayer();
-        if (TryGetMouseWorldOnMoveRange() == true) // 플레이어 클릭시 bool값이 true일 경수 움직임 진행
+        if (TryGetMouseWorldOnGrid(out var mouseWorld))
         {
-            if (!TryGetMouseWorldOnGrid(out var mouseWorld)) return;
-            // 마우스 위치를 셀 위치로 변환
             OnclickInfo(mouseWorld);
         }
+
     }
 
     public void OnclickInfo(Vector3 mouseWorld)
     {
+        if (isPlayer== false) return;
+        // 마우스 위치를 셀 위치로 변환
         var targetCell = tilemap.WorldToCell(mouseWorld);
 
         // 위치의 변화가 없거나 같으면 무시
@@ -147,25 +150,7 @@ public class MovementController : MonoBehaviour
         return false;
     }
 
-    // 플레이어 클릭시 나오는 행동 메서드(작성자: 이영신)
-    private bool TryGetMouseWorldOnMoveRange()
-    {
-        var mousePos = Mouse.current.position.ReadValue();
-        Ray ray = Camera.main.ScreenPointToRay(mousePos);
-        // 레이를 쏴서 테그가 맵이 아니면 무시
-        if (Physics.Raycast(ray, out RaycastHit hit))
-        {
-            if (hit.collider.gameObject.CompareTag("TileRange"))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        return false;
-    }
+   
     // 플레이어 클릭시 나오는 행동 메서드(작성자: 이영신)
     private void TryGetMouseWorldOnPlayer()
     {
@@ -176,10 +161,12 @@ public class MovementController : MonoBehaviour
             if (hit.collider.gameObject.CompareTag("Player"))
             {
                 // TODO: 플레이어 클릭시 이동범위 확인할수있음
+                isPlayer = true;
             }
             else
             {
                 // TODO: 다른곳 클릭시 이동범위 사라짐
+                isPlayer = false;
             }
         }
     }
