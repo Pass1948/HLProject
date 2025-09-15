@@ -1166,6 +1166,8 @@ MonoBehaviour:
   slotContainer: {fileID: 180231960}
   bulletSlotPrefab: {fileID: 1383267442583819238, guid: 8353c870fb7277a458ff838d3364a375,
     type: 3}
+  discardBg: {fileID: 366359106}
+  deck: {fileID: 1448145632}
   AmmoCount: 6
 --- !u!1 &1204360683
 GameObject:
@@ -2197,7 +2199,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   deck: {fileID: 1448145632}
   magazine: {fileID: 1114902787}
-  autoReload: 0
+  autoReload: 1
   deckBg: {fileID: 162765926}
   discardBg: {fileID: 366359106}
   ammoPrefab: {fileID: 1383267442583819238, guid: 8353c870fb7277a458ff838d3364a375,
