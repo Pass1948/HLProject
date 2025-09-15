@@ -11,8 +11,6 @@ public class PlayerMoveInfo : MonoBehaviour
         int mapHeight = GameManager.Map.mapHeight;
         int[,] mapData = GameManager.Map.mapData;
 
-        overlayTilemap.ClearAllTiles();
-
         // BFS ¡ÿ∫Ò
         Queue<(Vector3Int pos, int dist)> queue = new Queue<(Vector3Int, int)>();
         HashSet<Vector3Int> visited = new HashSet<Vector3Int>();
