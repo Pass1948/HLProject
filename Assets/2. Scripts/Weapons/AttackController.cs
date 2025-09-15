@@ -8,6 +8,8 @@ public class AttackController : MonoBehaviour
 {
     [SerializeField] private RectTransform slotContainer;
     [SerializeField] private RectTransform bulletSlotPrefab;
+    [SerializeField] private RectTransform discardBg;
+    [SerializeField] private Deck deck;
 
     private RectTransform bullet;
     private Button selectedAmmoBtn;
@@ -20,82 +22,82 @@ public class AttackController : MonoBehaviour
     [SerializeField] private int AmmoCount = 6;
     public int Capacity => AmmoCount;
 
-    void Start()
-    {
-        SpawnInitialBullet();
-    }
-
-    //시작시 탄환을 AmmoCount만큼 생성
-    private void SpawnInitialBullet()
-    {
-        if(slotContainer == null || bulletSlotPrefab == null)
-        {
-            Debug.LogError("Not Found bullet");
-            return;
-        }
-
-        for (int i = 0; i < AmmoCount; i++)
-        {
-            RectTransform slot = Instantiate(bulletSlotPrefab, slotContainer);
-            slot.name = $"Bullet({i + 1})";
-
-            //Bg 기본색을 세팅
-            var bgTr = slot.Find("BulletBg");
-            if(bgTr && bgTr.TryGetComponent(out Image bgImg))
-            {
-                bgImg.color = bgNormal;
-            }
-
-            // 버튼 클릭 연결
-            if(slot.GetComponentInChildren<Button>(true) is Button btn)
-            {
-                Button captured = btn;
-                captured.onClick.AddListener(() => SelectAmmo(captured));
-            }
-        }
-
-        //레이아웃을 즉시 갱신시켜 UI에 적용시킴
-        Canvas.ForceUpdateCanvases();
-        LayoutRebuilder.ForceRebuildLayoutImmediate(slotContainer);
-    }
-
     //탄환버튼 OnClick
     public void SelectAmmo(Button btn)
     {
-        //선택 해제시 배경색 복구
-        if(selectBulletBg != null)
+        //같은 탄환을 다시 클릭시 선택해제
+        if (selectedAmmoBtn == btn)
+        {
+            if (selectBulletBg) selectBulletBg.color = bgNormal;
+            selectedAmmoBtn = null;
+            selectBulletBg = null;
+            bullet = null;
+            return;
+        }
+
+        //이전 선택 복구
+        if (selectBulletBg)
         {
             selectBulletBg.color = bgNormal;
         }
 
-        //현재 선택 저장
         selectedAmmoBtn = btn;
         bullet = btn.transform.parent as RectTransform;
 
-        //탄환 배경찾기
+        //배경 이미지 가져오고 저장
         selectBulletBg = null;
-        if(bullet)
+        if (bullet)
         {
             var view = bullet.GetComponent<BulletSlotView>();
-            if(selectBulletBg)
-            {
-                selectBulletBg.color = bgSel;
-            }
+            if (view && view.bulletBg) selectBulletBg = view.bulletBg;
         }
 
-        
+        if (selectBulletBg)
+        {
+            selectBulletBg.color = bgSel;
+        }
     }
 
     public void Fire()
     {
-        if(!selectedAmmoBtn || !bullet)
+        if (!selectedAmmoBtn || !bullet) return;
+
+        //발사되고 배경색 초기화
+        if (selectBulletBg)
         {
-            return;
+            selectBulletBg.color = bgNormal;
+        }
+        
+        //파괴 전 탄 데이터
+        var view = bullet.GetComponent<BulletSlotView>();
+        Ammo ammoFired = view?.ammo;
+
+        //디스카드에 누적
+        if (deck != null && ammoFired != null)
+        {
+            deck.Discard(new[] { ammoFired });
+        }
+            
+        //디스카드랑 덱에서는 버튼 비활성
+        var btn = bullet.GetComponentInChildren<Button>(true);
+        if (btn) btn.interactable = false;
+
+        if (view?.bulletBg != null)
+            view.bulletBg.color = Color.black;
+
+        //발사된 탄환 Discard
+        if (discardBg != null)
+        {
+            bullet.SetParent(discardBg, false);
+            bullet.localScale = Vector3.one;
+            Rebuild(discardBg);
+        }
+        else
+        {
+            Debug.LogError("[AttackController] discardBg가 비어 있어 슬롯을 옮길 수 없습니다.");
         }
 
-        Destroy(bullet.gameObject); //발사된 탄환 제거
-        
-        //상태정리
+        //상태 정리
         selectedAmmoBtn = null;
         selectBulletBg = null;
         bullet = null;
@@ -129,18 +131,21 @@ public class AttackController : MonoBehaviour
     public void AddBullets(List<Ammo> ammos)
     {
         if (ammos != null)
+        {
             foreach (var a in ammos)
-                SpawnOne(a);
-
+            {
+               SpawnOne(a);
+            }
+        }
         Rebuild(slotContainer);
     }
 
-    // 슬롯 하나 생성 + 데이터/버튼 연결
+    //버튼 연결
     private void SpawnOne(Ammo ammo)
     {
         if (slotContainer == null || bulletSlotPrefab == null)
         {
-            Debug.LogError("[AttackController] slotContainer 또는 bulletSlotPrefab이 비어있습니다.");
+            Debug.LogError("Not Found slotContainer or bulletSlotPrefab");
             return;
         }
 
@@ -150,13 +155,16 @@ public class AttackController : MonoBehaviour
         var view = slot.GetComponent<BulletSlotView>();
         if (view)
         {
-            view.ammo = ammo;                          // 어떤 탄인지(없으면 null)
-            if (view.bulletBg) view.bulletBg.color = bgNormal; // 기본색 세팅
-            // (원하면) ammo → 아이콘/색 매핑으로 총알 비주얼 지정
+            view.ammo = ammo;//어떤 탄인지
+            if (view.bulletBg)
+            {
+                // 기본색 세팅
+                view.bulletBg.color = bgNormal;
+            }
         }
-
         var btn = slot.GetComponentInChildren<Button>(true);
-        if (btn) btn.onClick.AddListener(() => SelectAmmo(btn)); // 런타임 리스너 연결
+        // 런타임 리스너 연결
+        if (btn) btn.onClick.AddListener(() => SelectAmmo(btn)); 
     }
 
 

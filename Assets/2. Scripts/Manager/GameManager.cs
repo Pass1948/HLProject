@@ -17,10 +17,6 @@ public class GameManager : MonoBehaviour
     private static SceneLoadManager sceneLoadManager;
     public static SceneLoadManager SceneLoad => sceneLoadManager;
 
-    private static CommandManager commandManager;
-    
-    public static CommandManager Command => commandManager;
-
     private static CharacterManager characterManager;
     public static CharacterManager Character => characterManager;
 
@@ -63,7 +59,6 @@ public class GameManager : MonoBehaviour
     {
         resourceManager = CreateChildManager<ResourceManager>("ResourceManager");
         sceneLoadManager = CreateChildManager<SceneLoadManager>("SceneLoadManager");
-        commandManager = CreateChildManager<CommandManager>("CommandManager");
         characterManager = CreateChildManager<CharacterManager>("CharacterManager");
         uiManager = CreateChildManager<UIManager>("UIManager");
         eventManager = CreateChildManager<EventManager>("EventManager");
