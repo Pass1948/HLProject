@@ -17,7 +17,7 @@ public class PlayerMoveInfo : MonoBehaviour
         Queue<(Vector3Int pos, int dist)> queue = new Queue<(Vector3Int, int)>();
         HashSet<Vector3Int> visited = new HashSet<Vector3Int>();
 
-        queue.Enqueue((playerPos,moveRange));
+        queue.Enqueue((playerPos,0));
         visited.Add(playerPos);
 
         while (queue.Count > 0)
@@ -37,11 +37,12 @@ public class PlayerMoveInfo : MonoBehaviour
                 if (dist < moveRange)
                 {
                     Vector3Int[] dirs = {
-                    new Vector3Int(moveRange,moveRange,moveRange),
-                    new Vector3Int(-moveRange,moveRange,moveRange),
-                    new Vector3Int(moveRange,moveRange,moveRange),
-                    new Vector3Int(moveRange,-moveRange,moveRange)
-                };
+
+                        new Vector3Int(1, 0, 0),
+                        new Vector3Int(-1, 0, 0),
+                        new Vector3Int(0, 1, 0),
+                        new Vector3Int(0, -1, 0)
+                     };
 
                     foreach (var dir in dirs)
                     {
