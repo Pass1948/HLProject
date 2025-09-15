@@ -5,9 +5,9 @@ using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
 using UnityEngine.EventSystems;
 
-public class MovementController : MonoBehaviour 
+public class MovementController : MonoBehaviour
 {
-    public enum GridPlane { XY,XZ }
+    public enum GridPlane { XY, XZ }
 
     [Header("Grid Settings")]
     [SerializeField] private GridPlane gridPlane = GridPlane.XZ; // 그리드 평면 설정
@@ -18,13 +18,14 @@ public class MovementController : MonoBehaviour
     [SerializeField] private float moveTime = 0.2f;
 
     public Vector3Int _cellPosition; // 플레이어 현재 위치
-    public  bool _isMoving = false;  // 움직임 감지
+    public bool _isMoving = false;  // 움직임 감지
+    public bool isPlayer=false;
 
     private Pathfinding _pathfinding;
 
     private void OnEnable()
     {
-        
+
     }
     private void OnDisable()
     {
@@ -57,7 +58,7 @@ public class MovementController : MonoBehaviour
                 PlayerMoveRange(path, tilemap, moveRange);
             }
         }
-        
+
     }
 
     public void Init(Tilemap tilemap)
@@ -72,7 +73,7 @@ public class MovementController : MonoBehaviour
     }
 
 
-    public void PlayerMoveRange(List <Vector3Int> path, Tilemap tilemap, int moveRange)
+    public void PlayerMoveRange(List<Vector3Int> path, Tilemap tilemap, int moveRange)
     {
         GameManager.PathPreview.ShowPath(path, tilemap, moveRange);
     }
@@ -89,15 +90,17 @@ public class MovementController : MonoBehaviour
         // 마우스 눌렀다가 땠을 때에는 처리 하지 않음
         if (!value.isPressed) return;
 
-        // 
-        if (!TryGetMouseWorldOnGrid(out var mouseWorld)) return;
+        TryGetMouseWorldOnPlayer();
+        if (TryGetMouseWorldOnGrid(out var mouseWorld))
+        {
+            OnclickInfo(mouseWorld);
+        }
 
-        // 마우스 위치를 셀 위치로 변환
-        OnclickInfo(mouseWorld);
     }
 
     public void OnclickInfo(Vector3 mouseWorld)
     {
+        // 마우스 위치를 셀 위치로 변환
         var targetCell = tilemap.WorldToCell(mouseWorld);
 
         // 위치의 변화가 없거나 같으면 무시
@@ -142,8 +145,30 @@ public class MovementController : MonoBehaviour
                 return false;
             }
         }
-            world = default;
-            return false;
+        world = default;
+        return false;
+    }
+
+   
+    // 플레이어 클릭시 나오는 행동 메서드(작성자: 이영신)
+    private void TryGetMouseWorldOnPlayer()
+    {
+        var mousePos = Mouse.current.position.ReadValue();
+        Ray ray = Camera.main.ScreenPointToRay(mousePos);
+        if (Physics.Raycast(ray, out RaycastHit hit))
+        {
+            if (hit.collider.gameObject.CompareTag("Player"))
+            {
+                // TODO: 플레이어 클릭시 이동범위 확인할수있음
+                GameManager.Map.PlayerUpdateRange(GameManager.Data.playerData.playerMoveData.PlayerPos, GameManager.Data.playerData.playerMoveData.MoveRange);
+                isPlayer = true;
+            }
+            else
+            {
+                // TODO: 다른곳 클릭시 이동범위 사라짐
+                GameManager.Map.ClearPlayerRange();
+            }
+        }
     }
 
     // 현재 셀 위치를 부르는 함수

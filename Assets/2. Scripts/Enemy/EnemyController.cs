@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,6 +14,11 @@ public class EnemyController : MonoBehaviour
     public int AttackRange = 1;
     public int HP = 30;
 
+    public bool isDone = false;
+    public bool isDie = false;
+
+    public float moveDuration = 0.2f;
+
 
     private void Awake()
     {
@@ -20,13 +26,33 @@ public class EnemyController : MonoBehaviour
 
         // 상태머신 할당, Init 초기 상태 Idle로
         stateMachine = new EnemyStateMachine(animHandler, this);
-        stateMachine.Init();
+    }
+
+    private void OnEnable()
+    {
+        GameManager.Event.Subscribe(EventType.CommandBuffered, StartTurn);
     }
 
     private void Start()
     {
-        Debug.Log(GridPos);
         stateMachine.Init();
+        Vector2Int player = GameManager.Map.GetPlayerPosition();
+    }
+
+    public void SetPosition(int x, int y)
+    {
+        GridPos = new Vector3Int(x, y, 0);
+        Debug.Log($"Enemy{GridPos}");
+    }
+
+    public void InitTarget()
+    {
+        Vector2Int player = GameManager.Map.GetPlayerPosition();
+
+        if (player.x != -1) // 찾았으면
+        {
+            TargetPos = new Vector3Int(player.x, player.y, 0);
+        }
     }
 
     // Update is called once per frame
@@ -34,22 +60,63 @@ public class EnemyController : MonoBehaviour
     {
         stateMachine.Excute();
 
-        Debug.Log(TargetPos); 
         if (Input.GetKeyDown(KeyCode.A))
         {
-            //StartTurn();
+            Debug.Log(TargetPos);
+
+            StartTurn();
             //stateMachine.ChangeState(stateMachine.EvaluateState);
             //StartTurn(GameManager.Map.playerPos);
         }
-    }
 
-    public void StartTurn(Vector3Int playerPos)
-    {
-        TargetPos = playerPos;
-        stateMachine.IdleState.StartTurn = true;
-        if (Input.GetKeyDown(KeyCode.A))
+        if(Input.GetKeyDown(KeyCode.S))
         {
-            stateMachine.ChangeState(stateMachine.EvaluateState);
+            OnHitState();
         }
     }
+
+
+    private void OnDisable()
+    {
+        GameManager.Event.Unsubscribe(EventType.CommandBuffered, StartTurn);
+    }
+
+    private void OnHitState()
+    {
+        stateMachine.ChangeState(stateMachine.HitState);
+    }
+
+    public void StartTurn()
+    {
+        
+        stateMachine.IdleState.StartTurn = true;
+        stateMachine.ChangeState(stateMachine.EvaluateState);
+
+        // 각각의 에너미의 StarTurn
+    }
+
+    public IEnumerator MoveAlongPath(List<Vector3Int> path)
+    {
+        foreach (var cell in path)
+        {
+            Vector3 targetPos = GameManager.Map.tilemap.GetCellCenterWorld(cell);
+            yield return StartCoroutine(MoveToPosition(targetPos, moveDuration));
+        }
+    }
+
+    private IEnumerator MoveToPosition(Vector3 target, float duration)
+    {
+        Vector3 start = transform.position;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            transform.position = Vector3.Lerp(start, target, elapsed / duration);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.position = target;
+    }
+
 }

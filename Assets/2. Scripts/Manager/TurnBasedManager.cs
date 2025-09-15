@@ -20,7 +20,7 @@ public class TurnBasedManager : MonoBehaviour
 
     private void Start()
     {
-        // ÃÊ±â »óÅÂ ¼³Á¤
+        // ì´ˆê¸° ìƒíƒœ ì„¤ì •
         SetTo<IdleState>();
     }
 
@@ -38,26 +38,26 @@ public class TurnBasedManager : MonoBehaviour
         turnHFSM.Set(next);
     }
 
-    // Å¸ Å¬·¡½º¿¡¼­ »óÅÂ ÀüÀÌ ¿äÃ»¿ë
+    // íƒ€ í´ë˜ìŠ¤ì—ì„œ ìƒíƒœ ì „ì´ ìš”ì²­ìš©
     public void ChangeTo<T>(string reason = null) where T : ITurnState, new()
     {
         var next = GetState<T>();
         turnHFSM.Change(next, reason);
     }
 
-    // »óÅÂ ÀÎ½ºÅÏ½º °¡Á®¿À±â(¾øÀ¸¸é »ı¼º ÈÄ Ä³½Ã¿¡ µî·Ï)
+    // ìƒíƒœ ì¸ìŠ¤í„´ìŠ¤ ê°€ì ¸ì˜¤ê¸°(ì—†ìœ¼ë©´ ìƒì„± í›„ ìºì‹œì— ë“±ë¡)
     public T GetState<T>() where T : ITurnState, new()
     {
         var key = typeof(T);
         if (_stateCache.TryGetValue(key, out var s)) return (T)s;
 
-        // ÆÄ¶ó¹ÌÅÍ ¾ø´Â »ı¼ºÀÚ·Î »ı¼º
+        // íŒŒë¼ë¯¸í„° ì—†ëŠ” ìƒì„±ìë¡œ ìƒì„±
         var inst = new T();
         _stateCache[key] = inst;
         return inst;
     }
 
-    // ÇÊ¿ä ½Ã ¿ÜºÎ¿¡¼­ ÃÊ±âÈ­ ¸®¼Â
+    // í•„ìš” ì‹œ ì™¸ë¶€ì—ì„œ ì´ˆê¸°í™” ë¦¬ì…‹
     public void ResetAll()
     {
         _stateCache.Clear();

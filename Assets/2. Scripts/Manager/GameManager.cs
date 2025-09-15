@@ -17,8 +17,8 @@ public class GameManager : MonoBehaviour
     private static SceneLoadManager sceneLoadManager;
     public static SceneLoadManager SceneLoad => sceneLoadManager;
 
-    private static CharacterManager characterManager;
-    public static CharacterManager Character => characterManager;
+    private static UnitManager unitManager;
+    public static UnitManager Unit => unitManager;
 
     private static UIManager uiManager;
     public static UIManager UI => uiManager;
@@ -59,14 +59,14 @@ public class GameManager : MonoBehaviour
     {
         resourceManager = CreateChildManager<ResourceManager>("ResourceManager");
         sceneLoadManager = CreateChildManager<SceneLoadManager>("SceneLoadManager");
-        characterManager = CreateChildManager<CharacterManager>("CharacterManager");
+        unitManager = CreateChildManager<UnitManager>("UnitManager");
         uiManager = CreateChildManager<UIManager>("UIManager");
         eventManager = CreateChildManager<EventManager>("EventManager");
         turnBasedManager = CreateChildManager<TurnBasedManager>("TurnBasedManager");
         pathPreviewManager = CreateChildManager<PathPreviewManager>("PathPreviewManager");
 
         data = CreateChildManager<DataManager>("DataManager");
-    mapManager = CreateChildManager<MapManager>("MapManager");
+        mapManager = CreateChildManager<MapManager>("MapManager");
 
     }
     private T CreateChildManager<T>(string goName) where T : Component
