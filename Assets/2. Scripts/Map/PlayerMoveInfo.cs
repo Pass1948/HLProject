@@ -11,7 +11,7 @@ public class PlayerMoveInfo : MonoBehaviour
         int mapHeight = GameManager.Map.mapHeight;
         int[,] mapData = GameManager.Map.mapData;
 
-        //overlayTilemap.ClearAllTiles();
+        overlayTilemap.ClearAllTiles();
 
         // BFS 준비
         Queue<(Vector3Int pos, int dist)> queue = new Queue<(Vector3Int, int)>();
@@ -28,7 +28,7 @@ public class PlayerMoveInfo : MonoBehaviour
             // 범위 내라면 타일 표시
             if (dist <= moveRange)
             {
-                if (GameManager.Map.IsMovable(current))
+                if (dist == 0 || GameManager.Map.IsMovable(current))
                 {
                     overlayTilemap.SetTile(current, overlayTile);
                 }
@@ -46,6 +46,8 @@ public class PlayerMoveInfo : MonoBehaviour
 
                     foreach (var dir in dirs)
                     {
+                        int id = mapData[current.x, current.y];
+                        if (id != TileID.Terrain ) continue;
                         Vector3Int next = current + dir;
 
                         // 맵 범위 안 & 아직 방문 안 함 & Terrain일 때

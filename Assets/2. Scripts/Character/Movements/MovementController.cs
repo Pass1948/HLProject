@@ -88,12 +88,12 @@ public class MovementController : MonoBehaviour
 
         // 마우스 눌렀다가 땠을 때에는 처리 하지 않음
         if (!value.isPressed) return;
-        if (TryGetMouseWorldOnPlayer()==true) // 플레이어 클릭시 bool값이 true일 경수 움직임 진행
-        {
+        //if (TryGetMouseWorldOnPlayer()==true) // 플레이어 클릭시 bool값이 true일 경수 움직임 진행
+        
             if (!TryGetMouseWorldOnGrid(out var mouseWorld)) return;
             // 마우스 위치를 셀 위치로 변환
             OnclickInfo(mouseWorld);
-        }
+        
     }
 
     public void OnclickInfo(Vector3 mouseWorld)
@@ -113,8 +113,6 @@ public class MovementController : MonoBehaviour
         {
             return;
         }
-        // maxRange 보다 작거나 같을 때만 이동
-        var maxRange = GameManager.Data.playerData.playerMoveData.MoveRange;
 
         StopAllCoroutines();
         StartCoroutine(FollowPath(path));
@@ -157,6 +155,7 @@ public class MovementController : MonoBehaviour
             if (hit.collider.gameObject.CompareTag("Player"))
             {
                 // TODO: 플레이어 클릭시 이동범위 확인할수있음
+                
                 return true;
             }
             else
