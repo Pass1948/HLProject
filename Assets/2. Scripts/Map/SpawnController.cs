@@ -31,7 +31,7 @@ public class SpawnController : MonoBehaviour
     {
         SpawnPlayer();
         SpawnObstacles(10);
-        SpawnMonsters(5);
+        SpawnEnemys(5);
     }
     
     private void SpawnPlayer()
@@ -82,8 +82,8 @@ public class SpawnController : MonoBehaviour
         }
     }
 
-    // 몬스터 스폰
-    private void SpawnMonsters(int count)
+    // 적 스폰
+    private void SpawnEnemys(int count)
     {
         for (int i = 0; i < count; i++)
         {
