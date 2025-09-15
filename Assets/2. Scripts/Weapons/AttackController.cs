@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class AttackController : MonoBehaviour
@@ -90,11 +88,11 @@ public class AttackController : MonoBehaviour
         {
             bullet.SetParent(discardBg, false);
             bullet.localScale = Vector3.one;
-            Rebuild(discardBg);
+            Refresh(discardBg);
         }
         else
         {
-            Debug.LogError("[AttackController] discardBg가 비어 있어 슬롯을 옮길 수 없습니다.");
+            Debug.LogError("Not Found discardBg");
         }
 
         //상태 정리
@@ -102,12 +100,12 @@ public class AttackController : MonoBehaviour
         selectBulletBg = null;
         bullet = null;
 
-        Rebuild(slotContainer);
+        Refresh(slotContainer);
         Debug.Log("Fire");
     }
 
     //Reload용 공개
-    public List<Ammo> ClearMagazineAndReturnAmmos()
+    public List<Ammo> ClearMagazine()
     {
         var result = new List<Ammo>();
 
@@ -123,7 +121,7 @@ public class AttackController : MonoBehaviour
         selectBulletBg = null;
         bullet = null;
 
-        Rebuild(slotContainer);
+        Refresh(slotContainer);
         return result;
     }
 
@@ -137,7 +135,7 @@ public class AttackController : MonoBehaviour
                SpawnOne(a);
             }
         }
-        Rebuild(slotContainer);
+        Refresh(slotContainer);
     }
 
     //버튼 연결
@@ -169,7 +167,7 @@ public class AttackController : MonoBehaviour
 
 
     //레이아웃 즉시 갱신
-    private static void Rebuild(RectTransform root)
+    private static void Refresh(RectTransform root)
     {
         if (root == null)
         {

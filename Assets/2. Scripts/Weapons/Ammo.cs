@@ -1,14 +1,19 @@
 ﻿using System;
+using UnityEngine;
 
 public enum Suit { Spade, Heart, Diamond, Club }
-public enum Rank { A = 1, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, J = 11, Q = 12, K = 13 }
 
 //탄환 데이터
 [Serializable]
 public class Ammo
 {
     public Suit suit;
-    public Rank rank;
+
+    //1~13까지 범위지정
+    [Range(1, 13)]
+    public int rank; // 1=A, 11=J, 12=Q, 13=K
+
+    //고유 식별자
     public string Id => $"{suit}_{rank}";
 }
 

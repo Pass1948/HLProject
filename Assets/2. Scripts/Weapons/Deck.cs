@@ -81,22 +81,22 @@ public class Deck : MonoBehaviour
             return;
         }
 
-        // 52종 라이브러리에서 12장 가져옴
-        var library52 = BuildStandard52Library();
+        //라이브러리에서 12장 가져옴
+        var library52 = BuildStandard();
         Shuffle(library52);
         UniqueTake(library52, drawPile, initialDeckSize);
     }
 
-    private List<Ammo> BuildStandard52Library()
+    private List<Ammo> BuildStandard()
     {
         var lib = new List<Ammo>(52);
         foreach (Suit s in Enum.GetValues(typeof(Suit)))
-            foreach (Rank r in Enum.GetValues(typeof(Rank)))
+            for (int r = 1; r <= 13; r++)
                 lib.Add(new Ammo { suit = s, rank = r });
         return lib;
     }
 
-    // src에서 Id 중복 없이 최대 count개를 dst로 이동
+    //src에서 Id 중복 없이 최대 count개를 dst로 이동
     private void UniqueTake(List<Ammo> src, List<Ammo> dst, int count)
     {
         var seen = new HashSet<string>();

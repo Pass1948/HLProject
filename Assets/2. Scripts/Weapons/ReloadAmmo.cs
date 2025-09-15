@@ -33,7 +33,7 @@ public class ReloadAmmo : MonoBehaviour
         }
 
         // 탄창 비우고 탄 회수
-        List<Ammo> discard = magazine.ClearMagazineAndReturnAmmos();
+        List<Ammo> discard = magazine.ClearMagazine();
 
         // 덱 처리
         if (deck != null)
