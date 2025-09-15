@@ -10,7 +10,7 @@ public class MapManager : MonoBehaviour
     public int mapWidth = 10;
     public int mapHeight = 10;
 
-    public int moveRange;
+    public int moveRange = 10;
     public Vector3Int playerPos;
 
     public MapCreator mapCreator;
@@ -41,7 +41,7 @@ public class MapManager : MonoBehaviour
         
         groundTile = GameManager.Resource.Load<TileBase>(Path.Map + "White");
         wallTile = GameManager.Resource.Load<TileBase>(Path.Map + "Black");
-        moveInfoTile = GameManager.Resource.Load<TileBase>(Path.Map + "MoveInfoTile");
+        moveInfoTile = GameManager.Resource.Load<TileBase>(Path.Map + "Green");
 
     }
     void Start()
@@ -53,7 +53,7 @@ public class MapManager : MonoBehaviour
         tilemap = temp.GetComponent<Tilemap>();
         tilemap.transform.SetParent(grid.transform);
 
-        var moveInfo = GameManager.Resource.Create<GameObject>(Path.Map + "MoveInfoTilemap");
+        var moveInfo = GameManager.Resource.Create<GameObject>(Path.Map + "moveInfoTilemap");
         moveInfoTilemap = moveInfo.GetComponent<Tilemap>();
         moveInfoTilemap.transform.SetParent(grid.transform);
 
@@ -65,6 +65,7 @@ public class MapManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.M))
         {
             playerPos = GameManager.Data.playerData.playerMoveData.PlayerPos;
+            moveRange = GameManager.Data.playerData.playerMoveData.MoveRange;
             Debug.Log($"{playerPos}");
             PlayerUpdateRange(playerPos,moveRange);
         }
@@ -114,7 +115,7 @@ public class MapManager : MonoBehaviour
     // 플레이어 이동 범위 업데이트
     public void PlayerUpdateRange(Vector3Int playerPos, int moveRange)
     {
-        playerMoveInfo.ShowMoveInfoRange(playerPos, moveRange, moveInfoTile, tilemap);
+        playerMoveInfo.ShowMoveInfoRange(playerPos, moveRange, moveInfoTile, moveInfoTilemap);
     }
 
     // 이동할 때
@@ -159,7 +160,8 @@ public class MapManager : MonoBehaviour
     {
         if (cell.x < 0 || cell.y < 0 || cell.x >= mapWidth || cell.y >= mapHeight) return false;
 
-        return mapData[cell.x, cell.y] == TileID.Terrain;
+        int tileID = mapData[cell.x, cell.y];
+        return tileID == TileID.Terrain;
     }
 
     public bool IsPlayer(Vector3Int cell)

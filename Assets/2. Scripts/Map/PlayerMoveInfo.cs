@@ -11,19 +11,20 @@ public class PlayerMoveInfo : MonoBehaviour
         int mapHeight = GameManager.Map.mapHeight;
         int[,] mapData = GameManager.Map.mapData;
 
-        overlayTilemap.ClearAllTiles();
+        //overlayTilemap.ClearAllTiles();
 
         // BFS 준비
         Queue<(Vector3Int pos, int dist)> queue = new Queue<(Vector3Int, int)>();
         HashSet<Vector3Int> visited = new HashSet<Vector3Int>();
 
-        queue.Enqueue((playerPos, 0));
+        queue.Enqueue((playerPos,moveRange));
         visited.Add(playerPos);
 
         while (queue.Count > 0)
         {
             var (current, dist) = queue.Dequeue();
 
+            
             // 범위 내라면 타일 표시
             if (dist <= moveRange)
             {
@@ -36,10 +37,10 @@ public class PlayerMoveInfo : MonoBehaviour
                 if (dist < moveRange)
                 {
                     Vector3Int[] dirs = {
-                    new Vector3Int(1,0,0),
-                    new Vector3Int(-1,0,0),
-                    new Vector3Int(0,1,0),
-                    new Vector3Int(0,-1,0)
+                    new Vector3Int(moveRange,moveRange,moveRange),
+                    new Vector3Int(-moveRange,moveRange,moveRange),
+                    new Vector3Int(moveRange,moveRange,moveRange),
+                    new Vector3Int(moveRange,-moveRange,moveRange)
                 };
 
                     foreach (var dir in dirs)
@@ -49,8 +50,7 @@ public class PlayerMoveInfo : MonoBehaviour
                         // 맵 범위 안 & 아직 방문 안 함 & Terrain일 때
                         if (next.x >= 0 && next.x < mapWidth &&
                             next.y >= 0 && next.y < mapHeight &&
-                            !visited.Contains(next) &&
-                            GameManager.Map.IsMovable(next))
+                            !visited.Contains(next) && GameManager.Map.IsMovable(next))
                         {
                             visited.Add(next);
                             queue.Enqueue((next, dist + 1));
