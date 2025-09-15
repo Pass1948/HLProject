@@ -1,0 +1,13 @@
+Type,ID,Name,SIze,Attack,MinAttackRange,MaxAttackRange,MoveRange,Health,Attribute,MaxNum,MinNum,Mulligan,Reload,MaxBullet,Additinal
+Player,1001,성기사,1,1,1,1,1,10,,0,0,2,3,0,0
+Vehicle,1501,바이크,1,0,0,0,0,3,,0,0,0,0,16,2
+Enemy,2001,병사1,1,2,1,1,2,1,High,4,12,0,0,0,0
+Enemy,2002,병사2,1,2,1,1,2,1,Low,1,6,0,0,0,0
+Enemy,2003,병사3,1,2,2,2,1,1,High,4,12,0,0,0,0
+Enemy,2004,병사4,1,2,2,2,1,1,Low,1,6,0,0,0,0
+Enemy,2005,병사5,1,2,2,3,1,1,High,4,12,0,0,0,0
+Enemy,2006,병사6,1,2,2,3,1,1,Low,1,6,0,0,0,0
+Enemy,2007,병사7,1,3,1,1,2,2,High,5,12,0,0,0,0
+Enemy,2008,병사8,1,3,1,1,2,2,Low,1,5,0,0,0,0
+Enemy,2009,병사9,1,3,2,2,1,2,High,5,13,0,0,0,0
+Enemy,2010,병사10,1,3,2,2,1,2,Low,1,5,0,0,0,0
