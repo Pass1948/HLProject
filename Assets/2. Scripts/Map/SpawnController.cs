@@ -4,25 +4,25 @@ using UnityEngine;
 
 public class SpawnController : MonoBehaviour
 {
-    private MonsterPool monsterPool;
+    private EnemyPool enemyPool;
     private BasicObstaclePool obstaclePool;
     
-    private GameObject monsterPrefab;
+    private GameObject enemyPrefab;
     private GameObject obstaclePrefab;
     
     // MapManager의 Awake에서 호출
     public void InitializeSpawnersAndPools()
     {
-        monsterPool = gameObject.AddComponent<MonsterPool>();
+        enemyPool = gameObject.AddComponent<EnemyPool>();
         obstaclePool = gameObject.AddComponent<BasicObstaclePool>();
         
-        monsterPrefab = GameManager.Resource.Load<GameObject>(Path.Enemy + "Enemy");
+        enemyPrefab = GameManager.Resource.Load<GameObject>(Path.Enemy + "Enemy");
         obstaclePrefab = GameManager.Resource.Load<GameObject>(Path.Map + "Obstacle");
         
-        monsterPool.prefab = monsterPrefab;
+        enemyPool.prefab = enemyPrefab;
         obstaclePool.prefab = obstaclePrefab;
         
-        monsterPool.InitializePool(10);
+        enemyPool.InitializePool(10);
         obstaclePool.InitializePool(20);
     }
 
@@ -87,7 +87,7 @@ public class SpawnController : MonoBehaviour
     {
         for (int i = 0; i < count; i++)
         {
-            GameObject monster = monsterPool.GetPooledObject();
+            GameObject enemy = enemyPool.GetPooledObject();
 
             int maxAttempts = 100;
             for (int j = 0; j < maxAttempts; j++)
@@ -100,7 +100,7 @@ public class SpawnController : MonoBehaviour
                     !(randX >= 0 && randX <= 3 && randY >= 0 && randY <= 3))
                 {
                     //좌표 보정
-                    GridSnapper.SnapToCellCenter(monster.transform, GameManager.Map.tilemap, new Vector2Int(randX, randY));
+                    GridSnapper.SnapToCellCenter(enemy.transform, GameManager.Map.tilemap, new Vector2Int(randX, randY));
                     
                     GameManager.Map.SetObjectPosition(randX, randY, TileID.Enemy);
                     break;
