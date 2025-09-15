@@ -8,22 +8,27 @@ public class DecideEnemyState : BaseEnemyState
 
     public override void Enter()
     {
-        Dictionary<IEnemyState, int> actionScores = new Dictionary<IEnemyState, int>();
+
+        Vector3Int enemyPos = controller.GridPos;
+        Vector3Int playerPos = controller.TargetPos;
+
 
         // 무슨 행동을 할지 점수를 매겨서 결정하자 -> 일반몬스터는 이동 / 공격
         // 엘리트 -> 이동 / 공격 / + 다른거
         // 보스 -> 이동 / 공격 / + 여러 패턴들
 
-        int distance = GetDistanceTarget(stateMachine.Controller.GridPos, stateMachine.Controller.TargetPos);
+        int distance = GetDistanceTarget(enemyPos, playerPos);
 
-        //if (distance <= stateMachine.Controller.AttackRange)
-        //{
-        //    stateMachine.ChangeState(stateMachine.AttackState);
-        //}
-        //else
-        //{
+        if (distance <= controller.AttackRange)
+        {
+            Debug.Log("Enemy decides to Attack!");
+            stateMachine.ChangeState(stateMachine.AttackState);
+        }
+        else
+        {
+            Debug.Log("Enemy decides to Move!");
             stateMachine.ChangeState(stateMachine.MoveState);
-        //}
+        }
     }
 
     public override void Excute()

@@ -25,7 +25,7 @@ public class SpawnPointObstacle : MonoBehaviour
             if (GameManager.Map.mapData[randX, randY] == 0 || GameManager.Map.mapData[randX, randY] == 1)
             {
                 // 장애물 프리팹 생성 /// 일단 애너미 프리펩 넣어둠 경로 다시 지정
-                GameObject obstacleInstance = GameManager.Resource.Create<GameObject>(Path.Enemy + "Enemy");
+                GameObject obstacleInstance = GameManager.Resource.Create<GameObject>(Path.Map + "Obstacle");
 
                 // 장애물을 셀 중앙으로 이동
                 GridSnapper.SnapToCellCenter(obstacleInstance.transform, tilemap, new Vector2Int(randX, randY));

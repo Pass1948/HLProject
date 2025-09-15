@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -17,6 +18,8 @@ public class MapManager : MonoBehaviour
     public SpawnPointObstacle obstacleSpawner;
     public SpawnPointMonster monsterSpawner;
     public PlayerMoveInfo playerMoveInfo;
+
+    private Pathfinding pathfinding;
 
     public Tilemap tilemap;
     public Tilemap moveInfoTilemap;
@@ -69,14 +72,15 @@ public class MapManager : MonoBehaviour
 
     public void CreateMap()
     {
+        pathfinding = new Pathfinding(tilemap);
         grid = GameManager.Resource.Create<GameObject>(Path.Map + "Grid");
         var temp = GameManager.Resource.Create<GameObject>(Path.Map + "Tilemap");
         tilemap = temp.GetComponent<Tilemap>();
         tilemap.transform.SetParent(grid.transform);
 
         mapData = new int[mapWidth, mapHeight];
-        SpawnAll();
         mapCreator.GenerateMap(mapData, tilemap, groundTile, wallTile);
+        SpawnAll();
     }
     public void CreateMovePoint()
     {
@@ -128,17 +132,49 @@ public class MapManager : MonoBehaviour
             mapData[newX, newY] = objectID;
         }
     }
-    // 해당 셀이 이동 가능한지 확인
-    // Terrain 일때만 이동 가능
-    public bool IsWalkable(Vector3Int cell)
+
+    // 임시로 선언한 함수들
+
+    public List<Vector3Int> FindPath(Vector3Int start, Vector3Int dest)
     {
-        // 지정된 맵의 범위 밖이면? 당연히 못가자나~
-        if (cell.x < 0 || cell.x >= mapWidth || cell.y < 0 || cell.y >= mapHeight)
+        return pathfinding.FindPath(start, dest);
+    }
+
+    public Vector2Int GetPlayerPosition()
+    {
+
+        for(int x = 0; x < mapWidth; x++)
         {
-            return false;
+            for(int y = 0; y < mapHeight; y++)
+            {
+                if (mapData[x, y] == TileID.Player)
+                    return new Vector2Int(x, y);
+            }
         }
-        int id = mapData[cell.x, cell.y];
-        return id == TileID.Terrain;
+
+        return new Vector2Int(-1, -1);
+    }
+
+    public bool IsMovable(Vector3Int cell)
+    {
+        if (cell.x < 0 || cell.y < 0 || cell.x >= mapWidth || cell.y >= mapHeight) return false;
+
+        return mapData[cell.x, cell.y] == TileID.Terrain;
+    }
+
+    public bool IsPlayer(Vector3Int cell)
+    {
+        return mapData[cell.x, cell.y] == TileID.Player;
+    }
+
+    public bool IsObstacle(Vector3Int cell)
+    {
+        return mapData[cell.x, cell.y] == TileID.Obstacle;
+    }
+
+    public bool IsEnemy(Vector3Int cell)
+    {
+        return mapData[cell.x, cell.y] == TileID.Enemy;
     }
 
 }

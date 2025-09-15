@@ -27,7 +27,7 @@ public class PlayerMoveInfo : MonoBehaviour
             // 범위 내라면 타일 표시
             if (dist <= moveRange)
             {
-                if (GameManager.Map.IsWalkable(current))
+                if (GameManager.Map.IsMovable(current))
                 {
                     overlayTilemap.SetTile(current, overlayTile);
                 }
@@ -50,7 +50,7 @@ public class PlayerMoveInfo : MonoBehaviour
                         if (next.x >= 0 && next.x < mapWidth &&
                             next.y >= 0 && next.y < mapHeight &&
                             !visited.Contains(next) &&
-                            GameManager.Map.IsWalkable(next))
+                            GameManager.Map.IsMovable(next))
                         {
                             visited.Add(next);
                             queue.Enqueue((next, dist + 1));
