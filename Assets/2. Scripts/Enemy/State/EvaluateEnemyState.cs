@@ -15,7 +15,7 @@ public class EvaluateEnemyState : BaseEnemyState
         Vector3Int enemyPos = controller.GridPos;
         Vector3Int playerPos = controller.TargetPos;
 
-        if (!GameManager.Map.IsPlayer(playerPos.x, playerPos.y))
+        if (!GameManager.Map.IsPlayer(playerPos))
         {
             Debug.Log("플레이어 못찾음 : 엔드 상태로");
             Debug.Log(playerPos.x + ", " + playerPos.y);

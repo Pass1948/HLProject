@@ -14,7 +14,7 @@ public class TurnBasedManager : MonoBehaviour
     private void Awake()
     {
         turnHFSM = new TurnStateMachine();
-        turnHFSM.Set(new IdleState());// 초기상태 세팅
+        //turnHFSM.Set(new IdleState());// 초기상태 세팅
         gameObject.AddComponent<TurnSettingValue>();
         turnSettingValue = GetComponent<TurnSettingValue>();
     }

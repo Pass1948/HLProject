@@ -155,26 +155,26 @@ public class MapManager : MonoBehaviour
         return new Vector2Int(-1, -1);
     }
 
-    public bool IsMovable(int x, int y)
+    public bool IsMovable(Vector3Int cell)
     {
-        if (x < 0 || y < 0 || x >= mapWidth || y >= mapHeight) return false;
+        if (cell.x < 0 || cell.y < 0 || cell.x >= mapWidth || cell.y >= mapHeight) return false;
 
-        return mapData[x, y] == TileID.Terrain;
+        return mapData[cell.x, cell.y] == TileID.Terrain;
     }
 
-    public bool IsPlayer(int x, int y)
+    public bool IsPlayer(Vector3Int cell)
     {
-        return mapData[x, y] == TileID.Player;
+        return mapData[cell.x, cell.y] == TileID.Player;
     }
 
-    public bool IsObstacle(int x, int y)
+    public bool IsObstacle(Vector3Int cell)
     {
-        return mapData[x, y] == TileID.Obstacle;
+        return mapData[cell.x, cell.y] == TileID.Obstacle;
     }
 
-    public bool IsEnemy(int x, int y)
+    public bool IsEnemy(Vector3Int cell)
     {
-        return mapData[x, y] == TileID.Enemy;
+        return mapData[cell.x, cell.y] == TileID.Enemy;
     }
 
 }
