@@ -10,29 +10,43 @@ public class MapCreator : MonoBehaviour
     {
         int mapWidth = GameManager.Map.mapWidth;
         int mapHeight = GameManager.Map.mapHeight;
-
-        // 일단 무작위로 생성
+        
         for (int x = 0; x < mapWidth; x++)
         {
             for (int y = 0; y < mapHeight; y++)
             {
-                // 0: 바닥 , 1: 벽, 2: 플레이어, 3:오토바이, 4:장애물, 5: 몬스터
-                GameManager.Map.mapData[x, y] = Random.Range(0, 2); 
+                // 50% 확률로 벽 또는 바닥 생성
+                if (Random.Range(0, 2) == 1)
+                {
+                    GameManager.Map.mapData[x, y] = TileID.Wall; 
+                }
+                else
+                {
+                    GameManager.Map.mapData[x, y] = TileID.Terrain;
+                }
             }
         }
-        // 크기에 맞게 그리기
+
+        // 맵 그리기
         for (int x = 0; x < mapWidth; x++)
         {
             for (int y = 0; y < mapHeight; y++)
             {
                 Vector3Int tilePosition = new Vector3Int(x, y, 0);
-                if (mapData[x, y] == 1)
+                
+                if (mapData[x, y] == TileID.Wall)
                 {
-                    tilemap.SetTile(tilePosition, wallTile);
+                    if (wallTile != null)
+                    {
+                        tilemap.SetTile(tilePosition, wallTile);
+                    }
                 }
                 else
                 {
-                    tilemap.SetTile(tilePosition, groundTile);
+                    if (groundTile != null)
+                    {
+                        tilemap.SetTile(tilePosition, groundTile);
+                    }
                 }
             }
         }
