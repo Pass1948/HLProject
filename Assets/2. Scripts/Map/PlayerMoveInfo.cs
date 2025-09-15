@@ -65,5 +65,6 @@ public class PlayerMoveInfo : MonoBehaviour
     public void RemoveMoveInfoRange(Tilemap overlayTilemap)
     {
         overlayTilemap.ClearAllTiles();
+        Debug.Log("아 제발");
     }
 }
