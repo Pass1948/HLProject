@@ -14,7 +14,6 @@ public class MapManager : MonoBehaviour
     public Vector3Int playerPos;
 
     public MapCreator mapCreator;
-    public SpawnPointPlayer playerSpawner;
     public PlayerMoveInfo playerMoveInfo;
 
     private Pathfinding pathfinding;
