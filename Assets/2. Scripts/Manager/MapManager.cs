@@ -10,7 +10,7 @@ public class MapManager : MonoBehaviour
     public int mapWidth = 10;
     public int mapHeight = 10;
 
-    public int moveRange = 10;
+    public int moveRange = 3;
     public Vector3Int playerPos;
 
     public MapCreator mapCreator;
@@ -53,7 +53,7 @@ public class MapManager : MonoBehaviour
         tilemap = temp.GetComponent<Tilemap>();
         tilemap.transform.SetParent(grid.transform);
 
-        var moveInfo = GameManager.Resource.Create<GameObject>(Path.Map + "moveInfoTilemap");
+        var moveInfo = GameManager.Resource.Create<GameObject>(Path.Map + "MoveInfoTilemap");
         moveInfoTilemap = moveInfo.GetComponent<Tilemap>();
         moveInfoTilemap.transform.SetParent(grid.transform);
 
@@ -62,13 +62,13 @@ public class MapManager : MonoBehaviour
     }
     private void Update()
     {
-        //if (Input.GetKeyDown(KeyCode.M))
-        //{
-        //    playerPos = GameManager.Data.playerData.playerMoveData.PlayerPos;
-        //    moveRange = GameManager.Data.playerData.playerMoveData.MoveRange;
-        //    Debug.Log($"{playerPos}");
-        //    PlayerUpdateRange();
-        //}
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            playerPos = GameManager.Data.playerData.playerMoveData.PlayerPos;
+            //moveRange = GameManager.Data.playerData.playerMoveData.MoveRange;
+            Debug.Log($"{playerPos}");
+            PlayerUpdateRange(GameManager.Data.playerData.playerMoveData.PlayerPos,moveRange);
+        }
     }
 
     public void CreateMap()
@@ -113,10 +113,11 @@ public class MapManager : MonoBehaviour
     }
 
     // 플레이어 이동 범위 업데이트
-    public void PlayerUpdateRange()
+    public void PlayerUpdateRange(Vector3Int playerPos, int moveRange)
     {
-        playerMoveInfo.ShowMoveInfoRange(playerPos, moveRange, moveInfoTile, moveInfoTilemap);
+        playerMoveInfo.ShowMoveInfoRange(playerPos, moveRange, moveInfoTile, tilemap);
     }
+
     public void ClearPlayerRange()
     {
         playerMoveInfo.RemoveMoveInfoRange(moveInfoTilemap);

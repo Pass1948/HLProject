@@ -160,7 +160,7 @@ public class MovementController : MonoBehaviour
             if (hit.collider.gameObject.CompareTag("Player"))
             {
                 // TODO: 플레이어 클릭시 이동범위 확인할수있음
-                GameManager.Map.PlayerUpdateRange();
+                GameManager.Map.PlayerUpdateRange(GameManager.Data.playerData.playerMoveData.PlayerPos, GameManager.Data.playerData.playerMoveData.MoveRange);
                 isPlayer = true;
             }
             else
