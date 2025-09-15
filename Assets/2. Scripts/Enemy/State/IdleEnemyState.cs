@@ -19,7 +19,7 @@ public class IdleEnemyState : BaseEnemyState
 
     public override void Excute()
     {
-        Debug.Log("Idle : Excute");
+        //Debug.Log("Idle : Excute");
 
         if (!StartTurn) return;
 
