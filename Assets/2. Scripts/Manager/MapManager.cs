@@ -19,6 +19,7 @@ public class MapManager : MonoBehaviour
     public PlayerMoveInfo playerMoveInfo;
 
     public Tilemap tilemap;
+    public Tilemap moveInfoTilemap;
 
     private TileBase groundTile;
     private TileBase wallTile;
@@ -37,29 +38,32 @@ public class MapManager : MonoBehaviour
         
         groundTile = GameManager.Resource.Load<TileBase>(Path.Map + "White");
         wallTile = GameManager.Resource.Load<TileBase>(Path.Map + "Black");
-        
+        moveInfoTile = GameManager.Resource.Load<TileBase>(Path.Map + "MoveInfoTile");
+
     }
     void Start()
     {
         //TODO: Test 할 시 주석 풀어주세요잉 (장보석)
         grid = GameManager.Resource.Create<GameObject>(Path.Map + "Grid");
+
         var temp = GameManager.Resource.Create<GameObject>(Path.Map + "Tilemap");
-        var moveInfo = GameManager.Resource.Create<GameObject>(Path.Map + "MoveInfoTilemap");
         tilemap = temp.GetComponent<Tilemap>();
         tilemap.transform.SetParent(grid.transform);
-        playerPosRange = GameManager.Data.playerData.playerMoveData.MoveRange;
-        playerPos = GameManager.Data.playerData.playerMoveData.PlayerPos;
+
+        var moveInfo = GameManager.Resource.Create<GameObject>(Path.Map + "MoveInfoTilemap");
+        moveInfoTilemap = moveInfo.GetComponent<Tilemap>();
+        moveInfoTilemap.transform.SetParent(grid.transform);
 
         mapData = new int[mapWidth, mapHeight];
         SpawnAll();
     }
     private void Update()
     {
-        playerPos = GameManager.Data.playerData.playerMoveData.PlayerPos;
         if (Input.GetKeyDown(KeyCode.M))
         {
+            playerPos = GameManager.Data.playerData.playerMoveData.PlayerPos;
             Debug.Log($"{playerPos}");
-            playerMoveInfo.ShowMoveInfoRange(playerPos, playerPosRange,tilemap);
+            PlayerUpdateRange(playerPos,moveRange);
         }
     }
 
@@ -102,9 +106,11 @@ public class MapManager : MonoBehaviour
             mapData[x, y] = objectID;
         }
     }
+
+    // 플레이어 이동 범위 업데이트
     public void PlayerUpdateRange(Vector3Int playerPos, int moveRange)
     {
-        playerMoveInfo.ShowMoveInfoRange(playerPos, moveRange, tilemap);
+        playerMoveInfo.ShowMoveInfoRange(playerPos, moveRange, moveInfoTile, tilemap);
     }
 
     // 이동할 때

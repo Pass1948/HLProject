@@ -2,36 +2,60 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-
 public class PlayerMoveInfo : MonoBehaviour
 {
-    // TODO:플레이어의 이동 정보 타일맵(장보석)
-    // 1. 플레이어의 현재 위치 2. 플레이어의 이동 범위 3. 타일맵 4. 이동 정보 타일
-    public void ShowMoveInfoRange(Vector3Int playerPos, int moveRange, Tilemap overlayTilemap)
+    // BFS를 이용한 이동 가능 범위 표시
+    public void ShowMoveInfoRange(Vector3Int playerPos, int moveRange, TileBase overlayTile, Tilemap overlayTilemap)
     {
         int mapWidth = GameManager.Map.mapWidth;
         int mapHeight = GameManager.Map.mapHeight;
         int[,] mapData = GameManager.Map.mapData;
 
-        for (int x = -moveRange; x <= moveRange; x++)
+        overlayTilemap.ClearAllTiles();
+
+        // BFS 준비
+        Queue<(Vector3Int pos, int dist)> queue = new Queue<(Vector3Int, int)>();
+        HashSet<Vector3Int> visited = new HashSet<Vector3Int>();
+
+        queue.Enqueue((playerPos, 0));
+        visited.Add(playerPos);
+
+        while (queue.Count > 0)
         {
-            for (int y = -moveRange; y <= moveRange; y++)
+            var (current, dist) = queue.Dequeue();
+
+            // 범위 내라면 타일 표시
+            if (dist <= moveRange)
             {
-                Vector3Int cell = new Vector3Int(playerPos.x, playerPos.y, playerPos.z);
-
-                if (cell.x < 0 || cell.x >= mapWidth || cell.y < 0 || cell.y >= mapHeight) continue;
-
-                int id = mapData[cell.x, cell.y];
-                if(id != TileID.Terrain) continue;
-
-                int distance = Mathf.Abs(x) + Mathf.Abs(y);
-                if (distance <= moveRange)
+                if (GameManager.Map.IsWalkable(current))
                 {
-                    Debug.Log($"PlayerMoveInfo - ShowMoveInfoRange: cell={cell}, distance={distance}");
-                    Vector3 worldPos = overlayTilemap.GetCellCenterWorld(cell);
-                    var tileObj = GameManager.Resource.Create<GameObject>(Path.Map + "MoveInfoTilemap");
-                    tileObj.transform.SetParent(overlayTilemap.transform);
-                    tileObj.transform.position = worldPos;
+                    overlayTilemap.SetTile(current, overlayTile);
+                }
+
+                // 네 방향 확장
+                if (dist < moveRange)
+                {
+                    Vector3Int[] dirs = {
+                    new Vector3Int(1,0,0),
+                    new Vector3Int(-1,0,0),
+                    new Vector3Int(0,1,0),
+                    new Vector3Int(0,-1,0)
+                };
+
+                    foreach (var dir in dirs)
+                    {
+                        Vector3Int next = current + dir;
+
+                        // 맵 범위 안 & 아직 방문 안 함 & Terrain일 때
+                        if (next.x >= 0 && next.x < mapWidth &&
+                            next.y >= 0 && next.y < mapHeight &&
+                            !visited.Contains(next) &&
+                            GameManager.Map.IsWalkable(next))
+                        {
+                            visited.Add(next);
+                            queue.Enqueue((next, dist + 1));
+                        }
+                    }
                 }
             }
         }
