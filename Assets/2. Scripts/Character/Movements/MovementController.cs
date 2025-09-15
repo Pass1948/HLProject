@@ -100,7 +100,6 @@ public class MovementController : MonoBehaviour
 
     public void OnclickInfo(Vector3 mouseWorld)
     {
-        if (isPlayer== false) return;
         // 마우스 위치를 셀 위치로 변환
         var targetCell = tilemap.WorldToCell(mouseWorld);
 
@@ -161,12 +160,13 @@ public class MovementController : MonoBehaviour
             if (hit.collider.gameObject.CompareTag("Player"))
             {
                 // TODO: 플레이어 클릭시 이동범위 확인할수있음
+                GameManager.Map.PlayerUpdateRange();
                 isPlayer = true;
             }
             else
             {
                 // TODO: 다른곳 클릭시 이동범위 사라짐
-                isPlayer = false;
+                GameManager.Map.ClearPlayerRange();
             }
         }
     }
