@@ -14,10 +14,16 @@ public class TurnBasedManager : MonoBehaviour
     private void Awake()
     {
         turnHFSM = new TurnStateMachine();
-        turnHFSM.Set(new IdleState());// 초기상태 세팅
         gameObject.AddComponent<TurnSettingValue>();
         turnSettingValue = GetComponent<TurnSettingValue>();
     }
+
+    private void Start()
+    {
+        // 초기 상태 설정
+        SetTo<IdleState>();
+    }
+
     private void Update()
     {
         turnHFSM.Tick(Time.deltaTime);
@@ -25,6 +31,11 @@ public class TurnBasedManager : MonoBehaviour
     private void FixedUpdate()
     {
         turnHFSM.FixedTick(Time.fixedDeltaTime);
+    }
+    public void SetTo<T>(string reason = null) where T : ITurnState, new()
+    {
+        var next = GetState<T>();
+        turnHFSM.Set(next);
     }
 
     // 타 클래스에서 상태 전이 요청용
