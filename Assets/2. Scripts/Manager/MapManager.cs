@@ -60,16 +60,6 @@ public class MapManager : MonoBehaviour
         mapData = new int[mapWidth, mapHeight];
         SpawnAll();
     }
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            playerPos = GameManager.Data.playerData.playerMoveData.PlayerPos;
-            //moveRange = GameManager.Data.playerData.playerMoveData.MoveRange;
-            Debug.Log($"{playerPos}");
-            PlayerUpdateRange(GameManager.Data.playerData.playerMoveData.PlayerPos,moveRange);
-        }
-    }
 
     public void CreateMap()
     {

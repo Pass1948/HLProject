@@ -4,16 +4,15 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 public class PlayerMoveInfo : MonoBehaviour
 {
-    // BFS¸¦ ÀÌ¿ëÇÑ ÀÌµ¿ °¡´É ¹üÀ§ Ç¥½Ã
+    // BFSë¥¼ ì´ìš©í•œ ì´ë™ ê°€ëŠ¥ ë²”ìœ„ í‘œì‹œ
     public void ShowMoveInfoRange(Vector3Int playerPos, int moveRange, TileBase overlayTile, Tilemap overlayTilemap)
     {
         int mapWidth = GameManager.Map.mapWidth;
         int mapHeight = GameManager.Map.mapHeight;
         int[,] mapData = GameManager.Map.mapData;
 
-        overlayTilemap.ClearAllTiles();
 
-        // BFS ÁØºñ
+        // BFS ì¤€ë¹„
         Queue<(Vector3Int pos, int dist)> queue = new Queue<(Vector3Int, int)>();
         HashSet<Vector3Int> visited = new HashSet<Vector3Int>();
 
@@ -25,7 +24,7 @@ public class PlayerMoveInfo : MonoBehaviour
             var (current, dist) = queue.Dequeue();
 
             
-            // ¹üÀ§ ³»¶ó¸é Å¸ÀÏ Ç¥½Ã
+            // ë²”ìœ„ ë‚´ë¼ë©´ íƒ€ì¼ í‘œì‹œ
             if (dist <= moveRange)
             {
                 if (dist == 0 || GameManager.Map.IsMovable(current))
@@ -33,7 +32,7 @@ public class PlayerMoveInfo : MonoBehaviour
                     overlayTilemap.SetTile(current, overlayTile);
                 }
 
-                // ³× ¹æÇâ È®Àå
+                // ë„¤ ë°©í–¥ í™•ì¥
                 if (dist < moveRange)
                 {
                     Vector3Int[] dirs = {
@@ -50,7 +49,7 @@ public class PlayerMoveInfo : MonoBehaviour
                         if (id != TileID.Terrain ) continue;
                         Vector3Int next = current + dir;
 
-                        // ¸Ê ¹üÀ§ ¾È & ¾ÆÁ÷ ¹æ¹® ¾È ÇÔ & TerrainÀÏ ¶§
+                        // ë§µ ë²”ìœ„ ì•ˆ & ì•„ì§ ë°©ë¬¸ ì•ˆ í•¨ & Terrainì¼ ë•Œ
                         if (next.x >= 0 && next.x < mapWidth &&
                             next.y >= 0 && next.y < mapHeight &&
                             !visited.Contains(next) && GameManager.Map.IsMovable(next))
