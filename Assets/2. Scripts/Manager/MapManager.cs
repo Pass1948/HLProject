@@ -62,13 +62,13 @@ public class MapManager : MonoBehaviour
     }
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            playerPos = GameManager.Data.playerData.playerMoveData.PlayerPos;
-            moveRange = GameManager.Data.playerData.playerMoveData.MoveRange;
-            Debug.Log($"{playerPos}");
-            PlayerUpdateRange(playerPos,moveRange);
-        }
+        //if (Input.GetKeyDown(KeyCode.M))
+        //{
+        //    playerPos = GameManager.Data.playerData.playerMoveData.PlayerPos;
+        //    moveRange = GameManager.Data.playerData.playerMoveData.MoveRange;
+        //    Debug.Log($"{playerPos}");
+        //    PlayerUpdateRange();
+        //}
     }
 
     public void CreateMap()
@@ -113,9 +113,13 @@ public class MapManager : MonoBehaviour
     }
 
     // 플레이어 이동 범위 업데이트
-    public void PlayerUpdateRange(Vector3Int playerPos, int moveRange)
+    public void PlayerUpdateRange()
     {
         playerMoveInfo.ShowMoveInfoRange(playerPos, moveRange, moveInfoTile, moveInfoTilemap);
+    }
+    public void ClearPlayerRange()
+    {
+        playerMoveInfo.RemoveMoveInfoRange(moveInfoTilemap);
     }
 
     // 이동할 때

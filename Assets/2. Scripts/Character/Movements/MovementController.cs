@@ -20,6 +20,8 @@ public class MovementController : MonoBehaviour
     public Vector3Int _cellPosition; // 플레이어 현재 위치
     public bool _isMoving = false;  // 움직임 감지
 
+    
+
     private Pathfinding _pathfinding;
 
     private void OnEnable()
@@ -39,6 +41,7 @@ public class MovementController : MonoBehaviour
         _cellPosition = tilemap.WorldToCell(transform.position);
         transform.position = tilemap.GetCellCenterWorld(_cellPosition);
 
+
         // A* 알고리즘 초기화
         _pathfinding = new Pathfinding(tilemap);
     }
@@ -54,6 +57,7 @@ public class MovementController : MonoBehaviour
             {
                 var path = _pathfinding.FindPath(_cellPosition, targetCell);
                 int moveRange = GameManager.Data.playerData.playerMoveData.MoveRange;
+                GameManager.Data.playerData.playerMoveData.PlayerPos = _cellPosition;
                 PlayerMoveRange(path, tilemap, moveRange);
             }
         }
@@ -92,6 +96,7 @@ public class MovementController : MonoBehaviour
         if (TryGetMouseWorldOnMoveRange() == true) // 플레이어 클릭시 bool값이 true일 경수 움직임 진행
         {
             if (!TryGetMouseWorldOnGrid(out var mouseWorld)) return;
+            
             // 마우스 위치를 셀 위치로 변환
             OnclickInfo(mouseWorld);
         }
@@ -132,16 +137,19 @@ public class MovementController : MonoBehaviour
         // 레이를 쏴서 테그가 맵이 아니면 무시
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
-            if (hit.collider.gameObject.CompareTag("TileMap"))
-            {
-                world = hit.point;
-                return true;
-            }
-            else
-            {
-                world = default;
-                return false;
-            }
+
+            //if (hit.collider.gameObject.CompareTag("MoveRange"))
+            //{
+            world = hit.point;
+            Debug.Log($" {world}");
+            return true;
+            //    }
+            //    else
+            //    {
+            //        world = default;
+            //        return false;
+            //    }
+            //}
         }
         world = default;
         return false;
@@ -155,7 +163,7 @@ public class MovementController : MonoBehaviour
         // 레이를 쏴서 테그가 맵이 아니면 무시
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
-            if (hit.collider.gameObject.CompareTag("TileRange"))
+            if (hit.collider.gameObject.CompareTag("MoveRange"))
             {
                 return true;
             }
@@ -176,10 +184,12 @@ public class MovementController : MonoBehaviour
             if (hit.collider.gameObject.CompareTag("Player"))
             {
                 // TODO: 플레이어 클릭시 이동범위 확인할수있음
+                GameManager.Map.PlayerUpdateRange();
             }
             else
             {
                 // TODO: 다른곳 클릭시 이동범위 사라짐
+                GameManager.Map.ClearPlayerRange();
             }
         }
     }

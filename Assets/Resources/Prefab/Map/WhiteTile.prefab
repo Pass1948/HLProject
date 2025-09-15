@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4079484453963528900}
   - component: {fileID: 6542049994516317211}
   m_Layer: 0
-  m_Name: GreenTile
+  m_Name: WhiteTile
   m_TagString: MoveRange
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

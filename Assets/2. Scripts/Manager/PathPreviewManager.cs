@@ -21,7 +21,7 @@ public class PathPreviewManager : MonoBehaviour
             Vector3 worldPos = tilemap.GetCellCenterWorld(path[i]);
             if (i < moveRange)
             {
-                var tileObj = GameManager.Resource.Create<GameObject>(Path.Map + "GreenTile");
+                var tileObj = GameManager.Resource.Create<GameObject>(Path.Map + "WhiteTile");
                 tileObj.transform.position = worldPos;
                 activeTiles.Add(tileObj);
             }
