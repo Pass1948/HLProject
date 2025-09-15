@@ -5,14 +5,14 @@ using UnityEngine.UI;
 public class ReloadAmmo : MonoBehaviour
 {
     [Header("Refs")]
-    [SerializeField] private Deck deck;                  // 덱(오토바이)
-    [SerializeField] private AttackController magazine;  // 탄창 UI 컨트롤러
-    [SerializeField] private bool autoReload = true;     // 시작 시 자동 장전
+    [SerializeField] private Deck deck;// 덱(오토바이)
+    [SerializeField] private AttackController magazine;// 탄창 UI
+    [SerializeField] private bool autoReload = true;// 시작 시 자동 장전
 
     [Header("Deck/Discard UI")]
-    [SerializeField] private RectTransform deckBg;       // 덱 리스트 부모(DeckBg)
-    [SerializeField] private RectTransform discardBg;    // 사용 탄 리스트 부모(DiscardBg)
-    [SerializeField] private RectTransform ammoPrefab;   // 표시에 쓸 탄 프리팹(Bullet 프리팹)
+    [SerializeField] private RectTransform deckBg;// 덱 리스트
+    [SerializeField] private RectTransform discardBg;// 사용 탄 리스트
+    [SerializeField] private RectTransform ammoPrefab;// 표시에 쓸 Bullet 프리팹
 
     void Start()
     {
@@ -32,30 +32,57 @@ public class ReloadAmmo : MonoBehaviour
             return;
         }
 
-        // 1) 탄창 비우고 탄 회수
+        // 탄창 비우고 탄 회수
         List<Ammo> discard = magazine.ClearMagazineAndReturnAmmos();
 
-        // 2) 덱 처리(디스카드 적립 + 필요 시 리셔플 + 드로우)
+        // 덱 처리
         if (deck != null)
         {
+            // 회수된 탄을 디스카드로
             if (discard.Count > 0) deck.Discard(discard);
-            deck.ReshuffleIfNeeded();
 
-            int need = magazine.Capacity;        // 최대 장전 수
-            var draw = deck.DrawAmmos(need);     // 덱에서 뽑기
-            magazine.AddBullets(draw);           // 탄창 채우기
+            //덱이 비어 있으면 한 번 섞기
+            //안쓰면 루프 한번 헛돌고 정상작동됨
+            deck.Reshuffle();
+
+            int need = magazine.Capacity; // 최대 장전 수
+            var drawn = new List<Ammo>();
+
+            // 필요한 수량을 다 채울 때까지 반복해서 드로우
+            while (drawn.Count < need)
+            {
+                var batch = deck.DrawAmmos(need - drawn.Count);
+
+                if (batch.Count == 0)
+                {
+                    // 덱이 바닥났으니 디스카드에서 덱으로 옮겨 섞기 시도
+                    deck.Reshuffle();
+
+                    // 여전히 덱이 비어 있으면(디스카드도 소진), 더 이상 뽑을 수 없음
+                    if (deck.Count == 0) break;
+
+                    // 섞였으니 다시 드로우 시도
+                    continue;
+                }
+
+                drawn.AddRange(batch);
+            }
+
+            // 실제 탄창 채우기
+            if (drawn.Count > 0)
+                magazine.AddBullets(drawn);
         }
 
-        // 3) 패널 갱신
+        // UI 갱신
         RefreshDeckUI();
     }
 
-    // 덱/디스카드 패널 다시 그리기
+    //덱, 디스카드 새로고침
     private void RefreshDeckUI()
     {
         if (ammoPrefab == null) return;
 
-        // 덱 영역
+        //덱
         if (deckBg != null)
         {
             ClearChild(deckBg);
@@ -66,7 +93,7 @@ public class ReloadAmmo : MonoBehaviour
             }
         }
 
-        // 사용 탄 영역
+        //디스카드
         if (discardBg != null)
         {
             ClearChild(discardBg);
@@ -89,7 +116,12 @@ public class ReloadAmmo : MonoBehaviour
             if (view.bulletBg) view.bulletBg.color = Color.black;
         }
         var btn = item.GetComponentInChildren<Button>(true);
-        if (btn) btn.interactable = false; //클릭불가
+
+        //클릭불가
+        if (btn)
+        {
+            btn.interactable = false;
+        }
     }
 
     // 자식 전부 제거

@@ -5,7 +5,8 @@ using System;
 public class PlayerMoveData
 {
     [Header("플레이어 이동Info")]
-    [field: SerializeField][Range(0, 10)] public int MoveRange = 3;
+    [field: SerializeField] public Vector3Int PlayerPos;
+    [field: SerializeField][Range(0, 10)] public int MoveRange = 10;
     [field: SerializeField][Range(0, 10)] public int MoveRangeModifier = 3;
 
     [field: SerializeField][Range(0, 10)] public float HP = 100;
