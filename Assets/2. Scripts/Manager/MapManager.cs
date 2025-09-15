@@ -15,8 +15,6 @@ public class MapManager : MonoBehaviour
 
     public MapCreator mapCreator;
     public SpawnPointPlayer playerSpawner;
-    public SpawnPointObstacle obstacleSpawner;
-    public SpawnPointMonster monsterSpawner;
     public PlayerMoveInfo playerMoveInfo;
 
     private Pathfinding pathfinding;
@@ -28,15 +26,17 @@ public class MapManager : MonoBehaviour
     private TileBase wallTile;
     private TileBase moveInfoTile;
     public int playerPosRange;
+    
+    private SpawnController spawnController;
 
     GameObject grid;
 
     void Awake()
     {
         mapCreator = gameObject.AddComponent<MapCreator>();
-        playerSpawner = gameObject.AddComponent<SpawnPointPlayer>();
-        obstacleSpawner = gameObject.AddComponent<SpawnPointObstacle>();
-        monsterSpawner = gameObject.AddComponent<SpawnPointMonster>();
+        spawnController = gameObject.AddComponent<SpawnController>();
+        spawnController.InitializeSpawnersAndPools();
+
         playerMoveInfo = gameObject.AddComponent< PlayerMoveInfo >();
         
         groundTile = GameManager.Resource.Load<TileBase>(Path.Map + "White");
@@ -58,7 +58,7 @@ public class MapManager : MonoBehaviour
         moveInfoTilemap.transform.SetParent(grid.transform);
 
         mapData = new int[mapWidth, mapHeight];
-        SpawnAll();
+        spawnController.SpawnAllObjects(); // SpawnAll();에서 변경
     }
 
     public void CreateMap()
@@ -71,27 +71,13 @@ public class MapManager : MonoBehaviour
 
         mapData = new int[mapWidth, mapHeight];
         mapCreator.GenerateMap(mapData, tilemap, groundTile, wallTile);
-        SpawnAll();
+        spawnController.SpawnAllObjects();
     }
     public void CreateMovePoint()
     {
         var temp = GameManager.Resource.Create<GameObject>(Path.Map + "Tilemap");
         var movePointTilemap = temp.GetComponent<Tilemap>();
         movePointTilemap.transform.SetParent(grid.transform);
-    }
-
-    public void SpawnAll()
-    {
-        //플레이어 생성
-        playerSpawner.SpawnPlayer(tilemap);
-
-        //장애물 생성
-        obstacleSpawner.SpawnObstacles(tilemap);
-
-        //몬스터 생성
-        monsterSpawner.SpawnMonsters(tilemap);
-
-        
     }
     
     public void SetObjectPosition(int x, int y, int objectID)
