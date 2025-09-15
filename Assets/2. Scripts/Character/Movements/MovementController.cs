@@ -36,6 +36,7 @@ public class MovementController : MonoBehaviour
     private void Start()
     {
         GameManager.Data.playerData.playerMoveData.PlayerPos = _cellPosition;
+        tilemap = GameManager.Map.tilemap;
         // 플레이어 시작 위치를 타일의 중앙으로 설정
         _cellPosition = tilemap.WorldToCell(transform.position);
         transform.position = tilemap.GetCellCenterWorld(_cellPosition);
@@ -166,6 +167,7 @@ public class MovementController : MonoBehaviour
             else
             {
                 // TODO: 다른곳 클릭시 이동범위 사라짐
+                Debug.Log("Player Click False");
                 GameManager.Map.ClearPlayerRange();
             }
         }

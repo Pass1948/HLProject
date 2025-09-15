@@ -137,7 +137,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridPlane: 1
-  tilemap: {fileID: 0}
+  tilemap: {fileID: 109440985243549466, guid: d9cb1868ca0eb0e48ad2297a238dc7c9, type: 3}
   groundY: 0
   moveTime: 0.2
   _cellPosition: {x: 0, y: 0, z: 0}
