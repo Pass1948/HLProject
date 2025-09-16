@@ -64,20 +64,21 @@ public class MapManager : MonoBehaviour
 
     public void CreateMap()
     {
-        //pathfinding = new Pathfinding(tilemap);
-        //grid = GameManager.Resource.Create<GameObject>(Path.Map + "Grid");
+        pathfinding = new Pathfinding(tilemap);
+        grid = GameManager.Resource.Create<GameObject>(Path.Map + "Grid");
 
-        //var temp = GameManager.Resource.Create<GameObject>(Path.Map + "Tilemap");
-        //tilemap = temp.GetComponent<Tilemap>();
-        //tilemap.transform.SetParent(grid.transform);
+        var temp = GameManager.Resource.Create<GameObject>(Path.Map + "Tilemap");
+        tilemap = temp.GetComponent<Tilemap>();
+        tilemap.transform.SetParent(grid.transform);
 
-        //var moveInfo = GameManager.Resource.Create<GameObject>(Path.Map + "MoveInfoTilemap");
-        //moveInfoTilemap = moveInfo.GetComponent<Tilemap>(); 
-        //moveInfoTilemap.transform.SetParent(grid.transform);
+        var moveInfo = GameManager.Resource.Create<GameObject>(Path.Map + "MoveInfoTilemap");
+        moveInfoTilemap = moveInfo.GetComponent<Tilemap>();
+        moveInfoTilemap.transform.SetParent(grid.transform);
 
-        //mapData = new int[mapWidth, mapHeight];
+        mapData = new int[mapWidth, mapHeight];
+        mapCreator.GenerateMap(mapData, tilemap, groundTile, wallTile);
 
-        //spawnController.SpawnAllObjects(); // SpawnAll();에서 변경
+        spawnController.SpawnAllObjects(); // SpawnAll();에서 변경
     }
     public void CreateMovePoint()
     {
@@ -102,7 +103,7 @@ public class MapManager : MonoBehaviour
 
     public void ClearPlayerRange()
     {
-        Debug.Log("Clear Player Range");
+        //Debug.Log("Clear Player Range");
         playerMoveInfo.RemoveMoveInfoRange(moveInfoTilemap);
     }
 
@@ -131,6 +132,12 @@ public class MapManager : MonoBehaviour
 
     public Vector2Int GetPlayerPosition()
     {
+        if (mapData == null)
+        {
+            Debug.Log("맵 데이터 없슴");
+            
+            return new Vector2Int(-1, -1);
+        }
 
         for(int x = 0; x < mapWidth; x++)
         {

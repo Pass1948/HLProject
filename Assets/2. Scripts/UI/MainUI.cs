@@ -28,6 +28,7 @@ public class MainUI : BaseUI
 
     private void OnFire()
     {
+        GameManager.TurnBased.SetSelectedAction(PlayerActionType.Attack);
         fireBtnObj.Fire();
     }
 

@@ -6,53 +6,61 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour
 {
     public EnemyModel model;
+    public EnemyAnimHandler animHandler;
     private EnemyStateMachine stateMachine;
-    private EnemyAnimHandler animHandler;
     
     public Vector3Int GridPos { get; set; }
     public Vector3Int TargetPos { get; set; }
-    public int MoveRange;
-    public int AttackRange ;
-    public int isDie;
-    public int isDone;
+
+    public int moveRange;
+    public int attackRange;
+    public bool isDie;
+    public bool isDone = false;
+    public bool startTurn =false;
+
     public float moveDuration = 0.2f;
 
     private void OnEnable()
     {
-        GameManager.Event.Subscribe(EventType.CommandBuffered, StartTurn);
+        GameManager.Event.Subscribe(EventType.EnemyTurnStart, StartTurn);
     }
 
-    private void Awake()
+    private void OnDisable()
     {
-        
-        
+        GameManager.Event.Unsubscribe(EventType.EnemyTurnStart, StartTurn);
     }
 
-    private void Start()
+    public void InitController()
     {
-        stateMachine.Init();
         Vector2Int player = GameManager.Map.GetPlayerPosition();
+        // ìƒíƒœë¨¸ì‹  í• ë‹¹, Init ì´ˆê¸° ìƒíƒœ Idleë¡œ
+
+        moveRange = model.moveRange;
+        attackRange = model.attackRange;
+        isDie = model.isDie;
+        Debug.Log(moveRange);
+
+        RunStateMaching();
     }
 
-    public void Init(EnemyModel model, EnemyAnimHandler animHandle)
+    public void RunStateMaching()
     {
-        // »óÅÂ¸Ó½Å ÇÒ´ç, Init ÃÊ±â »óÅÂ Idle·Î
-        animHandler = animHandle;
-        this.model = model;
         stateMachine = new EnemyStateMachine(animHandler, this);
+        if (stateMachine == null) Debug.Log("ìƒíƒœë¨¸ì‹  ì—†ìŠ´");
+        stateMachine.Init();
     }
 
     public void SetPosition(int x, int y)
     {
         GridPos = new Vector3Int(x, y, 0);
-        Debug.Log($"Enemy{GridPos}");
+        //Debug.Log($"Enemy{GridPos}");
     }
 
     public void InitTarget()
     {
         Vector2Int player = GameManager.Map.GetPlayerPosition();
 
-        if (player.x != -1) // Ã£¾ÒÀ¸¸é
+        if (player.x != -1) // ì°¾ì•˜ìœ¼ë©´
         {
             TargetPos = new Vector3Int(player.x, player.y, 0);
         }
@@ -61,7 +69,7 @@ public class EnemyController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        stateMachine.Excute();
+        stateMachine?.Excute();
 
         if (Input.GetKeyDown(KeyCode.A))
         {
@@ -79,10 +87,7 @@ public class EnemyController : MonoBehaviour
     }
 
 
-    private void OnDisable()
-    {
-        GameManager.Event.Unsubscribe(EventType.CommandBuffered, StartTurn);
-    }
+
 
     private void OnHitState()
     {
@@ -91,15 +96,22 @@ public class EnemyController : MonoBehaviour
 
     public void StartTurn()
     {
-        
-        stateMachine.IdleState.StartTurn = true;
+
+        startTurn = true;
         stateMachine.ChangeState(stateMachine.EvaluateState);
 
-        // °¢°¢ÀÇ ¿¡³Ê¹ÌÀÇ StarTurn
+        // ê°ê°ì˜ ì—ë„ˆë¯¸ì˜ StarTurn
     }
 
     public IEnumerator MoveAlongPath(List<Vector3Int> path)
     {
+        if (path == null || path.Count == 0)
+        {
+            Debug.LogWarning("ê¸¸ì´ ë¹„ì—ˆìŒ");
+            yield break;
+        }
+
+
         foreach (var cell in path)
         {
             Vector3 targetPos = GameManager.Map.tilemap.GetCellCenterWorld(cell);
