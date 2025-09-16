@@ -96,8 +96,8 @@ public class EnemyController : MonoBehaviour
 
     public void StartTurn()
     {
-        
-        stateMachine.IdleState.StartTurn = true;
+
+        startTurn = true;
         stateMachine.ChangeState(stateMachine.EvaluateState);
 
         // 각각의 에너미의 StarTurn
