@@ -25,7 +25,7 @@ public class EvaluateEnemyState : BaseEnemyState
         }
 
         int distance = GetDistanceTarget(enemyPos, playerPos);
-        if(distance <= controller.AttackRange)
+        if(distance <= controller.attackRange)
         {
             stateMachine.ChangeState(stateMachine.AttackState);
         }
