@@ -5,7 +5,6 @@ using UnityEngine.UI;
 public class AttackController : MonoBehaviour
 {
     [SerializeField] private RectTransform slotContainer;
-    [SerializeField] private RectTransform bulletSlotPrefab;
     [SerializeField] private RectTransform discardBg;
 
     private RectTransform bullet;
@@ -18,6 +17,11 @@ public class AttackController : MonoBehaviour
 
     [SerializeField] private int AmmoCount = 6;
     public int Capacity => AmmoCount;
+
+    private void OnEnable()
+    {
+        bullet = GameManager.Resource.Load<RectTransform>(Path.Weapon + "Bullet");  
+    }
 
     //탄환버튼 OnClick
     public void SelectAmmo(Button btn)
@@ -40,7 +44,7 @@ public class AttackController : MonoBehaviour
             if (selectBulletBg) selectBulletBg.color = bgNormal;
             selectedAmmoBtn = null;
             selectBulletBg = null;
-            bullet = null;
+            //bullet = null;
             return;
         }
 
@@ -111,7 +115,6 @@ public class AttackController : MonoBehaviour
             bullet.localScale = Vector3.one;
             
             bullet.GetComponent<AmmoLabelView>()?.RefreshLabel();
-            Refresh(discardBg);
         }
         else
         {
@@ -121,9 +124,8 @@ public class AttackController : MonoBehaviour
         //상태 정리
         selectedAmmoBtn = null;
         selectBulletBg = null;
-        bullet = null;
+        //bullet = null;
 
-        Refresh(slotContainer);
         Debug.Log("Fire");
     }
 
@@ -167,14 +169,8 @@ public class AttackController : MonoBehaviour
         // 선택 상태 리셋
         selectedAmmoBtn = null;
         selectBulletBg = null;
-        bullet = null;
+        //bullet = null;
 
-        // 레이아웃 갱신
-        Refresh(slotContainer);
-        if (discardBg)
-        {
-            Refresh(discardBg);
-        }
 
         return result;
     }
@@ -189,19 +185,18 @@ public class AttackController : MonoBehaviour
                SpawnOne(a);
             }
         }
-        Refresh(slotContainer);
     }
 
     //버튼 연결
     private void SpawnOne(Ammo ammo)
     {
-        if (slotContainer == null || bulletSlotPrefab == null)
+        if (slotContainer == null || bullet == null)
         {
             Debug.LogError("Not Found slotContainer or bulletSlotPrefab");
             return;
         }
 
-        RectTransform slot = Instantiate(bulletSlotPrefab, slotContainer, false);
+        RectTransform slot = GameManager.Resource.Create<RectTransform>(Path.Weapon + "Bullet", slotContainer);
         slot.localScale = Vector3.one;
 
         var view = slot.GetComponent<BulletSlotView>();
@@ -224,17 +219,5 @@ public class AttackController : MonoBehaviour
         }
     }
 
-
-    //레이아웃 즉시 갱신
-    private static void Refresh(RectTransform root)
-    {
-        if (root == null)
-        {
-            return;
-        }
-        Canvas.ForceUpdateCanvases();
-        LayoutRebuilder.ForceRebuildLayoutImmediate(root);
-    }
-    
 
 }

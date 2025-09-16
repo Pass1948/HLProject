@@ -158,7 +158,6 @@ MonoBehaviour:
   slotContainer: {fileID: 0}
   bulletSlotPrefab: {fileID: 0}
   discardBg: {fileID: 0}
-  deck: {fileID: 0}
   AmmoCount: 6
 --- !u!114 &1285023821815941644
 MonoBehaviour:
