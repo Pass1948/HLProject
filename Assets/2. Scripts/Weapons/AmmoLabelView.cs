@@ -11,11 +11,6 @@ public class AmmoLabelView : MonoBehaviour
     {
         slot = GetComponent<BulletSlotView>();
     }
-    void Start()
-    {
-        
-    }
-
     public void RefreshLabel()
     {
         if(!label)

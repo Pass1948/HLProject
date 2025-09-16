@@ -18,14 +18,20 @@ public class PlayerTurnState : BaseTurnState
     {
         timer = turnSetVlaue.resetTime;
         // 턴 시작 시 커맨드 초기화후 입력 대기
+        GameManager.UI.OpenUI<PaseTurnUI>();
     }
 
     public override void Tick(float dt)
     {
         timer += dt;
-        if (timer > turnSetVlaue.turnDelayTime && turnSetVlaue.actionSelected==true)
+        if (timer > turnSetVlaue.turnDelayTime )
         {
-            HandleActionSelection();
+            GameManager.UI.CloseUI<PaseTurnUI>();
+            if (turnSetVlaue.actionSelected == true)
+            {
+                HandleActionSelection();
+            }
+
         }
     }
     private void HandleActionSelection()
