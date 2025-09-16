@@ -44,13 +44,13 @@ public class SpawnController : MonoBehaviour
                 BasePlayer basePlayer = GameManager.Unit.Player.GetComponent<BasePlayer>();
 
                 GameObject vehicleSpawn = GameManager.Resource.Create<GameObject>(Path.Player + "Vehicle");
-                BaseVehicle baseVehicle = GameManager.Unit.Vehicle.GetComponent<BaseVehicle>();
+                //BaseVehicle baseVehicle = GameManager.Unit.Vehicle.GetComponent<BaseVehicle>();
 
                 basePlayer.playerModel.InitData(GameManager.Data.GetUnit(UnitType.Player, 1001));
                 basePlayer.controller.GetPosition(randX, randY);
                 
-                baseVehicle.vehicleModel.InitData(GameManager.Data.GetUnit(UnitType.Vehicle, 1501));
-                baseVehicle.transform.parent = basePlayer.transform;
+/*                baseVehicle.vehicleModel.InitData(GameManager.Data.GetUnit(UnitType.Vehicle, 1501));
+                baseVehicle.transform.parent = basePlayer.transform;*/
 
                 //좌표 보정
                 GridSnapper.SnapToCellCenter(playerSpawn.transform, GameManager.Map.tilemap, new Vector2Int(randX, randY));
