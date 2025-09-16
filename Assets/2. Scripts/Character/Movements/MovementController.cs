@@ -162,6 +162,7 @@ public class MovementController : MonoBehaviour
             {
                 // TODO: 플레이어 클릭시 이동범위 확인할수있음
                 GameManager.Map.PlayerUpdateRange(_cellPosition, moveRange);
+                Debug.Log("Player Click True");
                 isPlayer = true;
             }
             else
@@ -204,6 +205,10 @@ public class MovementController : MonoBehaviour
 
         transform.position = end;
         _cellPosition = targetCell;
+
+        GameManager.Map.UpdateObjectPosition((int)start.x,(int)start.y,(int)_cellPosition.x,(int)_cellPosition.y,TileID.Player);
+        Debug.Log($"이건 못참지 {GameManager.Map.GetPlayerPosition()}");
+
         _isMoving = false;
     }
 }
