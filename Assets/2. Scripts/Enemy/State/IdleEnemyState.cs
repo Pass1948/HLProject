@@ -9,8 +9,6 @@ public class IdleEnemyState : BaseEnemyState
     {
     }
 
-    public bool StartTurn { get; set; } = false;
-
     public override void Enter()
     {
         //Debug.Log("Idle : Enter");
@@ -20,10 +18,8 @@ public class IdleEnemyState : BaseEnemyState
     public override void Excute()
     {
         //Debug.Log("Idle : Excute");
-
-        if (!StartTurn) return;
-
-        stateMachine.ChangeState(stateMachine.EvaluateState); 
+        if (controller.startTurn == false) return;
+            stateMachine.ChangeState(stateMachine.EvaluateState); 
 
         // ¥Î±‚¡ﬂ
         // do nothing!!

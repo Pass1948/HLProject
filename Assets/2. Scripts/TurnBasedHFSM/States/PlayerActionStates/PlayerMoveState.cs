@@ -4,13 +4,21 @@ using UnityEngine;
 
 public class PlayerMoveState : PlayerActionState
 {
+    public override void OnEnter()
+    {
+        base.OnEnter();
+        ChangeState<M_Windup>();
+    }
+
     //이동 동작 나누기 : 선딜, 동작, 후딜
     class M_Windup : PlayerActionState
     {
         float timer;
         public override void OnEnter()
         {
-            timer = turnSetVlaue.resetTime;
+            timer = turnSetVlaue.actionWindupTime;
+            GameManager.Event.Publish(EventType.PlayerMove);
+            GameManager.UI.CloseUI<MainUI>();
         }
         public override void Tick(float dt)
         {
@@ -44,7 +52,7 @@ public class PlayerMoveState : PlayerActionState
         float timer;
         public override void OnEnter()
         {
-            timer = turnSetVlaue.resetTime;
+            timer = turnSetVlaue.turnDelayTime;
         }
         public override void Tick(float dt)
         {

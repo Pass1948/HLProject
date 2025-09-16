@@ -9,8 +9,8 @@ public class EndEnemyState : BaseEnemyState
     public override void Enter()
     {
         Debug.Log("End : Enter");
-
-        controller.model.isDone = true;
+        controller.isDone = true;
+        stateMachine.ChangeState(stateMachine.IdleState);
     }
 
     public override void Excute()
@@ -21,6 +21,7 @@ public class EndEnemyState : BaseEnemyState
     public override void Exit()
     {
         Debug.Log("End : Exit");
+        
     }
 
 

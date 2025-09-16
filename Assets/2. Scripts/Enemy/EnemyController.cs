@@ -15,18 +15,19 @@ public class EnemyController : MonoBehaviour
     public int moveRange;
     public int attackRange;
     public bool isDie;
-    public bool isDone;
+    public bool isDone = false;
+    public bool startTurn =false;
 
     public float moveDuration = 0.2f;
 
     private void OnEnable()
     {
-        GameManager.Event.Subscribe(EventType.CommandBuffered, StartTurn);
+        GameManager.Event.Subscribe(EventType.EnemyTurnStart, StartTurn);
     }
 
     private void OnDisable()
     {
-        GameManager.Event.Unsubscribe(EventType.CommandBuffered, StartTurn);
+        GameManager.Event.Unsubscribe(EventType.EnemyTurnStart, StartTurn);
     }
 
     public void InitController()

@@ -1,11 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+public enum PlayerActionType
+{
+    None,
+    Move,
+    Attack,
+    Kick
+}
 public sealed class TurnStateMachine
 {
     public ITurnState Current { get; private set; }
-
+    public PlayerActionType selectedAction;
     // 초기 상태 지정용
     public void Set(ITurnState initial)
     {

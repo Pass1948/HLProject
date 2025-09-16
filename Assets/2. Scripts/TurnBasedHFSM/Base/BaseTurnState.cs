@@ -10,6 +10,7 @@ public abstract class BaseTurnState : ITurnState
     protected TurnSettingValue turnSetVlaue=> GameManager.TurnBased.turnSettingValue;
 
     protected bool locked;
+
     public bool IsLocked => locked;
     public virtual string Name => GetType().Name;
 
