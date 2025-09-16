@@ -55,21 +55,6 @@ public class MovementController : MonoBehaviour
     {
         GetCellPosition();
         //TODO: 마우스가 움직일 때마다 경로 미리보기(장보석,이영신)
-
-
-        //if (isPlayer == true)
-        //{
-        //    if (TryGetMouseWorldOnGrid(out var mouseWorld))
-        //    {
-        //        var targetCell = tilemap.WorldToCell(mouseWorld);
-        //        if (targetCell != _cellPosition)
-        //        {
-        //            var path = _pathfinding.FindPath(_cellPosition, targetCell);
-                    
-        //            PlayerMoveRange(path, tilemap, moveRange);
-        //        }
-        //    }
-        //}
     }
 
  
@@ -96,12 +81,12 @@ public class MovementController : MonoBehaviour
         if(isPlayer == false)return;
             if (TryGetMouseWorldOnGrid(out var mouseWorld))
             {
-                OnclickInfo(mouseWorld);
+                OnClickInfo(mouseWorld);
             }
         
     }
 
-    public void OnclickInfo(Vector3 mouseWorld)
+    public void OnClickInfo(Vector3 mouseWorld)
     {
         // 마우스 위치를 셀 위치로 변환
         var targetCell = tilemap.WorldToCell(mouseWorld);
@@ -112,7 +97,6 @@ public class MovementController : MonoBehaviour
         // _cellPosition : 시작 위치, targetCell : 목표 위치
         List<Vector3Int> path = _pathfinding.FindPath(_cellPosition, targetCell);
         Debug.Log($"Path Count : {_cellPosition}");
-
         if (path.Count > moveRange)
         {
             isPlayer = false;
@@ -137,6 +121,7 @@ public class MovementController : MonoBehaviour
         {
             if (hit.collider.gameObject.CompareTag("TileMap"))
             {
+
                 world = hit.point;
                 return true;
             }
