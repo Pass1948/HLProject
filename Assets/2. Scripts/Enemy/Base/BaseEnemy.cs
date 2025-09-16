@@ -38,8 +38,6 @@ public class BaseEnemy : MonoBehaviour
             Debug.LogError("[Enemy] EnemyController or AnimHandler is missing on prefab!");
         }
     }
-
-
     protected virtual void OnDestroy()
     {
         GameManager.Unit.enemies.Remove(this);

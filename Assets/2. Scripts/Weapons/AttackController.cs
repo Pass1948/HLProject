@@ -14,6 +14,8 @@ public class AttackController : MonoBehaviour
     private Color bgNormal = new Color(0f, 0f, 0f, 1f);
     private Color bgSel = new Color(1f, 0f, 0f, 1f);
 
+    public bool IsBtnSel => (selectedAmmoBtn != null) && (bullet != null);
+
 
     [SerializeField] private int AmmoCount = 6;
     public int Capacity => AmmoCount;

@@ -52,6 +52,11 @@ public class ReloadAmmo : MonoBehaviour
         magazine.Fire();
     }
     
+    public void OnReload()
+    {
+        Reload();
+    }
+
     //덱, 디스카드 새로고침
     private void RefreshDeckUI()
     {
