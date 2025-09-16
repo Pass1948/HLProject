@@ -15,10 +15,10 @@ public class DieEnemyState : BaseEnemyState
         if (controller.model.isDie)
         {
             animHandler.OnDie();
-           // 애니메이션 재생
-           // 후 파괴
+            // 애니메이션 재생
+            // 후 파괴
 
-           
+            
         }
     }
 

@@ -31,5 +31,6 @@ public class IdleEnemyState : BaseEnemyState
     public override void Exit()
     {
         Debug.Log("Idle : Exit");
+        controller.UpdatePlayerPos();
     }
 }

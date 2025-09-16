@@ -11,6 +11,7 @@ public class AttackEnemyState : BaseEnemyState
         Debug.Log("Attack : Enter");
 
         animHandler.OnAttack();
+
         stateMachine.ChangeState(stateMachine.EndState);
     }
 
