@@ -13,7 +13,8 @@ public class EnemyController : MonoBehaviour
     public Vector3Int TargetPos { get; set; }
 
     public int moveRange;
-    public int attackRange;
+    public int minAttackRange;
+    public int maxAttackRange;
     public bool isDie;
     public bool isDone = false;
     public bool startTurn =false;
@@ -36,7 +37,8 @@ public class EnemyController : MonoBehaviour
         // 상태머신 할당, Init 초기 상태 Idle로
 
         moveRange = model.moveRange;
-        attackRange = model.attackRange;
+        minAttackRange = model.minAttackRange;
+        maxAttackRange = model.maxAttackRange;
         isDie = model.isDie;
         Debug.Log(moveRange);
 
@@ -56,7 +58,7 @@ public class EnemyController : MonoBehaviour
         //Debug.Log($"Enemy{GridPos}");
     }
 
-    public void InitTarget()
+    public void UpdatePlayerPos()
     {
         Vector2Int player = GameManager.Map.GetPlayerPosition();
 

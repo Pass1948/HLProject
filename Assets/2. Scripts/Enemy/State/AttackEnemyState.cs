@@ -12,6 +12,7 @@ public class AttackEnemyState : BaseEnemyState
 
         animHandler.OnAttack();
 
+        stateMachine.ChangeState(stateMachine.EndState);
     }
 
     public override void Excute()
