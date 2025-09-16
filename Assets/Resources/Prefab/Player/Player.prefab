@@ -12,10 +12,11 @@ GameObject:
   - component: {fileID: 5552333829431678655}
   - component: {fileID: 942464425422479865}
   - component: {fileID: 7584174884319807590}
-  - component: {fileID: -1856612791200159872}
   - component: {fileID: -7353883541360639586}
   - component: {fileID: 5030179994721434972}
   - component: {fileID: 1285023821815941644}
+  - component: {fileID: 7643229736552632402}
+  - component: {fileID: 9123368742631599300}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -109,21 +110,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &-1856612791200159872
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8444475994722921609}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a9141cbd6e524f34e83103459aa892bb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerStat: {fileID: 0}
-  movementcontroller: {fileID: 0}
-  attackController: {fileID: 0}
 --- !u!114 &-7353883541360639586
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -139,6 +125,7 @@ MonoBehaviour:
   gridPlane: 1
   tilemap: {fileID: 109440985243549466, guid: d9cb1868ca0eb0e48ad2297a238dc7c9, type: 3}
   groundY: 0
+  moveRange: 0
   moveTime: 0.2
   _cellPosition: {x: 0, y: 0, z: 0}
   _isMoving: 0
@@ -156,7 +143,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotContainer: {fileID: 0}
-  bulletSlotPrefab: {fileID: 0}
   discardBg: {fileID: 0}
   AmmoCount: 6
 --- !u!114 &1285023821815941644
@@ -190,3 +176,29 @@ MonoBehaviour:
   m_DefaultActionMap: TestPlayer
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &7643229736552632402
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8444475994722921609}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a206643f16aa457488ee44cb9d5d95bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controller: {fileID: 0}
+  animHandler: {fileID: 0}
+--- !u!114 &9123368742631599300
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8444475994722921609}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 175c2c057a64e39489841a49aa8a4bd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

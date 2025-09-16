@@ -11,10 +11,12 @@ public class EnemyController : MonoBehaviour
     
     public Vector3Int GridPos { get; set; }
     public Vector3Int TargetPos { get; set; }
+
     public int moveRange;
     public int attackRange;
     public bool isDie;
     public bool isDone;
+
     public float moveDuration = 0.2f;
 
     private void OnEnable()
@@ -30,7 +32,7 @@ public class EnemyController : MonoBehaviour
     public void InitController()
     {
         Vector2Int player = GameManager.Map.GetPlayerPosition();
-        // »óÅÂ¸Ó½Å ÇÒ´ç, Init ÃÊ±â »óÅÂ Idle·Î
+        // ìƒíƒœë¨¸ì‹  í• ë‹¹, Init ì´ˆê¸° ìƒíƒœ Idleë¡œ
 
         moveRange = model.moveRange;
         attackRange = model.attackRange;
@@ -43,7 +45,7 @@ public class EnemyController : MonoBehaviour
     public void RunStateMaching()
     {
         stateMachine = new EnemyStateMachine(animHandler, this);
-        if (stateMachine == null) Debug.Log("»óÅÂ¸Ó½Å ¾ø½¿");
+        if (stateMachine == null) Debug.Log("ìƒíƒœë¨¸ì‹  ì—†ìŠ´");
         stateMachine.Init();
     }
 
@@ -57,7 +59,7 @@ public class EnemyController : MonoBehaviour
     {
         Vector2Int player = GameManager.Map.GetPlayerPosition();
 
-        if (player.x != -1) // Ã£¾ÒÀ¸¸é
+        if (player.x != -1) // ì°¾ì•˜ìœ¼ë©´
         {
             TargetPos = new Vector3Int(player.x, player.y, 0);
         }
@@ -97,14 +99,14 @@ public class EnemyController : MonoBehaviour
         stateMachine.IdleState.StartTurn = true;
         stateMachine.ChangeState(stateMachine.EvaluateState);
 
-        // °¢°¢ÀÇ ¿¡³Ê¹ÌÀÇ StarTurn
+        // ê°ê°ì˜ ì—ë„ˆë¯¸ì˜ StarTurn
     }
 
     public IEnumerator MoveAlongPath(List<Vector3Int> path)
     {
         if (path == null || path.Count == 0)
         {
-            Debug.LogWarning("±æÀÌ ºñ¾úÀ½");
+            Debug.LogWarning("ê¸¸ì´ ë¹„ì—ˆìŒ");
             yield break;
         }
 
