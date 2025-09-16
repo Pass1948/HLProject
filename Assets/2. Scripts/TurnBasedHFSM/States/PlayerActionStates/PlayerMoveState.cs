@@ -18,6 +18,7 @@ public class PlayerMoveState : PlayerActionState
         {
             timer = turnSetVlaue.actionWindupTime;
             GameManager.Event.Publish(EventType.PlayerMove);
+            GameManager.UI.CloseUI<MainUI>();
         }
         public override void Tick(float dt)
         {

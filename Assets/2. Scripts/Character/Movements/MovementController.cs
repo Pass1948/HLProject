@@ -15,7 +15,7 @@ public class MovementController : MonoBehaviour
     [SerializeField] private float groundY = 0f; // 그리드 셀 크기
 
     [Header("Movement Settings")]
-    [SerializeField] private int moveRange; // 이동 범위
+    private int moveRange; // 이동 범위
     [SerializeField] private float moveTime = 0.2f;
 
     public Vector3Int _cellPosition; // 플레이어 현재 위치
@@ -80,10 +80,31 @@ public class MovementController : MonoBehaviour
     public void SwitchMove()
     {
         if(_isMoving == false)
+        {
             _isMoving = true;
+   
+        }
         else
+        {
             _isMoving = false;
+            SwitchMoveRange(moveRange);
+        }
     }
+
+    public void SwitchMoveRange(int moveRange)
+    {
+        if (GameManager.Unit.Player.controller.moveRange == moveRange)
+        {
+            moveRange = 0;
+        }
+        else
+        {
+            moveRange = GameManager.Unit.Player.controller.moveRange;
+        }
+    }
+
+
+
     public void GetPosition(int x, int y)
     {
         _cellPosition = new Vector3Int(x, y, 0);
@@ -175,7 +196,6 @@ public class MovementController : MonoBehaviour
                 GameManager.Map.PlayerUpdateRange(_cellPosition, moveRange);
                 Debug.Log("Player Click True");
                 // 플레이어 클릭시 이동범위 확인할수있음
-                GameManager.Map.PlayerUpdateRange(GameManager.Data.playerData.playerMoveData.PlayerPos, GameManager.Data.playerData.playerMoveData.MoveRange);
                 GameManager.UI.OpenUI<MainUI>();
                 isPlayer = true;
             }

@@ -9,7 +9,6 @@ public class PlayerTurnEndState : BaseTurnState
     public override void OnEnter()
     {
         timer = turnSetVlaue.resetTime;
-        GameManager.Data.playerData.playerMoveData.MoveRange = turnManager.savedMoveRange;
     }
     public override void Tick(float dt)
     {

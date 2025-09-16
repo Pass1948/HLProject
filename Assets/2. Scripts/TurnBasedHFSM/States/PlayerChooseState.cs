@@ -15,15 +15,11 @@ public class PlayerChooseState : BaseTurnState
     {
         timer = turnSetVlaue.resetTime;
         // 턴 시작 시 커맨드 초기화후 입력 대기
+        GameManager.Event.Publish(EventType.PlayerMove);
     }
 
     public override void Tick(float dt)
     {
-        timer += dt;
-        if (timer > turnSetVlaue.turnDelayTime)
-        {
-            GameManager.Event.Publish(EventType.PlayerMove);
-        }
     }
     
 }

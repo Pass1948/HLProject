@@ -10,7 +10,7 @@ public class TurnBasedManager : MonoBehaviour
     [HideInInspector] public TurnStateMachine turnHFSM { get; private set; }
     [HideInInspector] public TurnSettingValue turnSettingValue { get; private set; }
 
-    [HideInInspector] public int savedMoveRange;
+     int savedMoveRange =0;
 
     private readonly Dictionary<Type, ITurnState> _stateCache = new Dictionary<Type, ITurnState>();
     private void Awake()
@@ -22,6 +22,7 @@ public class TurnBasedManager : MonoBehaviour
     private void OnEnable()
     {
         GameManager.Event.Subscribe(EventType.PlayerAction, HandleActionSelection);
+
     }
 
     private void OnDisable()
@@ -105,7 +106,4 @@ public class TurnBasedManager : MonoBehaviour
         turnHFSM.selectedAction = action;
         HandleActionSelection();
     }
-
-
-
 }

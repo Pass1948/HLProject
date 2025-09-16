@@ -12,7 +12,7 @@ public class PlayerTurnState : BaseTurnState
         timer = turnSetVlaue.resetTime;
         // 턴 시작 시 커맨드 초기화후 입력 대기
         GameManager.UI.OpenUI<PaseTurnUI>();
-        
+        GameManager.Event.Publish(EventType.PlayerMove);
     }
 
     public override void Tick(float dt)
@@ -21,7 +21,6 @@ public class PlayerTurnState : BaseTurnState
         if (timer > turnSetVlaue.turnDelayTime )
         {
             GameManager.UI.CloseUI<PaseTurnUI>();
-            GameManager.Event.Publish(EventType.PlayerMove);
         }
     }
 }

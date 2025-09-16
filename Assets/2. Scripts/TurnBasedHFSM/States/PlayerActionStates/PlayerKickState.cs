@@ -18,6 +18,7 @@ public class PlayerKickState : PlayerActionState
         {
             timer = turnSetVlaue.resetTime;
             GameManager.Event.Publish(EventType.PlayerMove);
+            GameManager.UI.CloseUI<MainUI>();
         }
         public override void Tick(float dt)
         {
