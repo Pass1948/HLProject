@@ -18,13 +18,13 @@ public class PlayerKickState : PlayerActionState
         {
             timer = turnSetVlaue.resetTime;
             GameManager.Event.Publish(EventType.PlayerMove);
-            GameManager.UI.CloseUI<MainUI>();
         }
         public override void Tick(float dt)
         {
             timer += dt;
-            if (timer > 0.5f)
+            if (timer > 0.1f)
             {
+                GameManager.UI.CloseUI<MainUI>();
                 ChangeState<K_Execute>();
             }
         }
@@ -40,7 +40,7 @@ public class PlayerKickState : PlayerActionState
         public override void Tick(float dt)
         {
             timer += dt;
-            if (timer > 0.5f)
+            if (timer > 0.1f)
             {
                 ChangeState<K_Recover>();
             }
@@ -57,8 +57,9 @@ public class PlayerKickState : PlayerActionState
         public override void Tick(float dt)
         {
             timer += dt;
-            if (timer > 0.5f)
+            if (timer > 0.1f)
             {
+                GameManager.Map.pathfinding.ResetMapData();
                 ChangeState<PlayerTurnEndState>();
             }
         }

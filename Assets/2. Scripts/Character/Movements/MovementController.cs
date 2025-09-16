@@ -28,11 +28,11 @@ public class MovementController : MonoBehaviour
 
     private void OnEnable()
     {
-
+        GameManager.Event.Subscribe(EventType.PlayerMove, SwitchMove);
     }
     private void OnDisable()
     {
-
+        GameManager.Event.Unsubscribe(EventType.PlayerMove, SwitchMove);
     }
     private void Awake()
     {
@@ -119,13 +119,15 @@ public class MovementController : MonoBehaviour
         // 마우스 눌렀다가 땠을 때에는 처리 하지 않음
         if (!value.isPressed) return;
 
-        TryGetMouseWorldOnPlayer();
-        if (isPlayer == false) return;
-        if (TryGetMouseWorldOnGrid(out var mouseWorld))
+        if(_isMoving== true)
         {
-            OnclickInfo(mouseWorld);
+            TryGetMouseWorldOnPlayer();
+            if (isPlayer == false) return;
+            if (TryGetMouseWorldOnGrid(out var mouseWorld))
+            {
+                OnclickInfo(mouseWorld);
+            }
         }
-
     }
 
     public void OnclickInfo(Vector3 mouseWorld)
@@ -164,6 +166,7 @@ public class MovementController : MonoBehaviour
         {
             if (hit.collider.gameObject.CompareTag("TileMap"))
             {
+                GameManager.TurnBased.SetSelectedAction(PlayerActionType.Move);
                 world = hit.point;
                 return true;
             }
@@ -189,6 +192,7 @@ public class MovementController : MonoBehaviour
             {
                 // TODO: 플레이어 클릭시 이동범위 확인할수있음
                 GameManager.Map.PlayerUpdateRange(_cellPosition, moveRange);
+                GameManager.UI.OpenUI<MainUI>();
                 Debug.Log("Player Click True");
                 isPlayer = true;
             }
@@ -197,6 +201,7 @@ public class MovementController : MonoBehaviour
                 // TODO: 다른곳 클릭시 이동범위 사라짐
                 Debug.Log("Player Click False");
                 GameManager.Map.ClearPlayerRange();
+                GameManager.UI.CloseUI<MainUI>();
             }
         }
     }
