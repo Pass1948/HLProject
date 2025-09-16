@@ -103,7 +103,7 @@ public class MapManager : MonoBehaviour
 
     public void ClearPlayerRange()
     {
-        Debug.Log("Clear Player Range");
+        //Debug.Log("Clear Player Range");
         playerMoveInfo.RemoveMoveInfoRange(moveInfoTilemap);
     }
 

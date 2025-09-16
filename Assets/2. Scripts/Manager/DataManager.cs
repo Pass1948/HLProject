@@ -74,7 +74,7 @@ public class DataManager : MonoBehaviour
             }
 
             unitDB[data.Type][data.ID] = data;
-            Debug.Log($"{unitDB.Count}");
+            //Debug.Log($"{unitDB.Count}");
         }
 
     }
