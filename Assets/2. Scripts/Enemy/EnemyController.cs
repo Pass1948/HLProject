@@ -5,38 +5,41 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
+    public EnemyModel model;
     private EnemyStateMachine stateMachine;
     private EnemyAnimHandler animHandler;
     
     public Vector3Int GridPos { get; set; }
     public Vector3Int TargetPos { get; set; }
-    public int MoveRange = 2;
-    public int AttackRange = 1;
-    public int HP = 30;
-
-    public bool isDone = false;
-    public bool isDie = false;
-
+    public int MoveRange;
+    public int AttackRange ;
+    public int isDie;
+    public int isDone;
     public float moveDuration = 0.2f;
-
-
-    private void Awake()
-    {
-        animHandler = GetComponent<EnemyAnimHandler>();
-
-        // 상태머신 할당, Init 초기 상태 Idle로
-        stateMachine = new EnemyStateMachine(animHandler, this);
-    }
 
     private void OnEnable()
     {
         GameManager.Event.Subscribe(EventType.CommandBuffered, StartTurn);
     }
 
+    private void Awake()
+    {
+        
+        
+    }
+
     private void Start()
     {
         stateMachine.Init();
         Vector2Int player = GameManager.Map.GetPlayerPosition();
+    }
+
+    public void Init(EnemyModel model, EnemyAnimHandler animHandle)
+    {
+        // 상태머신 할당, Init 초기 상태 Idle로
+        animHandler = animHandle;
+        this.model = model;
+        stateMachine = new EnemyStateMachine(animHandler, this);
     }
 
     public void SetPosition(int x, int y)

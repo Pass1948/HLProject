@@ -10,7 +10,7 @@ public class EndEnemyState : BaseEnemyState
     {
         Debug.Log("End : Enter");
 
-        controller.isDone = true;
+        controller.model.isDone = true;
     }
 
     public override void Excute()

@@ -4,34 +4,33 @@ using UnityEngine;
 
 public class SpawnController : MonoBehaviour
 {
-    private MonsterPool monsterPool;
+    private EnemyPool enemyPool;
     private BasicObstaclePool obstaclePool;
     
-    private GameObject monsterPrefab;
+    private GameObject enemyPrefab;
     private GameObject obstaclePrefab;
     
-    // MapManager의 Awake에서 호출
+    // MapManager의 Start에서 호출
     public void InitializeSpawnersAndPools()
     {
-        monsterPool = gameObject.AddComponent<MonsterPool>();
+        enemyPool = gameObject.AddComponent<EnemyPool>();
         obstaclePool = gameObject.AddComponent<BasicObstaclePool>();
         
-        monsterPrefab = GameManager.Resource.Load<GameObject>(Path.Enemy + "Enemy");
+        enemyPrefab = GameManager.Resource.Load<GameObject>(Path.Enemy + "Enemy");
         obstaclePrefab = GameManager.Resource.Load<GameObject>(Path.Map + "Obstacle");
         
-        monsterPool.prefab = monsterPrefab;
+        enemyPool.prefab = enemyPrefab;
         obstaclePool.prefab = obstaclePrefab;
         
-        monsterPool.InitializePool(10);
+        enemyPool.InitializePool(10);
         obstaclePool.InitializePool(20);
     }
-
-    // 모든 오브젝트 스폰을 총괄하는 함수
+    
     public void SpawnAllObjects()
     {
         SpawnPlayer();
         SpawnObstacles(10);
-        SpawnMonsters(5);
+        SpawnEnemys(5);
     }
     
     private void SpawnPlayer()
@@ -82,13 +81,13 @@ public class SpawnController : MonoBehaviour
         }
     }
 
-    // 몬스터 스폰
-    private void SpawnMonsters(int count)
+    // 적 스폰
+    private void SpawnEnemys(int count)
     {
         for (int i = 0; i < count; i++)
         {
-            GameObject monster = monsterPool.GetPooledObject();
-
+            GameObject enemy = enemyPool.GetPooledObject();
+            BaseEnemy baseEnemy = enemy.GetComponent<BaseEnemy>();
             int maxAttempts = 100;
             for (int j = 0; j < maxAttempts; j++)
             {
@@ -99,8 +98,12 @@ public class SpawnController : MonoBehaviour
                 if (GameManager.Map.mapData[randX, randY] == TileID.Terrain &&
                     !(randX >= 0 && randX <= 3 && randY >= 0 && randY <= 3))
                 {
-                    //좌표 보정
-                    GridSnapper.SnapToCellCenter(monster.transform, GameManager.Map.tilemap, new Vector2Int(randX, randY));
+                    //좌표 
+                    GridSnapper.SnapToCellCenter(enemy.transform, GameManager.Map.tilemap, new Vector2Int(randX, randY));
+                    
+                    baseEnemy.enemyModel.InitData(GameManager.Data.GetUnit(UnitType.Enemy, Random.Range(2001, 2010)));
+                    baseEnemy.controller.SetPosition(randX, randY);
+                    baseEnemy.controller.InitTarget();
                     
                     GameManager.Map.SetObjectPosition(randX, randY, TileID.Enemy);
                     break;

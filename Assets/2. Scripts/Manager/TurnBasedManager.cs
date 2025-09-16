@@ -63,4 +63,9 @@ public class TurnBasedManager : MonoBehaviour
         _stateCache.Clear();
     }
 
+    public string GetState()
+    {
+        var current = turnHFSM != null ? turnHFSM.Current : null;
+        return current != null ? current.Name : "None";
+    }
 }
