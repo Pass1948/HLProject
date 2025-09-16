@@ -6,7 +6,7 @@ using UnityEngine;
 public abstract class UnitModel
 {
     public int id;
-    public string name;
+    public string unitName;
     public int size;
     public int health;
     public int moveRange;
