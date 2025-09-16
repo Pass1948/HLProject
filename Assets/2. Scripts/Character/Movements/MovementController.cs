@@ -42,7 +42,6 @@ public class MovementController : MonoBehaviour
 
     private void Start()
     {
-
         tilemap = GameManager.Map.tilemap;
         // 플레이어 시작 위치를 타일의 중앙으로 설정
         _cellPosition = tilemap.WorldToCell(transform.position);
@@ -57,19 +56,19 @@ public class MovementController : MonoBehaviour
         GetCellPosition();
         //TODO: 마우스가 움직일 때마다 경로 미리보기(장보석,이영신)
 
-        if (isPlayer == true)
-        {
-            if (TryGetMouseWorldOnGrid(out var mouseWorld))
-            {
-                var targetCell = tilemap.WorldToCell(mouseWorld);
-                if (targetCell != _cellPosition)
-                {
-                    var path = _pathfinding.FindPath(_cellPosition, targetCell);
+        //if (isPlayer == true)
+        //{
+        //    if (TryGetMouseWorldOnGrid(out var mouseWorld))
+        //    {
+        //        var targetCell = tilemap.WorldToCell(mouseWorld);
+        //        if (targetCell != _cellPosition)
+        //        {
+        //            var path = _pathfinding.FindPath(_cellPosition, targetCell);
                     
-                    PlayerMoveRange(path, tilemap, moveRange);
-                }
-            }
-        }
+        //            PlayerMoveRange(path, tilemap, moveRange);
+        //        }
+        //    }
+        //}
     }
 
  
