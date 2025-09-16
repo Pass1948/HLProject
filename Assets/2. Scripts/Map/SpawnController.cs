@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class SpawnController : MonoBehaviour
 {
-    private EnemyPool enemyPool;
     private BasicObstaclePool obstaclePool;
     
     private GameObject enemyPrefab;
@@ -13,16 +12,12 @@ public class SpawnController : MonoBehaviour
     // MapManager의 Start에서 호출
     public void InitializeSpawnersAndPools()
     {
-        enemyPool = gameObject.AddComponent<EnemyPool>();
         obstaclePool = gameObject.AddComponent<BasicObstaclePool>();
         
         enemyPrefab = GameManager.Resource.Load<GameObject>(Path.Enemy + "Enemy");
         obstaclePrefab = GameManager.Resource.Load<GameObject>(Path.Map + "Obstacle");
         
-        enemyPool.prefab = enemyPrefab;
         obstaclePool.prefab = obstaclePrefab;
-        
-        enemyPool.InitializePool(10);
         obstaclePool.InitializePool(20);
     }
     
@@ -86,8 +81,9 @@ public class SpawnController : MonoBehaviour
     {
         for (int i = 0; i < count; i++)
         {
-            GameObject enemy = enemyPool.GetPooledObject();
+            GameObject enemy =  Instantiate(enemyPrefab, transform);
             BaseEnemy baseEnemy = enemy.GetComponent<BaseEnemy>();
+            
             int maxAttempts = 100;
             for (int j = 0; j < maxAttempts; j++)
             {
