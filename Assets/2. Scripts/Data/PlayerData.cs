@@ -6,8 +6,8 @@ public class PlayerMoveData
 {
     [Header("플레이어 이동Info")]
     [field: SerializeField] public Vector3Int PlayerPos;
-    [field: SerializeField][Range(0, 10)] public int MoveRange =5;
-    [field: SerializeField][Range(0, 10)] public int MoveRangeModifier = 3;
+    [field: SerializeField] public int MoveRange =1;
+    [field: SerializeField] public int MoveRangeModifier =2;
 
     [field: SerializeField][Range(0, 10)] public float HP = 100;
 }

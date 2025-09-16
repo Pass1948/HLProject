@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class SpawnController : MonoBehaviour
 {
-    private EnemyPool enemyPool;
     private BasicObstaclePool obstaclePool;
     
     private GameObject enemyPrefab;
@@ -13,16 +12,12 @@ public class SpawnController : MonoBehaviour
     // MapManager의 Start에서 호출
     public void InitializeSpawnersAndPools()
     {
-        enemyPool = gameObject.AddComponent<EnemyPool>();
         obstaclePool = gameObject.AddComponent<BasicObstaclePool>();
         
         enemyPrefab = GameManager.Resource.Load<GameObject>(Path.Enemy + "Enemy");
         obstaclePrefab = GameManager.Resource.Load<GameObject>(Path.Map + "Obstacle");
         
-        enemyPool.prefab = enemyPrefab;
         obstaclePool.prefab = obstaclePrefab;
-        
-        enemyPool.InitializePool(10);
         obstaclePool.InitializePool(20);
     }
     
@@ -45,9 +40,14 @@ public class SpawnController : MonoBehaviour
             if (GameManager.Map.mapData[randX, randY] == TileID.Terrain)
             {
                 // 플레이어 생성
-                GameObject player = GameManager.Resource.Create<GameObject>(Path.Player + "Player");
+                GameObject playerSpawn = GameManager.Resource.Create<GameObject>(Path.Player + "Player");
+                BasePlayer basePlayer = GameManager.Unit.Player.GetComponent<BasePlayer>();
+                
+                basePlayer.playerModel.InitData(GameManager.Data.GetUnit(UnitType.Player, 1001));
+                basePlayer.controller.GetPosition(randX, randY);
+
                 //좌표 보정
-                GridSnapper.SnapToCellCenter(player.transform, GameManager.Map.tilemap, new Vector2Int(randX, randY));
+                GridSnapper.SnapToCellCenter(playerSpawn.transform, GameManager.Map.tilemap, new Vector2Int(randX, randY));
                 // 맵 데이터에 기록
                 GameManager.Map.SetObjectPosition(randX, randY, TileID.Player);
                 return;
@@ -86,8 +86,9 @@ public class SpawnController : MonoBehaviour
     {
         for (int i = 0; i < count; i++)
         {
-            GameObject enemy = enemyPool.GetPooledObject();
+            GameObject enemy =  Instantiate(enemyPrefab, transform);
             BaseEnemy baseEnemy = enemy.GetComponent<BaseEnemy>();
+            
             int maxAttempts = 100;
             for (int j = 0; j < maxAttempts; j++)
             {
@@ -100,11 +101,11 @@ public class SpawnController : MonoBehaviour
                 {
                     //좌표 
                     GridSnapper.SnapToCellCenter(enemy.transform, GameManager.Map.tilemap, new Vector2Int(randX, randY));
-                    
-                    baseEnemy.enemyModel.InitData(GameManager.Data.GetUnit(UnitType.Enemy, Random.Range(2001, 2010)));
+
+                    baseEnemy.InitEnemy(GameManager.Data.GetUnit(UnitType.Enemy, Random.Range(2001, 2010)));
                     baseEnemy.controller.SetPosition(randX, randY);
                     baseEnemy.controller.InitTarget();
-                    
+
                     GameManager.Map.SetObjectPosition(randX, randY, TileID.Enemy);
                     break;
                 }

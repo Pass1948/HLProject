@@ -47,8 +47,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e83ac3fe4869a0a468b52d2bef644353, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveRange: 2
-  AttackRange: 1
+  animHandler: {fileID: 0}
+  moveRange: 0
+  attackRange: 0
   isDie: 0
   isDone: 0
   moveDuration: 0.2
@@ -64,6 +65,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66c4cbe262ee5be4192c4133ec7c9b08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 5758160549951095835}
 --- !u!114 &8273540929910058778
 MonoBehaviour:
   m_ObjectHideFlags: 0

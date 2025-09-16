@@ -15,6 +15,7 @@ public class MovementController : MonoBehaviour
     [SerializeField] private float groundY = 0f; // 그리드 셀 크기
 
     [Header("Movement Settings")]
+    [SerializeField] private int moveRange; // 이동 범위
     [SerializeField] private float moveTime = 0.2f;
 
     public Vector3Int _cellPosition; // 플레이어 현재 위치
@@ -22,6 +23,8 @@ public class MovementController : MonoBehaviour
     public bool isPlayer=false;
 
     private Pathfinding _pathfinding;
+
+    private BasePlayer basePlayer;
 
     private void OnEnable()
     {
@@ -31,15 +34,19 @@ public class MovementController : MonoBehaviour
     {
         GameManager.Event.Unsubscribe(EventType.PlayerMove, SwitchMove);
     }
-
+    private void Awake()
+    {
+        basePlayer = GetComponent<BasePlayer>();
+        
+    }
 
     private void Start()
     {
-        GameManager.Data.playerData.playerMoveData.PlayerPos = _cellPosition;
         tilemap = GameManager.Map.tilemap;
         // 플레이어 시작 위치를 타일의 중앙으로 설정
         _cellPosition = tilemap.WorldToCell(transform.position);
         transform.position = tilemap.GetCellCenterWorld(_cellPosition);
+        moveRange = basePlayer.playerModel.moveRange;
 
         // A* 알고리즘 초기화
         _pathfinding = new Pathfinding(tilemap);
@@ -48,33 +55,23 @@ public class MovementController : MonoBehaviour
     {
         GetCellPosition();
 
-        if (isPlayer == true)
-        {
-            if (TryGetMouseWorldOnGrid(out var mouseWorld))
-            {
-                var targetCell = tilemap.WorldToCell(mouseWorld);
-                if (targetCell != _cellPosition)
-                {
-                    var path = _pathfinding.FindPath(_cellPosition, targetCell);
-                    int moveRange = GameManager.Data.playerData.playerMoveData.MoveRange;
-                    PlayerMoveRange(path, tilemap, moveRange);
-                }
-            }
-        }
+
+        //if (isPlayer == true)
+        //{
+        //    if (TryGetMouseWorldOnGrid(out var mouseWorld))
+        //    {
+        //        var targetCell = tilemap.WorldToCell(mouseWorld);
+        //        if (targetCell != _cellPosition)
+        //        {
+        //            var path = _pathfinding.FindPath(_cellPosition, targetCell);
+                    
+        //            PlayerMoveRange(path, tilemap, moveRange);
+        //        }
+        //    }
+        //}
     }
 
-    public void Init(Tilemap tilemap)
-    {
-        this.tilemap = tilemap;
-        // 플레이어 시작 위치를 타일의 중앙으로 설정
-        _cellPosition = tilemap.WorldToCell(transform.position);
-        transform.position = tilemap.GetCellCenterWorld(_cellPosition);
-
-        // A* 알고리즘 초기화
-        _pathfinding = new Pathfinding(tilemap);
-    }
-
-
+ 
     public void PlayerMoveRange(List<Vector3Int> path, Tilemap tilemap, int moveRange)
     {
         GameManager.PathPreview.ShowPath(path, tilemap, moveRange);
@@ -87,7 +84,10 @@ public class MovementController : MonoBehaviour
         else
             _isMoving = false;
     }
-
+    public void GetPosition(int x, int y)
+    {
+        _cellPosition = new Vector3Int(x, y, 0);
+    }
 
     private void OnMovementClick(InputValue value)
     {
@@ -121,17 +121,13 @@ public class MovementController : MonoBehaviour
         // A* 알고리즘 경로 설정
         // _cellPosition : 시작 위치, targetCell : 목표 위치
         List<Vector3Int> path = _pathfinding.FindPath(_cellPosition, targetCell);
-
-        int moveRange = GameManager.Data.playerData.playerMoveData.MoveRange;
+        Debug.Log($"Path Count : {_cellPosition}");
 
         if (path.Count > moveRange)
         {
             isPlayer = false;
             return;
         }
-        // maxRange 보다 작거나 같을 때만 이동
-        var maxRange = GameManager.Data.playerData.playerMoveData.MoveRange;
-
         StopAllCoroutines();
         StartCoroutine(FollowPath(path));
 
@@ -175,6 +171,9 @@ public class MovementController : MonoBehaviour
         {
             if (hit.collider.gameObject.CompareTag("Player"))
             {
+                // TODO: 플레이어 클릭시 이동범위 확인할수있음
+                GameManager.Map.PlayerUpdateRange(_cellPosition, moveRange);
+                Debug.Log("Player Click True");
                 // 플레이어 클릭시 이동범위 확인할수있음
                 GameManager.Map.PlayerUpdateRange(GameManager.Data.playerData.playerMoveData.PlayerPos, GameManager.Data.playerData.playerMoveData.MoveRange);
                 GameManager.UI.OpenUI<MainUI>();
@@ -219,6 +218,10 @@ public class MovementController : MonoBehaviour
 
         transform.position = end;
         _cellPosition = targetCell;
-        GameManager.Data.playerData.playerMoveData.PlayerPos = _cellPosition;
+
+        GameManager.Map.UpdateObjectPosition((int)start.x,(int)start.y,(int)_cellPosition.x,(int)_cellPosition.y,TileID.Player);
+        Debug.Log($"이건 못참지 {GameManager.Map.GetPlayerPosition()}");
+
+        _isMoving = false;
     }
 }
