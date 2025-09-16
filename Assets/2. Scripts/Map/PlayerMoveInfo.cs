@@ -47,7 +47,6 @@ public class PlayerMoveInfo : MonoBehaviour
                         if (next.x < 0 || next.x >= mapWidth ||
                             next.y < 0 || next.y >= mapHeight)
                             continue;
-
                         if(visited.Contains(next)) continue;
 
 

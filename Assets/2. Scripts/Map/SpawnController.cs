@@ -110,7 +110,7 @@ public class SpawnController : MonoBehaviour
 
                     baseEnemy.InitEnemy(GameManager.Data.GetUnit(UnitType.Enemy, Random.Range(2001, 2010)));
                     baseEnemy.controller.SetPosition(randX, randY);
-                    baseEnemy.controller.InitTarget();
+                    baseEnemy.controller.UpdatePlayerPos();
 
                     GameManager.Map.SetObjectPosition(randX, randY, TileID.Enemy);
                     break;
