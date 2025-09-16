@@ -8,13 +8,22 @@ public class MainUI : BaseUI
     [SerializeField] Button fireBtn;
     [SerializeField] AttackController fireBtnObj;
 
-    [SerializeField] private Button reloadBtn;
+    [SerializeField] private Button rerollBtn;
     [SerializeField] private ReloadAmmo reloadBtnObj;
 
     private void Awake()
     {
         fireBtn.onClick.AddListener(OnFire);
-        reloadBtn.onClick.AddListener(OnReload);
+        rerollBtn.onClick.AddListener(OnReload);
+
+        //시작시에 한번 실행되게
+        fireBtn.interactable = (fireBtnObj != null) && fireBtnObj.IsBtnSel;
+    }
+
+    private void Update()
+    {
+        //선택 없으면 버튼 비활성하기 <- 이러면 리스너 실행안됨
+        fireBtn.interactable = (fireBtnObj != null) && fireBtnObj.IsBtnSel;
     }
 
     private void OnFire()
