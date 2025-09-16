@@ -33,10 +33,10 @@ public class PlayerMoveInfo : MonoBehaviour
                 {
                     Vector3Int[] dirs = {
 
-                        new Vector3Int(1, 0, 0),
-                        new Vector3Int(-1, 0, 0),
-                        new Vector3Int(0, 1, 0),
-                        new Vector3Int(0, -1, 0)
+                        new Vector3Int(moveRange, 0, 0),
+                        new Vector3Int(-moveRange, 0, 0),
+                        new Vector3Int(0,moveRange, 0),
+                        new Vector3Int(0, -moveRange, 0)
                      };
 
                     foreach (var dir in dirs)
@@ -47,6 +47,7 @@ public class PlayerMoveInfo : MonoBehaviour
                         if (next.x < 0 || next.x >= mapWidth ||
                             next.y < 0 || next.y >= mapHeight)
                             continue;
+
                         if(visited.Contains(next)) continue;
 
 
