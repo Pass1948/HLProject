@@ -9,12 +9,7 @@ public class EnemyAnimHandler : MonoBehaviour
     private static readonly int Die = Animator.StringToHash("Die");
     private static readonly int Attack = Animator.StringToHash("Attack");
 
-    private Animator animator;
-
-    private void Awake()
-    {
-        animator = GetComponentInChildren<Animator>();
-    }
+    [SerializeField] private Animator animator;
 
     public void OnMove(bool isMove)
     {

@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+
+
 [Serializable]
 public class DataManager : MonoBehaviour
 {
@@ -72,7 +74,7 @@ public class DataManager : MonoBehaviour
             }
 
             unitDB[data.Type][data.ID] = data;
-            Debug.Log($"{unitDB.Count}");
+            //Debug.Log($"{unitDB.Count}");
         }
 
     }

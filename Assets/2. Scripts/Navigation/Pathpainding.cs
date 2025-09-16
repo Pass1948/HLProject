@@ -4,14 +4,29 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 public class Pathfinding
 {
-    private Tilemap tilemap;
     private HashSet<Vector3Int> blocked;
     public Pathfinding(Tilemap tilemap)
     {
-        this.tilemap = tilemap;
+        tilemap = GameManager.Map.tilemap;
         blocked = new HashSet<Vector3Int>();
-        // TODO: 필요하면 타일맵에서 벽타일을 읽어와서 bblocked에 추가해응(장보석)
 
+        int mapWidth = GameManager.Map.mapWidth;
+        int mapHeight = GameManager.Map.mapHeight;
+        int[,] mapData = GameManager.Map.mapData;
+
+        for (int x = 0; x < mapWidth; x++)
+        {
+            for (int y = 0; y < mapHeight; y++)
+            {
+                int id = mapData[x, y];
+
+                // 벽, 적, 장애물 타일이면 막힌 좌표로 추가
+                if (id == TileID.Wall || id == TileID.Enemy || id == TileID.Obstacle)
+                {
+                    blocked.Add(new Vector3Int(x, y, 0));
+                }
+            }
+        }
     }
     /// <summary>
     /// A * 알고리즘으로 start -> goal 까지의 경로를 구함
