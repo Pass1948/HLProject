@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class EnemyChild : BaseEnemy
 {
-    protected override void OnEnable()
+    protected override void Start()
     {
-        base.OnEnable();
+        base.Start();
     }
 
 

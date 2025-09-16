@@ -6,8 +6,8 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour
 {
     public EnemyModel model;
+    public EnemyAnimHandler animHandler;
     private EnemyStateMachine stateMachine;
-    private EnemyAnimHandler animHandler;
     
     public Vector3Int GridPos { get; set; }
     public Vector3Int TargetPos { get; set; }
@@ -27,26 +27,23 @@ public class EnemyController : MonoBehaviour
         GameManager.Event.Unsubscribe(EventType.CommandBuffered, StartTurn);
     }
 
-    private void Start()
+    public void InitController()
     {
-
         Vector2Int player = GameManager.Map.GetPlayerPosition();
-    }
-
-    public void Init(EnemyModel model, EnemyAnimHandler animHandle)
-    {
-
-        Debug.Log("EnemyController : Init");
         // 상태머신 할당, Init 초기 상태 Idle로
-        this.model = model;
-        this.animHandler = animHandle;
 
         moveRange = model.moveRange;
         attackRange = model.attackRange;
         isDie = model.isDie;
         Debug.Log(moveRange);
 
+        RunStateMaching();
+    }
+
+    public void RunStateMaching()
+    {
         stateMachine = new EnemyStateMachine(animHandler, this);
+        if (stateMachine == null) Debug.Log("상태머신 없슴");
         stateMachine.Init();
     }
 
@@ -69,7 +66,7 @@ public class EnemyController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        stateMachine.Excute();
+        stateMachine?.Excute();
 
         if (Input.GetKeyDown(KeyCode.A))
         {
