@@ -10,7 +10,7 @@ public class SpawnController : MonoBehaviour
     private GameObject enemyPrefab;
     private GameObject obstaclePrefab;
     
-    // MapManager의 Awake에서 호출
+    // MapManager의 Start에서 호출
     public void InitializeSpawnersAndPools()
     {
         enemyPool = gameObject.AddComponent<EnemyPool>();
@@ -25,8 +25,7 @@ public class SpawnController : MonoBehaviour
         enemyPool.InitializePool(10);
         obstaclePool.InitializePool(20);
     }
-
-    // 모든 오브젝트 스폰을 총괄하는 함수
+    
     public void SpawnAllObjects()
     {
         SpawnPlayer();
