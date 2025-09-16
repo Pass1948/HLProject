@@ -13,7 +13,8 @@ public class EnemyModel : UnitModel
     public EnemyAttribute attri;
     public int rank;
     public int attack;
-    public int attackRange;
+    public int minAttackRange;
+    public int maxAttackRange;
 
     public bool isDie = false;
     public bool isDone = true;
@@ -27,7 +28,8 @@ public class EnemyModel : UnitModel
         rank = Random.Range(data.MinNum, data.MaxNum);
         health = data.Health;
         attack = data.Attack;
-        attackRange = Random.Range(data.MinAttackRange, data.MaxAttackRange);
+        minAttackRange = data.MinAttackRange;
+        maxAttackRange = data.MaxAttackRange;
         moveRange = data.MoveRange;
     }
 }

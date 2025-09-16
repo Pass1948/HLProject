@@ -8,9 +8,6 @@ public class TestScene : BaseScene
 {
     public override void SceneEnter()
     {
-        var ui = GameManager.UI.GetUI<TestUI>();
-        ui.OpenUI();
-
         GameManager.Map.CreateMap();
 
 

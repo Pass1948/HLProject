@@ -9,24 +9,22 @@ public class MapManager : MonoBehaviour
     public int[,] mapData;
     public int mapWidth = 10;
     public int mapHeight = 10;
-
+    
     public int moveRange = 3;
     public Vector3Int playerPos;
-
+    public int playerPosRange;
+    
     public MapCreator mapCreator;
     public PlayerMoveInfo playerMoveInfo;
+    private SpawnController spawnController;
 
-    private Pathfinding pathfinding;
-
+    public Pathfinding pathfinding;
     public Tilemap tilemap;
     public Tilemap moveInfoTilemap;
 
     private TileBase groundTile;
     private TileBase wallTile;
     private TileBase moveInfoTile;
-    public int playerPosRange;
-    
-    private SpawnController spawnController;
 
     GameObject grid;
 
@@ -34,8 +32,9 @@ public class MapManager : MonoBehaviour
     {
         mapCreator = gameObject.AddComponent<MapCreator>();
         spawnController = gameObject.AddComponent<SpawnController>();
-        spawnController.InitializeSpawnersAndPools();
         playerMoveInfo = gameObject.AddComponent< PlayerMoveInfo >();
+        
+        spawnController.InitializeSpawnersAndPools();
         
         groundTile = GameManager.Resource.Load<TileBase>(Path.Map + "White");
         wallTile = GameManager.Resource.Load<TileBase>(Path.Map + "Black");
@@ -45,26 +44,25 @@ public class MapManager : MonoBehaviour
     void Start()
     {
         //TODO: Test 할 시 주석 풀어주세요잉 (장보석)
-        grid = GameManager.Resource.Create<GameObject>(Path.Map + "Grid");
+        //grid = GameManager.Resource.Create<GameObject>(Path.Map + "Grid");
 
-        var temp = GameManager.Resource.Create<GameObject>(Path.Map + "Tilemap");
-        tilemap = temp.GetComponent<Tilemap>();
-        tilemap.transform.SetParent(grid.transform);
+        //var temp = GameManager.Resource.Create<GameObject>(Path.Map + "Tilemap");
+        //tilemap = temp.GetComponent<Tilemap>();
+        //tilemap.transform.SetParent(grid.transform);
 
-        var moveInfo = GameManager.Resource.Create<GameObject>(Path.Map + "MoveInfoTilemap");
-        moveInfoTilemap = moveInfo.GetComponent<Tilemap>(); 
-        moveInfoTilemap.transform.SetParent(grid.transform);
+        //var moveInfo = GameManager.Resource.Create<GameObject>(Path.Map + "MoveInfoTilemap");
+        //moveInfoTilemap = moveInfo.GetComponent<Tilemap>(); 
+        //moveInfoTilemap.transform.SetParent(grid.transform);
 
-        mapData = new int[mapWidth, mapHeight];
-        mapCreator.GenerateMap(mapData, tilemap, groundTile, wallTile);
+        //mapData = new int[mapWidth, mapHeight];
+        //mapCreator.GenerateMap(mapData, tilemap, groundTile, wallTile);
 
-        spawnController.SpawnAllObjects(); // SpawnAll();에서 변경
+        //spawnController.SpawnAllObjects(); // SpawnAll();에서 변경
 
     }
 
     public void CreateMap()
     {
-        pathfinding = new Pathfinding(tilemap);
         grid = GameManager.Resource.Create<GameObject>(Path.Map + "Grid");
 
         var temp = GameManager.Resource.Create<GameObject>(Path.Map + "Tilemap");
@@ -74,11 +72,13 @@ public class MapManager : MonoBehaviour
         var moveInfo = GameManager.Resource.Create<GameObject>(Path.Map + "MoveInfoTilemap");
         moveInfoTilemap = moveInfo.GetComponent<Tilemap>();
         moveInfoTilemap.transform.SetParent(grid.transform);
-
+    
         mapData = new int[mapWidth, mapHeight];
         mapCreator.GenerateMap(mapData, tilemap, groundTile, wallTile);
 
-        spawnController.SpawnAllObjects(); // SpawnAll();에서 변경
+        pathfinding = new Pathfinding(tilemap);
+
+        spawnController.SpawnAllObjects();
     }
     public void CreateMovePoint()
     {
