@@ -5,12 +5,13 @@ using UnityEngine;
 public class PlayerAttackState : PlayerActionState
 {
     // 공격 동작 나누기 : 선딜, 동작, 후딜
-    class A_Windup : PlayerActionState
+    class A_Windup : BaseTurnState
     {
         float timer;
         public override void OnEnter()
         {
             timer = turnSetVlaue.resetTime;
+            Debug.Log("Attack Windup");
         }
         public override void Tick(float dt)
         {
@@ -22,7 +23,7 @@ public class PlayerAttackState : PlayerActionState
         }
     }
     // 데이터처리
-    class A_Execute : PlayerActionState
+    class A_Execute : BaseTurnState
     {
         float timer;
         public override void OnEnter()
@@ -39,7 +40,7 @@ public class PlayerAttackState : PlayerActionState
         }
     }
 
-    class A_Recover : PlayerActionState
+    class A_Recover : BaseTurnState
     {
         float timer;
         public override void OnEnter()

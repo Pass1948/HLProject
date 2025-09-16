@@ -47,7 +47,6 @@ public class MovementController : MonoBehaviour
     private void Update()
     {
         GetCellPosition();
-        //TODO: 마우스가 움직일 때마다 경로 미리보기(장보석,이영신)
 
         if (isPlayer == true)
         {
@@ -165,15 +164,17 @@ public class MovementController : MonoBehaviour
         {
             if (hit.collider.gameObject.CompareTag("Player"))
             {
-                // TODO: 플레이어 클릭시 이동범위 확인할수있음
+                // 플레이어 클릭시 이동범위 확인할수있음
                 GameManager.Map.PlayerUpdateRange(GameManager.Data.playerData.playerMoveData.PlayerPos, GameManager.Data.playerData.playerMoveData.MoveRange);
+                GameManager.UI.OpenUI<MainUI>();
                 isPlayer = true;
             }
             else
             {
-                // TODO: 다른곳 클릭시 이동범위 사라짐
+                // 다른곳 클릭시 이동범위 사라짐
                 Debug.Log("Player Click False");
                 GameManager.Map.ClearPlayerRange();
+                GameManager.UI.CloseUI<MainUI>();
             }
         }
     }

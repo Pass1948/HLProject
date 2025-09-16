@@ -22,6 +22,7 @@ public class TurnBasedManager : MonoBehaviour
     {
         // 초기 상태 설정
         SetTo<IdleState>();
+        turnHFSM.selectedAction = PlayerActionType.None;
     }
 
     private void Update()
@@ -68,4 +69,13 @@ public class TurnBasedManager : MonoBehaviour
         var current = turnHFSM != null ? turnHFSM.Current : null;
         return current != null ? current.Name : "None";
     }
+
+    public void SetSelectedAction(PlayerActionType action)
+    {
+        turnHFSM.selectedAction = action;
+        turnSettingValue.actionSelected = true; // Tick에서 처리되도록 플래그 ON
+    }
+
+
+
 }

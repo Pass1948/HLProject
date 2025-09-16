@@ -2,16 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum PlayerActionType
-{
-    None,
-    Move,
-    Attack,
-    Kick
-}
+
 public class PlayerTurnState : BaseTurnState
 {
-    private PlayerActionType selectedAction = PlayerActionType.None;
     float timer;
     public PlayerTurnState() { }
     public override void OnEnter()
@@ -24,32 +17,27 @@ public class PlayerTurnState : BaseTurnState
     public override void Tick(float dt)
     {
         timer += dt;
-        if (timer > turnSetVlaue.turnDelayTime )
+        if (timer > turnSetVlaue.turnDelayTime && turnSetVlaue.actionSelected)
         {
             GameManager.UI.CloseUI<PaseTurnUI>();
-            if (turnSetVlaue.actionSelected == true)
-            {
+                Debug.Log($"지금 상태는 이거닷!{turnHFSM.selectedAction}");
                 HandleActionSelection();
-            }
-
         }
     }
     private void HandleActionSelection()
     {
-        switch (selectedAction) 
+        switch (turnHFSM.selectedAction) 
         { 
             case PlayerActionType.Move:
-                ChangeState<PlayerMoveState>("Move Selected");
-                turnSetVlaue.actionSelected = false;
+                ChangeState<PlayerMoveState>("Force");
                 break;
             case PlayerActionType.Attack:
-                ChangeState<PlayerAttackState>("Attack Selected");
-                turnSetVlaue.actionSelected = false;
+                ChangeState<PlayerAttackState>("Force");
                 break;
             case PlayerActionType.Kick:
-                ChangeState<PlayerKickState>("Kick Selected");
-                turnSetVlaue.actionSelected = false;
+                ChangeState<PlayerKickState>("Force");
                 break;
         }
+        turnSetVlaue.actionSelected = false;
     }
 }

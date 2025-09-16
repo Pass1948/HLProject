@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerMoveState : PlayerActionState
 {
     //이동 동작 나누기 : 선딜, 동작, 후딜
-    class M_Windup : PlayerActionState
+    class M_Windup : BaseTurnState
     {
         float timer;
         public override void OnEnter()
@@ -22,7 +22,7 @@ public class PlayerMoveState : PlayerActionState
         }
     }
     // 데이터처리
-    class M_Execute : PlayerActionState
+    class M_Execute : BaseTurnState
     {
         float timer;
         public override void OnEnter()
@@ -39,7 +39,7 @@ public class PlayerMoveState : PlayerActionState
         }
     }
 
-    class M_Recover : PlayerActionState
+    class M_Recover : BaseTurnState
     {
         float timer;
         public override void OnEnter()
