@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class ReloadAmmo : MonoBehaviour
@@ -9,11 +8,12 @@ public class ReloadAmmo : MonoBehaviour
     [SerializeField] private bool autoReload = true;// 시작 시 자동 장전
 
     [SerializeField] private RectTransform deckBg;// 덱 리스트
-    [SerializeField] private RectTransform discardBg;// 사용 탄 리스트
-    [SerializeField] private RectTransform ammoPrefab;// 표시에 쓸 Bullet 프리팹
+  GameObject ammoPrefab;// 표시에 쓸 Bullet 프리팹
 
-    void Start()
+
+    private void Start()
     {
+        ammoPrefab = GameManager.Resource.Load<GameObject>(Path.Weapon + "Bullet");
         if (autoReload)
         {
             Reload();
@@ -21,7 +21,7 @@ public class ReloadAmmo : MonoBehaviour
         else
         {
             RefreshDeckUI();
-        }   
+        }
     }
 
     public void Reload()
@@ -47,6 +47,11 @@ public class ReloadAmmo : MonoBehaviour
         RefreshDeckUI();
     }
 
+    public void OnFire()
+    {
+        magazine.Fire();
+    }
+    
     //덱, 디스카드 새로고침
     private void RefreshDeckUI()
     {
