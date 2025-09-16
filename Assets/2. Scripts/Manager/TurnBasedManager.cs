@@ -10,8 +10,6 @@ public class TurnBasedManager : MonoBehaviour
     [HideInInspector] public TurnStateMachine turnHFSM { get; private set; }
     [HideInInspector] public TurnSettingValue turnSettingValue { get; private set; }
 
-     int savedMoveRange =0;
-
     private readonly Dictionary<Type, ITurnState> _stateCache = new Dictionary<Type, ITurnState>();
     private void Awake()
     {
