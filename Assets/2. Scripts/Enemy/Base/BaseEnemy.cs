@@ -17,4 +17,5 @@ public class BaseEnemy : MonoBehaviour
         controller = GetComponent<EnemyController>();
         controller.Init(enemyModel, animHandler);
     }
+
 }

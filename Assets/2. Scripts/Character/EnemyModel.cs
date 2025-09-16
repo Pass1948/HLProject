@@ -29,7 +29,5 @@ public class EnemyModel : UnitModel
         attack = data.Attack;
         attackRange = Random.Range(data.MinAttackRange, data.MaxAttackRange);
         moveRange = data.MoveRange;
-
-        Debug.Log($"{unitName}, {attri}, {rank}");
     }
 }

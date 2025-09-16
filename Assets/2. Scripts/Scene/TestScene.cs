@@ -12,6 +12,8 @@ public class TestScene : BaseScene
         ui.OpenUI();
 
         GameManager.Map.CreateMap();
+
+
     }
 
     public override void SceneExit()

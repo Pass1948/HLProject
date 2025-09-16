@@ -88,7 +88,7 @@ public class SpawnController : MonoBehaviour
         for (int i = 0; i < count; i++)
         {
             GameObject monster = monsterPool.GetPooledObject();
-            var enemy = monster.GetComponent<BaseEnemy>();
+            BaseEnemy enemy = monster.GetComponent<BaseEnemy>();
             int maxAttempts = 100;
             for (int j = 0; j < maxAttempts; j++)
             {
