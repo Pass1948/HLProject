@@ -19,6 +19,8 @@ public class MoveEnemyState : BaseEnemyState
         Debug.Log(dest);
 
         List<Vector3Int> path = GameManager.Map.FindPath(start, dest);
+
+        //GameManager.PathPreview.ShowPath(path, GameManager.Map.tilemap, GameManager.Unit.enemies[0].enemyModel.moveRange);
         
         if (path == null || path.Count == 0)
         {
