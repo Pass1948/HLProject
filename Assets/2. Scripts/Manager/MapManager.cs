@@ -56,6 +56,7 @@ public class MapManager : MonoBehaviour
         moveInfoTilemap.transform.SetParent(grid.transform);
 
         mapData = new int[mapWidth, mapHeight];
+        mapCreator.GenerateMap(mapData, tilemap, groundTile, wallTile);
 
         spawnController.SpawnAllObjects(); // SpawnAll();에서 변경
 
@@ -63,15 +64,20 @@ public class MapManager : MonoBehaviour
 
     public void CreateMap()
     {
-        pathfinding = new Pathfinding(tilemap);
-        grid = GameManager.Resource.Create<GameObject>(Path.Map + "Grid");
-        var temp = GameManager.Resource.Create<GameObject>(Path.Map + "Tilemap");
-        tilemap = temp.GetComponent<Tilemap>();
-        tilemap.transform.SetParent(grid.transform);
+        //pathfinding = new Pathfinding(tilemap);
+        //grid = GameManager.Resource.Create<GameObject>(Path.Map + "Grid");
 
-        mapData = new int[mapWidth, mapHeight];
-        mapCreator.GenerateMap(mapData, tilemap, groundTile, wallTile);
-        spawnController.SpawnAllObjects();
+        //var temp = GameManager.Resource.Create<GameObject>(Path.Map + "Tilemap");
+        //tilemap = temp.GetComponent<Tilemap>();
+        //tilemap.transform.SetParent(grid.transform);
+
+        //var moveInfo = GameManager.Resource.Create<GameObject>(Path.Map + "MoveInfoTilemap");
+        //moveInfoTilemap = moveInfo.GetComponent<Tilemap>(); 
+        //moveInfoTilemap.transform.SetParent(grid.transform);
+
+        //mapData = new int[mapWidth, mapHeight];
+
+        //spawnController.SpawnAllObjects(); // SpawnAll();에서 변경
     }
     public void CreateMovePoint()
     {
