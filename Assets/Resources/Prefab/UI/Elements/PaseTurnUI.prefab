@@ -841,7 +841,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2979748634819929632
 RectTransform:
   m_ObjectHideFlags: 0
@@ -916,7 +916,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerTurn: {fileID: 3748020630497594591}
   enemyTurn: {fileID: 2053775117137237234}
-  Phase: {fileID: 0}
+  Phase: {fileID: 4433089832731864666}
 --- !u!1 &7881422114488502222
 GameObject:
   m_ObjectHideFlags: 0
