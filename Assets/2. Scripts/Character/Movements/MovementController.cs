@@ -77,6 +77,33 @@ public class MovementController : MonoBehaviour
     {
         GameManager.PathPreview.ShowPath(path, tilemap, moveRange);
     }
+    
+    public void SwitchMove()
+    {
+        if(_isMoving == false)
+        {
+            _isMoving = true;
+        }
+        else
+        {
+            _isMoving = false;
+        }
+    }
+
+    public void SwitchMoveRange()
+    {
+        if (GameManager.Unit.Player.controller.moveRange == moveRange)
+        {
+            moveRange = 0;
+        }
+        else
+        {
+            moveRange = GameManager.Unit.Player.controller.moveRange;
+        }
+    }
+
+
+
     public void GetPosition(int x, int y)
     {
         _cellPosition = new Vector3Int(x, y, 0);

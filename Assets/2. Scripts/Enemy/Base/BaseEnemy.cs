@@ -8,7 +8,6 @@ public class BaseEnemy : MonoBehaviour
     public EnemyModel enemyModel;
     public EnemyController controller;
     public EnemyAnimHandler animHandler;
-
     protected virtual void Start()
     {
         
@@ -18,14 +17,12 @@ public class BaseEnemy : MonoBehaviour
     {
         if (!GameManager.Unit.enemies.Contains(this))
             GameManager.Unit.enemies.Add(this);
-
         // 데이터 로드 시 null 가드
 
         enemyModel = new EnemyModel();
         enemyModel.InitData(data);
         animHandler = GetComponent<EnemyAnimHandler>();
         controller = GetComponent<EnemyController>();
-
         // 모델 & 애니메이션 핸들러가 준비된 후에만 초기화
         if (controller != null && animHandler != null)
         {
@@ -42,6 +39,4 @@ public class BaseEnemy : MonoBehaviour
     {
         GameManager.Unit.enemies.Remove(this);
     }
-
-
 }
