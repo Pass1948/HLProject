@@ -3,17 +3,15 @@ using UnityEngine.UI;
 
 public class ReloadAmmo : MonoBehaviour
 {
-    [SerializeField] private Deck deck;// 덱(오토바이)
-    [SerializeField] private AttackController magazine;// 탄창 UI
-    [SerializeField] private bool autoReload = true;// 시작 시 자동 장전
+    [SerializeField] private Deck deck;
+    [SerializeField] private AttackController magazine;
+    [SerializeField] private bool autoReload = true;
 
-    [SerializeField] private RectTransform deckBg;// 덱 리스트
-  GameObject ammoPrefab;// 표시에 쓸 Bullet 프리팹
+    [Header("Optional: Deck List UI")]
+    [SerializeField] private RectTransform deckBg;//덱 표시되는 Bg
 
-
-    private void Start()
+    void Start()
     {
-        ammoPrefab = GameManager.Resource.Load<GameObject>(Path.Weapon + "Bullet");
         if (autoReload)
         {
             Reload();
@@ -32,90 +30,70 @@ public class ReloadAmmo : MonoBehaviour
             return;
         }
 
-        //탄창 비우기
         magazine.ClearMagazine();
 
-        //탄환 뽑기
-        if(deck != null)
+        if (deck != null)
         {
             int need = magazine.Capacity;
             var draw = deck.DrawAmmos(need);
             magazine.AddBullets(draw);
         }
-        
-        // UI 갱신
+
         RefreshDeckUI();
     }
 
-    public void OnFire()
-    {
-        magazine.Fire();
-    }
-    
-    public void OnReload()
-    {
-        Reload();
-    }
-
-    //덱, 디스카드 새로고침
+    //덱 UI 새로고침
     private void RefreshDeckUI()
     {
-        if (ammoPrefab == null || deckBg == null)
+        if (deckBg == null) 
         {
             return;
         }
+        
 
         ClearChild(deckBg);
 
-        //덱
         if (deck != null)
         {
-            foreach(var a in deck.GetDrawSnapshot())
+            foreach (var a in deck.GetDrawSnapshot())
             {
-                SpawnAmmo(deckBg, a);
+                SpawnDeckItem(deckBg, a);
             }
         }
-
-        /*
-        //디스카드
-        if (discardBg != null)
-        {
-            ClearChild(discardBg);
-            if (deck != null)
-            {
-                foreach (var a in deck.GetDiscardSnapshot())
-                    SpawnAmmo(discardBg, a);
-            }
-        }
-        */
     }
 
-    //보기 전용으로 버튼 비활성
-    private void SpawnAmmo(RectTransform parent, Ammo ammo)
+    // 프리팹 생성
+    private void SpawnDeckItem(RectTransform parent, Ammo ammo)
     {
-        var item = Instantiate(ammoPrefab, parent, false);
-        var view = item.GetComponent<BulletSlotView>();
+        GameObject go = GameManager.Resource.Create<GameObject>(Path.Weapon + "Bullet", parent);
+        var view = go.GetComponent<BulletView>();
         if (view)
         {
             view.ammo = ammo;
+            view.RefreshLabel();
         }
 
-        item.GetComponent<AmmoLabelView>()?.RefreshLabel();
-
-        var btn = item.GetComponentInChildren<Button>(true);
-        //클릭불가
+        var btn = go.GetComponentInChildren<Button>(true);
         if (btn)
         {
+            // 덱에 있는 탄환 클릭 불가
             btn.interactable = false;
-        }
+        } 
     }
 
-    // 자식 전부 제거
     private void ClearChild(RectTransform rt)
     {
-        if (rt == null) return;
+        if (!rt)
+        {
+            return;
+        }
         for (int i = rt.childCount - 1; i >= 0; i--)
+        {
             Destroy(rt.GetChild(i).gameObject);
+        }
+            
     }
 }
+
+
 
