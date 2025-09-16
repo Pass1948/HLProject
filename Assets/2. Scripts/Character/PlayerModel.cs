@@ -18,6 +18,7 @@ public class PlayerModel : UnitModel
     public int moveRange =1;
     public int mulligan;
     public int reload;
+    public int health;
     public void InitData(UnitData data)
     {
         id = data.ID;

@@ -98,11 +98,26 @@ public class EnemyController : MonoBehaviour
 
     public void StartTurn()
     {
+        // 이미 죽었으면 무시
+        if (isDie) return;
 
+        // 중복 시작 방지
+        if (startTurn && !isDone) return;
+
+        // 턴 시작 시점에 플래그 초기화(중앙집중)
+        isDone = false;      
         startTurn = true;
         stateMachine.ChangeState(stateMachine.EvaluateState);
+    }
 
-        // 각각의 에너미의 StarTurn
+    //  적의 행동이 완전히 끝나는 시점(예: 상태머신의 마지막 상태 OnExit 등)에서 호출하세요.[추가:이영신]
+    public void CompleteTurn()
+    {
+        if (isDie) return;
+        // 완료 플래그 설정
+        isDone = true;
+        // 이벤트 발행: TurnBasedManager가 이 신호를 받아 다음 적을 진행
+        GameManager.Event.Publish(EventType.EnemyTurnEnd);
     }
 
     public IEnumerator MoveAlongPath(List<Vector3Int> path)

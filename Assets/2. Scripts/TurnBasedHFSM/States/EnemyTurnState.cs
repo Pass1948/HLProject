@@ -5,26 +5,30 @@ using UnityEngine;
 public class EnemyTurnState : BaseTurnState
 {
     float timer;
+    private bool didClose;
     public EnemyTurnState() { }
     public override void OnEnter()
     {
         timer = turnSetVlaue.resetTime;
+        didClose= false;
         GameManager.UI.OpenUI<PaseTurnUI>();
-
     }
     public override void Tick(float dt)
     {
+        if (didClose) return;
         timer += dt;
         if (timer > turnSetVlaue.turnDelayTime)
         {
             GameManager.UI.CloseUI<PaseTurnUI>();
-            GameManager.Event.Publish(EventType.EnemyTurnStart);
-            /* if ()// 몬스터 행동 체크 조건으로 실행
-       {
-           // ChangeState<IdleState>(); // 몬스터 행동 끝나면 IdleState로
-           // ChangeState<ClearCheckState>(); //  플래이어 죽을시 ClearCheckState로
-       }*/
+            turnManager.BeginEnemyPhase();
+            didClose = true;
+            //GameManager.Event.Publish(EventType.EnemyTurnStart);
         }
 
+    }
+    public override void OnExit()
+    {
+        // 혹시 못 닫았으면 안전하게 닫아 주기
+        if (!didClose) GameManager.UI.CloseUI<PaseTurnUI>();
     }
 }
