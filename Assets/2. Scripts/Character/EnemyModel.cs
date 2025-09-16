@@ -10,9 +10,24 @@ public enum EnemyAttribute
 
 public class EnemyModel : UnitModel
 {
-    public EnemyAttribute attribute;
-    public int number;
+    public EnemyAttribute attri;
+    public int rank;
     public int attack;
     public int attackRange;
 
+    public bool isDie = false;
+    public bool isDone = true;
+
+    public void InitData(UnitData data)
+    {
+        id = data.ID;
+        size = data.Size;
+        unitName = data.Name;
+        attri = data.Attribute;
+        rank = Random.Range(data.MinNum, data.MaxNum);
+        health = data.Health;
+        attack = data.Attack;
+        attackRange = Random.Range(data.MinAttackRange, data.MaxAttackRange);
+        moveRange = data.MoveRange;
+    }
 }

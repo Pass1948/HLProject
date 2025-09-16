@@ -10,9 +10,9 @@ public class DieEnemyState : BaseEnemyState
     {
         Debug.Log("Die : Enter");
 
-        controller.isDie = true;
+        controller.model.isDie = true;
 
-        if (controller.isDie)
+        if (controller.model.isDie)
         {
             animHandler.OnDie();
            // 애니메이션 재생

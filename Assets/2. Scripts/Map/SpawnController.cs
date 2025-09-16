@@ -88,7 +88,7 @@ public class SpawnController : MonoBehaviour
         for (int i = 0; i < count; i++)
         {
             GameObject monster = monsterPool.GetPooledObject();
-
+            BaseEnemy enemy = monster.GetComponent<BaseEnemy>();
             int maxAttempts = 100;
             for (int j = 0; j < maxAttempts; j++)
             {
@@ -101,9 +101,12 @@ public class SpawnController : MonoBehaviour
                 {
                     //좌표 보정
                     GridSnapper.SnapToCellCenter(monster.transform, GameManager.Map.tilemap, new Vector2Int(randX, randY));
+                    enemy.enemyModel.InitData(GameManager.Data.GetUnit(UnitType.Enemy, Random.Range(2001, 2010)));
+                    enemy.controller.SetPosition(randX, randY);
+                    enemy.controller.InitTarget();
                     
                     GameManager.Map.SetObjectPosition(randX, randY, TileID.Enemy);
-                    break;
+                    //break;
                 }
             }
         }

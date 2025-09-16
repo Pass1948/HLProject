@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1696456059084993760}
   - component: {fileID: 6163269708227033138}
   - component: {fileID: 7108647385520497506}
+  - component: {fileID: 8273540929910058778}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -48,9 +49,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MoveRange: 2
   AttackRange: 1
-  HP: 30
-  isDone: 0
   isDie: 0
+  isDone: 0
   moveDuration: 0.2
 --- !u!114 &7108647385520497506
 MonoBehaviour:
@@ -64,6 +64,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66c4cbe262ee5be4192c4133ec7c9b08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8273540929910058778
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5509707868626203645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bbed734a4013e54696397ce189a8563, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controller: {fileID: 0}
+  animHandler: {fileID: 0}
 --- !u!1 &5783527730616375366
 GameObject:
   m_ObjectHideFlags: 0

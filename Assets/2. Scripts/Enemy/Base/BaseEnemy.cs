@@ -1,18 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Profiling.Memory.Experimental;
 using UnityEngine;
 
 public class BaseEnemy : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public EnemyModel enemyModel;
+    public EnemyController controller;
+    public EnemyAnimHandler animHandler;
+
+    protected virtual void Awake()
     {
-        
+        GameManager.Unit.enemies.Add(this);
+        enemyModel = new EnemyModel();
+        animHandler = GetComponent<EnemyAnimHandler>();
+        controller = GetComponent<EnemyController>();
+        controller.Init(enemyModel, animHandler);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
