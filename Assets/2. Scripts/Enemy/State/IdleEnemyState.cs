@@ -11,7 +11,7 @@ public class IdleEnemyState : BaseEnemyState
 
     public override void Enter()
     {
-        //Debug.Log("Idle : Enter");
+        Debug.Log("Idle : Enter");
 
     }
 

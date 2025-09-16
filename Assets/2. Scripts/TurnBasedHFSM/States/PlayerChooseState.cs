@@ -1,25 +1,36 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public enum PlayerActionType2
-{
-    None,
-    Attack,
-    Kick
-}
+
+// 이후 추가로 ui작업하여 2페이즈로 플레이어 인식할수있게 작업하기
 public class PlayerChooseState : BaseTurnState
 {
    public PlayerChooseState() { }
     float timer;
+    private bool didClose;
     public override void OnEnter()
     {
         timer = turnSetVlaue.resetTime;
-        // 턴 시작 시 커맨드 초기화후 입력 대기
+        didClose = false;
         GameManager.Event.Publish(EventType.PlayerMove);
+        GameManager.Unit.Player.controller.SwitchMoveRange();
+        GameManager.UI.OpenUI<PaseTurnUI>();
     }
 
     public override void Tick(float dt)
     {
+        if (didClose) return;
+        timer += dt;
+        if (timer > turnSetVlaue.turnDelayTime)
+        {
+            GameManager.UI.CloseUI<PaseTurnUI>();
+            GameManager.Unit.Player.controller.SwitchMoveRange();
+            didClose = true;// 한 번만 처리하게 설정
+        }
     }
-    
+    public override void OnExit()
+    {
+        // 혹시 못 닫았으면 안전하게 닫아 주기
+        if (!didClose) GameManager.UI.CloseUI<PaseTurnUI>();
+    }
 }

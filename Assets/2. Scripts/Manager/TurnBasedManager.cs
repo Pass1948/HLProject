@@ -4,11 +4,22 @@ using System.Collections.Generic;
 using System.Xml;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class TurnBasedManager : MonoBehaviour
 {
     [HideInInspector] public TurnStateMachine turnHFSM { get; private set; }
     [HideInInspector] public TurnSettingValue turnSettingValue { get; private set; }
+
+
+    Queue<BaseEnemy> monsterQueue = new Queue<BaseEnemy>();
+
+    // 현재 진행 중인 몬스터(없으면 null)
+    private BaseEnemy currentEnemy;
+
+    // 적 턴 진행 여부 플래그
+    private bool enemyPhaseActive;
+
 
     private readonly Dictionary<Type, ITurnState> _stateCache = new Dictionary<Type, ITurnState>();
     private void Awake()
@@ -20,12 +31,14 @@ public class TurnBasedManager : MonoBehaviour
     private void OnEnable()
     {
         GameManager.Event.Subscribe(EventType.PlayerAction, HandleActionSelection);
-
+        // [추가] 적 턴 종료 이벤트 구독: 개별 적이 자신의 턴을 마치면 다음 적을 즉시 진행
+        GameManager.Event.Subscribe(EventType.EnemyTurnEnd, OnEnemyTurnEnded);
     }
 
     private void OnDisable()
     {
         GameManager.Event.Unsubscribe(EventType.PlayerAction, HandleActionSelection);
+        GameManager.Event.Unsubscribe(EventType.EnemyTurnEnd, OnEnemyTurnEnded);
     }
 
     private void Start()
@@ -38,6 +51,7 @@ public class TurnBasedManager : MonoBehaviour
     private void Update()
     {
         turnHFSM.Tick(Time.deltaTime);
+        // [참고] 폴링 방식이 필요 없다면 이곳에서 UpdateMonster를 호출하지 않아도 됩니다.
     }
     private void FixedUpdate()
     {
@@ -104,4 +118,68 @@ public class TurnBasedManager : MonoBehaviour
         turnHFSM.selectedAction = action;
         HandleActionSelection();
     }
+
+
+    // ===== 적 턴 진행 순서로직 =====
+    // 적 턴 시작 시 호출
+    public void BeginEnemyPhase()
+    {
+        monsterQueue.Clear();
+        currentEnemy = null;
+        enemyPhaseActive = true;
+
+        List<BaseEnemy> monsters = GameManager.Unit.enemies;
+        foreach (var enemy in monsters)
+        {
+            if (enemy == null || enemy.controller == null) continue;
+            if (enemy.controller.isDie) continue;
+            enemy.controller.isDone = false;
+            enemy.controller.startTurn = false;
+            monsterQueue.Enqueue(enemy);
+        }
+
+        TryStartNextEnemy();
+    }
+
+    // 개별 적 턴 종료 시점에 호출되는 로직
+    private void OnEnemyTurnEnded()
+    {
+        if (!enemyPhaseActive) return;
+        if (currentEnemy != null && currentEnemy.controller != null)
+        {
+            // [중요] 완료 후 플래그 초기화
+            currentEnemy.controller.startTurn = false;
+            currentEnemy.controller.isDone = false;
+            currentEnemy = null;
+        }
+        TryStartNextEnemy();
+    }
+
+    // 큐에서 다음 적을 하나 꺼내어 턴 시작
+    private void TryStartNextEnemy()
+    {
+        while (monsterQueue.Count > 0)
+        {
+            var enemy = monsterQueue.Dequeue();
+            if (enemy == null || enemy.controller == null) continue;
+            if (enemy.controller.isDie) continue;
+
+            if (!enemy.controller.startTurn)
+            {
+                enemy.controller.startTurn = true;
+                enemy.controller.isDone = false;
+                enemy.controller.StartTurn();
+                currentEnemy = enemy;
+                return; // 현재 적이 완료되면 OnEnemyTurnEnded 이벤트로 이어짐
+            }
+        }
+
+        // 큐가 비었고 진행 중인 적이 없으면 적 턴 종료
+        if (currentEnemy == null)
+        {
+            enemyPhaseActive = false;
+            ChangeTo<PlayerTurnState>("Enemy phase finished");
+        }
+    }
+
 }

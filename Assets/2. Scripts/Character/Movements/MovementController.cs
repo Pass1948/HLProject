@@ -82,16 +82,14 @@ public class MovementController : MonoBehaviour
         if(_isMoving == false)
         {
             _isMoving = true;
-   
         }
         else
         {
             _isMoving = false;
-            SwitchMoveRange(moveRange);
         }
     }
 
-    public void SwitchMoveRange(int moveRange)
+    public void SwitchMoveRange()
     {
         if (GameManager.Unit.Player.controller.moveRange == moveRange)
         {
