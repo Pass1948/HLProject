@@ -4,13 +4,21 @@ using UnityEngine;
 
 public class PlayerKickState : PlayerActionState
 {
+    public override void OnEnter()
+    {
+        base.OnEnter();
+        ChangeState<K_Windup>();
+    }
+
     // 킥 동작 나누기 : 선딜, 동작, 후딜
-    class K_Windup : PlayerActionState
+    class K_Windup : BaseTurnState
     {
         float timer;
         public override void OnEnter()
         {
             timer = turnSetVlaue.resetTime;
+            GameManager.Event.Publish(EventType.PlayerMove);
+            GameManager.UI.CloseUI<MainUI>();
         }
         public override void Tick(float dt)
         {
@@ -22,7 +30,7 @@ public class PlayerKickState : PlayerActionState
         }
     }
     // 데이터처리
-    class K_Execute : PlayerActionState
+    class K_Execute : BaseTurnState
     {
         float timer;
         public override void OnEnter()
@@ -39,7 +47,7 @@ public class PlayerKickState : PlayerActionState
         }
     }
     
-    class K_Recover : PlayerActionState
+    class K_Recover : BaseTurnState
     {
         float timer;
         public override void OnEnter()

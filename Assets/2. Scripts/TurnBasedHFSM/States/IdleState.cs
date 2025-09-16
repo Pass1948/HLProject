@@ -9,7 +9,6 @@ public class IdleState : BaseTurnState
     public override void OnEnter() 
     {
         timer =  turnSetVlaue.resetTime;
-        GameManager.UI.OpenUI<MainUI>();
         GameManager.UI.OpenUI<PaseTurnUI>();
     }
     public override void Tick(float dt)
