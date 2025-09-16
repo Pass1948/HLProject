@@ -12,7 +12,7 @@ public class EnemyController : MonoBehaviour
     public Vector3Int GridPos { get; set; }
     public Vector3Int TargetPos { get; set; }
     public int MoveRange;
-    public int AttackRange ;
+    public int AttackRange;
     public int isDie;
     public int isDone;
     public float moveDuration = 0.2f;

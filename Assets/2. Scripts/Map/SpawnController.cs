@@ -45,9 +45,14 @@ public class SpawnController : MonoBehaviour
             if (GameManager.Map.mapData[randX, randY] == TileID.Terrain)
             {
                 // 플레이어 생성
-                GameObject player = GameManager.Resource.Create<GameObject>(Path.Player + "Player");
+                GameObject playerSpawn = GameManager.Resource.Create<GameObject>(Path.Player + "Player");
+                BasePlayer basePlayer = GameManager.Unit.Player.GetComponent<BasePlayer>();
+                
+                basePlayer.playerModel.InitData(GameManager.Data.GetUnit(UnitType.Player, 1001));
+                basePlayer.controller.GetPosition(randX, randY);
+
                 //좌표 보정
-                GridSnapper.SnapToCellCenter(player.transform, GameManager.Map.tilemap, new Vector2Int(randX, randY));
+                GridSnapper.SnapToCellCenter(playerSpawn.transform, GameManager.Map.tilemap, new Vector2Int(randX, randY));
                 // 맵 데이터에 기록
                 GameManager.Map.SetObjectPosition(randX, randY, TileID.Player);
                 return;
