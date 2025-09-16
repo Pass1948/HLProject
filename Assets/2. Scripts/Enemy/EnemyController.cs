@@ -19,7 +19,7 @@ public class EnemyController : MonoBehaviour
 
     private void OnEnable()
     {
-        GameManager.Event.Subscribe(EventType.CommandBuffered, StartTurn);
+        GameManager.Event.Subscribe(EventType.EnemyTurnStart, StartTurn);
     }
 
     private void Awake()
@@ -81,7 +81,7 @@ public class EnemyController : MonoBehaviour
 
     private void OnDisable()
     {
-        GameManager.Event.Unsubscribe(EventType.CommandBuffered, StartTurn);
+        GameManager.Event.Unsubscribe(EventType.EnemyTurnStart, StartTurn);
     }
 
     private void OnHitState()

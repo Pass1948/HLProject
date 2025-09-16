@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class PlayerKickState : PlayerActionState
 {
+    public override void OnEnter()
+    {
+        base.OnEnter();
+        ChangeState<K_Windup>();
+    }
+
     // Å± µ¿ÀÛ ³ª´©±â : ¼±µô, µ¿ÀÛ, ÈÄµô
     class K_Windup : BaseTurnState
     {
@@ -11,6 +17,7 @@ public class PlayerKickState : PlayerActionState
         public override void OnEnter()
         {
             timer = turnSetVlaue.resetTime;
+            GameManager.Event.Publish(EventType.PlayerMove);
         }
         public override void Tick(float dt)
         {

@@ -13,9 +13,13 @@ public class EnemyTurnState : BaseTurnState
     }
     public override void Tick(float dt)
     {
-        if(timer > turnSetVlaue.turnDelayTime)
+        timer += dt;
+        if (timer > turnSetVlaue.turnDelayTime)
         {
+            Debug.Log("적턴 시작");
             GameManager.UI.CloseUI<PaseTurnUI>();
+           GameManager.Event.Publish(EventType.EnemyTurnStart);
+     
             /* if ()// 몬스터 행동 체크 조건으로 실행
        {
            // ChangeState<IdleState>(); // 몬스터 행동 끝나면 IdleState로

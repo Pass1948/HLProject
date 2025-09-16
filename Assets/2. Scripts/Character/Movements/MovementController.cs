@@ -25,11 +25,11 @@ public class MovementController : MonoBehaviour
 
     private void OnEnable()
     {
-
+        GameManager.Event.Subscribe(EventType.PlayerMove, SwitchMove);
     }
     private void OnDisable()
     {
-
+        GameManager.Event.Unsubscribe(EventType.PlayerMove, SwitchMove);
     }
 
 
@@ -79,7 +79,14 @@ public class MovementController : MonoBehaviour
     {
         GameManager.PathPreview.ShowPath(path, tilemap, moveRange);
     }
-
+    
+    public void SwitchMove()
+    {
+        if(_isMoving == false)
+            _isMoving = true;
+        else
+            _isMoving = false;
+    }
 
 
     private void OnMovementClick(InputValue value)
@@ -91,13 +98,16 @@ public class MovementController : MonoBehaviour
 
         // 마우스 눌렀다가 땠을 때에는 처리 하지 않음
         if (!value.isPressed) return;
-
-        TryGetMouseWorldOnPlayer();
-        if(isPlayer == false)return;
+        if (_isMoving== true)
+        {
+            TryGetMouseWorldOnPlayer();
+            if (isPlayer == false) return;
             if (TryGetMouseWorldOnGrid(out var mouseWorld))
             {
                 OnclickInfo(mouseWorld);
             }
+        }
+
         
     }
 
@@ -141,6 +151,7 @@ public class MovementController : MonoBehaviour
         {
             if (hit.collider.gameObject.CompareTag("TileMap"))
             {
+                GameManager.TurnBased.SetSelectedAction(PlayerActionType.Move);
                 world = hit.point;
                 return true;
             }
@@ -195,8 +206,6 @@ public class MovementController : MonoBehaviour
     // 타겟 셀 위치로 부드럽게 이동(보정)
     private IEnumerator MoveRoutine(Vector3Int targetCell)
     {
-        _isMoving = true;
-
         Vector3 start = transform.position;
         Vector3 end = tilemap.GetCellCenterWorld(targetCell);
 
@@ -211,6 +220,5 @@ public class MovementController : MonoBehaviour
         transform.position = end;
         _cellPosition = targetCell;
         GameManager.Data.playerData.playerMoveData.PlayerPos = _cellPosition;
-        _isMoving = false;
     }
 }
