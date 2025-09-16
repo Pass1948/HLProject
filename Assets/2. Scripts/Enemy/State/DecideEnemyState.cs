@@ -19,7 +19,7 @@ public class DecideEnemyState : BaseEnemyState
 
         int distance = GetDistanceTarget(enemyPos, playerPos);
 
-        if (distance <= controller.AttackRange)
+        if (distance <= controller.attackRange)
         {
             Debug.Log("Enemy decides to Attack!");
             stateMachine.ChangeState(stateMachine.AttackState);
