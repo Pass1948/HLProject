@@ -10,6 +10,8 @@ public class TurnBasedManager : MonoBehaviour
     [HideInInspector] public TurnStateMachine turnHFSM { get; private set; }
     [HideInInspector] public TurnSettingValue turnSettingValue { get; private set; }
 
+     int savedMoveRange =0;
+
     private readonly Dictionary<Type, ITurnState> _stateCache = new Dictionary<Type, ITurnState>();
     private void Awake()
     {
@@ -17,11 +19,22 @@ public class TurnBasedManager : MonoBehaviour
         gameObject.AddComponent<TurnSettingValue>();
         turnSettingValue = GetComponent<TurnSettingValue>();
     }
+    private void OnEnable()
+    {
+        GameManager.Event.Subscribe(EventType.PlayerAction, HandleActionSelection);
+
+    }
+
+    private void OnDisable()
+    {
+        GameManager.Event.Unsubscribe(EventType.PlayerAction, HandleActionSelection);
+    }
 
     private void Start()
     {
         // 초기 상태 설정
         SetTo<IdleState>();
+        turnHFSM.selectedAction = PlayerActionType.None;
     }
 
     private void Update()
@@ -67,5 +80,30 @@ public class TurnBasedManager : MonoBehaviour
     {
         var current = turnHFSM != null ? turnHFSM.Current : null;
         return current != null ? current.Name : "None";
+    }
+
+    private void HandleActionSelection()
+    {
+        switch (turnHFSM.selectedAction)
+        {
+            case PlayerActionType.Move:
+                ChangeTo<PlayerMoveState>();
+                turnSettingValue.actionSelected = false;
+                break;
+            case PlayerActionType.Attack:
+                ChangeTo<PlayerAttackState>();
+                turnSettingValue.actionSelected = false;
+                break;
+            case PlayerActionType.Kick:
+                ChangeTo<PlayerKickState>();
+                turnSettingValue.actionSelected = false;
+                break;
+        }
+    }
+
+    public void SetSelectedAction(PlayerActionType action)
+    {
+        turnHFSM.selectedAction = action;
+        HandleActionSelection();
     }
 }

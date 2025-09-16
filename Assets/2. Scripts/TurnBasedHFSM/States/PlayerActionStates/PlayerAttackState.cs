@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class PlayerAttackState : PlayerActionState
 {
+    public override void OnEnter()
+    {
+        base.OnEnter();
+        ChangeState<A_Windup>();
+    }
+
     // 공격 동작 나누기 : 선딜, 동작, 후딜
     class A_Windup : PlayerActionState
     {
@@ -11,6 +17,8 @@ public class PlayerAttackState : PlayerActionState
         public override void OnEnter()
         {
             timer = turnSetVlaue.resetTime;
+            GameManager.Event.Publish(EventType.PlayerMove);
+            GameManager.UI.CloseUI<MainUI>();
         }
         public override void Tick(float dt)
         {
