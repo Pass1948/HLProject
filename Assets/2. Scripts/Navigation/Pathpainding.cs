@@ -9,17 +9,20 @@ public class Pathfinding
     {
         tilemap = GameManager.Map.tilemap;
         blocked = new HashSet<Vector3Int>();
-        // TODO: 필요하면 타일맵에서 벽타일을 읽어와서 blocked에 추가해응(장보석)
-        
-        int blockTileID = TileID.Wall; // 막힌 타일 ID
 
-        for (int x = 0; x < GameManager.Map.mapWidth; x++)
+        int mapWidth = GameManager.Map.mapWidth;
+        int mapHeight = GameManager.Map.mapHeight;
+        int[,] mapData = GameManager.Map.mapData;
+
+        for (int x = 0; x < mapWidth; x++)
         {
-            for (int y = 0; y < GameManager.Map.mapHeight; y++)
+            for (int y = 0; y < mapHeight; y++)
             {
-                if (GameManager.Map.mapData[x, y] == blockTileID)
+                int id = mapData[x, y];
+
+                // 벽, 적, 장애물 타일이면 막힌 좌표로 추가
+                if (id == TileID.Wall || id == TileID.Enemy || id == TileID.Obstacle)
                 {
-                    Debug.Log(GameManager.Map.mapData[x, y]);   
                     blocked.Add(new Vector3Int(x, y, 0));
                 }
             }
