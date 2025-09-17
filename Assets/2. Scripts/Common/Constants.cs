@@ -4,13 +4,14 @@ public enum SceneType
     Test2
 }
 
-public enum EventType    // �̺�Ʈ ����� �߰�
+public enum EventType    // �̺�Ʈ ����� �߰�
 {
     PlayerAction,
     PlayerAttack,
     PlayerKick,
     PlayerMove,
     EnemyTurnStart,
+    EnemyTurnEnd,   // [추가] 개별 적의 턴이 완료되었음을 알리는 이벤트
 }
 
 public static class Path
