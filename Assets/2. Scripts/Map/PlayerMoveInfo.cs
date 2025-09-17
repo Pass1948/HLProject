@@ -22,7 +22,6 @@ public class PlayerMoveInfo : MonoBehaviour
         {
             var (current, dist) = queue.Dequeue();
 
-
             // 범위 내라면 타일 표시
             if (dist <= moveRange)
             {
@@ -33,10 +32,17 @@ public class PlayerMoveInfo : MonoBehaviour
                 {
                     Vector3Int[] dirs = {
 
+<<<<<<< Updated upstream
                         new Vector3Int(moveRange, 0, 0),
                         new Vector3Int(-moveRange, 0, 0),
                         new Vector3Int(0, moveRange, 0),
                         new Vector3Int(0, -moveRange, 0)
+=======
+                        new Vector3Int(1, 0, 0),
+                        new Vector3Int(-1, 0, 0),
+                        new Vector3Int(0,1, 0),
+                        new Vector3Int(0, -1, 0)
+>>>>>>> Stashed changes
                      };
 
                     foreach (var dir in dirs)

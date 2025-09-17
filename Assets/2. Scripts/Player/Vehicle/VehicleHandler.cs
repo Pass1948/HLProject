@@ -7,66 +7,83 @@ public class VehicleHandler : MonoBehaviour
     // TODO: 아직은 한번에 수리하게 함. 나중에 RepairVehicle() 함수에 매개변수로 수리량 받게 할 수도잇(JBS)
     [SerializeField] private int repairAmount = 3; // 수리량
 
-    public Transform player;
-    public Transform vehicle;
 
-    public PlayerModel playerModel;
-    public VehicleModel vehicleModel;
+    private BasePlayer player;
+    private BaseVehicle vehicle;
 
-    public bool isMounted => playerModel.viecleBording == ViecleBording.On; // 탑승 상태
+    public bool isMounted => player.playerModel.viecleBording == ViecleBording.On; // 탑승 상태
 
 
     private void Awake()
     {
-        playerModel = GameManager.Unit.Player.playerModel;
-        vehicleModel = GameManager.Unit.Vehicle.vehicleModel;
+        player = GameManager.Unit.Player;
+        vehicle = GameManager.Unit.Vehicle;
 
-        playerModel.viecleBording.CompareTo(ViecleBording.On);
-
+        player.playerModel.viecleBording.CompareTo(ViecleBording.On);
+        MountVehicle();
     }
+    
+
+    private void Start()
+    {
+    }
+
+
+    // Debugging Dragon
+    public void OnClickTestBtn()
+    {
+        DamageVehicle(3);
+    }
+
     // 탑승 상태,체력이 0이 아니면 이동력 증가
     public int GetEffectiveMoveRange()
     {
-        if(isMounted && vehicleModel.health > 0)
-            return  playerModel.moveRange + vehicleModel.additinalMove;
+        if(isMounted && vehicle.vehicleModel.health > 0)
+            return  player.playerModel.moveRange + vehicle.vehicleModel.additinalMove;
         else
-            return playerModel.moveRange;
+            return player.playerModel.moveRange;
     }
     // 탑승 상태, 체력이 0이 아니면 대신 데미지 받음 0 되면 파괴
     public void DamageVehicle(int amount)
     {
-        vehicleModel.health -= amount;
+        vehicle.vehicleModel.health -= amount;
 
-        if(vehicleModel.health <= 0)
+        if(vehicle.vehicleModel.health <= 0)
         {
-            vehicleModel.condition = VehicleCondition.Destruction;
+            vehicle.vehicleModel.condition = VehicleCondition.Destruction;
+            DismountVehicle();
         }
     }
     // 탑승해제 상태,수리하면 탑승 상태로 변경
     public void RepairVehicle()
     {
-        vehicleModel.health += repairAmount;
-        if(vehicleModel.health > 0)
+        vehicle.vehicleModel.health += repairAmount;
+        if(vehicle.vehicleModel.health > 0)
         {
-            vehicleModel.condition = VehicleCondition.Bording;
+            vehicle.vehicleModel.condition = VehicleCondition.Bording;
         }
         MountVehicle();
     }
-    // 탑승
+    // 탑승 히잇
     public void MountVehicle()
     {
-        if(vehicleModel.isDestruction)
+        if(vehicle.vehicleModel.isDestruction)
         {
             return;
         }
-        playerModel.viecleBording = ViecleBording.On;
-        vehicle.SetParent(player);
-        vehicle.localPosition = Vector3.zero;
+        player.playerModel.viecleBording = ViecleBording.On;
+        transform.SetParent(player.transform);
+        vehicle.transform.localPosition = Vector3.zero;
+        player.playerModel.moveRange += vehicle.vehicleModel.moveRange;
+        player.playerModel.health += vehicle.vehicleModel.health;
     }
     // 탑승 해제
     public void DismountVehicle()
     {
-        playerModel.viecleBording = ViecleBording.off;
-        vehicle.SetParent(null);
+        player.playerModel.viecleBording = ViecleBording.off;
+        vehicle.transform.SetParent(null);
+        player.playerModel.moveRange -= vehicle.vehicleModel.moveRange;
+        player.playerModel.health -= vehicle.vehicleModel.health;
     }
+
 }

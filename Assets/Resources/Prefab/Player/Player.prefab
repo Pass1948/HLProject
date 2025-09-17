@@ -8,9 +8,23 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+<<<<<<< Updated upstream
   - component: {fileID: 8502649236986302646}
   - component: {fileID: 3512963970916952852}
   - component: {fileID: 8458325354097932578}
+=======
+  - component: {fileID: 4787538634314033775}
+  - component: {fileID: 5552333829431678655}
+  - component: {fileID: 942464425422479865}
+  - component: {fileID: 7584174884319807590}
+  - component: {fileID: -7353883541360639586}
+  - component: {fileID: 5030179994721434972}
+  - component: {fileID: 1285023821815941644}
+  - component: {fileID: 7643229736552632402}
+  - component: {fileID: 9123368742631599300}
+  - component: {fileID: 2725572315679899011}
+  - component: {fileID: 2087781355076405030}
+>>>>>>> Stashed changes
   m_Layer: 0
   m_Name: UpperFront1
   m_TagString: Untagged
@@ -1555,7 +1569,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 0}
   animHandler: {fileID: 0}
+<<<<<<< Updated upstream
 --- !u!114 &3155758399739174563
+=======
+  playerHandler: {fileID: 0}
+--- !u!114 &9123368742631599300
+>>>>>>> Stashed changes
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1579,12 +1598,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 175c2c057a64e39489841a49aa8a4bd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+<<<<<<< Updated upstream
 --- !u!136 &7057941620355344128
 CapsuleCollider:
+=======
+--- !u!114 &2087781355076405030
+MonoBehaviour:
+>>>>>>> Stashed changes
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< Updated upstream
   m_GameObject: {fileID: 5338549917837208766}
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -2605,3 +2630,13 @@ Transform:
   - {fileID: 1626629886319356293}
   m_Father: {fileID: 8532133809739658084}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+=======
+  m_GameObject: {fileID: 8444475994722921609}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5a7efeacf394b748acb2dfe1a20d5e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  vehicle: {fileID: 0}
+>>>>>>> Stashed changes

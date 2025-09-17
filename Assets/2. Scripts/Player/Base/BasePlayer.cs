@@ -7,6 +7,7 @@ public class BasePlayer : MonoBehaviour
     public PlayerModel playerModel;
     public MovementController controller;
     public PlayerAnimHandler animHandler;
+    public PlayerHandler playerHandler;
 
     protected virtual void Awake()
     {
@@ -14,6 +15,8 @@ public class BasePlayer : MonoBehaviour
         playerModel = new PlayerModel();
         animHandler = GetComponent<PlayerAnimHandler>();
         controller = GetComponent<MovementController>();
+        playerHandler = GetComponent<PlayerHandler>();
+
         controller.isPlayer = true;
     }
 
