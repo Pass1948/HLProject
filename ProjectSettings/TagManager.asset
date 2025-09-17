@@ -6,6 +6,7 @@ TagManager:
   tags:
   - TileMap
   - MoveRange
+  - Enemy
   layers:
   - Default
   - TransparentFX

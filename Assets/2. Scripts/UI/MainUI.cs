@@ -8,13 +8,22 @@ public class MainUI : BaseUI
     [SerializeField] Button fireBtn;
     [SerializeField] AttackController fireBtnObj;
 
-    [SerializeField] private Button rerollBtn;
-    [SerializeField] private ReloadAmmo reloadBtnObj;
+    [SerializeField] Button rerollBtn;
+    [SerializeField] ReloadAmmo reloadBtnObj;
+
+    [SerializeField] Button deckBtn;
+    [SerializeField] DeckDiscardOnOff deckBtnObj;
+
+    [SerializeField] Button discardBtn;
+    [SerializeField] DeckDiscardOnOff discardBtnObj;
+
 
     private void Awake()
     {
         fireBtn.onClick.AddListener(OnFire);
         rerollBtn.onClick.AddListener(OnReload);
+        deckBtn.onClick.AddListener(DeckToggle);
+        discardBtn.onClick.AddListener(DiscardToggle);
 
         //시작시에 한번 실행되게
         fireBtn.interactable = (fireBtnObj != null) && fireBtnObj.IsBtnSel;
@@ -37,6 +46,14 @@ public class MainUI : BaseUI
         reloadBtnObj.Reload();
     }
 
+    private void DeckToggle()
+    {
+        deckBtnObj.ToggleDeck();
+    }
 
+    private void DiscardToggle()
+    {
+        discardBtnObj.ToggleDiscard();
+    }
 
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,25 +13,30 @@ public class DecideEnemyState : BaseEnemyState
         Vector3Int playerPos = controller.TargetPos;
         Vector3Int enemyPos = controller.GridPos;
 
-        if (!GameManager.Map.IsPlayer(playerPos))
-        {
-            Debug.Log("플레이어 못찾음 : 엔드 상태로");
-            Debug.Log(playerPos.x + ", " + playerPos.y);
+        List<Vector3Int> path = GameManager.Map.FindPath(enemyPos, playerPos);
 
+        if (path == null || path.Count == 0)
+        {
+            Debug.Log("노 이동");
             stateMachine.ChangeState(stateMachine.EndState);
             return;
         }
 
-        int distance = GetDistanceTarget(enemyPos, playerPos);
-        if (distance >= controller.minAttackRange && distance <= controller.maxAttackRange)
+        if (path[path.Count - 1] == playerPos && GameManager.Map.IsPlayer(playerPos))
         {
-            stateMachine.ChangeState(stateMachine.AttackState);
+            path.RemoveAt(path.Count - 1);
         }
-        else
-        {
-            stateMachine.ChangeState(stateMachine.MoveState);
-        }
+
+
+        GameManager.Map.PlayerUpdateRange(controller.GridPos, controller.moveRange);
+
+        controller.StartCoroutine(PreviewPath(path));
+
+
+       
     }
+
+    
 
     public override void Excute()
     {
@@ -46,5 +52,22 @@ public class DecideEnemyState : BaseEnemyState
     private int GetDistanceTarget(Vector3Int pos, Vector3Int target)
     {
         return Mathf.Abs(pos.x - target.x) + Mathf.Abs(pos.y - target.y);
+    }
+
+    private IEnumerator PreviewPath(List<Vector3Int> path)
+    {
+        yield return new WaitForSeconds(1f);
+
+        GameManager.Map.ClearPlayerRange();
+
+        int distance = GetDistanceTarget(controller.GridPos, controller.TargetPos);
+        if (distance >= controller.minAttackRange && distance <= controller.maxAttackRange)
+        {
+            stateMachine.ChangeState(stateMachine.AttackState);
+        }
+        else
+        {
+            stateMachine.ChangeState(stateMachine.MoveState);
+        }
     }
 }
