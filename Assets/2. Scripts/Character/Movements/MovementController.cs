@@ -21,11 +21,11 @@ public class MovementController : MonoBehaviour
     public Vector3Int _cellPosition; // 플레이어 현재 위치
     public bool _isMoving = false;  // 움직임 감지
     public bool isPlayer = false;
-
+    public GameObject mouse;
     private Pathfinding _pathfinding;
 
     private BasePlayer basePlayer;
-
+    Vector3Int[] dirs;
     private void OnEnable()
     {
         GameManager.Event.Subscribe(EventType.PlayerMove, SwitchMove);
@@ -37,7 +37,8 @@ public class MovementController : MonoBehaviour
     private void Awake()
     {
         basePlayer = GetComponent<BasePlayer>();
-
+        mouse = GameManager.Resource.Create<GameObject>(Path.Mouse + "Pointer");
+        mouse.transform.SetParent(this.transform);
     }
 
     private void Start()
@@ -50,6 +51,9 @@ public class MovementController : MonoBehaviour
 
         // A* 알고리즘 초기화
         _pathfinding = new Pathfinding(tilemap);
+
+
+
     }
     private void Update()
     {
@@ -71,11 +75,26 @@ public class MovementController : MonoBehaviour
         //}
     }
 
-
-    public void PlayerMoveRange(List<Vector3Int> path, Tilemap tilemap, int moveRange)
+/*
+    private void FollowMouse()
     {
-        GameManager.PathPreview.ShowPath(path, tilemap, 10);    // 맵크기는 나중에 데이터로 받아오는걸로 바꾸기
-    }
+        var mousePos = Mouse.current.position.ReadValue();
+        Ray ray = Camera.main.ScreenPointToRay(mousePos);
+        dirs = new Vector3Int[] {
+                new Vector3Int(moveRange, 0, 0),
+                        new Vector3Int(-moveRange, 0, 0),
+                        new Vector3Int(0, moveRange, 0),
+                        new Vector3Int(0, -moveRange, 0)
+                     };
+        if (Physics.Raycast(ray, out RaycastHit hit, 1000f, ~0, QueryTriggerInteraction.Ignore))// RaycastHit의 최대거리 설정으로 무한정 오류를 방지 
+        {
+            var targetCell = tilemap.WorldToCell(hit.point);
+            // 위치의 변화가 없거나 같으면 무시
+            if (targetCell == _cellPosition) return;
+            GameManager.Mouse.ShowPath(dirs, tilemap, 10, mouse);
+        }
+    }*/
+
 
     public void SwitchMove()
     {
@@ -99,7 +118,6 @@ public class MovementController : MonoBehaviour
         // UI 가 있어도 클릭 안되게
         if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
             return;
-        GameManager.PathPreview.ClearPath();
 
         // 마우스 눌렀다가 땠을 때에는 처리 하지 않음
         if (!value.isPressed) return;
@@ -171,13 +189,13 @@ public class MovementController : MonoBehaviour
     {
         // 이동 중이 아니면 무시
         if (_isMoving != true) return;
-        
+
         // 플레이어가 선택되지 않았으면 무시
         if (isPlayer != true) return;
-        
+
         // 이동 액션 선택
         GameManager.TurnBased.SetSelectedAction(PlayerActionType.Move);
-        
+
         // 이동 처리
         OnclickInfo(worldPoint);
         CancelSelection();
@@ -195,7 +213,7 @@ public class MovementController : MonoBehaviour
         List<Vector3Int> path = _pathfinding.FindPath(_cellPosition, targetCell);
         Debug.Log($"Path Count : {_cellPosition}");
 
-        if (path == null||path.Count > moveRange)
+        if (path == null || path.Count > moveRange)
         {
             CancelSelection();
             return;

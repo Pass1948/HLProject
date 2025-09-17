@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8441728459726865278}
   - component: {fileID: 8181663325345228461}
+  - component: {fileID: 6775268960216603183}
   m_Layer: 0
   m_Name: Pointer
   m_TagString: Untagged
@@ -54,6 +55,35 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &6775268960216603183
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 451616952336390543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2362f137eeeb027409b989db4eb92c0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  followTarget: {fileID: 0}
+  cam: {fileID: 0}
+  useLayerRaycast: 1
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  maxRayDistance: 500
+  usePlaneIfMiss: 1
+  groundY: 0
+  snapToGrid: 0
+  cellSize: {x: 1, y: 1}
+  tilemap: {fileID: 0}
+  clampToNavMesh: 0
+  navMeshMaxDistance: 2
+  smooth: 1
+  smoothTime: 0.05
+  maxSpeed: 100
 --- !u!1 &9095906724102918899
 GameObject:
   m_ObjectHideFlags: 0
