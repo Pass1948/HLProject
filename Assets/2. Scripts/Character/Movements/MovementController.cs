@@ -90,22 +90,6 @@ public class MovementController : MonoBehaviour
         }
     }
 
-    public void SwitchMoveRange()
-    {
-        if (moveRange == basePlayer.playerModel.moveRange)
-        {
-            moveRange = 0;
-            Debug.Log($"지금 이동 범위는{moveRange}");
-        }
-        else
-        {
-            moveRange = basePlayer.playerModel.moveRange;
-            Debug.Log($"지금 이동 범위는{moveRange}");
-        }
-    }
-
-
-
     public void GetPosition(int x, int y)
     {
         _cellPosition = new Vector3Int(x, y, 0);
@@ -120,16 +104,77 @@ public class MovementController : MonoBehaviour
 
         // 마우스 눌렀다가 땠을 때에는 처리 하지 않음
         if (!value.isPressed) return;
+        
+        // 통합된 마우스 클릭 처리
+        HandleMouseClick();
+    }
 
-        if(_isMoving== true)
+    //  마우스 클릭 처리 - 3개 메서드를 하나로 통합[작성자:이영신]
+    private void HandleMouseClick()
+    {
+        var mousePos = Mouse.current.position.ReadValue();
+        Ray ray = Camera.main.ScreenPointToRay(mousePos);
+        
+        if (Physics.Raycast(ray, out RaycastHit hit,1000f,~0, QueryTriggerInteraction.Ignore))// RaycastHit의 최대거리 설정으로 무한정 오류를 방지 
         {
-            TryGetMouseWorldOnPlayer();
-            if (isPlayer == false) return;
-            if (TryGetMouseWorldOnGrid(out var mouseWorld))
+            string tag = hit.collider.gameObject.tag;
+            // 1. 플레이어 클릭 처리
+            if (tag == "Player")
             {
-                OnclickInfo(mouseWorld);
+                HandlePlayerClick();
+                return;
             }
+            
+            // 2. 적 클릭 처리
+            if (tag == "Enemy")
+            {
+                HandleEnemyClick();
+                return;
+            }
+            
+            // 3. 타일맵 클릭 처리 (이동)
+            if (tag == "TileMap")
+            {
+                HandleTileMapClick(hit.point);
+                return;
+            }
+            CancelSelection();
+            return;
         }
+        CancelSelection();
+    }
+
+    // 플레이어 클릭 처리
+    private void HandlePlayerClick()
+    {
+        // 플레이어 클릭시 이동범위 확인할수있음
+        GameManager.Map.PlayerUpdateRange(_cellPosition, moveRange);
+        GameManager.UI.OpenUI<MainUI>();
+        isPlayer = true;
+    }
+
+    // 적 클릭 처리
+    private void HandleEnemyClick()
+    {
+        // 적 클릭시 정보창
+        Debug.Log("Enemy clicked");
+    }
+
+    // 타일맵 클릭 처리 (이동)
+    private void HandleTileMapClick(Vector3 worldPoint)
+    {
+        // 이동 중이 아니면 무시
+        if (_isMoving != true) return;
+        
+        // 플레이어가 선택되지 않았으면 무시
+        if (isPlayer != true) return;
+        
+        // 이동 액션 선택
+        GameManager.TurnBased.SetSelectedAction(PlayerActionType.Move);
+        
+        // 이동 처리
+        OnclickInfo(worldPoint);
+        CancelSelection();
     }
 
     public void OnclickInfo(Vector3 mouseWorld)
@@ -144,9 +189,9 @@ public class MovementController : MonoBehaviour
         List<Vector3Int> path = _pathfinding.FindPath(_cellPosition, targetCell);
         Debug.Log($"Path Count : {_cellPosition}");
 
-        if (path.Count > moveRange)
+        if (path == null||path.Count > moveRange)
         {
-            isPlayer = false;
+            CancelSelection();
             return;
         }
         StopAllCoroutines();
@@ -155,58 +200,13 @@ public class MovementController : MonoBehaviour
         isPlayer = false;
     }
 
-    /// <summary>
-    /// 마우스 위치, 그리드 평면에 따른 월드 좌표 변환
-    /// </summary>
-    private bool TryGetMouseWorldOnGrid(out Vector3 world)
+    private void CancelSelection()
     {
-        var mousePos = Mouse.current.position.ReadValue();
-        Ray ray = Camera.main.ScreenPointToRay(mousePos);
-
-        // 레이를 쏴서 테그가 맵이 아니면 무시
-        if (Physics.Raycast(ray, out RaycastHit hit))
-        {
-            if (hit.collider.gameObject.CompareTag("TileMap"))
-            {
-                GameManager.TurnBased.SetSelectedAction(PlayerActionType.Move);
-                world = hit.point;
-                return true;
-            }
-            else
-            {
-                world = default;
-                return false;
-            }
-        }
-        world = default;
-        return false;
+        isPlayer = false;
+        GameManager.Map.ClearPlayerRange();
+        GameManager.UI.CloseUI<MainUI>();
     }
 
-
-    // 플레이어 클릭시 나오는 행동 메서드(작성자: 이영신)
-    private void TryGetMouseWorldOnPlayer()
-    {
-        var mousePos = Mouse.current.position.ReadValue();
-        Ray ray = Camera.main.ScreenPointToRay(mousePos);
-        if (Physics.Raycast(ray, out RaycastHit hit))
-        {
-            if (hit.collider.gameObject.CompareTag("Player"))
-            {
-                // TODO: 플레이어 클릭시 이동범위 확인할수있음
-                GameManager.Map.PlayerUpdateRange(_cellPosition, moveRange);
-                GameManager.UI.OpenUI<MainUI>();
-                Debug.Log("Player Click True");
-                isPlayer = true;
-            }
-            else
-            {
-                // TODO: 다른곳 클릭시 이동범위 사라짐
-                Debug.Log("Player Click False");
-                GameManager.Map.ClearPlayerRange();
-                GameManager.UI.CloseUI<MainUI>();
-            }
-        }
-    }
 
     // 현재 셀 위치를 부르는 함수
     public Vector3Int GetCellPosition()
