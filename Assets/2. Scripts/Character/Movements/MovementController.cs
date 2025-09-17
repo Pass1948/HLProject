@@ -120,8 +120,8 @@ public class MovementController : MonoBehaviour
 
         // 마우스 눌렀다가 땠을 때에는 처리 하지 않음
         if (!value.isPressed) return;
-
-        if(_isMoving== true)
+        TryGetMouseWorldOnEnemy();
+        if (_isMoving== true)
         {
             TryGetMouseWorldOnPlayer();
             if (isPlayer == false) return;
@@ -195,15 +195,29 @@ public class MovementController : MonoBehaviour
                 // TODO: 플레이어 클릭시 이동범위 확인할수있음
                 GameManager.Map.PlayerUpdateRange(_cellPosition, moveRange);
                 GameManager.UI.OpenUI<MainUI>();
-                Debug.Log("Player Click True");
                 isPlayer = true;
             }
             else
             {
-                // TODO: 다른곳 클릭시 이동범위 사라짐
-                Debug.Log("Player Click False");
                 GameManager.Map.ClearPlayerRange();
                 GameManager.UI.CloseUI<MainUI>();
+            }
+        }
+    }
+    // 몬스터 클릭시 나오는 행동 메서드(작성자: 이영신)
+    private void TryGetMouseWorldOnEnemy()
+    {
+        var mousePos = Mouse.current.position.ReadValue();
+        Ray ray = Camera.main.ScreenPointToRay(mousePos);
+        if (Physics.Raycast(ray, out RaycastHit hit))
+        {
+            if (hit.collider.gameObject.CompareTag("Enemy"))
+            {
+                //TODO: 몬스터 클릭시 정보창
+            }
+            else
+            {
+
             }
         }
     }
