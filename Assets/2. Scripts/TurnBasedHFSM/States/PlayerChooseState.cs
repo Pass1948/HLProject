@@ -24,13 +24,13 @@ public class PlayerChooseState : BaseTurnState
         if (timer > turnSetVlaue.turnDelayTime)
         {
             GameManager.UI.CloseUI<PaseTurnUI>();
-            GameManager.Unit.Player.controller.SwitchMoveRange();
             didClose = true;// 한 번만 처리하게 설정
         }
     }
     public override void OnExit()
     {
         // 혹시 못 닫았으면 안전하게 닫아 주기
+        GameManager.Unit.Player.controller.SwitchMoveRange();
         if (!didClose) GameManager.UI.CloseUI<PaseTurnUI>();
     }
 }

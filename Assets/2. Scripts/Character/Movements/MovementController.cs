@@ -92,13 +92,15 @@ public class MovementController : MonoBehaviour
 
     public void SwitchMoveRange()
     {
-        if (GameManager.Unit.Player.controller.moveRange == moveRange)
+        if (moveRange == basePlayer.playerModel.moveRange)
         {
             moveRange = 0;
+            Debug.Log($"지금 이동 범위는{moveRange}");
         }
         else
         {
-            moveRange = GameManager.Unit.Player.controller.moveRange;
+            moveRange = basePlayer.playerModel.moveRange;
+            Debug.Log($"지금 이동 범위는{moveRange}");
         }
     }
 
