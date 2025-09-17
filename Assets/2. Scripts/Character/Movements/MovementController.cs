@@ -217,7 +217,7 @@ public class MovementController : MonoBehaviour
             }
             else
             {
-
+                return;
             }
         }
     }
