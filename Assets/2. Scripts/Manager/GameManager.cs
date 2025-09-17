@@ -38,6 +38,8 @@ public class GameManager : MonoBehaviour
     private static MapManager mapManager;
     public static MapManager Map => mapManager;
 
+    private static SaveLoadManager saveLoadManager;
+    public static SaveLoadManager SaveLoad => saveLoadManager;
 
     private void Awake()
     {
@@ -64,6 +66,7 @@ public class GameManager : MonoBehaviour
         pathPreviewManager = CreateChildManager<PathPreviewManager>("PathPreviewManager");
         data = CreateChildManager<DataManager>("DataManager");
         mapManager = CreateChildManager<MapManager>("MapManager");
+        saveLoadManager = CreateChildManager<SaveLoadManager>("SaveLoadManager");
 
     }
     private T CreateChildManager<T>(string goName) where T : Component

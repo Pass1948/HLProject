@@ -21,12 +21,14 @@ public class EnemyModel : UnitModel
 
     public void InitData(UnitData data)
     {
+        unitType = data.Type;
         id = data.ID;
         size = data.Size;
         unitName = data.Name;
         attri = data.Attribute;
         rank = Random.Range(data.MinNum, data.MaxNum);
-        health = data.Health;
+        maxHealth = data.Health;
+        currentHealth = data.Health;
         attack = data.Attack;
         minAttackRange = data.MinAttackRange;
         maxAttackRange = data.MaxAttackRange;
