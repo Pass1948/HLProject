@@ -157,6 +157,7 @@ public class MovementController : MonoBehaviour
     private void HandleEnemyClick()
     {
         // 적 클릭시 정보창
+        GameManager.UI.OpenUI<EnemyInfoPopUpUI>();
         Debug.Log("Enemy clicked");
     }
 
@@ -205,6 +206,7 @@ public class MovementController : MonoBehaviour
         isPlayer = false;
         GameManager.Map.ClearPlayerRange();
         GameManager.UI.CloseUI<MainUI>();
+        GameManager.UI.CloseUI<EnemyInfoPopUpUI>();
     }
 
 
