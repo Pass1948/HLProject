@@ -42,7 +42,7 @@ public class MovementController : MonoBehaviour
 
     private void Start()
     {
-
+        
         tilemap = GameManager.Map.tilemap;
         // 플레이어 시작 위치를 타일의 중앙으로 설정
         _cellPosition = tilemap.WorldToCell(transform.position);
@@ -187,9 +187,12 @@ public class MovementController : MonoBehaviour
         // A* 알고리즘 경로 설정
         // _cellPosition : 시작 위치, targetCell : 목표 위치
         List<Vector3Int> path = _pathfinding.FindPath(_cellPosition, targetCell);
-        Debug.Log($"Path Count : {_cellPosition}");
+
 
         if (path == null||path.Count > moveRange)
+
+        if (path.Count - 1 > moveRange)
+
         {
             CancelSelection();
             return;
