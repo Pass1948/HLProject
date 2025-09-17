@@ -10,6 +10,7 @@ public class TurnSettingValue : MonoBehaviour
     public float turnDelayTime =2f;
     public float actionWindupTime = 1.5f; // 행동 선딜 시간
     public float ActionRecoverTime = 1.5f; // 행동 후딜 시간
+    public Ammo fireAmmo;
 
     // == 플레이어 행동 선택 관련 ==
     [HideInInspector] public bool actionSelected = false;  // 플레이어 행동 선택 여부

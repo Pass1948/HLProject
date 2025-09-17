@@ -16,7 +16,7 @@ public class AttackController : MonoBehaviour
 
     [SerializeField] private int AmmoCount = 6;
     public int Capacity => AmmoCount;
-
+    public Ammo fireAmmo;
     //UI에서 쓰는 선택상태
     public bool IsBtnSel => (selectedAmmoBtn != null) && (bullet != null);
 
@@ -28,7 +28,7 @@ public class AttackController : MonoBehaviour
             return;
         }
 
-
+        
         //이미 사용된 슬롯 클릭 방지
         if (!btn.interactable)
         {
@@ -71,6 +71,8 @@ public class AttackController : MonoBehaviour
         selectedAmmoBtn = btn;
         bullet = slotRoot;
         selectBulletBg = bg;
+        var selectAmmo = bullet.GetComponent<BulletView>();
+        GameManager.TurnBased.turnSettingValue.fireAmmo = selectAmmo.ammo;
 
         if (selectBulletBg)
         {
