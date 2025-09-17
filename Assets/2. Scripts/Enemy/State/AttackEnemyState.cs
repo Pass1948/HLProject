@@ -10,6 +10,8 @@ public class AttackEnemyState : BaseEnemyState
     {
         Debug.Log("Attack : Enter");
 
+        GameManager.Unit.ChangeHealth(GameManager.Unit.Player.playerModel, controller.model.attack);
+
         animHandler.OnAttack();
 
         stateMachine.ChangeState(stateMachine.EndState);

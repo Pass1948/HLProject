@@ -25,11 +25,13 @@ public class VehicleModel : UnitModel
 
     public void InitData(UnitData data)
     {
+        unitType = data.Type;
         id = data.ID;
         unitName = data.Name;
         size = data.Size;
         moveRange = data.MoveRange;
-        health = data.Health;
+        maxHealth = data.Health;
+        currentHealth = maxHealth;
         maxBullet = data.MaxBullet;
     }
 }

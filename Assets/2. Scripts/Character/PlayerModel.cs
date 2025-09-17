@@ -22,13 +22,15 @@ public class PlayerModel : UnitModel
     public bool die => health <= 0; //0이하면 트루
     public void InitData(UnitData data)
     {
+        unitType = data.Type;
         id = data.ID;
         unitName = data.Name;
         size = data.Size;
         attack = data.Attack;
         attackRange = Random.Range(data.MinAttackRange, data.MaxAttackRange);
         moveRange = data.MoveRange;
-        health = data.Health;
+        maxHealth = data.Health;
+        currentHealth = maxHealth;
         mulligan = data.Mulligan;
         reload = data.Reload;
     }

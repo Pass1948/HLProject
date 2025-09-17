@@ -34,8 +34,7 @@ public class PlayerMoveInfo : MonoBehaviour
 
                         new Vector3Int(1, 0, 0),
                         new Vector3Int(-1, 0, 0),
-                        new Vector3Int(0,1, 0),
-                        new Vector3Int(0, -1, 0)
+                        new Vector3Int(0, 1, 0),
                      };
 
                     foreach (var dir in dirs)

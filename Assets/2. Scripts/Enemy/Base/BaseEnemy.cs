@@ -39,4 +39,16 @@ public class BaseEnemy : MonoBehaviour
     {
         GameManager.Unit.enemies.Remove(this);
     }
+
+    public void ChenageAttribute()
+    {
+        if(enemyModel.attri == EnemyAttribute.High)
+        {
+            enemyModel.attri = EnemyAttribute.Low;
+        }
+        else
+        {
+            enemyModel.attri = EnemyAttribute.High;
+        }
+    }
 }
