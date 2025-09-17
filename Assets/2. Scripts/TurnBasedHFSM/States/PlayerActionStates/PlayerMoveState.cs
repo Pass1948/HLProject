@@ -16,15 +16,14 @@ public class PlayerMoveState : PlayerActionState
         float timer;
         public override void OnEnter()
         {
-            timer = turnSetVlaue.actionWindupTime;
-            GameManager.Event.Publish(EventType.PlayerMove);
-            GameManager.UI.CloseUI<MainUI>();
+            timer = turnSetVlaue.resetTime;
         }
         public override void Tick(float dt)
         {
             timer += dt;
-            if (timer > 0.5f)
+            if (timer > 0.1f)
             {
+                GameManager.UI.CloseUI<MainUI>();
                 ChangeState<M_Execute>();
             }
         }
@@ -40,7 +39,7 @@ public class PlayerMoveState : PlayerActionState
         public override void Tick(float dt)
         {
             timer += dt;
-            if (timer > 0.5f)
+            if (timer > 0.1f)
             {
                 ChangeState<M_Recover>();
             }
@@ -52,12 +51,12 @@ public class PlayerMoveState : PlayerActionState
         float timer;
         public override void OnEnter()
         {
-            timer = turnSetVlaue.turnDelayTime;
+            timer = turnSetVlaue.resetTime;
         }
         public override void Tick(float dt)
         {
             timer += dt;
-            if (timer > 0.5f)
+            if (timer > 0.1f)
             {
                 ChangeState<PlayerChooseState>();
             }

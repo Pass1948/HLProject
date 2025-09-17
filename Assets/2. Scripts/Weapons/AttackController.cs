@@ -14,16 +14,11 @@ public class AttackController : MonoBehaviour
     private Color bgNormal = new Color(0f, 0f, 0f, 1f);
     private Color bgSel = new Color(1f, 0f, 0f, 1f);
 
-    public bool IsBtnSel => (selectedAmmoBtn != null) && (bullet != null);
-
-
     [SerializeField] private int AmmoCount = 6;
     public int Capacity => AmmoCount;
 
-    private void OnEnable()
-    {
-        bullet = GameManager.Resource.Load<RectTransform>(Path.Weapon + "Bullet");  
-    }
+    //UI에서 쓰는 선택상태
+    public bool IsBtnSel => (selectedAmmoBtn != null) && (bullet != null);
 
     //탄환버튼 OnClick
     public void SelectAmmo(Button btn)
@@ -46,7 +41,7 @@ public class AttackController : MonoBehaviour
             if (selectBulletBg) selectBulletBg.color = bgNormal;
             selectedAmmoBtn = null;
             selectBulletBg = null;
-            //bullet = null;
+            bullet = null;
             return;
         }
 
@@ -57,8 +52,8 @@ public class AttackController : MonoBehaviour
         }
 
         //배경 이미지 가져오고 저장
-        //BulletSlotView가 붙은 부모를 찾아 RectTransform을 정확히 집는다
-        var slotView = btn.GetComponentInParent<BulletSlotView>();
+        //BulletView가 붙은 부모를 찾아 RectTransform을 정확히 집는다
+        var slotView = btn.GetComponentInParent<BulletView>();
         var slotRoot = slotView ? (RectTransform)slotView.transform : null;
         var bg = slotView ? slotView.bulletBg : null;
 
@@ -96,7 +91,7 @@ public class AttackController : MonoBehaviour
             selectBulletBg.color = bgNormal;
         }
 
-        var view = bullet.GetComponent<BulletSlotView>();
+        var view = bullet.GetComponent<BulletView>();
 
         //디스카드랑 덱에서는 버튼 비활성
         var btn = bullet.GetComponentInChildren<Button>(true);
@@ -104,8 +99,7 @@ public class AttackController : MonoBehaviour
         {
             btn.interactable = false;
         }
-
-        if (view?.bulletBg != null)
+        if (view)
         {
             view.bulletBg.color = Color.black;
         }
@@ -115,8 +109,7 @@ public class AttackController : MonoBehaviour
         {
             bullet.SetParent(discardBg, false);
             bullet.localScale = Vector3.one;
-            
-            bullet.GetComponent<AmmoLabelView>()?.RefreshLabel();
+            view.RefreshLabel();
         }
         else
         {
@@ -126,7 +119,7 @@ public class AttackController : MonoBehaviour
         //상태 정리
         selectedAmmoBtn = null;
         selectBulletBg = null;
-        //bullet = null;
+        bullet = null;
 
         Debug.Log("Fire");
     }
@@ -145,15 +138,21 @@ public class AttackController : MonoBehaviour
         for (int i = slotContainer.childCount - 1; i >= 0; i--)
         {
             var slot = (RectTransform)slotContainer.GetChild(i);
-            var view = slot.GetComponent<BulletSlotView>();
-            if (view && view.ammo != null) result.Add(view.ammo);
+            var view = slot.GetComponent<BulletView>();
+            if (view && view.ammo != null)
+            {
+                result.Add(view.ammo);
+            }
 
             //클릭 불가 처리
             var btn = slot.GetComponentInChildren<Button>(true);
-            if (btn) btn.interactable = false;
+            if (btn)
+            {
+                btn.interactable = false;
+            }
 
-            if (view?.bulletBg != null) view.bulletBg.color = Color.black;
-            slot.GetComponent<AmmoLabelView>()?.RefreshLabel();
+            view?.SetBgColor(Color.black);
+            view.RefreshLabel();
 
             //DiscardBg로 부모 변경
             if (discardBg != null)
@@ -171,7 +170,7 @@ public class AttackController : MonoBehaviour
         // 선택 상태 리셋
         selectedAmmoBtn = null;
         selectBulletBg = null;
-        //bullet = null;
+        bullet = null;
 
 
         return result;
@@ -192,29 +191,26 @@ public class AttackController : MonoBehaviour
     //버튼 연결
     private void SpawnOne(Ammo ammo)
     {
-        if (slotContainer == null || bullet == null)
+        //여기서 딱히 Bullet이 Null인지 체크할필요가 없어짐
+        if (slotContainer == null)
         {
-            Debug.LogError("Not Found slotContainer or bulletSlotPrefab");
+            Debug.LogError("Not Found slotContainer");
             return;
         }
 
-        RectTransform slot = GameManager.Resource.Create<RectTransform>(Path.Weapon + "Bullet", slotContainer);
-        slot.localScale = Vector3.one;
+        GameObject go = GameManager.Resource.Create<GameObject>(Path.Weapon + "Bullet", slotContainer);
+        go.transform.localScale = Vector3.one;
 
-        var view = slot.GetComponent<BulletSlotView>();
+        var view = go.GetComponent<BulletView>();
         if (view)
         {
             view.ammo = ammo;//어떤 탄인지
-            if (view.bulletBg)
-            {
-                // 기본색 세팅
-                view.bulletBg.color = bgNormal;
-            }
+            view.SetBgColor(bgNormal);
+            view.RefreshLabel();
         }
         
-        slot.GetComponent<AmmoLabelView>()?.RefreshLabel();
 
-        var btn = slot.GetComponentInChildren<Button>(true);
+        var btn = go.GetComponentInChildren<Button>(true);
         if(btn)
         {
             btn.onClick.AddListener(() => SelectAmmo(btn));

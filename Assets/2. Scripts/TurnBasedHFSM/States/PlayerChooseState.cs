@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// ÀÌÈÄ Ãß°¡·Î uiÀÛ¾÷ÇÏ¿© 2ÆäÀÌÁî·Î ÇÃ·¹ÀÌ¾î ÀÎ½ÄÇÒ¼öÀÖ°Ô ÀÛ¾÷ÇÏ±â
+// ì´í›„ ì¶”ê°€ë¡œ uiì‘ì—…í•˜ì—¬ 2í˜ì´ì¦ˆë¡œ í”Œë ˆì´ì–´ ì¸ì‹í• ìˆ˜ìˆê²Œ ì‘ì—…í•˜ê¸°
 public class PlayerChooseState : BaseTurnState
 {
    public PlayerChooseState() { }
@@ -12,8 +12,6 @@ public class PlayerChooseState : BaseTurnState
     {
         timer = turnSetVlaue.resetTime;
         didClose = false;
-        GameManager.Event.Publish(EventType.PlayerMove);
-        GameManager.Unit.Player.controller.SwitchMoveRange();
         GameManager.UI.OpenUI<PaseTurnUI>();
     }
 
@@ -24,13 +22,13 @@ public class PlayerChooseState : BaseTurnState
         if (timer > turnSetVlaue.turnDelayTime)
         {
             GameManager.UI.CloseUI<PaseTurnUI>();
-            GameManager.Unit.Player.controller.SwitchMoveRange();
-            didClose = true;// ÇÑ ¹ø¸¸ Ã³¸®ÇÏ°Ô ¼³Á¤
+            GameManager.UI.OpenUI<MainUI>();
+            didClose = true;// í•œ ë²ˆë§Œ ì²˜ë¦¬í•˜ê²Œ ì„¤ì •
         }
     }
     public override void OnExit()
     {
-        // È¤½Ã ¸ø ´İ¾ÒÀ¸¸é ¾ÈÀüÇÏ°Ô ´İ¾Æ ÁÖ±â
+        // í˜¹ì‹œ ëª» ë‹«ì•˜ìœ¼ë©´ ì•ˆì „í•˜ê²Œ ë‹«ì•„ ì£¼ê¸°
         if (!didClose) GameManager.UI.CloseUI<PaseTurnUI>();
     }
 }

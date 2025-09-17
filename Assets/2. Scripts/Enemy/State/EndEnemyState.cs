@@ -10,6 +10,7 @@ public class EndEnemyState : BaseEnemyState
     {
         Debug.Log("End : Enter");
         controller.CompleteTurn();
+
         stateMachine.ChangeState(stateMachine.IdleState);
     }
 

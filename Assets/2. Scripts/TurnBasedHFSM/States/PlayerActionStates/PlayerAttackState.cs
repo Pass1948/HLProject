@@ -17,14 +17,13 @@ public class PlayerAttackState : PlayerActionState
         public override void OnEnter()
         {
             timer = turnSetVlaue.resetTime;
-            GameManager.Event.Publish(EventType.PlayerMove);
-            GameManager.UI.CloseUI<MainUI>();
         }
         public override void Tick(float dt)
         {
             timer += dt;
-            if (timer > 0.5f) // TODO: Attack windup time
+            if (timer > 0.1f) // TODO: Attack windup time
             {
+                GameManager.UI.CloseUI<MainUI>();
                 ChangeState<A_Execute>();
             }
         }
@@ -40,7 +39,7 @@ public class PlayerAttackState : PlayerActionState
         public override void Tick(float dt)
         {
             timer += dt;
-            if (timer > 0.5f) // TODO: A_Execute time 
+            if (timer > 0.1f) // TODO: A_Execute time 
             {
                 ChangeState<A_Recover>();
             }
@@ -58,8 +57,9 @@ public class PlayerAttackState : PlayerActionState
         {
             //ChangeState<ClearCheckState>(); <=몬스터 처리 후 클리어 체크
             timer += dt;
-            if (timer > 0.5f) // TODO: A_Recover time 
+            if (timer > 0.1f) // TODO: A_Recover time 
             {
+                GameManager.Map.pathfinding.ResetMapData();
                 ChangeState<PlayerTurnEndState>();
             }
         }

@@ -116,8 +116,8 @@ public class EnemyController : MonoBehaviour
         if (isDie) return;
         // 완료 플래그 설정
         isDone = true;
-        // 이벤트 발행: TurnBasedManager가 이 신호를 받아 다음 적을 진행
-        GameManager.Event.Publish(EventType.EnemyTurnEnd);
+        GameManager.Map.pathfinding.ResetMapData();
+        GameManager.Event.Publish(EventType.EnemyTurnEnd);        // 이벤트 발행: TurnBasedManager가 이 신호를 받아 다음 적을 진행
     }
 
     public IEnumerator MoveAlongPath(List<Vector3Int> path)
