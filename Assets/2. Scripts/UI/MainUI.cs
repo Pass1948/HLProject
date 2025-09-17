@@ -11,10 +11,14 @@ public class MainUI : BaseUI
     [SerializeField] private Button rerollBtn;
     [SerializeField] private ReloadAmmo reloadBtnObj;
 
+
+    [SerializeField] private Button kickBtn;
+
     private void Awake()
     {
-        fireBtn.onClick.AddListener(OnFire);
-        rerollBtn.onClick.AddListener(OnReload);
+        fireBtn.onClick.AddListener(OnFire);    // 공격버튼
+        rerollBtn.onClick.AddListener(OnReload);    // 재장전 버튼
+       // kickBtn.onClick.AddListener(OnKick);    // 킥 버튼 나중에 추가
 
         //시작시에 한번 실행되게
         fireBtn.interactable = (fireBtnObj != null) && fireBtnObj.IsBtnSel;
@@ -26,17 +30,22 @@ public class MainUI : BaseUI
         fireBtn.interactable = (fireBtnObj != null) && fireBtnObj.IsBtnSel;
     }
 
+    // 공격 버튼 클릭 처리
     private void OnFire()
     {
         GameManager.TurnBased.SetSelectedAction(PlayerActionType.Attack);
-        fireBtnObj.Fire();
+         fireBtnObj.Fire(); // TODO: 이후 공격범위나 몬스터를 클릭시 공격실행하도록 변경예정
     }
-
+    // 리로드 버튼 클릭 처리
     private void OnReload()
     {
         reloadBtnObj.Reload();
     }
 
-
-
+    // 킥 버튼 클릭 처리
+    private void OnKick()
+    {
+        // TODO: 이후 킥범위나 몬스터를 클릭시 킥실행하도록 변경예정
+        GameManager.TurnBased.SetSelectedAction(PlayerActionType.Kick);
+    }
 }

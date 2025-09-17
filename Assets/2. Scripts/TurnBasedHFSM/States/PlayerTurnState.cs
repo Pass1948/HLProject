@@ -6,31 +6,32 @@ using UnityEngine;
 public class PlayerTurnState : BaseTurnState
 {
     float timer;
-    private bool didClose;   // ÇÑ ¹ø¸¸ Ã³¸®ÇÏ°Ô ÇÏ´Â °ÔÀÌÆ®
+    private bool didClose;   // í•œ ë²ˆë§Œ ì²˜ë¦¬í•˜ê²Œ í•˜ëŠ” ê²Œì´íŠ¸
     public PlayerTurnState() { }
     public override void OnEnter()
     {
         timer = turnSetVlaue.resetTime;
         didClose = false;
-        // ÅÏ ½ÃÀÛ ½Ã Ä¿¸Çµå ÃÊ±âÈ­ÈÄ ÀÔ·Â ´ë±â
+        // í„´ ì‹œì‘ ì‹œ ì»¤ë§¨ë“œ ì´ˆê¸°í™”í›„ ì…ë ¥ ëŒ€ê¸°
         GameManager.UI.OpenUI<PaseTurnUI>();
         GameManager.Event.Publish(EventType.PlayerMove);
     }
 
     public override void Tick(float dt)
     {
-        // ÀÌ¹Ì Ã³¸®Çß´Ù¸é ´õ ÀÌ»ó °Ë»çÇÏÁö ¾ÊÀ½
+        // ì´ë¯¸ ì²˜ë¦¬í–ˆë‹¤ë©´ ë” ì´ìƒ ê²€ì‚¬í•˜ì§€ ì•ŠìŒ
         if (didClose) return;
         timer += dt;
         if (timer > turnSetVlaue.turnDelayTime )
         {
             GameManager.UI.CloseUI<PaseTurnUI>();
-            didClose = true;// ÇÑ ¹ø¸¸ Ã³¸®ÇÏ°Ô ¼³Á¤
+            didClose = true;// í•œ ë²ˆë§Œ ì²˜ë¦¬í•˜ê²Œ ì„¤ì •
         }
     }
     public override void OnExit()
     {
-        // È¤½Ã ¸ø ´İ¾ÒÀ¸¸é ¾ÈÀüÇÏ°Ô ´İ¾Æ ÁÖ±â
+        // í˜¹ì‹œ ëª» ë‹«ì•˜ìœ¼ë©´ ì•ˆì „í•˜ê²Œ ë‹«ì•„ ì£¼ê¸°
         if (!didClose) GameManager.UI.CloseUI<PaseTurnUI>();
+        GameManager.Event.Publish(EventType.PlayerMove);
     }
 }
