@@ -886,8 +886,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fireBtn: {fileID: 1031609546230970503}
   fireBtnObj: {fileID: 830122162788962829}
-  reloadBtn: {fileID: 0}
-  reloadBtnObj: {fileID: 0}
+  rerollBtn: {fileID: 5889160930384264512}
+  reloadBtnObj: {fileID: 7921332509101693648}
 --- !u!1 &6206001616422285354
 GameObject:
   m_ObjectHideFlags: 0
