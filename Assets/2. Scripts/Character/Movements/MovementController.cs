@@ -188,11 +188,11 @@ public class MovementController : MonoBehaviour
         // _cellPosition : 시작 위치, targetCell : 목표 위치
         List<Vector3Int> path = _pathfinding.FindPath(_cellPosition, targetCell);
 
-<<<<<<< Updated upstream
+
         if (path == null||path.Count > moveRange)
-=======
+
         if (path.Count - 1 > moveRange)
->>>>>>> Stashed changes
+
         {
             CancelSelection();
             return;
