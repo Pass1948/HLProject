@@ -22,7 +22,7 @@ public class UnitManager : MonoBehaviour
     public List<BaseEnemy> enemies = new List<BaseEnemy>();
     public void ChangeHealth(UnitModel unit, float health)
     {
-
+        Debug.Log($"ChangeHealth {unit.unitName} : {health}");
     }
 
 

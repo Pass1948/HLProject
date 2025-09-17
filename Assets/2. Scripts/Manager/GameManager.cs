@@ -29,8 +29,8 @@ public class GameManager : MonoBehaviour
     private static TurnBasedManager turnBasedManager;
     public static TurnBasedManager TurnBased => turnBasedManager;
 
-    private static PathPreviewManager pathPreviewManager;
-    public static PathPreviewManager PathPreview => pathPreviewManager;
+    private static MouseManager mouseManager;
+    public static MouseManager Mouse => mouseManager;
 
     private static DataManager data;
     public static DataManager Data => data;
@@ -61,7 +61,7 @@ public class GameManager : MonoBehaviour
         uiManager = CreateChildManager<UIManager>("UIManager");
         eventManager = CreateChildManager<EventManager>("EventManager");
         turnBasedManager = CreateChildManager<TurnBasedManager>("TurnBasedManager");
-        pathPreviewManager = CreateChildManager<PathPreviewManager>("PathPreviewManager");
+        mouseManager = CreateChildManager<MouseManager>("MouseManager");
         data = CreateChildManager<DataManager>("DataManager");
         mapManager = CreateChildManager<MapManager>("MapManager");
 

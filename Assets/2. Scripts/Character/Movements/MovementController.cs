@@ -42,7 +42,6 @@ public class MovementController : MonoBehaviour
 
     private void Start()
     {
-
         tilemap = GameManager.Map.tilemap;
         // 플레이어 시작 위치를 타일의 중앙으로 설정
         _cellPosition = tilemap.WorldToCell(transform.position);
@@ -75,12 +74,12 @@ public class MovementController : MonoBehaviour
 
     public void PlayerMoveRange(List<Vector3Int> path, Tilemap tilemap, int moveRange)
     {
-        GameManager.PathPreview.ShowPath(path, tilemap, moveRange);
+        GameManager.PathPreview.ShowPath(path, tilemap, 10);    // 맵크기는 나중에 데이터로 받아오는걸로 바꾸기
     }
-    
+
     public void SwitchMove()
     {
-        if(_isMoving == false)
+        if (_isMoving == false)
         {
             _isMoving = true;
         }
@@ -104,7 +103,7 @@ public class MovementController : MonoBehaviour
 
         // 마우스 눌렀다가 땠을 때에는 처리 하지 않음
         if (!value.isPressed) return;
-        
+
         // 통합된 마우스 클릭 처리
         HandleMouseClick();
     }
@@ -114,8 +113,8 @@ public class MovementController : MonoBehaviour
     {
         var mousePos = Mouse.current.position.ReadValue();
         Ray ray = Camera.main.ScreenPointToRay(mousePos);
-        
-        if (Physics.Raycast(ray, out RaycastHit hit,1000f,~0, QueryTriggerInteraction.Ignore))// RaycastHit의 최대거리 설정으로 무한정 오류를 방지 
+
+        if (Physics.Raycast(ray, out RaycastHit hit, 1000f, ~0, QueryTriggerInteraction.Ignore))// RaycastHit의 최대거리 설정으로 무한정 오류를 방지 
         {
             string tag = hit.collider.gameObject.tag;
             // 1. 플레이어 클릭 처리
@@ -124,14 +123,14 @@ public class MovementController : MonoBehaviour
                 HandlePlayerClick();
                 return;
             }
-            
+
             // 2. 적 클릭 처리
             if (tag == "Enemy")
             {
-                HandleEnemyClick();
+                HandleEnemyClick(hit);
                 return;
             }
-            
+
             // 3. 타일맵 클릭 처리 (이동)
             if (tag == "TileMap")
             {
@@ -149,17 +148,23 @@ public class MovementController : MonoBehaviour
     {
         // 플레이어 클릭시 이동범위 확인할수있음
         GameManager.Map.PlayerUpdateRange(_cellPosition, moveRange);
-        GameManager.UI.OpenUI<MainUI>();
+        GameManager.UI.CloseUI<EnemyInfoPopUpUI>();
         isPlayer = true;
     }
 
     // 적 클릭 처리
-    private void HandleEnemyClick()
+    private void HandleEnemyClick(RaycastHit hit)
     {
         // 적 클릭시 정보창
+        var enemy = hit.collider.GetComponentInParent<BaseEnemy>();
+        GameManager.UI.GetUI<EnemyInfoPopUpUI>().SetData(enemy.enemyModel.unitName, enemy.enemyModel.attri, enemy.enemyModel.rank);
         GameManager.UI.OpenUI<EnemyInfoPopUpUI>();
-        Debug.Log("Enemy clicked");
+
+        // 적 클릭시 인덱스 확인 하는 코드
+        /*        var enemies = GameManager.Unit.enemies;
+        int idx = enemies.IndexOf(enemy);*/
     }
+
 
     // 타일맵 클릭 처리 (이동)
     private void HandleTileMapClick(Vector3 worldPoint)
@@ -205,7 +210,6 @@ public class MovementController : MonoBehaviour
     {
         isPlayer = false;
         GameManager.Map.ClearPlayerRange();
-        GameManager.UI.CloseUI<MainUI>();
         GameManager.UI.CloseUI<EnemyInfoPopUpUI>();
     }
 
