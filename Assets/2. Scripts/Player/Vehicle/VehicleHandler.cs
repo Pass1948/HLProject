@@ -26,6 +26,7 @@ public class VehicleHandler : MonoBehaviour
 
     private void Start()
     {
+
     }
 
 
@@ -85,5 +86,5 @@ public class VehicleHandler : MonoBehaviour
         player.playerModel.moveRange -= vehicle.vehicleModel.moveRange;
         player.playerModel.health -= vehicle.vehicleModel.health;
     }
-
+    
 }

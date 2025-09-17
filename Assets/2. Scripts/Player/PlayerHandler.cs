@@ -5,17 +5,20 @@ using UnityEngine;
 public class PlayerHandler : MonoBehaviour
 {
 
-    public BasePlayer player;
-    public BaseVehicle vehicle;
+    private BasePlayer player;
+    private BaseVehicle vehicle;
 
     private bool playerBording => player.playerModel.viecleBording == ViecleBording.On;
 
     private void Awake()
     {
-        player = new BasePlayer();
-        vehicle = new BaseVehicle();
+        player = GameManager.Unit.Player;
+        vehicle = GameManager.Unit.Vehicle;
     }
-
+    public void Update()
+    {
+        
+    }
     public void TakeDamage(int amount)
     {
         if(vehicle.vehicleModel.health <= 0 && playerBording)
@@ -30,6 +33,10 @@ public class PlayerHandler : MonoBehaviour
         {
             vehicle.vehicleModel.health -= amount;
         }
+    }
+    public void VehicleControll()
+    {
+
     }
 
 }

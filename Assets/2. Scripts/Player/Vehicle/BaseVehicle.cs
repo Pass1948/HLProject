@@ -7,6 +7,7 @@ public class BaseVehicle : MonoBehaviour
     public VehicleModel vehicleModel;
     public VehicleAnimHandler animHandler;
     public VehicleHandler vehicleHandler;
+    public ReloadAmmo ReloadAmmo;
 
     protected virtual void Awake()
     {
@@ -14,5 +15,6 @@ public class BaseVehicle : MonoBehaviour
         vehicleModel = new VehicleModel();
         animHandler = GetComponent<VehicleAnimHandler>();
         vehicleHandler = GetComponent<VehicleHandler>();
+        ReloadAmmo = GetComponent<ReloadAmmo>();
     }
 }

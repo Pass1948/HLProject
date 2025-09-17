@@ -10,7 +10,7 @@ public enum VehicleCondition
     Repair, // 수리
 }   
 
-// TODO: 숫자들은 테스트를 위해 임시로 넣어주는 것뿐이야~(JBS)
+// TODO: 숫자들은 테스트를 위해 임시로 넣어주는 것뿐입니당~(JBS)
 public class VehicleModel : UnitModel
 {
     public int maxBullet;
