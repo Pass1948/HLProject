@@ -49,9 +49,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animHandler: {fileID: 0}
   moveRange: 0
-  attackRange: 0
+  minAttackRange: 0
+  maxAttackRange: 0
   isDie: 0
   isDone: 0
+  startTurn: 0
   moveDuration: 0.2
 --- !u!114 &7108647385520497506
 MonoBehaviour:

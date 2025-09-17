@@ -13,13 +13,13 @@ public class MoveEnemyState : BaseEnemyState
     {
         Debug.Log("Move : Enter");
 
-        GameManager.Map.PlayerUpdateRange(controller.GridPos, controller.moveRange);
+        //GameManager.Map.PlayerUpdateRange(controller.GridPos, controller.moveRange);
 
         Vector3Int start = controller.GridPos;
         Vector3Int dest = controller.TargetPos;
         List<Vector3Int> path = GameManager.Map.FindPath(start, dest);
 
-        Debug.Log(dest);
+        //Debug.Log(dest);
 
 
         
@@ -79,6 +79,4 @@ public class MoveEnemyState : BaseEnemyState
 
         stateMachine.ChangeState(stateMachine.EndState);
     }
-
-
 }

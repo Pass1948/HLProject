@@ -35,7 +35,7 @@ public class PlayerMoveInfo : MonoBehaviour
 
                         new Vector3Int(moveRange, 0, 0),
                         new Vector3Int(-moveRange, 0, 0),
-                        new Vector3Int(0,moveRange, 0),
+                        new Vector3Int(0, moveRange, 0),
                         new Vector3Int(0, -moveRange, 0)
                      };
 
