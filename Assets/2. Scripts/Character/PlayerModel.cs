@@ -19,6 +19,7 @@ public class PlayerModel : UnitModel
     public int mulligan;
     public int reload;
     public int health;
+    public bool die => health <= 0;
     public void InitData(UnitData data)
     {
         id = data.ID;

@@ -14,6 +14,8 @@ public class VehicleModel : UnitModel
     public int maxBullet;
     public int additinalMove;
     public int additinalHealth;
+    public VehicleCondition condition = VehicleCondition.Bording;
+    public bool isDestruction => condition == VehicleCondition.Destruction;
 
     public void InitData(UnitData data)
     {

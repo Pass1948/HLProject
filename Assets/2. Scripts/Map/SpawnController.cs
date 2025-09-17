@@ -44,11 +44,13 @@ public class SpawnController : MonoBehaviour
                 BasePlayer basePlayer = GameManager.Unit.Player.GetComponent<BasePlayer>();
 
                 GameObject vehicleSpawn = GameManager.Resource.Create<GameObject>(Path.Player + "Vehicle");
+                
+                Debug.Log($"{GameManager.Unit.Vehicle}");
                 BaseVehicle baseVehicle = GameManager.Unit.Vehicle.GetComponent<BaseVehicle>();
 
                 basePlayer.playerModel.InitData(GameManager.Data.GetUnit(UnitType.Player, 1001));
                 basePlayer.controller.GetPosition(randX, randY);
-                
+
                 baseVehicle.vehicleModel.InitData(GameManager.Data.GetUnit(UnitType.Vehicle, 1501));
                 baseVehicle.transform.parent = basePlayer.transform;
 
@@ -59,6 +61,7 @@ public class SpawnController : MonoBehaviour
                 return;
             }
         }
+
     }
     
     // 장애물 스폰
