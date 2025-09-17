@@ -35,6 +35,7 @@ public class PlayerKickState : PlayerActionState
         public override void OnEnter()
         {
             timer = turnSetVlaue.resetTime;
+            // TODO : 여기서 발차기 했을 때 정보 바꿔주기
         }
         public override void Tick(float dt)
         {

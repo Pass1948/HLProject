@@ -5,10 +5,12 @@ using UnityEngine;
 
 public abstract class UnitModel
 {
+    public UnitType unitType;
     public int id;
     public string unitName;
     public int size;
-    public int health;
+    public int maxHealth;
+    public int currentHealth;
     public int moveRange;
     public bool die;
 }

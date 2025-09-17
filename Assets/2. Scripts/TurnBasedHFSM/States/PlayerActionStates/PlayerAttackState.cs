@@ -34,7 +34,13 @@ public class PlayerAttackState : PlayerActionState
         float timer;
         public override void OnEnter()
         {
+            Debug.Log(GameManager.Unit.enemies[0].enemyModel);
             timer = turnSetVlaue.resetTime;
+            GameManager.Unit.ChangeHealth(
+                GameManager.Unit.enemies[0].enemyModel,
+                GameManager.Unit.Player.playerModel.attack,
+                turnSetVlaue.fireAmmo
+                );
         }
         public override void Tick(float dt)
         {
