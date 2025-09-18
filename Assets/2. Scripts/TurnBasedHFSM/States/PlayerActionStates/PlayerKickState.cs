@@ -36,6 +36,7 @@ public class PlayerKickState : PlayerActionState
         {
             timer = turnSetVlaue.resetTime;
             // TODO : 여기서 발차기 했을 때 정보 바꿔주기
+            GameManager.Unit.enemies[0].ChenageAttribute();
         }
         public override void Tick(float dt)
         {
