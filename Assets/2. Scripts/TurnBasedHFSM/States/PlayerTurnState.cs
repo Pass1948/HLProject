@@ -14,7 +14,7 @@ public class PlayerTurnState : BaseTurnState
         didClose = false;
         // 턴 시작 시 커맨드 초기화후 입력 대기
         GameManager.UI.OpenUI<PaseTurnUI>();
-        GameManager.Event.Publish(EventType.PlayerMove);
+        GameManager.Mouse.ToggleMovePhase();
     }
 
     public override void Tick(float dt)

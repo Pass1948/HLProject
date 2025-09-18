@@ -27,20 +27,13 @@ public class MouseManager : MonoBehaviour
     public bool usePlaneIfMiss = true;
     public float groundY = 0f;                        // 평면 교차 높이
 
-    // ===== 경계/가용성 정책 =====
+    // ===== 경계/가용범위 등 =====
     [Header("Constraints")]
     public bool blockWhenUI = true;                   // UI 위 클릭/추적 무시
     public bool clampToBounds = true;                 // 맵 밖이면 모서리로 클램프
     public bool freezeWhenOutside = false;            // 맵 밖이면 정지(클램프 대신)
     public bool restrictPointerToMovable = false;     // 포인터가 Terrain만 허용(색 반영)
     public bool restrictMoveToRange = true;           // 경로 길이가 이동범위 초과면 막기
-
-    // ===== 포인터 비주얼 =====
-    [Header("Visual")]
-    public bool tintBlocked = true;
-    public Color movableColor = Color.white;
-    public Color blockedColor = new Color(1, 0.5f, 0.5f);
-    private Renderer _pointerRenderer;
 
     // ===== 유닛 탐색 보강(선택) =====
     [Header("Instance Lookup (Optional)")]
@@ -53,7 +46,7 @@ public class MouseManager : MonoBehaviour
     [Header("Movement")]
     public float stepMoveTime = 0.2f;                 // 한 칸 보간 시간
     private bool _isMoving = false;
-
+    [SerializeField] private bool movePhaseActive = false;  // PlayerMove 페이즈에서만 true
     private BasePlayer _selectedPlayer;               // 현재 선택된 플레이어
     private Vector3Int _selectedPlayerCell;
     private int _selectedMoveRange;
@@ -96,6 +89,10 @@ public class MouseManager : MonoBehaviour
         if (clicked) HandleLeftClick();
     }
 
+    public void ToggleMovePhase()
+    {
+        movePhaseActive = !movePhaseActive;
+    }
 
     // ===== 포인터 추적 & 셀 스냅 =====
     private bool UpdatePointer()
@@ -112,16 +109,15 @@ public class MouseManager : MonoBehaviour
         bool inside = IsInside(cell);
         if (!inside)
         {
-            if (freezeWhenOutside) { ApplyTint(_lastValidCell, allowed: true); return false; }
             if (clampToBounds) { cell = ClampCell(cell); inside = true; }
         }
 
-        // Terrain만 허용(옵션)
+        // Terrain만 허용
         bool allowed = true;
         if (restrictPointerToMovable && inside)
             allowed = map.IsMovable(cell);
 
-        // 셀 변경시에만 스냅 → "한 칸씩" 움직임
+        // "한 칸씩" 움직임
         if (allowed && cell != _lastCell)
         {
             GridSnapper.SnapToCellCenter(pointer, tilemap, new Vector2Int(cell.x, cell.y));
@@ -129,7 +125,6 @@ public class MouseManager : MonoBehaviour
             _lastValidCell = cell;
         }
 
-        ApplyTint(cell, allowed);
         return true;
     }
 
@@ -206,65 +201,77 @@ public class MouseManager : MonoBehaviour
     // Terrain 셀 클릭 → 선택된 플레이어가 있으면 이동 시도
     private void OnClickTerrain(Vector3Int destCell)
     {
+        // 0) 이동 페이즈가 아니면 무시
+        if (!movePhaseActive) return;
+
+        // 1) 현재 이동 중이면 무시
         if (_isMoving) return;
+
+        // 2) 플레이어가 선택되어 있어야 함
         if (_selectedPlayer == null) return;
 
-        // 선택된 플레이어의 현재 위치(셀)
+        // 3) 선택된 플레이어의 현재 위치(셀)
         Vector3Int startCell = _selectedPlayerCell;
 
-        // 경로 계산
+        // 4) 경로 계산
         List<Vector3Int> path = map.FindPath(startCell, destCell);
         if (path == null || path.Count == 0)
         {
-            CancelSelection(); return;
+            CancelSelection();
+            return;
         }
 
-        // 범위 제한
-        if (restrictMoveToRange && path.Count > _selectedMoveRange)
+        // 5) 이동 스텝(경로 칸수 - 1)로 범위 체크
+        int steps = path.Count - 1;
+        if (restrictMoveToRange && steps > _selectedMoveRange)
         {
-            // 초과 시 이동 불가 (원하면 path를 잘라서 N칸까지만 이동하도록 바꿀 수 있음)
-            CancelSelection(); return;
+            CancelSelection();
+            return;
         }
 
-        // 이동 액션 선택(턴제 시스템 연동)
+        // 6) 턴제 시스템에 이동 액션 알림(기존 흐름 유지)
         GameManager.TurnBased.SetSelectedAction(PlayerActionType.Move);
 
-        // 이동 코루틴 시작
+        // 7) 이동 시작
         StopAllCoroutines();
         StartCoroutine(MoveAlongPath(_selectedPlayer.transform, startCell, path, TileID.Player));
+
+        // 이동 시작과 동시에 추가 입력을 막기 위한 게이트 OFF (상태 전환/메인UI는 외부 FSM에서 처리)
+        movePhaseActive = false;
+
+        // 기존 패턴 유지: 선택/범위 UI는 즉시 닫음(원하면 주석 처리로 변경 가능)
+        CancelSelection();
     }
 
     // ===== 이동 실행(한 칸씩 보간 + 맵데이터 갱신) =====
     private IEnumerator MoveAlongPath(Transform actor, Vector3Int currentCell, List<Vector3Int> path, int tileIdForActor)
     {
-        _isMoving = true;
+       _isMoving = true;
 
-        foreach (var nextCell in path)
+    foreach (var nextCell in path)
+    {
+        Vector3 start = actor.position;
+        Vector3 end   = tilemap.GetCellCenterWorld(nextCell);
+
+        float t = 0f;
+        float dur = Mathf.Max(0.0001f, stepMoveTime);
+        while (t < 1f)
         {
-            // 월드 좌표 보간
-            Vector3 start = actor.position;
-            Vector3 end = tilemap.GetCellCenterWorld(nextCell);
-
-            float t = 0f;
-            while (t < 1f)
-            {
-                t += Time.deltaTime / Mathf.Max(0.0001f, stepMoveTime);
-                actor.position = Vector3.Lerp(start, end, t);
-                yield return null;
-            }
-            actor.position = end;
-
-            // 맵 데이터 갱신(셀 좌표 기반)
-            map.UpdateObjectPosition(currentCell.x, currentCell.y, nextCell.x, nextCell.y, tileIdForActor);
-
-            // 내부 상태 갱신
-            currentCell = nextCell;
-            _selectedPlayerCell = nextCell; // 선택 유지 중이면 최신 위치로
+            t += Time.deltaTime / dur;
+            actor.position = Vector3.Lerp(start, end, t);
+            yield return null;
         }
+        actor.position = end;
 
-        _isMoving = false;
-        // 이동 완료 후 선택/범위 해제(원한다면 유지하도록 옵션화 가능)
-        CancelSelection();
+        // 맵데이터는 셀 기준 반영
+        map.UpdateObjectPosition(currentCell.x, currentCell.y, nextCell.x, nextCell.y, tileIdForActor);
+
+        // 내부 상태 갱신
+        currentCell = nextCell;
+        _selectedPlayerCell = nextCell;
+    }
+
+    _isMoving = false;
     }
 
     // ===== 공용 유틸 =====
@@ -303,13 +310,6 @@ public class MouseManager : MonoBehaviour
         int x = Mathf.Clamp(c.x, 0, map.mapWidth - 1);
         int y = Mathf.Clamp(c.y, 0, map.mapHeight - 1);
         return new Vector3Int(x, y, 0);
-    }
-
-    private void ApplyTint(Vector3Int cell, bool allowed)
-    {
-        if (!tintBlocked || _pointerRenderer == null) return;
-        // 런타임 인스턴스만 수정하도록 .material 사용(공유 머티리얼 변조 방지)
-        _pointerRenderer.material.color = allowed ? movableColor : blockedColor;
     }
 
     // 셀 중심 주변에서 컴포넌트 탐색(보강). MapManager에 셀→유닛 매핑이 있으면 그걸 쓰는 게 최선.
