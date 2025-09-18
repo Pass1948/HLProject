@@ -20,16 +20,10 @@ public class PlayerHandler : MonoBehaviour
         
     }
 
+
     public void TakeDamage(int amount)
     {
-
         vehicle.vehicleHandler.DamageVehicle(amount);
-
-        if (vehicle.vehicleModel.health <= 0 && !playerBording)
-
-    }
-    public void TakeDamage(int amount)
-    {
         if(vehicle.vehicleModel.health <= 0 && playerBording)
 
         {
