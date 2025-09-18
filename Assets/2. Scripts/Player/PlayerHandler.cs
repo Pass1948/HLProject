@@ -8,7 +8,7 @@ public class PlayerHandler : MonoBehaviour
     private BasePlayer player;
     private BaseVehicle vehicle;
 
-    private bool playerBording => player.playerModel.viecleBording == ViecleBording.On;
+    private bool playerBording => GameManager.Unit.Player.playerModel.viecleBording == ViecleBording.On;
 
     private void Awake()
     {
@@ -22,19 +22,18 @@ public class PlayerHandler : MonoBehaviour
 
     public void TakeDamage(int amount)
     {
-        vehicle.vehicleHandler.DamageVehicle(amount);
-        if(vehicle.vehicleModel.health <= 0 && playerBording)
-
+        GameManager.Unit.Vehicle.vehicleHandler.DamageVehicle(amount);
+        if(GameManager.Unit.Vehicle.vehicleModel.health <= 0 && playerBording)
         {
-            player.playerModel.health -= amount;
+            GameManager.Unit.Player.playerModel.health -= amount;
         }
-        if(player.playerModel.health <= 0)
+        if(GameManager.Unit.Player.playerModel.health <= 0)
         {
-
+            //»ç¸ÁÃ³¸®
         }
         else
         {
-            vehicle.vehicleModel.health -= amount;
+            GameManager.Unit.Vehicle.vehicleModel.health -= amount;
         }
     }
     public void VehicleControll()

@@ -191,6 +191,7 @@ public class MouseManager : MonoBehaviour
         {
             if (isMoving) return;
             var enemy = useOverlapLookup ? FindAtCell<BaseEnemy>(cell) : null;
+            // 공격범위 셀 id를 적과 비교해서 일치하면 공격
             if (enemy != null)
             {
                 GameManager.UI.GetUI<EnemyInfoPopUpUI>().SetData(enemy.enemyModel.unitName, enemy.enemyModel.attri, enemy.enemyModel.rank);
