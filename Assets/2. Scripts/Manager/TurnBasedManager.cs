@@ -137,7 +137,7 @@ public class TurnBasedManager : MonoBehaviour
             enemy.controller.startTurn = false;
             monsterQueue.Enqueue(enemy);
         }
-
+        Debug.Log($"지금 몬스터숫자 {monsterQueue.Count}");
         TryStartNextEnemy();
     }
 
@@ -153,6 +153,7 @@ public class TurnBasedManager : MonoBehaviour
             currentEnemy = null;
         }
         TryStartNextEnemy();
+
     }
 
     // 큐에서 다음 적을 하나 꺼내어 턴 시작

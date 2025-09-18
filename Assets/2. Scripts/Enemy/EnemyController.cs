@@ -89,7 +89,7 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    private void OnHitState()
+    public void OnHitState()
     {
         stateMachine.ChangeState(stateMachine.HitState);
     }
