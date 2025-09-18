@@ -134,29 +134,53 @@ public class AttackRangeDisplay : MonoBehaviour
     // 공격 방향을 계산
     private Vector3Int GetDirectionFromMouse()
     {
+        if (mainCamera == null || grid == null)
+        {
+            return Vector3Int.zero;
+        }
+
         Vector3Int playerCellPos = GetPlayerCellPosition();
         Vector2 playerWorldPos = grid.GetComponent<Grid>().CellToWorld(playerCellPos);
         Vector2 playerScreenPos = mainCamera.WorldToScreenPoint(playerWorldPos);
-        
+    
         Vector2 mouseScreenPos = Input.mousePosition;
         Vector2 screenDistanceVector = mouseScreenPos - playerScreenPos;
 
-        // === 디버그 로그 ===
-        Debug.Log($"화면 기준 거리 차이: {screenDistanceVector}");
-    
-        // 4. 가로/세로 거리 중 더 큰 값을 기준으로 방향을 결정합니다.
-        Vector3Int finalDirection;
+        // 거리가 너무 짧으면 방향을 정하지 않습니다. (플레이어 바로 근처)
+        if (screenDistanceVector.magnitude < 20) // 임계값은 필요에 따라 조절하세요.
+        {
+            return Vector3Int.zero;
+        }
 
-        if (Mathf.Abs(screenDistanceVector.x) > Mathf.Abs(screenDistanceVector.y))
+        // 마우스와 플레이어 간의 각도를 계산합니다. (라디안을 각도로 변환)
+        float angle = Mathf.Atan2(screenDistanceVector.y, screenDistanceVector.x) * Mathf.Rad2Deg;
+
+        // 각도가 0~360도 범위에 있도록 조정합니다.
+        if (angle < 0)
         {
-            finalDirection = (screenDistanceVector.x > 0) ? Vector3Int.right : Vector3Int.left;
-        }
-        else
-        {
-            finalDirection = (screenDistanceVector.y > 0) ? Vector3Int.up : Vector3Int.down;
+            angle += 360;
         }
     
-        return finalDirection;
+        // === 디버그 로그 ===
+        Debug.Log($"화면 기준 거리 차이: {screenDistanceVector}, 각도: {angle}");
+
+        // 각도를 기준으로 4방향(상,하,좌,우) 중 하나를 결정합니다.
+        if (angle >= 45f && angle < 135f) // 45도 ~ 135도 (위쪽)
+        {
+            return Vector3Int.up;
+        }
+        else if (angle >= 135f && angle < 225f) // 135도 ~ 225도 (왼쪽)
+        {
+            return Vector3Int.left;
+        }
+        else if (angle >= 225f && angle < 315f) // 225도 ~ 315도 (아래쪽)
+        {
+            return Vector3Int.down;
+        }
+        else // 315도 ~ 360도 or 0도 ~ 45도 (오른쪽)
+        {
+            return Vector3Int.right;
+        }
     }
 
     private List<Vector3Int> GetDiamondRange(Vector3Int direction)

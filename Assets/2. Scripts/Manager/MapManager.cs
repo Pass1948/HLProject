@@ -17,7 +17,6 @@ public class MapManager : MonoBehaviour
     public MapCreator mapCreator;
     public PlayerMoveInfo playerMoveInfo;
     private SpawnController spawnController;
-
     public AttackRangeDisplay attackRange;
     
     public Pathfinding pathfinding;
@@ -29,6 +28,7 @@ public class MapManager : MonoBehaviour
     private TileBase wallTile;
     private TileBase moveInfoTile;
     private TileBase redAttackTile;
+    private GameObject pointer; 
 
     public GameObject grid;
     
@@ -39,7 +39,6 @@ public class MapManager : MonoBehaviour
         spawnController = gameObject.AddComponent<SpawnController>();
         playerMoveInfo = gameObject.AddComponent< PlayerMoveInfo >();
         attackRange = gameObject.AddComponent<AttackRangeDisplay>();
-        
         
         spawnController.InitializeSpawnersAndPools();
         
@@ -85,9 +84,10 @@ public class MapManager : MonoBehaviour
         var attacktile = GameManager.Resource.Create<GameObject>(Path.Map + "AttackRangeTilemap");
         attackRangeTilemap = attacktile.GetComponent<Tilemap>();
         
-        
         mapData = new int[mapWidth, mapHeight];
         mapCreator.GenerateMap(mapData, tilemap, groundTile, wallTile);
+        
+        pointer = GameManager.Resource.Load<GameObject>(Path.Mouse + "Pointer");
         
         attackRange.Initialize(attackRangeTilemap, redAttackTile, mainCamera, grid);
 
