@@ -84,17 +84,19 @@ public class MainUI : BaseUI
                 repairBtn.gameObject.SetActive(false);
                 break;
             case VehicleCondition.Repair: // 수리 하고 있을 때
-                rerollBtn.gameObject.SetActive(true);
-                repairBtn.gameObject.SetActive(false);
+                rerollBtn.gameObject.SetActive(false);
+                repairBtn.gameObject.SetActive(true);
                 break;
             case VehicleCondition.Destruction: // 파괴 되었을 때
-                rerollBtn.gameObject.SetActive(false);
-
-                if (IsNearVehicle()) // 가까이 있을 때.
+                if (IsNearVehicle()) // 가까이 있을 때 수리, 리롤
+                {
+                    rerollBtn.gameObject.SetActive(false);
                     repairBtn.gameObject.SetActive(true);
+                } 
                 break;
             default:
-                rerollBtn.gameObject.SetActive(false);
+                rerollBtn.gameObject.SetActive(true);
+                repairBtn.gameObject.SetActive(false);
                 break;
         }
     }

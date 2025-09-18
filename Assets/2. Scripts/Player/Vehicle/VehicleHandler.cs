@@ -26,12 +26,12 @@ public class VehicleHandler : MonoBehaviour
     }
     private void OnEnable()
     {
-        //GameManager.Event.Subscribe(EventType.VehicleOnRepaired, RepairVehicle);
+
 
     }
     private void OnDisable()
     {
-        //GameManager.Event.Unsubscribe(EventType.VehicleOnRepaired, RepairVehicle);
+
     }
 
 
@@ -83,6 +83,7 @@ public class VehicleHandler : MonoBehaviour
         {
             return;
         }
+
         vehicle.vehicleModel.condition = VehicleCondition.Riding;
         player.playerModel.viecleBording = ViecleBording.On;
         transform.SetParent(player.transform);
