@@ -32,7 +32,7 @@ public class MainUI : BaseUI
         rerollBtn.onClick.AddListener(OnReload);
         deckBtn.onClick.AddListener(DeckToggle);
         discardBtn.onClick.AddListener(DiscardToggle);
-        //repairBtn.onClick.AddListener(RepairButton);
+        repairBtn.onClick.AddListener(RepairButton);
 
         bikeControllBtn.onClick.AddListener(BikeToggle);
         atifactBtn.onClick.AddListener(AtifactToggle);
@@ -81,20 +81,22 @@ public class MainUI : BaseUI
         {
             case VehicleCondition.Riding: // 위로 올라탔을 때
                 rerollBtn.gameObject.SetActive(true);
-                //repairBtn.gameObject.SetActive(false);
+                repairBtn.gameObject.SetActive(false);
                 break;
             case VehicleCondition.Repair: // 수리 하고 있을 때
-                rerollBtn.gameObject.SetActive(true);
-               // repairBtn.gameObject.SetActive(false);
+                rerollBtn.gameObject.SetActive(false);
+                repairBtn.gameObject.SetActive(true);
                 break;
             case VehicleCondition.Destruction: // 파괴 되었을 때
-                rerollBtn.gameObject.SetActive(false);
-
-                if (IsNearVehicle()) // 가까이 있을 때.
+                if (IsNearVehicle()) // 가까이 있을 때 수리, 리롤
+                {
+                    rerollBtn.gameObject.SetActive(false);
                     repairBtn.gameObject.SetActive(true);
+                } 
                 break;
             default:
-                rerollBtn.gameObject.SetActive(false);
+                rerollBtn.gameObject.SetActive(true);
+                repairBtn.gameObject.SetActive(false);
                 break;
         }
     }
