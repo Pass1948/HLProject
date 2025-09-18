@@ -24,18 +24,18 @@ public class UnitManager : MonoBehaviour
 
     public void ChangeHealth(UnitModel unit, int damage, Ammo ammo = null)
     {
-        if(unit.unitType == UnitType.Player)
+        if (unit.unitType == UnitType.Player)
         {
             unit.currentHealth -= damage;
         }
-        else if(unit.unitType == UnitType.Enemy)
+        else if (unit.unitType == UnitType.Enemy)
         {
             EnemyModel enemy = (EnemyModel)unit;
-            
-            switch(enemy.attri)
+
+            switch (enemy.attri)
             {
                 case EnemyAttribute.High:
-                    if(enemy.rank < ammo.rank)
+                    if (enemy.rank < ammo.rank)
                         unit.currentHealth -= damage;
                     break;
                 case EnemyAttribute.Low:
@@ -44,11 +44,11 @@ public class UnitManager : MonoBehaviour
                     break;
             }
         }
-        else if(unit.unitType==UnitType.Vehicle)
+        else if (unit.unitType == UnitType.Vehicle)
         {
 
         }
+
     }
 
-
-}
+    }

@@ -25,6 +25,7 @@ public static class Path
     public const string Camera = Prefab + "Camera/";
     public const string Player = Prefab + "Player/";
     public const string Weapon = Prefab + "Weapons/";
+    public const string Mouse = Prefab + "Mouse/";
     public const string Data = "Data/";
     public const string Sound = "Sound/";
 }
