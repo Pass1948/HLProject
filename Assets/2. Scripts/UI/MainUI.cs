@@ -81,11 +81,11 @@ public class MainUI : BaseUI
         {
             case VehicleCondition.Riding: // 위로 올라탔을 때
                 rerollBtn.gameObject.SetActive(true);
-                repairBtn.gameObject.SetActive(false);
+                //repairBtn.gameObject.SetActive(false);
                 break;
             case VehicleCondition.Repair: // 수리 하고 있을 때
                 rerollBtn.gameObject.SetActive(true);
-                repairBtn.gameObject.SetActive(false);
+               // repairBtn.gameObject.SetActive(false);
                 break;
             case VehicleCondition.Destruction: // 파괴 되었을 때
                 rerollBtn.gameObject.SetActive(false);

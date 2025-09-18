@@ -9,14 +9,14 @@ public class VehicleHandler : MonoBehaviour
 
     private BasePlayer player;
     private BaseVehicle vehicle;
-    public bool isMounted => player.playerModel.viecleBording == ViecleBording.On; // 탑승 상태
+    public bool isMounted => GameManager.Unit.Player.playerModel.viecleBording == ViecleBording.On; // 탑승 상태
 
     private void Awake()
     {
         player = GameManager.Unit.Player;
         vehicle = GameManager.Unit.Vehicle;
 
-        player.playerModel.viecleBording.CompareTo(ViecleBording.On);
+        GameManager.Unit.Player.playerModel.viecleBording.CompareTo(ViecleBording.On);
 
         MountVehicle();
     }
@@ -47,21 +47,21 @@ public class VehicleHandler : MonoBehaviour
         if (isMounted && vehicle.vehicleModel.health > 0)
         {
             Debug.Log("바이크 탑승상태");
-            return player.playerModel.moveRange + vehicle.vehicleModel.additinalMove;
+            return GameManager.Unit.Player.playerModel.moveRange + GameManager.Unit.Vehicle.vehicleModel.additinalMove;
         }
         else
-            return player.playerModel.moveRange;
+            return GameManager.Unit.Player.playerModel.moveRange;
     }
 
     // 탑승 상태, 체력이 0이 아니면 대신 데미지 받음 0 되면 파괴
     public void DamageVehicle(int amount )
     {
-        vehicle.vehicleModel.health -= amount;
+        GameManager.Unit.Vehicle.vehicleModel.health -= amount;
 
         if(vehicle.vehicleModel.health <= 0)
         {
-            vehicle.vehicleModel.condition = VehicleCondition.Destruction;
-            player.playerModel.viecleBording.CompareTo(ViecleBording.off);
+            GameManager.Unit.Vehicle.vehicleModel.condition = VehicleCondition.Destruction;
+            GameManager.Unit.Player.playerModel.viecleBording.CompareTo(ViecleBording.off);
             DismountVehicle();
         }
     }
@@ -70,7 +70,7 @@ public class VehicleHandler : MonoBehaviour
     //TODO: 만약에 수리를 할 때 턴을 써야 할 경우 변수로 값을 변경.(장보석)
     public void RepairVehicle()
     {
-        vehicle.vehicleModel.health += repairAmount;
+        GameManager.Unit.Vehicle.vehicleModel.health += repairAmount;
         if(vehicle.vehicleModel.health > 0)
         {
             MountVehicle();
@@ -79,27 +79,27 @@ public class VehicleHandler : MonoBehaviour
     // 탑승 히잇
     public void MountVehicle()
     {
-        if(vehicle.vehicleModel.isDestruction)
+        if(GameManager.Unit.Vehicle.vehicleModel.isDestruction)
         {
             return;
         }
-        vehicle.vehicleModel.condition = VehicleCondition.Riding;
-        player.playerModel.viecleBording = ViecleBording.On;
+        GameManager.Unit.Vehicle.vehicleModel.condition = VehicleCondition.Riding;
+        GameManager.Unit.Player.playerModel.viecleBording = ViecleBording.On;
         transform.SetParent(player.transform);
-        vehicle.transform.localPosition = Vector3.zero;
-        player.playerModel.moveRange += vehicle.vehicleModel.moveRange;
-        player.playerModel.health += vehicle.vehicleModel.health;
+        GameManager.Unit.Vehicle.transform.localPosition = Vector3.zero;
+        GameManager.Unit.Player.playerModel.moveRange += GameManager.Unit.Vehicle.vehicleModel.moveRange;
+        GameManager.Unit.Player.playerModel.health += GameManager.Unit.Vehicle.vehicleModel.health;
     }
     // 탑승 해제
     public void DismountVehicle()
     {
-        vehicle.vehicleModel.condition = VehicleCondition.GetOff;
-        player.playerModel.viecleBording = ViecleBording.off;
-        vehicle.transform.SetParent(null);
+        GameManager.Unit.Vehicle.vehicleModel.condition = VehicleCondition.GetOff;
+        GameManager.Unit.Player.playerModel.viecleBording = ViecleBording.off;
+        GameManager.Unit.Vehicle.transform.SetParent(null);
         if(vehicle.vehicleModel.health > 0)
         {
-            player.playerModel.moveRange -= vehicle.vehicleModel.moveRange;
-            player.playerModel.health -= vehicle.vehicleModel.health;
+            GameManager.Unit.Player.playerModel.moveRange -= GameManager.Unit.Vehicle.vehicleModel.moveRange;
+            GameManager.Unit.Player.playerModel.health -= GameManager.Unit.Vehicle.vehicleModel.health;
         }
     }
     
