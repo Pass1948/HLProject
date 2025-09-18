@@ -9,10 +9,11 @@ using UnityEngine.Tilemaps;
 public class MouseFollower : MonoBehaviour
 {
     [Header("References")]
-    public MapManager map;          // 비우면 GameManager.Map 사용
-    public Tilemap tilemap;         // 비우면 map.tilemap 사용
-    public Transform pointer;       // 비우면 this.transform
-    public Camera cam;              // 비우면 Camera.main
+    public MapManager map;          //  GameManager.Map 
+    public Tilemap tilemap;         // map.tilemap 
+    public Transform pointer;       //  this.transform
+    public Camera cam;              //  Camera.main
+    public MovementController movement; 
 
     [Header("Raycast / Plane")]
     public bool useLayerRaycast = true;
@@ -32,6 +33,11 @@ public class MouseFollower : MonoBehaviour
     public Color movableColor = Color.white;
     public Color blockedColor = new Color(1, 0.5f, 0.5f);
 
+    [Header("Instance Lookup (보강용)")]
+    public LayerMask unitDetectMask = ~0; // Enemy/Player 찾을 물리마스크
+    [Range(0.1f, 1f)] public float overlapShrink = 0.9f; // 셀 박스 축소율
+    public float overlapHeight = 2f;      // OverlapBox Y크기
+
     // 내부 상태
     private Vector3Int _lastCell = new Vector3Int(int.MinValue, int.MinValue, 0);
     private Vector3Int _lastValidCell;
@@ -43,9 +49,10 @@ public class MouseFollower : MonoBehaviour
         if (!map) map = GameManager.Map;
         if (!tilemap) tilemap = map ? map.tilemap : null;
         if (!cam) cam = Camera.main;
+        if (!movement) movement = FindObjectOfType<MovementController>();
         _pointerRenderer = pointer.GetComponentInChildren<Renderer>();
-        if (map == null || tilemap == null)
-            Debug.LogWarning("[MouseFollowerGridCursor] Map/Tilemap 참조가 없습니다.");
+        if (!map || !tilemap || !movement)
+            Debug.LogWarning("[MouseFollower] 참조 누락(map/tilemap/movement).");
     }
 
     void Update()

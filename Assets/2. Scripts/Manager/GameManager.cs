@@ -29,15 +29,14 @@ public class GameManager : MonoBehaviour
     private static TurnBasedManager turnBasedManager;
     public static TurnBasedManager TurnBased => turnBasedManager;
 
-    private static MouseManager mouseManager;
-    public static MouseManager Mouse => mouseManager;
-
     private static DataManager data;
     public static DataManager Data => data;
 
     private static MapManager mapManager;
     public static MapManager Map => mapManager;
 
+    private static MouseManager mouseManager;
+    public static MouseManager Mouse => mouseManager;
 
     private void Awake()
     {
@@ -61,10 +60,9 @@ public class GameManager : MonoBehaviour
         uiManager = CreateChildManager<UIManager>("UIManager");
         eventManager = CreateChildManager<EventManager>("EventManager");
         turnBasedManager = CreateChildManager<TurnBasedManager>("TurnBasedManager");
-        mouseManager = CreateChildManager<MouseManager>("MouseManager");
         data = CreateChildManager<DataManager>("DataManager");
         mapManager = CreateChildManager<MapManager>("MapManager");
-
+        mouseManager = CreateChildManager<MouseManager>("MouseManager");
     }
     private T CreateChildManager<T>(string goName) where T : Component
     {

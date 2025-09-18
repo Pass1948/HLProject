@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
 
-public static class MouseWorld 
+public static class MouseToWorldPosition 
 {
     static Camera cam;
     public static void Init(Camera c = null) => cam = c ? c : Camera.main;
