@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class VehicleHandler : MonoBehaviour
 {
-    // TODO: ¾ÆÁ÷Àº ÇÑ¹ø¿¡ ¼ö¸®ÇÏ°Ô ÇÔ. ³ªÁß¿¡ RepairVehicle() ÇÔ¼ö¿¡ ¸Å°³º¯¼ö·Î ¼ö¸®·® ¹Þ°Ô ÇÒ ¼öµµÀÕ(JBS)
-    [SerializeField] private int repairAmount = 3; // ¼ö¸®·®
+    // TODO: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½. ï¿½ï¿½ï¿½ß¿ï¿½ RepairVehicle() ï¿½Ô¼ï¿½ï¿½ï¿½ ï¿½Å°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Þ°ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(JBS)
+    [SerializeField] private int repairAmount = 3; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
     private BasePlayer player;
     private BaseVehicle vehicle;
-    public bool isMounted => GameManager.Unit.Player.playerModel.viecleBording == ViecleBording.On; // Å¾½Â »óÅÂ
+    public bool isMounted => GameManager.Unit.Player.playerModel.viecleBording == ViecleBording.On; // Å¾ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
     private void Awake()
     {
@@ -26,12 +26,12 @@ public class VehicleHandler : MonoBehaviour
     }
     private void OnEnable()
     {
-        //GameManager.Event.Subscribe(EventType.VehicleOnRepaired, RepairVehicle);
+
 
     }
     private void OnDisable()
     {
-        //GameManager.Event.Unsubscribe(EventType.VehicleOnRepaired, RepairVehicle);
+
     }
 
 
@@ -41,19 +41,19 @@ public class VehicleHandler : MonoBehaviour
         DamageVehicle(3);
     }
 
-    // Å¾½Â »óÅÂ ÀÌ¸é¼­ Ã¼·ÂÀÌ 0ÀÌ ¾Æ´Ï¸é ÀÌµ¿·Â Áõ°¡
+    // Å¾ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¸é¼­ Ã¼ï¿½ï¿½ï¿½ï¿½ 0ï¿½ï¿½ ï¿½Æ´Ï¸ï¿½ ï¿½Ìµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     public int GetEffectiveMoveRange()
     {
         if (isMounted && vehicle.vehicleModel.health > 0)
         {
-            Debug.Log("¹ÙÀÌÅ© Å¾½Â»óÅÂ");
+            Debug.Log("ï¿½ï¿½ï¿½ï¿½Å© Å¾ï¿½Â»ï¿½ï¿½ï¿½");
             return GameManager.Unit.Player.playerModel.moveRange + GameManager.Unit.Vehicle.vehicleModel.additinalMove;
         }
         else
             return GameManager.Unit.Player.playerModel.moveRange;
     }
 
-    // Å¾½Â »óÅÂ, Ã¼·ÂÀÌ 0ÀÌ ¾Æ´Ï¸é ´ë½Å µ¥¹ÌÁö ¹ÞÀ½ 0 µÇ¸é ÆÄ±«
+    // Å¾ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½, Ã¼ï¿½ï¿½ï¿½ï¿½ 0ï¿½ï¿½ ï¿½Æ´Ï¸ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 0 ï¿½Ç¸ï¿½ ï¿½Ä±ï¿½
     public void DamageVehicle(int amount )
     {
         GameManager.Unit.Vehicle.vehicleModel.health -= amount;
@@ -66,8 +66,8 @@ public class VehicleHandler : MonoBehaviour
         }
     }
 
-    // Å¾½ÂÇØÁ¦ »óÅÂ,¼ö¸® ¸ðµå,¼ö¸®ÇÏ¸é Å¾½Â »óÅÂ·Î º¯°æ
-    //TODO: ¸¸¾à¿¡ ¼ö¸®¸¦ ÇÒ ¶§ ÅÏÀ» ½á¾ß ÇÒ °æ¿ì º¯¼ö·Î °ªÀ» º¯°æ.(Àåº¸¼®)
+    // Å¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½ Å¾ï¿½ï¿½ ï¿½ï¿½ï¿½Â·ï¿½ ï¿½ï¿½ï¿½ï¿½
+    //TODO: ï¿½ï¿½ï¿½à¿¡ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.(ï¿½åº¸ï¿½ï¿½)
     public void RepairVehicle()
     {
         GameManager.Unit.Vehicle.vehicleModel.health += repairAmount;
@@ -76,13 +76,14 @@ public class VehicleHandler : MonoBehaviour
             MountVehicle();
         }
     }
-    // Å¾½Â È÷ÀÕ
+    // Å¾ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     public void MountVehicle()
     {
         if(GameManager.Unit.Vehicle.vehicleModel.isDestruction)
         {
             return;
         }
+
         GameManager.Unit.Vehicle.vehicleModel.condition = VehicleCondition.Riding;
         GameManager.Unit.Player.playerModel.viecleBording = ViecleBording.On;
         transform.SetParent(player.transform);
@@ -90,7 +91,7 @@ public class VehicleHandler : MonoBehaviour
         GameManager.Unit.Player.playerModel.moveRange += GameManager.Unit.Vehicle.vehicleModel.moveRange;
         GameManager.Unit.Player.playerModel.health += GameManager.Unit.Vehicle.vehicleModel.health;
     }
-    // Å¾½Â ÇØÁ¦
+    // Å¾ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     public void DismountVehicle()
     {
         GameManager.Unit.Vehicle.vehicleModel.condition = VehicleCondition.GetOff;
