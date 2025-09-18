@@ -7,12 +7,20 @@ public class VehicleHandler : MonoBehaviour
     // TODO: 아직은 한번에 수리하게 함. 나중에 RepairVehicle() 함수에 매개변수로 수리량 받게 할 수도잇(JBS)
     [SerializeField] private int repairAmount = 3; // 수리량
 
-
     private BasePlayer player;
     private BaseVehicle vehicle;
-
     public bool isMounted => player.playerModel.viecleBording == ViecleBording.On; // 탑승 상태
 
+    private void OnEnable()
+    {
+        GameManager.Event.Subscribe(EventType.VehicleOnRepaired, RepairVehicle);
+        GameManager.Event.Subscribe(EventType.VehicleOnRepaired, RepairVehicle);
+
+    }
+    private void OnDisable()
+    {
+        GameManager.Event.Unsubscribe(EventType.VehicleOnRepaired, RepairVehicle);
+    }
 
     private void Awake()
     {
@@ -20,15 +28,13 @@ public class VehicleHandler : MonoBehaviour
         vehicle = GameManager.Unit.Vehicle;
 
         player.playerModel.viecleBording.CompareTo(ViecleBording.On);
+
         MountVehicle();
     }
-    
-
     private void Start()
     {
-
+        GetEffectiveMoveRange();
     }
-
 
     // Debugging Dragon
     public void OnClickTestBtn()
@@ -36,14 +42,18 @@ public class VehicleHandler : MonoBehaviour
         DamageVehicle(3);
     }
 
-    // 탑승 상태,체력이 0이 아니면 이동력 증가
+    // 탑승 상태 이면서 체력이 0이 아니면 이동력 증가
     public int GetEffectiveMoveRange()
     {
-        if(isMounted && vehicle.vehicleModel.health > 0)
-            return  player.playerModel.moveRange + vehicle.vehicleModel.additinalMove;
+        if (isMounted && vehicle.vehicleModel.health > 0)
+        {
+            Debug.Log("바이크 탑승상태");
+            return player.playerModel.moveRange + vehicle.vehicleModel.additinalMove;
+        }
         else
             return player.playerModel.moveRange;
     }
+
     // 탑승 상태, 체력이 0이 아니면 대신 데미지 받음 0 되면 파괴
     public void DamageVehicle(int amount)
     {
@@ -55,6 +65,7 @@ public class VehicleHandler : MonoBehaviour
             DismountVehicle();
         }
     }
+
     // 탑승해제 상태,수리하면 탑승 상태로 변경
     public void RepairVehicle()
     {
@@ -65,6 +76,7 @@ public class VehicleHandler : MonoBehaviour
         }
         MountVehicle();
     }
+
     // 탑승 히잇
     public void MountVehicle()
     {
