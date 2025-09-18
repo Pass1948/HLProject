@@ -10,15 +10,14 @@ public class DieEnemyState : BaseEnemyState
     {
         Debug.Log("Die : Enter");
 
-        controller.model.isDie = true;
+        controller.isDie = true;
 
-        if (controller.model.isDie)
+        if (controller.isDie)
         {
             animHandler.OnDie();
             // 애니메이션 재생
             // 후 파괴
-
-            
+            Exit();
         }
     }
 

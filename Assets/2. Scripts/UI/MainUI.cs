@@ -105,12 +105,14 @@ public class MainUI : BaseUI
                     mountBtn.gameObject.SetActive(false);
                     getOffBtn.gameObject.SetActive(false);
                 }
+
                 else
                 {
                     repairBtn.gameObject.SetActive(true);
 
                 }
                     break;
+
             case VehicleCondition.GetOff: // 내렸을 때
                 if (IsNearVehicle()) // 가까이 있을 때 수리, 리롤
                 {
@@ -119,12 +121,14 @@ public class MainUI : BaseUI
                     mountBtn.gameObject.SetActive(true);
                     getOffBtn.gameObject.SetActive(false);
                 }
+
                 else
                 {
                     rerollBtn.gameObject.SetActive(false);
                     mountBtn.gameObject.SetActive(false);
                 }
                     break;
+
             default:
                 rerollBtn.gameObject.SetActive(true);
                 repairBtn.gameObject.SetActive(false);
@@ -156,7 +160,10 @@ public class MainUI : BaseUI
     {
         GameManager.Unit.Vehicle.vehicleHandler.RepairVehicle();
     }
+    private void OnRiding()
+    {
 
+    }
     private void BikeToggle()
     {
         bikeControllBtnObj.ToggleBikeControll();
