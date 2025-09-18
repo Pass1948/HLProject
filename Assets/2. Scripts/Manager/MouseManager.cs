@@ -4,6 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.TestTools;
 using UnityEngine.Tilemaps;
 
 public class MouseManager : MonoBehaviour
@@ -89,14 +90,16 @@ public class MouseManager : MonoBehaviour
         if (clicked) HandleLeftClick();
     }
 
-    public void ToggleMovePhase()
-    {
-        movePhaseActive = !movePhaseActive;
-    }
+    //  PlayerTurnState에서 호출
+    public void ToggleMovePhase() => movePhaseActive = !movePhaseActive;
 
-    // ===== 포인터 추적 & 셀 스냅 =====
+    // =====================================================================
+    // 포인터 추적 & 셀 스냅
+    // =====================================================================
     private bool UpdatePointer()
     {
+        if (pointer == null || tilemap == null || map == null) return false;
+
         if (blockWhenUI && EventSystem.current && EventSystem.current.IsPointerOverGameObject())
             return false;
 
@@ -109,18 +112,22 @@ public class MouseManager : MonoBehaviour
         bool inside = IsInside(cell);
         if (!inside)
         {
+            if (freezeWhenOutside) return false;
             if (clampToBounds) { cell = ClampCell(cell); inside = true; }
         }
 
-        // Terrain만 허용
+        // Terrain만 허용(옵션)
         bool allowed = true;
         if (restrictPointerToMovable && inside)
             allowed = map.IsMovable(cell);
 
-        // "한 칸씩" 움직임
+        // “한 칸씩” 스냅
         if (allowed && cell != _lastCell)
         {
-            GridSnapper.SnapToCellCenter(pointer, tilemap, new Vector2Int(cell.x, cell.y));
+            Vector3 center = tilemap.GetCellCenterWorld(cell);
+            center.y = groundY + 0.01f;
+            pointer.position = center;
+
             _lastCell = cell;
             _lastValidCell = cell;
         }
@@ -128,7 +135,9 @@ public class MouseManager : MonoBehaviour
         return true;
     }
 
-    // 좌클릭 처리(셀 기반 분기)
+    // =====================================================================
+    // 클릭 처리 (TileID 기반)
+    // =====================================================================
     private void HandleLeftClick()
     {
         if (blockWhenUI && EventSystem.current && EventSystem.current.IsPointerOverGameObject())
@@ -137,26 +146,24 @@ public class MouseManager : MonoBehaviour
         var cell = GetCurrentCell();
         if (!IsInside(cell)) return;
 
-        int id = map.mapData[cell.x, cell.y];
-
-        switch (id)
+        if (map.IsPlayer(cell))
         {
-            case TileID.Player:
-                OnClickPlayer(cell);
-                break;
-
-            case TileID.Enemy:
-                OnClickEnemy(cell);
-                break;
-
-            case TileID.Terrain:
-                OnClickTerrain(cell);
-                break;
-
-            default:
-                CancelSelection();
-                break;
+            OnClickPlayer(cell);
+            return;
         }
+        if (map.IsEnemy(cell))
+        {
+            OnClickEnemy(cell);
+            return;
+        }
+        if (map.IsMovable(cell)) // Terrain
+        {
+            OnClickTerrain(cell);
+            return;
+        }
+
+        // 그 외(Obstacle 등)
+        CancelSelection();
     }
 
     // ===== 클릭 동작별 핸들러 =====
@@ -166,16 +173,16 @@ public class MouseManager : MonoBehaviour
     {
         if (_isMoving) return;
 
-        // 셀에서 실제 플레이어 컴포넌트 탐색(보강)
-        _selectedPlayer = useOverlapLookup ? FindAtCell<BasePlayer>(cell) : null;
-        _selectedPlayerCell = cell;
+        // MapManager의 셀→오브젝트 매핑으로 인스턴스 획득(Overlap 금지)
+        var go = map.GetUnitAtCell(cell); // 아래 MapManager 보강 참고
+        _selectedPlayer = go ? go.GetComponentInChildren<BasePlayer>() : null;
 
-        // 이동 범위 설정(플레이어 모델이 있으면 거기서, 없으면 MapManager의 기본값 사용)
+        _selectedPlayerCell = cell;
         _selectedMoveRange = (_selectedPlayer && _selectedPlayer.playerModel != null)
             ? _selectedPlayer.playerModel.moveRange
             : map.moveRange;
 
-        // UI/범위 표시
+        // 범위 표시
         map.PlayerUpdateRange(cell, _selectedMoveRange);
         GameManager.UI.CloseUI<EnemyInfoPopUpUI>();
     }
@@ -185,18 +192,21 @@ public class MouseManager : MonoBehaviour
     {
         if (_isMoving) return;
 
-        var enemy = useOverlapLookup ? FindAtCell<BaseEnemy>(cell) : null;
+        var go = map.GetUnitAtCell(cell); // MapManager 매핑
+        var enemy = go ? go.GetComponentInChildren<BaseEnemy>() : null;
+
         if (enemy != null)
         {
-            GameManager.UI.GetUI<EnemyInfoPopUpUI>().SetData(enemy.enemyModel.unitName, enemy.enemyModel.attri, enemy.enemyModel.rank);
+            GameManager.UI.GetUI<EnemyInfoPopUpUI>()
+                .SetData(enemy.enemyModel.unitName, enemy.enemyModel.attri, enemy.enemyModel.rank);
             GameManager.UI.OpenUI<EnemyInfoPopUpUI>();
         }
         else
         {
-            // 인스턴스가 없으면 취소(선택 해제)
             CancelSelection();
         }
     }
+
 
     // Terrain 셀 클릭 → 선택된 플레이어가 있으면 이동 시도
     private void OnClickTerrain(Vector3Int destCell)
@@ -210,7 +220,7 @@ public class MouseManager : MonoBehaviour
         // 2) 플레이어가 선택되어 있어야 함
         if (_selectedPlayer == null) return;
 
-        // 3) 선택된 플레이어의 현재 위치(셀)
+        // 3) 시작 셀
         Vector3Int startCell = _selectedPlayerCell;
 
         // 4) 경로 계산
@@ -221,7 +231,7 @@ public class MouseManager : MonoBehaviour
             return;
         }
 
-        // 5) 이동 스텝(경로 칸수 - 1)로 범위 체크
+        // 5) 이동 스텝(경로 칸수 - 1) 체크
         int steps = path.Count - 1;
         if (restrictMoveToRange && steps > _selectedMoveRange)
         {
@@ -229,52 +239,55 @@ public class MouseManager : MonoBehaviour
             return;
         }
 
-        // 6) 턴제 시스템에 이동 액션 알림(기존 흐름 유지)
+        // 6) 액션 선택 알림(기존 흐름 유지)
         GameManager.TurnBased.SetSelectedAction(PlayerActionType.Move);
 
         // 7) 이동 시작
         StopAllCoroutines();
         StartCoroutine(MoveAlongPath(_selectedPlayer.transform, startCell, path, TileID.Player));
 
-        // 이동 시작과 동시에 추가 입력을 막기 위한 게이트 OFF (상태 전환/메인UI는 외부 FSM에서 처리)
+        // 추가 입력 방지 게이트 OFF (상태 전환/메인 UI는 외부 FSM이 처리)
         movePhaseActive = false;
 
-        // 기존 패턴 유지: 선택/범위 UI는 즉시 닫음(원하면 주석 처리로 변경 가능)
+        // 선택/범위 UI 정리
         CancelSelection();
     }
 
-    // ===== 이동 실행(한 칸씩 보간 + 맵데이터 갱신) =====
+    // =====================================================================
+    // 이동 실행(한 칸씩 보간 + mapData/매핑 갱신)
+    // =====================================================================
     private IEnumerator MoveAlongPath(Transform actor, Vector3Int currentCell, List<Vector3Int> path, int tileIdForActor)
     {
-       _isMoving = true;
+        _isMoving = true;
 
-    foreach (var nextCell in path)
-    {
-        Vector3 start = actor.position;
-        Vector3 end   = tilemap.GetCellCenterWorld(nextCell);
-
-        float t = 0f;
-        float dur = Mathf.Max(0.0001f, stepMoveTime);
-        while (t < 1f)
+        foreach (var nextCell in path)
         {
-            t += Time.deltaTime / dur;
-            actor.position = Vector3.Lerp(start, end, t);
-            yield return null;
+            Vector3 start = actor.position;
+            Vector3 end = tilemap.GetCellCenterWorld(nextCell);
+
+            float t = 0f;
+            float dur = Mathf.Max(0.0001f, stepMoveTime);
+            while (t < 1f)
+            {
+                t += Time.deltaTime / dur;
+                actor.position = Vector3.Lerp(start, end, t);
+                yield return null;
+            }
+            actor.position = end;
+
+            // 맵데이터/매핑은 '셀' 기준으로 갱신
+            map.UpdateObjectPosition(currentCell.x, currentCell.y, nextCell.x, nextCell.y, tileIdForActor);
+
+            currentCell = nextCell;
+            _selectedPlayerCell = nextCell;
         }
-        actor.position = end;
 
-        // 맵데이터는 셀 기준 반영
-        map.UpdateObjectPosition(currentCell.x, currentCell.y, nextCell.x, nextCell.y, tileIdForActor);
-
-        // 내부 상태 갱신
-        currentCell = nextCell;
-        _selectedPlayerCell = nextCell;
+        _isMoving = false;
     }
 
-    _isMoving = false;
-    }
-
-    // ===== 공용 유틸 =====
+    // =====================================================================
+    // 유틸
+    // =====================================================================
     public Vector3Int GetCurrentCell(bool preferValid = true)
         => preferValid ? (_lastValidCell == default ? _lastCell : _lastValidCell) : _lastCell;
 
@@ -287,7 +300,7 @@ public class MouseManager : MonoBehaviour
 #else
         Vector2 mousePos = Input.mousePosition;
 #endif
-        Ray ray = cam.ScreenPointToRay(mousePos);
+        Ray ray = cam ? cam.ScreenPointToRay(mousePos) : Camera.main.ScreenPointToRay(mousePos);
 
         if (useLayerRaycast &&
             Physics.Raycast(ray, out var hit, maxRayDistance, groundMask, QueryTriggerInteraction.Ignore))
@@ -312,23 +325,6 @@ public class MouseManager : MonoBehaviour
         return new Vector3Int(x, y, 0);
     }
 
-    // 셀 중심 주변에서 컴포넌트 탐색(보강). MapManager에 셀→유닛 매핑이 있으면 그걸 쓰는 게 최선.
-    private T FindAtCell<T>(Vector3Int cell) where T : Component
-    {
-        if (!useOverlapLookup) return null;
-
-        Vector3 center = tilemap.GetCellCenterWorld(cell);
-        Vector3 size = new Vector3(tilemap.cellSize.x * overlapShrink, overlapHeight, tilemap.cellSize.y * overlapShrink);
-        var cols = Physics.OverlapBox(center, size * 0.5f, Quaternion.identity, unitDetectMask, QueryTriggerInteraction.Collide);
-        foreach (var c in cols)
-        {
-            var t = c.GetComponentInParent<T>();
-            if (t) return t;
-        }
-        return null;
-    }
-
-    // 선택 해제 + UI/범위 정리
     private void CancelSelection()
     {
         _selectedPlayer = null;
