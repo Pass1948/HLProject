@@ -35,25 +35,26 @@ public class UnitManager : MonoBehaviour
             switch (enemy.attri)
             {
                 case EnemyAttribute.High:
-                    if (enemy.rank < ammo.rank)
+                    if (enemy.rank == 13 && ammo.rank == 1)
                     {
-                        Debug.Log($"몬스터의 체력은(enemy.currentHealth) : {enemy.currentHealth},몬스터의 체력은(unit.currentHealth){unit.currentHealth}");
                         unit.currentHealth -= damage;
-                        Debug.Log($"몬스터의 체력은(enemy.currentHealth) : {enemy.currentHealth},몬스터의 체력은(unit.currentHealth){unit.currentHealth}");
-
                     }
-          
+                    else if (enemy.rank < ammo.rank)
+                    {                        
+                        unit.currentHealth -= damage;
+                    }
                     break;
                 case EnemyAttribute.Low:
-                    if (enemy.rank > ammo.rank)
+                    if(enemy.rank == 1 && ammo.rank == 13)
                     {
-                        Debug.Log($"몬스터의 체력은(enemy.currentHealth) : {enemy.currentHealth},몬스터의 체력은(unit.currentHealth){unit.currentHealth}");
                         unit.currentHealth -= damage;
-                        Debug.Log($"몬스터의 체력은(enemy.currentHealth) : {enemy.currentHealth},몬스터의 체력은(unit.currentHealth){unit.currentHealth}");
+                    }
+                    else if (enemy.rank > ammo.rank)
+                    {
+                        unit.currentHealth -= damage;
                     }
                     break;
             }
-
         }
     }
 
