@@ -49,7 +49,7 @@ public class MouseManager : MonoBehaviour
     private bool isMoving = false;
     [SerializeField] private bool movePhaseActive = false;  // PlayerMove 페이즈에서만 true
     private BasePlayer selectedPlayer;               // 현재 선택된 플레이어
-    private Vector3Int _selectedPlayerCell;
+    private Vector3Int selectedPlayerCell;
     private int selectedMoveRange;
     bool isPlayer = false;
 
@@ -146,7 +146,6 @@ public class MouseManager : MonoBehaviour
 
         var cell = GetCurrentCell();
         if (!IsInside(cell)) return;
-
         if (map.IsPlayer(cell))
         {
             isPlayer = true;
@@ -156,12 +155,14 @@ public class MouseManager : MonoBehaviour
         if (map.IsEnemy(cell))
         {
             isPlayer = false;
+            GameManager.UI.CloseUI<MainUI>();
             OnClickEnemy(cell);
             return;
         }
         if (map.IsMovable(cell)) // Terrain
         {
             OnClickTerrain(cell);
+            GameManager.UI.CloseUI<MainUI>();
             return;
         }
         isPlayer = false;
@@ -174,12 +175,14 @@ public class MouseManager : MonoBehaviour
     // Player 셀 클릭 => 선택 + 이동범위 표시
     private void OnClickPlayer(Vector3Int cell)
     {
+        GameManager.UI.OpenUI<MainUI>();
         if (isMoving) return; 
         // 셀에서 실제 플레이어 컴포넌트 탐색(보강)
-        selectedPlayer = useOverlapLookup ? FindAtCell<BasePlayer>(cell) : null; _selectedPlayerCell = cell; 
+        selectedPlayer = useOverlapLookup ? FindAtCell<BasePlayer>(cell) : null; selectedPlayerCell = cell; 
         // 이동 범위 설정(플레이어 모델이 있으면 거기서, 없으면 MapManager의 기본값 사용)
         selectedMoveRange = GameManager.Unit.Player.playerModel.moveRange; // UI/범위 표시
-        map.PlayerUpdateRange(cell, selectedMoveRange); GameManager.UI.OpenUI<MainUI>(); GameManager.UI.CloseUI<EnemyInfoPopUpUI>(); 
+        map.PlayerUpdateRange(cell, selectedMoveRange); 
+        GameManager.UI.CloseUI<EnemyInfoPopUpUI>(); 
     }
 
     // Enemy 셀 클릭 => 정보 UI
@@ -207,44 +210,33 @@ public class MouseManager : MonoBehaviour
     {
         if(isPlayer == true)
         {
-            GameManager.UI.CloseUI<MainUI>();
-
             // 0) 이동 페이즈가 아니면 무시 (PlayerMove 단계에서만 허용)
             if (movePhaseActive == false) return;
 
-            // 1) 현재 이동 중이면 무시
+            //  현재 이동 중이면 무시
            // if (isMoving) return;
 
-            // 2) 플레이어가 선택되어 있어야 함
+            //  플레이어가 선택되어 있어야 함
             if (selectedPlayer == null) return;
 
-            // 3) 같은 칸이면 무시
-            if (destCell == _selectedPlayerCell) return;
+            //  같은 칸이면 무시
+            if (destCell == selectedPlayerCell) return;
 
-            // 4) 이동 액션 선택(턴제 시스템 연동은 기존 흐름 유지)
-            GameManager.TurnBased.SetSelectedAction(PlayerActionType.Move);
+            // 경로 계산
+            List<Vector3Int> path = map.FindPath(selectedPlayerCell, destCell);
 
-            // 5) 경로 계산
-            List<Vector3Int> path = map.FindPath(_selectedPlayerCell, destCell);
-
-            // 6) 경로/범위 검증
-            if (path == null || path.Count == 0)
-            {
-                CancelSelection();
-                return;
-            }
-            int steps = path.Count - 1;
-            if (restrictMoveToRange && steps > selectedMoveRange)
+            // 경로/범위 검증
+            if (path == null || path.Count > selectedMoveRange)
             {
                 CancelSelection();
                 return;
             }
 
-            // 7) 이동 시작
+            // 이동 시작
             StopAllCoroutines();
-            StartCoroutine(MoveAlongPath(selectedPlayer.transform, _selectedPlayerCell, path, TileID.Player));
-
-            // 8) 추가 입력 차단 + 선택/범위 UI 정리
+            StartCoroutine(MoveAlongPath(selectedPlayer.transform, selectedPlayerCell, path, TileID.Player));
+            GameManager.TurnBased.SetSelectedAction(PlayerActionType.Move);
+            // 추가 입력 차단 + 선택/범위 UI 정리
             movePhaseActive = false;
             CancelSelection();
         }
@@ -275,10 +267,11 @@ public class MouseManager : MonoBehaviour
 
             // 내부 상태 갱신
             currentCell = nextCell;
-            _selectedPlayerCell = nextCell;
+            selectedPlayerCell = nextCell;
         }
 
         isMoving = false;
+
     }
 
     // ===== 공용 유틸 =====
