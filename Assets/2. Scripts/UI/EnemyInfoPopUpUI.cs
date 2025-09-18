@@ -16,9 +16,16 @@ public class EnemyInfoPopUpUI : BaseUI
     protected override void OnOpen()
     {
         base.OnOpen();
-        UpdateUI();
+        UpdateUI();        // UI가 열려있으면 즉시 갱신
     }
 
+    public void SetData(string name, EnemyAttribute attr, int rank)
+    {
+        this.enemyName = name;
+        this.attribute = attr;
+        this.rank = rank;
+        UpdateUI();
+    }
 
     public void UpdateUI()
     {
@@ -27,10 +34,12 @@ public class EnemyInfoPopUpUI : BaseUI
         string attri = null;
         if(attribute == EnemyAttribute.High)
         {
+            Debug.Log($"지금 몬스터 상태는{attribute}");
             attri = "High";
         }
         else if(attribute == EnemyAttribute.Low)
         {
+            Debug.Log($"지금 몬스터 상태는{attribute}");
             attri = "Low";
         }
         attributeText.text = attri;
@@ -56,7 +65,7 @@ public class EnemyInfoPopUpUI : BaseUI
                 break;
         }
 
-        attributeText.text = rankStr;
+        rankText.text = rankStr;
     }
 
 }

@@ -9,31 +9,9 @@ public class DecideEnemyState : BaseEnemyState
 
     public override void Enter()
     {
-
-        Vector3Int playerPos = controller.TargetPos;
-        Vector3Int enemyPos = controller.GridPos;
-
-        List<Vector3Int> path = GameManager.Map.FindPath(enemyPos, playerPos);
-
-        if (path == null || path.Count == 0)
-        {
-            Debug.Log("노 이동");
-            stateMachine.ChangeState(stateMachine.EndState);
-            return;
-        }
-
-        if (path[path.Count - 1] == playerPos && GameManager.Map.IsPlayer(playerPos))
-        {
-            path.RemoveAt(path.Count - 1);
-        }
+        DecidePreviewPath();
 
 
-        GameManager.Map.PlayerUpdateRange(controller.GridPos, controller.moveRange);
-
-        controller.StartCoroutine(PreviewPath(path));
-
-
-       
     }
 
     
@@ -54,7 +32,31 @@ public class DecideEnemyState : BaseEnemyState
         return Mathf.Abs(pos.x - target.x) + Mathf.Abs(pos.y - target.y);
     }
 
-    private IEnumerator PreviewPath(List<Vector3Int> path)
+    public void DecidePreviewPath()
+    {
+        Vector3Int playerPos = controller.TargetPos;
+        Vector3Int enemyPos = controller.GridPos;
+
+        List<Vector3Int> path = GameManager.Map.FindPath(enemyPos, playerPos);
+
+        if (path == null || path.Count == 0)
+        {
+            Debug.Log("노 이동");
+            stateMachine.ChangeState(stateMachine.EndState);
+            return;
+        }
+
+        if (path[path.Count - 1] == playerPos && GameManager.Map.IsPlayer(playerPos))
+        {
+            path.RemoveAt(path.Count - 1);
+        }
+
+        GameManager.Map.PlayerUpdateRange(controller.GridPos, controller.moveRange);
+
+        controller.StartCoroutine(PreviewPathClear(path));
+    }
+
+    private IEnumerator PreviewPathClear(List<Vector3Int> path)
     {
         yield return new WaitForSeconds(1f);
 
