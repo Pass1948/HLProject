@@ -14,9 +14,8 @@ public class MovementController : MonoBehaviour
     [SerializeField] private Tilemap tilemap; // 이동 기준 타일맵
     [SerializeField] private float groundY = 0f; // 그리드 셀 크기
 
-    [Header("Movement Settings")]
-    [SerializeField] private int moveRange; // 이동 범위
-    [SerializeField] private float moveTime = 0.2f;
+    private int moveRange; // 이동 범위
+    private float moveTime = 0.2f;
 
     public Vector3Int _cellPosition; // 플레이어 현재 위치
     public bool _isMoving = false;  // 움직임 감지
