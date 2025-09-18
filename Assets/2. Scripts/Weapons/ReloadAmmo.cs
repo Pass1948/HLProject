@@ -27,6 +27,7 @@ public class ReloadAmmo : MonoBehaviour
         if (magazine == null)
         {
             Debug.LogError("Not found magazine");
+            //TODO: 나중에는 에러를 지우고 UI 작업 필요(JBS)
             return;
         }
 

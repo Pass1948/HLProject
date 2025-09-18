@@ -12,10 +12,16 @@ public class MainUI : BaseUI
     [SerializeField] ReloadAmmo reloadBtnObj;
 
     [SerializeField] Button deckBtn;
-    [SerializeField] DeckDiscardOnOff deckBtnObj;
+    [SerializeField] ToggleBtnController deckBtnObj;
 
     [SerializeField] Button discardBtn;
-    [SerializeField] DeckDiscardOnOff discardBtnObj;
+    [SerializeField] ToggleBtnController discardBtnObj;
+
+    [SerializeField] Button bikeControllBtn;
+    [SerializeField] ToggleBtnController bikeControllBtnObj;
+
+    [SerializeField] Button atifactBtn;
+    [SerializeField] ToggleBtnController atifactBtnObj;
 
     [SerializeField] Button repairBtn;
 
@@ -27,6 +33,10 @@ public class MainUI : BaseUI
         deckBtn.onClick.AddListener(DeckToggle);
         discardBtn.onClick.AddListener(DiscardToggle);
         repairBtn.onClick.AddListener(RepairButton);
+
+        bikeControllBtn.onClick.AddListener(BikeToggle);
+        atifactBtn.onClick.AddListener(AtifactToggle);
+
 
         //시작시에 한번 실행되게
         fireBtn.interactable = (fireBtnObj != null) && fireBtnObj.IsBtnSel;
@@ -95,5 +105,15 @@ public class MainUI : BaseUI
         var playerPos = GameManager.Unit.Player.transform.position;
 
         return Vector3.Distance(playerPos, vehiclePos) < 1.5f;
+
+    private void BikeToggle()
+    {
+        bikeControllBtnObj.ToggleBikeControll();
+    }
+
+    private void AtifactToggle()
+    {
+        atifactBtnObj.ToggleArtifactList();
+
     }
 }

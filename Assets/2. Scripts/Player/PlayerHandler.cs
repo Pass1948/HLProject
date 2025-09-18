@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerHandler : MonoBehaviour
 {
+
     private BasePlayer player;
     private BaseVehicle vehicle;
 
@@ -18,19 +19,25 @@ public class PlayerHandler : MonoBehaviour
     {
         
     }
-    //데미지 처리
+
     public void TakeDamage(int amount)
     {
-        // 먼저 오토바이에 들어갑니다
+
         vehicle.vehicleHandler.DamageVehicle(amount);
 
-        if(vehicle.vehicleModel.health <= 0 && !playerBording)
+        if (vehicle.vehicleModel.health <= 0 && !playerBording)
+
+    }
+    public void TakeDamage(int amount)
+    {
+        if(vehicle.vehicleModel.health <= 0 && playerBording)
+
         {
             player.playerModel.health -= amount;
         }
         if(player.playerModel.health <= 0)
         {
-            // 죽는 UI
+
         }
         else
         {
