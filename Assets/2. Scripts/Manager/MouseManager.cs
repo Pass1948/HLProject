@@ -46,15 +46,15 @@ public class MouseManager : MonoBehaviour
     // ===== 이동/선택 상태 =====
     [Header("Movement")]
     public float stepMoveTime = 0.2f;                 // 한 칸 보간 시간
-    private bool _isMoving = false;
+    private bool isMoving = false;
     [SerializeField] private bool movePhaseActive = false;  // PlayerMove 페이즈에서만 true
-    private BasePlayer _selectedPlayer;               // 현재 선택된 플레이어
+    private BasePlayer selectedPlayer;               // 현재 선택된 플레이어
     private Vector3Int _selectedPlayerCell;
-    private int _selectedMoveRange;
+    private int selectedMoveRange;
 
     // ===== 내부 캐시 =====
-    private Vector3Int _lastCell = new Vector3Int(int.MinValue, int.MinValue, 0);
-    private Vector3Int _lastValidCell;
+    private Vector3Int lastCell = new Vector3Int(int.MinValue, int.MinValue, 0);
+    private Vector3Int lastValidCell;
 
 
     // ===== 셀 → 유닛 인덱스(Overlap/FindObjectsOfType 대체) =====
@@ -130,14 +130,14 @@ public class MouseManager : MonoBehaviour
             allowed = map.IsMovable(cell);
 
         // “한 칸씩” 스냅
-        if (allowed && cell != _lastCell)
+        if (allowed && cell != lastCell)
         {
             Vector3 center = tilemap.GetCellCenterWorld(cell);
             center.y = groundY + 0.01f;
             pointer.position = center;
 
-            _lastCell = cell;
-            _lastValidCell = cell;
+            lastCell = cell;
+            lastValidCell = cell;
         }
 
         return true;
@@ -179,29 +179,42 @@ public class MouseManager : MonoBehaviour
     // Player 셀 클릭 → 선택 + 이동범위 표시 (딕셔너리 사용)
     private void OnClickPlayer(Vector3Int cell)
     {
-        if (_isMoving) return;
+        if (isMoving) return;
 
-        playersByCell.TryGetValue(cell, out _selectedPlayer); // 못 찾으면 null
+        // 1) 딕셔너리 조회
+        playersByCell.TryGetValue(cell, out selectedPlayer);
 
+        // 2) 폴백: 단일 플레이어
+        if (selectedPlayer == null && GameManager.Unit != null && GameManager.Unit.Player != null)
+        {
+            if (map.IsPlayer(cell))
+                selectedPlayer = GameManager.Unit.Player;
+        }
+
+        // 3) 선택 셀/범위
         _selectedPlayerCell = cell;
-        _selectedMoveRange = (_selectedPlayer != null && _selectedPlayer.playerModel != null)
-            ? _selectedPlayer.playerModel.moveRange
-            : map.moveRange;
 
-        map.PlayerUpdateRange(cell, _selectedMoveRange);
+        int modelRange = (selectedPlayer != null && selectedPlayer.playerModel != null) ? GameManager.Unit.Player.playerModel.moveRange : -1;
+        Debug.Log($"초기 이동 범위 : {selectedPlayer.playerModel.moveRange} 지금 이동범위: {modelRange}");
+        // moveRange가 0/음수/미설정이면 map.moveRange로 폴백
+        selectedMoveRange = (modelRange > 0) ? modelRange : map.moveRange;
+        
+        // 4) 범위 표시
+        map.PlayerUpdateRange(cell, GameManager.Unit.Player.playerModel.moveRange);
+        Debug.Log($"초기 이동 범위 : {GameManager.Unit.Player.playerModel.moveRange} ");
         GameManager.UI.OpenUI<MainUI>();
         GameManager.UI.CloseUI<EnemyInfoPopUpUI>();
     }
 
+
     // Enemy 셀 클릭 → 정보 UI (딕셔너리 사용)
     private void OnClickEnemy(Vector3Int cell)
     {
-        if (_isMoving) return;
+        if (isMoving) return;
 
         if (enemiesByCell.TryGetValue(cell, out var enemy) && enemy != null)
         {
-            GameManager.UI.GetUI<EnemyInfoPopUpUI>()
-                .SetData(enemy.enemyModel.unitName, enemy.enemyModel.attri, enemy.enemyModel.rank);
+            GameManager.UI.GetUI<EnemyInfoPopUpUI>().SetData(enemy.enemyModel.unitName, enemy.enemyModel.attri, enemy.enemyModel.rank);
             GameManager.UI.OpenUI<EnemyInfoPopUpUI>();
         }
         else
@@ -217,13 +230,13 @@ public class MouseManager : MonoBehaviour
         GameManager.UI.CloseUI<MainUI>();
 
         // 0) 이동 페이즈가 아니면 무시 (PlayerMove 단계에서만 허용)
-        if (!movePhaseActive) return;
+        if (movePhaseActive == false) return;
 
         // 1) 현재 이동 중이면 무시
-        if (_isMoving) return;
+        if (isMoving) return;
 
         // 2) 플레이어가 선택되어 있어야 함
-        if (_selectedPlayer == null) return;
+        if (selectedPlayer == null) return;
 
         // 3) 같은 칸이면 무시
         if (destCell == _selectedPlayerCell) return;
@@ -241,7 +254,7 @@ public class MouseManager : MonoBehaviour
             return;
         }
         int steps = path.Count - 1;
-        if (restrictMoveToRange && steps > _selectedMoveRange)
+        if (restrictMoveToRange && steps > selectedMoveRange)
         {
             CancelSelection();
             return;
@@ -249,7 +262,7 @@ public class MouseManager : MonoBehaviour
 
         // 7) 이동 시작
         StopAllCoroutines();
-        StartCoroutine(MoveAlongPath(_selectedPlayer.transform, _selectedPlayerCell, path, TileID.Player));
+        StartCoroutine(MoveAlongPath(selectedPlayer.transform, _selectedPlayerCell, path, TileID.Player));
 
         // 8) 추가 입력 차단 + 선택/범위 UI 정리
         movePhaseActive = false;
@@ -259,7 +272,7 @@ public class MouseManager : MonoBehaviour
     // ===== 이동 실행(한 칸씩 보간 + 맵데이터 갱신 + 인덱스 갱신) =====
     private IEnumerator MoveAlongPath(Transform actor, Vector3Int currentCell, List<Vector3Int> path, int tileIdForActor)
     {
-        _isMoving = true;
+        isMoving = true;
 
         foreach (var nextCell in path)
         {
@@ -279,7 +292,7 @@ public class MouseManager : MonoBehaviour
             // 맵데이터 갱신(셀 기준)
             map.UpdateObjectPosition(currentCell.x, currentCell.y, nextCell.x, nextCell.y, tileIdForActor);
 
-            // ⬇ 인덱스(셀→유닛) 갱신: 플레이어만 이동한다고 가정
+            // 인덱스(셀→유닛) 갱신: 플레이어만 이동한다고 가정
             UpdateUnitIndexOnMove(currentCell, nextCell);
 
             // 내부 상태 갱신
@@ -287,12 +300,12 @@ public class MouseManager : MonoBehaviour
             _selectedPlayerCell = nextCell;
         }
 
-        _isMoving = false;
+        isMoving = false;
     }
 
     // ===== 유닛 인덱스 관리 =====
 
-    /// <summary>씬/스폰 완료 후 전체 인덱스를 재구축합니다.</summary>
+    //씬/스폰 완료 후 전체 인덱스를 재구축합니다.
     public void RebuildUnitIndex()
     {
         playersByCell.Clear();
@@ -321,13 +334,13 @@ public class MouseManager : MonoBehaviour
     //플레이어 이동 시 셀 인덱스를 즉시 갱신합니다.
     private void UpdateUnitIndexOnMove(Vector3Int oldCell, Vector3Int newCell)
     {
-        if (_selectedPlayer == null) return;
+        if (selectedPlayer == null) return;
         playersByCell.Remove(oldCell);
-        playersByCell[newCell] = _selectedPlayer;
+        playersByCell[newCell] = selectedPlayer;
     }
     // ===== 공용 유틸 =====
     public Vector3Int GetCurrentCell(bool preferValid = true)
-        => preferValid ? (_lastValidCell == default ? _lastCell : _lastValidCell) : _lastCell;
+        => preferValid ? (lastValidCell == default ? lastCell : lastValidCell) : lastCell;
 
     private bool TryGetMouseWorld(out Vector3 world)
     {
@@ -365,7 +378,7 @@ public class MouseManager : MonoBehaviour
     // 선택 해제 + UI/범위 정리
     private void CancelSelection()
     {
-        _selectedPlayer = null;
+        selectedPlayer = null;
         map.ClearPlayerRange();
         GameManager.UI.CloseUI<EnemyInfoPopUpUI>();
     }

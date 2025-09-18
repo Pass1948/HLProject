@@ -32,6 +32,6 @@ public class PlayerTurnState : BaseTurnState
     {
         // 혹시 못 닫았으면 안전하게 닫아 주기
         if (!didClose) GameManager.UI.CloseUI<PaseTurnUI>();
-        GameManager.Event.Publish(EventType.PlayerMove);
+        GameManager.Mouse.ToggleMovePhase();
     }
 }
