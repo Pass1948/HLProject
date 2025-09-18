@@ -24,11 +24,9 @@ public class UnitManager : MonoBehaviour
 
     public void ChangeHealth(UnitModel unit, int damage, Ammo ammo = null)
     {
-
-        if (unit.unitType == UnitType.Player && Player.playerModel.viecleBording == ViecleBording.On)
-
+        if (unit.unitType == UnitType.Player)
         {
-            Player.playerHandler.TakeDamage(damage);
+            unit.currentHealth -= damage;
         }
         else if (unit.unitType == UnitType.Enemy)
         {
@@ -46,16 +44,11 @@ public class UnitManager : MonoBehaviour
                     break;
             }
         }
-
-        else if(unit.unitType == UnitType.Player)
-
-
+        else if (unit.unitType == UnitType.Vehicle)
         {
-            unit.currentHealth -= damage;
+
         }
 
     }
 
-
 }
-

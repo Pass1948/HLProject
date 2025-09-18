@@ -45,7 +45,6 @@ public class MovementController : MonoBehaviour
         // 플레이어 시작 위치를 타일의 중앙으로 설정
         _cellPosition = tilemap.WorldToCell(transform.position);
         transform.position = tilemap.GetCellCenterWorld(_cellPosition);
-        moveRange = basePlayer.playerModel.moveRange;
 
         // A* 알고리즘 초기화
         _pathfinding = new Pathfinding(tilemap);
