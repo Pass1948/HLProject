@@ -19,15 +19,18 @@ public class PlayerHandler : MonoBehaviour
     {
         
     }
+
     public void TakeDamage(int amount)
     {
+        vehicle.vehicleHandler.DamageVehicle(amount);
         if(vehicle.vehicleModel.health <= 0 && playerBording)
+
         {
             player.playerModel.health -= amount;
         }
         if(player.playerModel.health <= 0)
         {
-            Debug.Log("게임오바야 오바");
+
         }
         else
         {

@@ -19,5 +19,4 @@ public class BasePlayer : MonoBehaviour
 
         controller.isPlayer = true;
     }
-
 }
