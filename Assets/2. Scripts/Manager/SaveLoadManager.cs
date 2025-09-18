@@ -2,8 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VehicleAnimHandler : MonoBehaviour
+public class SaveLoadManager : MonoBehaviour
 {
+
+
+
     // Start is called before the first frame update
     void Start()
     {

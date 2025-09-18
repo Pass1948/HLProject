@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+
 public class PlayerMoveInfo : MonoBehaviour
 {
     // BFS를 이용한 이동 가능 범위 표시
@@ -8,7 +9,6 @@ public class PlayerMoveInfo : MonoBehaviour
     {
         int mapWidth = GameManager.Map.mapWidth;
         int mapHeight = GameManager.Map.mapHeight;
-        int[,] mapData = GameManager.Map.mapData;
 
         // BFS 준비
         Queue<(Vector3Int pos, int dist)> queue = new Queue<(Vector3Int, int)>();
@@ -22,7 +22,6 @@ public class PlayerMoveInfo : MonoBehaviour
         {
             var (current, dist) = queue.Dequeue();
 
-
             // 범위 내라면 타일 표시
             if (dist <= moveRange)
             {
@@ -33,10 +32,9 @@ public class PlayerMoveInfo : MonoBehaviour
                 {
                     Vector3Int[] dirs = {
 
-                        new Vector3Int(moveRange, 0, 0),
-                        new Vector3Int(-moveRange, 0, 0),
-                        new Vector3Int(0, moveRange, 0),
-                        new Vector3Int(0, -moveRange, 0)
+                        new Vector3Int(1, 0, 0),
+                        new Vector3Int(-1, 0, 0),
+                        new Vector3Int(0, 1, 0),
                      };
 
                     foreach (var dir in dirs)

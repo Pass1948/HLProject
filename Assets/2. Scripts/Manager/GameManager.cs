@@ -37,6 +37,8 @@ public class GameManager : MonoBehaviour
 
     private static MouseManager mouseManager;
     public static MouseManager Mouse => mouseManager;
+    private static SaveLoadManager saveLoadManager;
+    public static SaveLoadManager SaveLoad => saveLoadManager;
 
     private void Awake()
     {
@@ -63,6 +65,8 @@ public class GameManager : MonoBehaviour
         data = CreateChildManager<DataManager>("DataManager");
         mapManager = CreateChildManager<MapManager>("MapManager");
         mouseManager = CreateChildManager<MouseManager>("MouseManager");
+        saveLoadManager = CreateChildManager<SaveLoadManager>("SaveLoadManager");
+
     }
     private T CreateChildManager<T>(string goName) where T : Component
     {

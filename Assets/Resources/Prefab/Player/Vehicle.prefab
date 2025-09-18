@@ -14,6 +14,8 @@ GameObject:
   - component: {fileID: 3162422577930443701}
   - component: {fileID: -8814404286730736872}
   - component: {fileID: -2759138831990280419}
+  - component: {fileID: 7890925165848269182}
+  - component: {fileID: 2761001443431487873}
   m_Layer: 0
   m_Name: Vehicle
   m_TagString: Untagged
@@ -64,7 +66,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 5bb27911bdbb66644b6cf795ded1f9c7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -120,6 +122,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animHandler: {fileID: 0}
+  vehicleHandler: {fileID: 0}
+  ReloadAmmo: {fileID: 0}
 --- !u!114 &-2759138831990280419
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -132,3 +136,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a64b4e722f289044ab7abe919a148eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7890925165848269182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8462249459189469953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69dfd952963abe54689d9628c926bb27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  repairAmount: 3
+--- !u!114 &2761001443431487873
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8462249459189469953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0be291a34ba76dd4ba683cffd20d1c35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  deck: {fileID: 7948451720155848608, guid: 9bfb9b9dee127b04eaf1c5244a966037, type: 3}
+  magazine: {fileID: 830122162788962829, guid: 9bfb9b9dee127b04eaf1c5244a966037, type: 3}
+  autoReload: 1
+  deckBg: {fileID: 1202433684737457402, guid: 9bfb9b9dee127b04eaf1c5244a966037, type: 3}
