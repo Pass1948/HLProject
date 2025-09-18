@@ -25,6 +25,7 @@ public class MainUI : BaseUI
 
     [SerializeField] Button repairBtn;
 
+    [SerializeField] Button test;
 
     private void Awake()
     {
@@ -36,7 +37,7 @@ public class MainUI : BaseUI
 
         bikeControllBtn.onClick.AddListener(BikeToggle);
         atifactBtn.onClick.AddListener(AtifactToggle);
-
+        test.onClick.AddListener(BikeTest);
 
         //시작시에 한번 실행되게
         fireBtn.interactable = (fireBtnObj != null) && fireBtnObj.IsBtnSel;
@@ -122,5 +123,10 @@ public class MainUI : BaseUI
     {
         atifactBtnObj.ToggleArtifactList();
 
+    }
+
+    private void BikeTest()
+    {
+        GameManager.Unit.Vehicle.vehicleHandler.DamageVehicle(3);
     }
 }
