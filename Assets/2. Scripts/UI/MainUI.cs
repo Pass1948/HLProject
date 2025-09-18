@@ -107,6 +107,9 @@ public class MainUI : BaseUI
         var playerPos = GameManager.Unit.Player.transform.position;
 
         return Vector3.Distance(playerPos, vehiclePos) < 1.5f;
+    }
+    private void OnRiding()
+    {
 
     }
 
