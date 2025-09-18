@@ -193,8 +193,7 @@ public class MouseManager : MonoBehaviour
         var enemy = useOverlapLookup ? FindAtCell<BaseEnemy>(cell) : null;
         if (enemy != null)
         {
-            GameManager.UI.GetUI<EnemyInfoPopUpUI>()
-                .SetData(enemy.enemyModel.unitName, enemy.enemyModel.attri, enemy.enemyModel.rank);
+            GameManager.UI.GetUI<EnemyInfoPopUpUI>().SetData(enemy.enemyModel.unitName, enemy.enemyModel.attri, enemy.enemyModel.rank);
             GameManager.UI.OpenUI<EnemyInfoPopUpUI>();
         }
         else
