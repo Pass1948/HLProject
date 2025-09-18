@@ -106,6 +106,8 @@ public class MainUI : BaseUI
 
         return Vector3.Distance(playerPos, vehiclePos) < 1.5f;
 
+    }
+
     private void BikeToggle()
     {
         bikeControllBtnObj.ToggleBikeControll();
