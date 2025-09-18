@@ -20,7 +20,6 @@ public class PlayerHandler : MonoBehaviour
         
     }
 
-
     public void TakeDamage(int amount)
     {
         vehicle.vehicleHandler.DamageVehicle(amount);
