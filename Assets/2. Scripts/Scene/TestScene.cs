@@ -10,6 +10,7 @@ public class TestScene : BaseScene
     {
         GameManager.Map.CreateMap();
         GameManager.Mouse.CreateMouse();
+
     }
 
     public override void SceneExit()

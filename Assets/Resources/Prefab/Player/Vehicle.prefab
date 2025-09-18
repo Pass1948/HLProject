@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: -8814404286730736872}
   - component: {fileID: -2759138831990280419}
   - component: {fileID: 7890925165848269182}
-  - component: {fileID: 2761001443431487873}
   m_Layer: 0
   m_Name: Vehicle
   m_TagString: Untagged
@@ -149,19 +148,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   repairAmount: 3
---- !u!114 &2761001443431487873
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8462249459189469953}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0be291a34ba76dd4ba683cffd20d1c35, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  deck: {fileID: 7948451720155848608, guid: 9bfb9b9dee127b04eaf1c5244a966037, type: 3}
-  magazine: {fileID: 830122162788962829, guid: 9bfb9b9dee127b04eaf1c5244a966037, type: 3}
-  autoReload: 1
-  deckBg: {fileID: 1202433684737457402, guid: 9bfb9b9dee127b04eaf1c5244a966037, type: 3}

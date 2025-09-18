@@ -7,11 +7,11 @@ public enum VehicleCondition
 {
     Riding,
     GetOff,
-    Destruction,// �ı�
-    Repair, // ����
+    Destruction,// 파괴
+    Repair, // 수리
 }   
 
-// TODO: ���ڵ��� �׽�Ʈ�� ���� �ӽ÷� �־��ִ� �ͻ��Դϴ�~(JBS)
+// TODO: 숫자는 테스트 용으로 넣은겁니다~(JBS)
 public class VehicleModel : UnitModel
 {
     public int maxBullet;

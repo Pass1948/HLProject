@@ -4,19 +4,19 @@ using UnityEngine;
 
 public class VehicleHandler : MonoBehaviour
 {
-    // TODO: ¾ÆÁ÷Àº ÇÑ¹ø¿¡ ¼ö¸®ÇÏ°Ô ÇÔ. ³ªÁß¿¡ RepairVehicle() ÇÔ¼ö¿¡ ¸Å°³º¯¼ö·Î ¼ö¸®·® ¹Þ°Ô ÇÒ ¼öµµÀÕ(JBS)
-    [SerializeField] private int repairAmount = 3; // ¼ö¸®·®
+    // TODO: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½. ï¿½ï¿½ï¿½ß¿ï¿½ RepairVehicle() ï¿½Ô¼ï¿½ï¿½ï¿½ ï¿½Å°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Þ°ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(JBS)
+    [SerializeField] private int repairAmount = 3; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
     private BasePlayer player;
     private BaseVehicle vehicle;
-    public bool isMounted => player.playerModel.viecleBording == ViecleBording.On; // Å¾½Â »óÅÂ
+    public bool isMounted => GameManager.Unit.Player.playerModel.viecleBording == ViecleBording.On; // Å¾ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
     private void Awake()
     {
         player = GameManager.Unit.Player;
         vehicle = GameManager.Unit.Vehicle;
 
-        player.playerModel.viecleBording.CompareTo(ViecleBording.On);
+        GameManager.Unit.Player.playerModel.viecleBording.CompareTo(ViecleBording.On);
 
         MountVehicle();
     }
@@ -26,12 +26,12 @@ public class VehicleHandler : MonoBehaviour
     }
     private void OnEnable()
     {
-        //GameManager.Event.Subscribe(EventType.VehicleOnRepaired, RepairVehicle);
+
 
     }
     private void OnDisable()
     {
-        //GameManager.Event.Unsubscribe(EventType.VehicleOnRepaired, RepairVehicle);
+
     }
 
 
@@ -41,65 +41,62 @@ public class VehicleHandler : MonoBehaviour
         DamageVehicle(3);
     }
 
-    // Å¾½Â »óÅÂ ÀÌ¸é¼­ Ã¼·ÂÀÌ 0ÀÌ ¾Æ´Ï¸é ÀÌµ¿·Â Áõ°¡
+
     public int GetEffectiveMoveRange()
     {
         if (isMounted && vehicle.vehicleModel.health > 0)
         {
-            Debug.Log("¹ÙÀÌÅ© Å¾½Â»óÅÂ");
-            return player.playerModel.moveRange + vehicle.vehicleModel.additinalMove;
+            return GameManager.Unit.Player.playerModel.moveRange + GameManager.Unit.Vehicle.vehicleModel.additinalMove;
         }
         else
-            return player.playerModel.moveRange;
+            return GameManager.Unit.Player.playerModel.moveRange;
     }
 
-    // Å¾½Â »óÅÂ, Ã¼·ÂÀÌ 0ÀÌ ¾Æ´Ï¸é ´ë½Å µ¥¹ÌÁö ¹ÞÀ½ 0 µÇ¸é ÆÄ±«
+
     public void DamageVehicle(int amount )
     {
-        vehicle.vehicleModel.health -= amount;
+        GameManager.Unit.Vehicle.vehicleModel.health -= amount;
 
         if(vehicle.vehicleModel.health <= 0)
         {
-            vehicle.vehicleModel.condition = VehicleCondition.Destruction;
-            player.playerModel.viecleBording.CompareTo(ViecleBording.off);
+            GameManager.Unit.Vehicle.vehicleModel.condition = VehicleCondition.Destruction;
+            GameManager.Unit.Player.playerModel.viecleBording.CompareTo(ViecleBording.off);
             DismountVehicle();
         }
     }
 
-    // Å¾½ÂÇØÁ¦ »óÅÂ,¼ö¸® ¸ðµå,¼ö¸®ÇÏ¸é Å¾½Â »óÅÂ·Î º¯°æ
-    //TODO: ¸¸¾à¿¡ ¼ö¸®¸¦ ÇÒ ¶§ ÅÏÀ» ½á¾ß ÇÒ °æ¿ì º¯¼ö·Î °ªÀ» º¯°æ.(Àåº¸¼®)
     public void RepairVehicle()
     {
-        vehicle.vehicleModel.health += repairAmount;
+        GameManager.Unit.Vehicle.vehicleModel.health += repairAmount;
         if(vehicle.vehicleModel.health > 0)
         {
             MountVehicle();
         }
     }
-    // Å¾½Â È÷ÀÕ
     public void MountVehicle()
     {
-        if(vehicle.vehicleModel.isDestruction)
+        if(GameManager.Unit.Vehicle.vehicleModel.isDestruction)
         {
             return;
         }
-        vehicle.vehicleModel.condition = VehicleCondition.Riding;
-        player.playerModel.viecleBording = ViecleBording.On;
+
+        GameManager.Unit.Vehicle.vehicleModel.condition = VehicleCondition.Riding;
+        GameManager.Unit.Player.playerModel.viecleBording = ViecleBording.On;
         transform.SetParent(player.transform);
-        vehicle.transform.localPosition = Vector3.zero;
-        player.playerModel.moveRange += vehicle.vehicleModel.moveRange;
-        player.playerModel.health += vehicle.vehicleModel.health;
+        GameManager.Unit.Vehicle.transform.localPosition = Vector3.zero;
+        GameManager.Unit.Player.playerModel.moveRange += GameManager.Unit.Vehicle.vehicleModel.moveRange;
+        GameManager.Unit.Player.playerModel.health += GameManager.Unit.Vehicle.vehicleModel.health;
     }
-    // Å¾½Â ÇØÁ¦
+
     public void DismountVehicle()
     {
-        vehicle.vehicleModel.condition = VehicleCondition.GetOff;
-        player.playerModel.viecleBording = ViecleBording.off;
-        vehicle.transform.SetParent(null);
+        GameManager.Unit.Vehicle.vehicleModel.condition = VehicleCondition.GetOff;
+        GameManager.Unit.Player.playerModel.viecleBording = ViecleBording.off;
+        GameManager.Unit.Vehicle.transform.SetParent(null);
         if(vehicle.vehicleModel.health > 0)
         {
-            player.playerModel.moveRange -= vehicle.vehicleModel.moveRange;
-            player.playerModel.health -= vehicle.vehicleModel.health;
+            GameManager.Unit.Player.playerModel.moveRange -= GameManager.Unit.Vehicle.vehicleModel.moveRange;
+            GameManager.Unit.Player.playerModel.health -= GameManager.Unit.Vehicle.vehicleModel.health;
         }
     }
     
