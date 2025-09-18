@@ -5,19 +5,22 @@ using UnityEngine;
 
 public enum VehicleCondition
 {
-    Bording,
-    Destruction,// ÆÄ±«
-    Repair, // ¼ö¸®
+    Riding,
+    GetOff,
+    Destruction,// ï¿½Ä±ï¿½
+    Repair, // ï¿½ï¿½ï¿½ï¿½
 }   
 
-// TODO: ¼ýÀÚµéÀº Å×½ºÆ®¸¦ À§ÇØ ÀÓ½Ã·Î ³Ö¾îÁÖ´Â °Í»ÓÀÔ´Ï´ç~(JBS)
+// TODO: ï¿½ï¿½ï¿½Úµï¿½ï¿½ï¿½ ï¿½×½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ó½Ã·ï¿½ ï¿½Ö¾ï¿½ï¿½Ö´ï¿½ ï¿½Í»ï¿½ï¿½Ô´Ï´ï¿½~(JBS)
 public class VehicleModel : UnitModel
 {
     public int maxBullet;
     public int additinalMove;
     public int additinalHealth;
     public int moveRange = 2;
-    public VehicleCondition condition = VehicleCondition.Bording;
+
+    public VehicleCondition condition;
+
     public bool isDestruction => condition == VehicleCondition.Destruction;
 
 
