@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem.XR;
 
 public class EnemyController : MonoBehaviour
 {
@@ -88,9 +89,6 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-
-
-
     private void OnHitState()
     {
         stateMachine.ChangeState(stateMachine.HitState);
@@ -150,5 +148,33 @@ public class EnemyController : MonoBehaviour
 
         transform.position = target;
     }
+
+    public void OnClickPreviewPath()
+    {
+        Vector3Int playerPos = TargetPos;
+        Vector3Int enemyPos = GridPos;
+
+        List<Vector3Int> path = GameManager.Map.FindPath(enemyPos, playerPos);
+
+        if (path == null || path.Count == 0)
+        {
+            Debug.Log("노 이동");
+            stateMachine.ChangeState(stateMachine.EndState);
+            return;
+        }
+
+        if (path[path.Count - 1] == playerPos && GameManager.Map.IsPlayer(playerPos))
+        {
+            path.RemoveAt(path.Count - 1);
+        }
+
+        GameManager.Map.PlayerUpdateRange(GridPos, moveRange);
+    }
+    
+    public void ReleasePreviewPath()
+    {
+        GameManager.Map.ClearPlayerRange();
+    }
+
 
 }

@@ -34,7 +34,15 @@ public class PlayerAttackState : PlayerActionState
         float timer;
         public override void OnEnter()
         {
+            Debug.Log(GameManager.Unit.enemies[0].enemyModel);
             timer = turnSetVlaue.resetTime;
+
+            //TODO: 첫 매개변수로 공격 -> 마우스 클릭시 감지되는 적 인덱스 넣어주기!! enemyModel로 해주시면 됩니다.
+            GameManager.Unit.ChangeHealth(
+                GameManager.Unit.enemies[0].enemyModel,
+                GameManager.Unit.Player.playerModel.attack,
+                turnSetVlaue.fireAmmo
+                );
         }
         public override void Tick(float dt)
         {

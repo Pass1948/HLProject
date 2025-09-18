@@ -13,6 +13,7 @@ public class PlayerChooseState : BaseTurnState
         timer = turnSetVlaue.resetTime;
         didClose = false;
         GameManager.UI.OpenUI<PaseTurnUI>();
+        Debug.Log("Player Choose State Entered");
     }
 
     public override void Tick(float dt)
