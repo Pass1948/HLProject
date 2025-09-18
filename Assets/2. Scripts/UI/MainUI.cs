@@ -146,6 +146,10 @@ public class MainUI : BaseUI
     {
         GameManager.Unit.Vehicle.vehicleHandler.RepairVehicle();
     }
+    private void OnRiding()
+    {
+
+    }
     private void BikeToggle()
     {
         bikeControllBtnObj.ToggleBikeControll();
