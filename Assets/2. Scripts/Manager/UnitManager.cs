@@ -26,7 +26,7 @@ public class UnitManager : MonoBehaviour
     {
         if (unit.unitType == UnitType.Player)
         {
-            unit.currentHealth -= damage;
+            Player.playerHandler.TakeDamage(damage);
         }
         else if (unit.unitType == UnitType.Enemy)
         {
@@ -44,11 +44,6 @@ public class UnitManager : MonoBehaviour
                     break;
             }
         }
-        else if (unit.unitType == UnitType.Vehicle)
-        {
-
-        }
-
     }
 
 }

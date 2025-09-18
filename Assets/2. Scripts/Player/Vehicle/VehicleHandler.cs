@@ -41,19 +41,18 @@ public class VehicleHandler : MonoBehaviour
         DamageVehicle(3);
     }
 
-    // ž�� ���� �̸鼭 ü���� 0�� �ƴϸ� �̵��� ����
+
     public int GetEffectiveMoveRange()
     {
         if (isMounted && vehicle.vehicleModel.health > 0)
         {
-            Debug.Log("����ũ ž�»���");
             return GameManager.Unit.Player.playerModel.moveRange + GameManager.Unit.Vehicle.vehicleModel.additinalMove;
         }
         else
             return GameManager.Unit.Player.playerModel.moveRange;
     }
 
-    // ž�� ����, ü���� 0�� �ƴϸ� ��� ������ ���� 0 �Ǹ� �ı�
+
     public void DamageVehicle(int amount )
     {
         GameManager.Unit.Vehicle.vehicleModel.health -= amount;
@@ -66,8 +65,6 @@ public class VehicleHandler : MonoBehaviour
         }
     }
 
-    // ž������ ����,���� ���,�����ϸ� ž�� ���·� ����
-    //TODO: ���࿡ ������ �� �� ���� ��� �� ��� ������ ���� ����.(�庸��)
     public void RepairVehicle()
     {
         GameManager.Unit.Vehicle.vehicleModel.health += repairAmount;
@@ -76,7 +73,6 @@ public class VehicleHandler : MonoBehaviour
             MountVehicle();
         }
     }
-    // ž�� ����
     public void MountVehicle()
     {
         if(GameManager.Unit.Vehicle.vehicleModel.isDestruction)
@@ -91,7 +87,7 @@ public class VehicleHandler : MonoBehaviour
         GameManager.Unit.Player.playerModel.moveRange += GameManager.Unit.Vehicle.vehicleModel.moveRange;
         GameManager.Unit.Player.playerModel.health += GameManager.Unit.Vehicle.vehicleModel.health;
     }
-    // ž�� ����
+
     public void DismountVehicle()
     {
         GameManager.Unit.Vehicle.vehicleModel.condition = VehicleCondition.GetOff;
