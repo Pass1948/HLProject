@@ -5,7 +5,8 @@ using UnityEngine;
 
 public enum VehicleCondition
 {
-    Bording,
+    Riding,
+    GetOff,
     Destruction,// ÆÄ±«
     Repair, // ¼ö¸®
 }   
@@ -17,7 +18,7 @@ public class VehicleModel : UnitModel
     public int additinalMove;
     public int additinalHealth;
     public int moveRange = 2;
-    public VehicleCondition condition = VehicleCondition.Bording;
+    public VehicleCondition condition;
     public bool isDestruction => condition == VehicleCondition.Destruction;
 
 
