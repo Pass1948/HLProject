@@ -15,8 +15,8 @@ GameObject:
   - component: {fileID: 3697588036390796351}
   - component: {fileID: 4175250094332935178}
   - component: {fileID: 5873922330012691575}
-  - component: {fileID: 7807482202504191775}
   - component: {fileID: 1746806683049049162}
+  - component: {fileID: 4456878778320665939}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -149,26 +149,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5a7efeacf394b748acb2dfe1a20d5e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &7807482202504191775
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6654951806800988705}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43f39eefe5ce60d47b1b0ef183cc0941, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gridPlane: 1
-  tilemap: {fileID: 109440985243549466, guid: d9cb1868ca0eb0e48ad2297a238dc7c9, type: 3}
-  groundY: 0
-  moveRange: 0
-  moveTime: 0.2
-  _cellPosition: {x: 0, y: 0, z: 0}
-  _isMoving: 0
-  isPlayer: 0
 --- !u!114 &1746806683049049162
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -200,3 +180,24 @@ MonoBehaviour:
   m_DefaultActionMap: TestPlayer
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &4456878778320665939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6654951806800988705}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43f39eefe5ce60d47b1b0ef183cc0941, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gridPlane: 1
+  tilemap: {fileID: 0}
+  groundY: 0
+  moveRange: 0
+  moveTime: 0.2
+  _cellPosition: {x: 0, y: 0, z: 0}
+  _isMoving: 0
+  isPlayer: 0
+  mouse: {fileID: 0}

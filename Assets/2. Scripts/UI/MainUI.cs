@@ -32,7 +32,7 @@ public class MainUI : BaseUI
         rerollBtn.onClick.AddListener(OnReload);
         deckBtn.onClick.AddListener(DeckToggle);
         discardBtn.onClick.AddListener(DiscardToggle);
-        repairBtn.onClick.AddListener(RepairButton);
+        //repairBtn.onClick.AddListener(RepairButton);
 
         bikeControllBtn.onClick.AddListener(BikeToggle);
         atifactBtn.onClick.AddListener(AtifactToggle);

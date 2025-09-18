@@ -1,92 +1,87 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.TestTools;
 using UnityEngine.Tilemaps;
 
 public class MouseManager : MonoBehaviour
 {
-    // ===== ·¹ÆÛ·±½º =====
+    // ===== ë ˆí¼ëŸ°ìŠ¤ =====
     [Header("References")]
-    [SerializeField] public MapManager map;      // ºñ¿ì¸é GameManager.Map
-    [SerializeField] public Tilemap tilemap;     // ºñ¿ì¸é map.tilemap
-    [SerializeField] public Camera cam;          // ºñ¿ì¸é Camera.main
-    [SerializeField] public Transform pointer;   // Æ÷ÀÎÅÍ(Ä¿¼­ ºñÁÖ¾ó). ºñ¿ì¸é »ı¼º
+    [SerializeField] public MapManager map;      // ë¹„ìš°ë©´ GameManager.Map
+    [SerializeField] public Tilemap tilemap;     // ë¹„ìš°ë©´ map.tilemap
+    [SerializeField] public Camera cam;          // ë¹„ìš°ë©´ Camera.main
+    [SerializeField] public Transform pointer;   // í¬ì¸í„°(ì»¤ì„œ ë¹„ì£¼ì–¼). ë¹„ìš°ë©´ ìƒì„±
 
-    [Header("Pointer Resource (¼±ÅÃ)")]
-    [Tooltip("GameManager.Resource °æ·Î¸¦ ¾²´Â °æ¿ì¿¡¸¸ »ç¿ë. ºñ¿öµµ µÊ.")]
+    [Header("Pointer Resource (ì„ íƒ)")]
+    [Tooltip("GameManager.Resource ê²½ë¡œë¥¼ ì“°ëŠ” ê²½ìš°ì—ë§Œ ì‚¬ìš©. ë¹„ì›Œë„ ë¨.")]
     public string pointerResourcePath = Path.Mouse + "Pointer";
 
-    // ===== Ä¿¼­ ÃßÀû ÀÔ·Â/ÁÂÇ¥ º¯È¯ =====
+    // ===== ì»¤ì„œ ì¶”ì  ì…ë ¥/ì¢Œí‘œ ë³€í™˜ =====
     [Header("Raycast / Plane")]
     public bool useLayerRaycast = true;
-    public LayerMask groundMask = ~0;                 // Ground/TileMap¸¸ Æ÷ÇÔ ±ÇÀå
+    public LayerMask groundMask = ~0;                 // Ground/TileMapë§Œ í¬í•¨ ê¶Œì¥
     public float maxRayDistance = 1000f;
     public bool usePlaneIfMiss = true;
-    public float groundY = 0f;                        // Æò¸é ±³Â÷ ³ôÀÌ
+    public float groundY = 0f;                        // í‰ë©´ êµì°¨ ë†’ì´
 
-    // ===== °æ°è/°¡¿ë¼º Á¤Ã¥ =====
+    // ===== ê²½ê³„/ê°€ìš©ë²”ìœ„ ë“± =====
     [Header("Constraints")]
-    public bool blockWhenUI = true;                   // UI À§ Å¬¸¯/ÃßÀû ¹«½Ã
-    public bool clampToBounds = true;                 // ¸Ê ¹ÛÀÌ¸é ¸ğ¼­¸®·Î Å¬·¥ÇÁ
-    public bool freezeWhenOutside = false;            // ¸Ê ¹ÛÀÌ¸é Á¤Áö(Å¬·¥ÇÁ ´ë½Å)
-    public bool restrictPointerToMovable = false;     // Æ÷ÀÎÅÍ°¡ Terrain¸¸ Çã¿ë(»ö ¹İ¿µ)
-    public bool restrictMoveToRange = true;           // °æ·Î ±æÀÌ°¡ ÀÌµ¿¹üÀ§ ÃÊ°ú¸é ¸·±â
+    public bool blockWhenUI = true;                   // UI ìœ„ í´ë¦­/ì¶”ì  ë¬´ì‹œ
+    public bool clampToBounds = true;                 // ë§µ ë°–ì´ë©´ ëª¨ì„œë¦¬ë¡œ í´ë¨í”„
+    public bool freezeWhenOutside = false;            // ë§µ ë°–ì´ë©´ ì •ì§€(í´ë¨í”„ ëŒ€ì‹ )
+    public bool restrictPointerToMovable = false;     // í¬ì¸í„°ê°€ Terrainë§Œ í—ˆìš©(ìƒ‰ ë°˜ì˜)
+    public bool restrictMoveToRange = true;           // ê²½ë¡œ ê¸¸ì´ê°€ ì´ë™ë²”ìœ„ ì´ˆê³¼ë©´ ë§‰ê¸°
 
-    // ===== Æ÷ÀÎÅÍ ºñÁÖ¾ó =====
-    [Header("Visual")]
-    public bool tintBlocked = true;
-    public Color movableColor = Color.white;
-    public Color blockedColor = new Color(1, 0.5f, 0.5f);
-    private Renderer _pointerRenderer;
-
-    // ===== À¯´Ö Å½»ö º¸°­(¼±ÅÃ) =====
+    // ===== ìœ ë‹› íƒìƒ‰ ë³´ê°•(ì„ íƒ) =====
     [Header("Instance Lookup (Optional)")]
-    public bool useOverlapLookup = true;              // ÀÎ½ºÅÏ½º º¸°­ Å½»ö
-    public LayerMask unitDetectMask = ~0;             // Enemy/Player Æ÷ÇÔ
+    public bool useOverlapLookup = true;              // ì¸ìŠ¤í„´ìŠ¤ ë³´ê°• íƒìƒ‰
+    public LayerMask unitDetectMask = ~0;             // Enemy/Player í¬í•¨
     [Range(0.1f, 1f)] public float overlapShrink = 0.9f;
     public float overlapHeight = 2f;
 
-    // ===== ÀÌµ¿/¼±ÅÃ »óÅÂ =====
+    // ===== ì´ë™/ì„ íƒ ìƒíƒœ =====
     [Header("Movement")]
-    public float stepMoveTime = 0.2f;                 // ÇÑ Ä­ º¸°£ ½Ã°£
-    private bool _isMoving = false;
+    public float stepMoveTime = 0.2f;                 // í•œ ì¹¸ ë³´ê°„ ì‹œê°„
+    private bool isMoving = false;
+    [SerializeField] private bool movePhaseActive = false;  // PlayerMove í˜ì´ì¦ˆì—ì„œë§Œ true
+    private BasePlayer selectedPlayer;               // í˜„ì¬ ì„ íƒëœ í”Œë ˆì´ì–´
+    private Vector3Int selectedPlayerCell;
+    private int selectedMoveRange;
+    bool isPlayer = false;
 
-    private BasePlayer _selectedPlayer;               // ÇöÀç ¼±ÅÃµÈ ÇÃ·¹ÀÌ¾î
-    private Vector3Int _selectedPlayerCell;
-    private int _selectedMoveRange;
-
-    // ===== ³»ºÎ Ä³½Ã =====
-    private Vector3Int _lastCell = new Vector3Int(int.MinValue, int.MinValue, 0);
-    private Vector3Int _lastValidCell;
+    // ===== ë‚´ë¶€ ìºì‹œ =====
+    private Vector3Int lastCell = new Vector3Int(int.MinValue, int.MinValue, 0);
+    private Vector3Int lastValidCell;
 
     private readonly List<GameObject> activeTiles = new List<GameObject>();
 
-    public void CreateMouse() // Scene³Ñ¾î°¬À»¶§ ½ÇÇà
+    public void CreateMouse() // Sceneë„˜ì–´ê°”ì„ë•Œ ì‹¤í–‰
     {
         var go = GameManager.Resource.Create<GameObject>(pointerResourcePath);
         go.transform.SetParent(this.transform);
         pointer = go.transform;
     }
 
-    public void SetMouseVar() // MouseFollowerÅ¬·¡½º¿¡ Awake()¾È¿¡¼­ È£Ãâ
+    public void SetMouseVar() // MouseFollowerí´ë˜ìŠ¤ì— Awake()ì•ˆì—ì„œ í˜¸ì¶œ
     {
         map = GameManager.Map;
         tilemap = map.tilemap;
         cam = Camera.main;
-        // Æ÷ÀÎÅÍ¸¦ »ìÂ¦ ¶ç¿ö Z-fighting ¹æÁö(¿ÀºêÁ§Æ®°¡ °ãÄ¡´Â Çö»ó)
+        // í¬ì¸í„°ë¥¼ ì‚´ì§ ë„ì›Œ Z-fighting ë°©ì§€(ì˜¤ë¸Œì íŠ¸ê°€ ê²¹ì¹˜ëŠ” í˜„ìƒ)
         var p = pointer.position; p.y = groundY + 0.01f;
         pointer.position = p;
     }
 
-    public void MovingMouse()   // MouseFollowerÅ¬·¡½º¿¡ LateUpdate()¾È¿¡¼­ È£Ãâ
+    public void MovingMouse()   // MouseFollowerí´ë˜ìŠ¤ì— LateUpdate()ì•ˆì—ì„œ í˜¸ì¶œ
     {
-        // 1) Æ÷ÀÎÅÍ ÃßÀû(¼¿ ´ÜÀ§)
+        // 1) í¬ì¸í„° ì¶”ì (ì…€ ë‹¨ìœ„)
         if (!UpdatePointer()) return;
 
-        // 2) ÁÂÅ¬¸¯ ¶ó¿ìÆÃ (ÀÔ·Â)
+        // 2) ì¢Œí´ë¦­ ë¼ìš°íŒ… (ì…ë ¥)
         bool clicked =
 #if ENABLE_INPUT_SYSTEM
             Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame;
@@ -96,44 +91,54 @@ public class MouseManager : MonoBehaviour
         if (clicked) HandleLeftClick();
     }
 
+    //  PlayerTurnStateì—ì„œ í˜¸ì¶œ
+    public void ToggleMovePhase() => movePhaseActive = !movePhaseActive;
 
-    // ===== Æ÷ÀÎÅÍ ÃßÀû & ¼¿ ½º³À =====
+    // =====================================================================
+    // í¬ì¸í„° ì¶”ì  & ì…€ ìŠ¤ëƒ…
+    // =====================================================================
     private bool UpdatePointer()
     {
+        if (pointer == null || tilemap == null || map == null) return false;
+
         if (blockWhenUI && EventSystem.current && EventSystem.current.IsPointerOverGameObject())
             return false;
 
         if (!TryGetMouseWorld(out var world)) return false;
 
-        // ¿ùµå¡æ¼¿
+        // ì›”ë“œâ†’ì…€
         Vector3Int cell = tilemap.WorldToCell(world);
 
-        // °æ°è Ã³¸®
+        // ê²½ê³„ ì²˜ë¦¬
         bool inside = IsInside(cell);
         if (!inside)
         {
-            if (freezeWhenOutside) { ApplyTint(_lastValidCell, allowed: true); return false; }
+            if (freezeWhenOutside) return false;
             if (clampToBounds) { cell = ClampCell(cell); inside = true; }
         }
 
-        // Terrain¸¸ Çã¿ë(¿É¼Ç)
+        // Terrainë§Œ í—ˆìš©(ì˜µì…˜)
         bool allowed = true;
         if (restrictPointerToMovable && inside)
             allowed = map.IsMovable(cell);
 
-        // ¼¿ º¯°æ½Ã¿¡¸¸ ½º³À ¡æ "ÇÑ Ä­¾¿" ¿òÁ÷ÀÓ
-        if (allowed && cell != _lastCell)
+        // â€œí•œ ì¹¸ì”©â€ ìŠ¤ëƒ…
+        if (allowed && cell != lastCell)
         {
-            GridSnapper.SnapToCellCenter(pointer, tilemap, new Vector2Int(cell.x, cell.y));
-            _lastCell = cell;
-            _lastValidCell = cell;
+            Vector3 center = tilemap.GetCellCenterWorld(cell);
+            center.y = groundY + 0.01f;
+            pointer.position = center;
+
+            lastCell = cell;
+            lastValidCell = cell;
         }
 
-        ApplyTint(cell, allowed);
         return true;
     }
 
-    // ÁÂÅ¬¸¯ Ã³¸®(¼¿ ±â¹İ ºĞ±â)
+    // =====================================================================
+    // í´ë¦­ ì²˜ë¦¬ (TileID ê¸°ë°˜)
+    // =====================================================================
     private void HandleLeftClick()
     {
         if (blockWhenUI && EventSystem.current && EventSystem.current.IsPointerOverGameObject())
@@ -141,136 +146,137 @@ public class MouseManager : MonoBehaviour
 
         var cell = GetCurrentCell();
         if (!IsInside(cell)) return;
-
-        int id = map.mapData[cell.x, cell.y];
-
-        switch (id)
+        if (map.IsPlayer(cell))
         {
-            case TileID.Player:
-                OnClickPlayer(cell);
-                break;
-
-            case TileID.Enemy:
-                OnClickEnemy(cell);
-                break;
-
-            case TileID.Terrain:
-                OnClickTerrain(cell);
-                break;
-
-            default:
-                CancelSelection();
-                break;
+            isPlayer = true;
+            OnClickPlayer(cell);
+            return;
         }
+        if (map.IsEnemy(cell))
+        {
+            isPlayer = false;
+            GameManager.UI.CloseUI<MainUI>();
+            OnClickEnemy(cell);
+            return;
+        }
+        if (map.IsMovable(cell)) // Terrain
+        {
+            OnClickTerrain(cell);
+            GameManager.UI.CloseUI<MainUI>();
+            return;
+        }
+        isPlayer = false;
+        // ê·¸ ì™¸(Obstacle ë“±)
+        CancelSelection();
     }
 
-    // ===== Å¬¸¯ µ¿ÀÛº° ÇÚµé·¯ =====
+    // ===== í´ë¦­ ë™ì‘ë³„ í•¸ë“¤ëŸ¬ =====
 
-    // Player ¼¿ Å¬¸¯ ¡æ ¼±ÅÃ + ÀÌµ¿¹üÀ§ Ç¥½Ã
+    // Player ì…€ í´ë¦­ => ì„ íƒ + ì´ë™ë²”ìœ„ í‘œì‹œ
     private void OnClickPlayer(Vector3Int cell)
     {
-        if (_isMoving) return;
-
-        // ¼¿¿¡¼­ ½ÇÁ¦ ÇÃ·¹ÀÌ¾î ÄÄÆ÷³ÍÆ® Å½»ö(º¸°­)
-        _selectedPlayer = useOverlapLookup ? FindAtCell<BasePlayer>(cell) : null;
-        _selectedPlayerCell = cell;
-
-        // ÀÌµ¿ ¹üÀ§ ¼³Á¤(ÇÃ·¹ÀÌ¾î ¸ğµ¨ÀÌ ÀÖÀ¸¸é °Å±â¼­, ¾øÀ¸¸é MapManagerÀÇ ±âº»°ª »ç¿ë)
-        _selectedMoveRange = (_selectedPlayer && _selectedPlayer.playerModel != null)
-            ? _selectedPlayer.playerModel.moveRange
-            : map.moveRange;
-
-        // UI/¹üÀ§ Ç¥½Ã
-        map.PlayerUpdateRange(cell, _selectedMoveRange);
-        GameManager.UI.CloseUI<EnemyInfoPopUpUI>();
+        GameManager.UI.OpenUI<MainUI>();
+        if (isMoving) return; 
+        // ì…€ì—ì„œ ì‹¤ì œ í”Œë ˆì´ì–´ ì»´í¬ë„ŒíŠ¸ íƒìƒ‰(ë³´ê°•)
+        selectedPlayer = useOverlapLookup ? FindAtCell<BasePlayer>(cell) : null; selectedPlayerCell = cell; 
+        // ì´ë™ ë²”ìœ„ ì„¤ì •(í”Œë ˆì´ì–´ ëª¨ë¸ì´ ìˆìœ¼ë©´ ê±°ê¸°ì„œ, ì—†ìœ¼ë©´ MapManagerì˜ ê¸°ë³¸ê°’ ì‚¬ìš©)
+        selectedMoveRange = GameManager.Unit.Player.playerModel.moveRange; // UI/ë²”ìœ„ í‘œì‹œ
+        map.PlayerUpdateRange(cell, selectedMoveRange); 
+        GameManager.UI.CloseUI<EnemyInfoPopUpUI>(); 
     }
 
-    // Enemy ¼¿ Å¬¸¯ ¡æ Á¤º¸ UI
+    // Enemy ì…€ í´ë¦­ => ì •ë³´ UI
     private void OnClickEnemy(Vector3Int cell)
     {
-        if (_isMoving) return;
+        {
+            if (isMoving) return;
+            var enemy = useOverlapLookup ? FindAtCell<BaseEnemy>(cell) : null;
+            if (enemy != null)
+            {
+                GameManager.UI.GetUI<EnemyInfoPopUpUI>().SetData(enemy.enemyModel.unitName, enemy.enemyModel.attri, enemy.enemyModel.rank);
+                GameManager.UI.OpenUI<EnemyInfoPopUpUI>();
+            }
+            else
+            { //ì¸ìŠ¤í„´ìŠ¤ê°€ ì—†ìœ¼ë©´ ì·¨ì†Œ(ì„ íƒ í•´ì œ)
+                CancelSelection();
 
-        var enemy = useOverlapLookup ? FindAtCell<BaseEnemy>(cell) : null;
-        if (enemy != null)
-        {
-            GameManager.UI.GetUI<EnemyInfoPopUpUI>()
-                .SetData(enemy.enemyModel.unitName, enemy.enemyModel.attri, enemy.enemyModel.rank);
-            GameManager.UI.OpenUI<EnemyInfoPopUpUI>();
+            }
         }
-        else
+    }
+            
+
+    // Terrain ì…€ í´ë¦­ â†’ ì„ íƒëœ í”Œë ˆì´ì–´ê°€ ìˆìœ¼ë©´ ì´ë™ ì‹œë„
+    private void OnClickTerrain(Vector3Int destCell)
+    {
+        if(isPlayer == true)
         {
-            // ÀÎ½ºÅÏ½º°¡ ¾øÀ¸¸é Ãë¼Ò(¼±ÅÃ ÇØÁ¦)
+            // 0) ì´ë™ í˜ì´ì¦ˆê°€ ì•„ë‹ˆë©´ ë¬´ì‹œ (PlayerMove ë‹¨ê³„ì—ì„œë§Œ í—ˆìš©)
+            if (movePhaseActive == false) return;
+
+            //  í˜„ì¬ ì´ë™ ì¤‘ì´ë©´ ë¬´ì‹œ
+           // if (isMoving) return;
+
+            //  í”Œë ˆì´ì–´ê°€ ì„ íƒë˜ì–´ ìˆì–´ì•¼ í•¨
+            if (selectedPlayer == null) return;
+
+            //  ê°™ì€ ì¹¸ì´ë©´ ë¬´ì‹œ
+            if (destCell == selectedPlayerCell) return;
+
+            // ê²½ë¡œ ê³„ì‚°
+            List<Vector3Int> path = map.FindPath(selectedPlayerCell, destCell);
+
+            // ê²½ë¡œ/ë²”ìœ„ ê²€ì¦
+            if (path == null || path.Count > selectedMoveRange)
+            {
+                CancelSelection();
+                return;
+            }
+
+            // ì´ë™ ì‹œì‘
+            StopAllCoroutines();
+            StartCoroutine(MoveAlongPath(selectedPlayer.transform, selectedPlayerCell, path, TileID.Player));
+            GameManager.TurnBased.SetSelectedAction(PlayerActionType.Move);
+            // ì¶”ê°€ ì…ë ¥ ì°¨ë‹¨ + ì„ íƒ/ë²”ìœ„ UI ì •ë¦¬
+            movePhaseActive = false;
             CancelSelection();
         }
     }
 
-    // Terrain ¼¿ Å¬¸¯ ¡æ ¼±ÅÃµÈ ÇÃ·¹ÀÌ¾î°¡ ÀÖÀ¸¸é ÀÌµ¿ ½Ãµµ
-    private void OnClickTerrain(Vector3Int destCell)
-    {
-        if (_isMoving) return;
-        if (_selectedPlayer == null) return;
-
-        // ¼±ÅÃµÈ ÇÃ·¹ÀÌ¾îÀÇ ÇöÀç À§Ä¡(¼¿)
-        Vector3Int startCell = _selectedPlayerCell;
-
-        // °æ·Î °è»ê
-        List<Vector3Int> path = map.FindPath(startCell, destCell);
-        if (path == null || path.Count == 0)
-        {
-            CancelSelection(); return;
-        }
-
-        // ¹üÀ§ Á¦ÇÑ
-        if (restrictMoveToRange && path.Count > _selectedMoveRange)
-        {
-            // ÃÊ°ú ½Ã ÀÌµ¿ ºÒ°¡ (¿øÇÏ¸é path¸¦ Àß¶ó¼­ NÄ­±îÁö¸¸ ÀÌµ¿ÇÏµµ·Ï ¹Ù²Ü ¼ö ÀÖÀ½)
-            CancelSelection(); return;
-        }
-
-        // ÀÌµ¿ ¾×¼Ç ¼±ÅÃ(ÅÏÁ¦ ½Ã½ºÅÛ ¿¬µ¿)
-        GameManager.TurnBased.SetSelectedAction(PlayerActionType.Move);
-
-        // ÀÌµ¿ ÄÚ·çÆ¾ ½ÃÀÛ
-        StopAllCoroutines();
-        StartCoroutine(MoveAlongPath(_selectedPlayer.transform, startCell, path, TileID.Player));
-    }
-
-    // ===== ÀÌµ¿ ½ÇÇà(ÇÑ Ä­¾¿ º¸°£ + ¸Êµ¥ÀÌÅÍ °»½Å) =====
+    // ===== ì´ë™ ì‹¤í–‰(í•œ ì¹¸ì”© ë³´ê°„ + ë§µë°ì´í„° ê°±ì‹  + ì¸ë±ìŠ¤ ê°±ì‹ ) =====
     private IEnumerator MoveAlongPath(Transform actor, Vector3Int currentCell, List<Vector3Int> path, int tileIdForActor)
     {
-        _isMoving = true;
+        isMoving = true;
 
         foreach (var nextCell in path)
         {
-            // ¿ùµå ÁÂÇ¥ º¸°£
             Vector3 start = actor.position;
             Vector3 end = tilemap.GetCellCenterWorld(nextCell);
 
             float t = 0f;
+            float dur = Mathf.Max(0.0001f, stepMoveTime);
             while (t < 1f)
             {
-                t += Time.deltaTime / Mathf.Max(0.0001f, stepMoveTime);
+                t += Time.deltaTime / dur;
                 actor.position = Vector3.Lerp(start, end, t);
                 yield return null;
             }
             actor.position = end;
 
-            // ¸Ê µ¥ÀÌÅÍ °»½Å(¼¿ ÁÂÇ¥ ±â¹İ)
+            // ë§µë°ì´í„° ê°±ì‹ (ì…€ ê¸°ì¤€)
             map.UpdateObjectPosition(currentCell.x, currentCell.y, nextCell.x, nextCell.y, tileIdForActor);
 
-            // ³»ºÎ »óÅÂ °»½Å
+            // ë‚´ë¶€ ìƒíƒœ ê°±ì‹ 
             currentCell = nextCell;
-            _selectedPlayerCell = nextCell; // ¼±ÅÃ À¯Áö ÁßÀÌ¸é ÃÖ½Å À§Ä¡·Î
+            selectedPlayerCell = nextCell;
         }
 
-        _isMoving = false;
-        // ÀÌµ¿ ¿Ï·á ÈÄ ¼±ÅÃ/¹üÀ§ ÇØÁ¦(¿øÇÑ´Ù¸é À¯ÁöÇÏµµ·Ï ¿É¼ÇÈ­ °¡´É)
-        CancelSelection();
+        isMoving = false;
+
     }
 
-    // ===== °ø¿ë À¯Æ¿ =====
+    // ===== ê³µìš© ìœ í‹¸ =====
     public Vector3Int GetCurrentCell(bool preferValid = true)
-        => preferValid ? (_lastValidCell == default ? _lastCell : _lastValidCell) : _lastCell;
+        => preferValid ? (lastValidCell == default ? lastCell : lastValidCell) : lastCell;
 
     private bool TryGetMouseWorld(out Vector3 world)
     {
@@ -296,8 +302,7 @@ public class MouseManager : MonoBehaviour
         return false;
     }
 
-    private bool IsInside(Vector3Int c)
-        => c.x >= 0 && c.y >= 0 && c.x < map.mapWidth && c.y < map.mapHeight;
+    private bool IsInside(Vector3Int c) => c.x >= 0 && c.y >= 0 && c.x < map.mapWidth && c.y < map.mapHeight;
 
     private Vector3Int ClampCell(Vector3Int c)
     {
@@ -306,44 +311,31 @@ public class MouseManager : MonoBehaviour
         return new Vector3Int(x, y, 0);
     }
 
-    private void ApplyTint(Vector3Int cell, bool allowed)
-    {
-        if (!tintBlocked || _pointerRenderer == null) return;
-        // ·±Å¸ÀÓ ÀÎ½ºÅÏ½º¸¸ ¼öÁ¤ÇÏµµ·Ï .material »ç¿ë(°øÀ¯ ¸ÓÆ¼¸®¾ó º¯Á¶ ¹æÁö)
-        _pointerRenderer.material.color = allowed ? movableColor : blockedColor;
-    }
-
-    // ¼¿ Áß½É ÁÖº¯¿¡¼­ ÄÄÆ÷³ÍÆ® Å½»ö(º¸°­). MapManager¿¡ ¼¿¡æÀ¯´Ö ¸ÅÇÎÀÌ ÀÖÀ¸¸é ±×°É ¾²´Â °Ô ÃÖ¼±.
-    private T FindAtCell<T>(Vector3Int cell) where T : Component
-    {
-        if (!useOverlapLookup) return null;
-
-        Vector3 center = tilemap.GetCellCenterWorld(cell);
-        Vector3 size = new Vector3(tilemap.cellSize.x * overlapShrink, overlapHeight, tilemap.cellSize.y * overlapShrink);
-        var cols = Physics.OverlapBox(center, size * 0.5f, Quaternion.identity, unitDetectMask, QueryTriggerInteraction.Collide);
-        foreach (var c in cols)
-        {
-            var t = c.GetComponentInParent<T>();
-            if (t) return t;
-        }
-        return null;
-    }
-
-    // ¼±ÅÃ ÇØÁ¦ + UI/¹üÀ§ Á¤¸®
+    // ì„ íƒ í•´ì œ + UI/ë²”ìœ„ ì •ë¦¬
     private void CancelSelection()
     {
-        _selectedPlayer = null;
+        selectedPlayer = null;
         map.ClearPlayerRange();
         GameManager.UI.CloseUI<EnemyInfoPopUpUI>();
     }
-
-
-    //================= PathfindingÀÇ ÀÜÀç ´õÀÌ»ó ¾µ¸ğ ¾øÀ»¶§ Áö¿ì±â =================//
+    // ì…€ ì¤‘ì‹¬ ì£¼ë³€ì—ì„œ ì»´í¬ë„ŒíŠ¸ íƒìƒ‰(ë³´ê°•). MapManagerì— ì…€â†’ìœ ë‹› ë§¤í•‘ì´ ìˆìœ¼ë©´ ê·¸ê±¸ ì“°ëŠ” ê²Œ ìµœì„ .
+    private T FindAtCell<T>(Vector3Int cell) where T : Component 
+    { 
+        if (!useOverlapLookup) return null;
+        Vector3 center = tilemap.GetCellCenterWorld(cell); 
+        Vector3 size = new Vector3(tilemap.cellSize.x * overlapShrink, overlapHeight, tilemap.cellSize.y * overlapShrink); 
+        var cols = Physics.OverlapBox(center, size * 0.5f, Quaternion.identity, unitDetectMask, QueryTriggerInteraction.Collide); 
+        foreach (var c in cols) 
+        { 
+            var t = c.GetComponentInParent<T>(); if (t) return t; 
+        } return null; 
+    }
+    //================= Pathfindingì˜ ì”ì¬ ë”ì´ìƒ ì“¸ëª¨ ì—†ì„ë•Œ ì§€ìš°ê¸° =================//
     public void ShowPath(Vector3Int[] path, Tilemap tilemap, int moveRange, GameObject mouse)
     {
         ClearPath();
 
-        // ÀÌµ¿ ¹üÀ§ Á¦ÇÑ
+        // ì´ë™ ë²”ìœ„ ì œí•œ
         int maxRange = Mathf.Min(path.Length, moveRange);
         for (int i = 0; i < path.Length; i++)
         {
