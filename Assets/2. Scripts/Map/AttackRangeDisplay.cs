@@ -146,38 +146,36 @@ public class AttackRangeDisplay : MonoBehaviour
         Vector2 mouseScreenPos = Input.mousePosition;
         Vector2 screenDistanceVector = mouseScreenPos - playerScreenPos;
 
-        // 거리가 너무 짧으면 방향을 정하지 않습니다. (플레이어 바로 근처)
-        if (screenDistanceVector.magnitude < 20) // 임계값은 필요에 따라 조절하세요.
+        // 거리가 너무 짧으면 방향을 정하지 않음
+        if (screenDistanceVector.magnitude < 1) // 임계값은 적당히 수정
         {
             return Vector3Int.zero;
         }
 
-        // 마우스와 플레이어 간의 각도를 계산합니다. (라디안을 각도로 변환)
+        // 마우스와 플레이어 간의 각도를 계산
         float angle = Mathf.Atan2(screenDistanceVector.y, screenDistanceVector.x) * Mathf.Rad2Deg;
 
-        // 각도가 0~360도 범위에 있도록 조정합니다.
+        // 각도가 0~360도 범위에 있도록 조정
+        angle -= 20f; 
         if (angle < 0)
         {
             angle += 360;
         }
-    
-        // === 디버그 로그 ===
-        Debug.Log($"화면 기준 거리 차이: {screenDistanceVector}, 각도: {angle}");
 
-        // 각도를 기준으로 4방향(상,하,좌,우) 중 하나를 결정합니다.
-        if (angle >= 45f && angle < 135f) // 45도 ~ 135도 (위쪽)
+        // 각도를 기준으로 4방향(상,하,좌,우) 중 하나 
+        if (angle >= 45f && angle < 135f) // 45 ~ 135 (위쪽)
         {
             return Vector3Int.up;
         }
-        else if (angle >= 135f && angle < 225f) // 135도 ~ 225도 (왼쪽)
+        else if (angle >= 135f && angle < 225f) // 135 ~ 225 (왼쪽)
         {
             return Vector3Int.left;
         }
-        else if (angle >= 225f && angle < 315f) // 225도 ~ 315도 (아래쪽)
+        else if (angle >= 225f && angle < 315f) // 225 ~ 315 (아래쪽)
         {
             return Vector3Int.down;
         }
-        else // 315도 ~ 360도 or 0도 ~ 45도 (오른쪽)
+        else // 315 ~ 360 or 0 ~ 45 (오른쪽)
         {
             return Vector3Int.right;
         }
