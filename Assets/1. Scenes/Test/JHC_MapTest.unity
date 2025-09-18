@@ -741,6 +741,7 @@ MonoBehaviour:
   gridPlane: 1
   tilemap: {fileID: 0}
   groundY: 0
+  moveRange: 0
   moveTime: 0.2
   _cellPosition: {x: 0, y: 0, z: 0}
   _isMoving: 0
