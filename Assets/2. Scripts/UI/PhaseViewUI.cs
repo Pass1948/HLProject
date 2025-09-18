@@ -3,10 +3,10 @@ using TMPro;
 
 public class PhaseViewUI : MonoBehaviour
 {
-    [SerializeField] private TurnBasedManager turn;
+    private TurnBasedManager turn;
     [SerializeField] private TMP_Text phaseViewText;
 
-    private string nowPhase;
+    private string nowPhase; //마지막으로 표시한 페이즈 상태
 
     private void Awake()
     {
@@ -38,6 +38,7 @@ public class PhaseViewUI : MonoBehaviour
         if(force || current != nowPhase)
         {
             phaseViewText.text = ($"{current}");
+            nowPhase = current;
         }
     }
 }

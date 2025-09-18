@@ -3463,6 +3463,7 @@ MonoBehaviour:
   bikeControllBtnObj: {fileID: 2122605686555309026}
   atifactBtn: {fileID: 1491103076486934695}
   atifactBtnObj: {fileID: 2122605686555309026}
+  repairBtn: {fileID: 0}
 --- !u!114 &2122605686555309026
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3491,7 +3492,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9272a2a93b21a1c4286d44a3eb97b36a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  turn: {fileID: 0}
   phaseViewText: {fileID: 7426313570859478901}
 --- !u!1 &6216092335901859824
 GameObject:
