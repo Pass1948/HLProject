@@ -37,8 +37,7 @@ public class MovementController : MonoBehaviour
     private void Awake()
     {
         basePlayer = GetComponent<BasePlayer>();
-        mouse = GameManager.Resource.Create<GameObject>(Path.Mouse + "Pointer");
-        mouse.transform.SetParent(this.transform);
+
     }
 
     private void Start()
@@ -51,9 +50,6 @@ public class MovementController : MonoBehaviour
 
         // A* 알고리즘 초기화
         _pathfinding = new Pathfinding(tilemap);
-
-
-
     }
     private void Update()
     {
@@ -123,7 +119,7 @@ public class MovementController : MonoBehaviour
         if (!value.isPressed) return;
 
         // 통합된 마우스 클릭 처리
-        HandleMouseClick();
+        //HandleMouseClick();
     }
 
     //  마우스 클릭 처리 - 3개 메서드를 하나로 통합[작성자:이영신]

@@ -18,8 +18,6 @@ public class MouseManager : MonoBehaviour
     [Header("Pointer Resource (선택)")]
     [Tooltip("GameManager.Resource 경로를 쓰는 경우에만 사용. 비워도 됨.")]
     public string pointerResourcePath = Path.Mouse + "Pointer";
-    [Tooltip("포인터를 그리드 밑에 붙이고 싶다면 체크")]
-    public bool parentPointerUnderGrid = true;
 
     // ===== 커서 추적 입력/좌표 변환 =====
     [Header("Raycast / Plane")]
@@ -65,42 +63,25 @@ public class MouseManager : MonoBehaviour
     private Vector3Int _lastValidCell;
 
     private readonly List<GameObject> activeTiles = new List<GameObject>();
-    // ===== 라이프사이클 =====
-    private void Awake()
+
+    public void CreateMouse() // Scene넘어갔을때 실행
     {
-        if (!map) map = GameManager.Map;
-        if (!tilemap && map) tilemap = map.tilemap;
-        if (!cam) cam = Camera.main;
-
-        // 포인터 준비
-        if (!pointer)
-        {
-            // 리소스 매니저가 있다면 프리팹 생성
-            if (!string.IsNullOrEmpty(pointerResourcePath))
-            {
-                var go = GameManager.Resource.Create<GameObject>(pointerResourcePath);
-                pointer = go.transform;
-            }
-            else
-            {
-                // 임시 쿼드 생성
-                var go = GameObject.CreatePrimitive(PrimitiveType.Quad);
-                go.name = "MousePointer";
-                pointer = go.transform;
-            }
-        }
-        // 포인터 부모 정리(그리드 밑)
-        if (parentPointerUnderGrid && tilemap)
-            pointer.SetParent(tilemap.transform, worldPositionStays: true);
-
-        _pointerRenderer = pointer.GetComponentInChildren<Renderer>();
-        if (!_pointerRenderer) _pointerRenderer = pointer.GetComponent<Renderer>();
-
-        // 포인터를 살짝 띄워 Z-fighting 방지
-        var p = pointer.position; p.y = groundY + 0.01f; pointer.position = p;
+        var go = GameManager.Resource.Create<GameObject>(pointerResourcePath);
+        go.transform.SetParent(this.transform);
+        pointer = go.transform;
     }
 
-    private void Update()
+    public void SetMouseVar() // MouseFollower클래스에 Awake()안에서 호출
+    {
+        map = GameManager.Map;
+        tilemap = map.tilemap;
+        cam = Camera.main;
+        // 포인터를 살짝 띄워 Z-fighting 방지(오브젝트가 겹치는 현상)
+        var p = pointer.position; p.y = groundY + 0.01f;
+        pointer.position = p;
+    }
+
+    public void MovingMouse()   // MouseFollower클래스에 LateUpdate()안에서 호출
     {
         // 1) 포인터 추적(셀 단위)
         if (!UpdatePointer()) return;
@@ -114,6 +95,7 @@ public class MouseManager : MonoBehaviour
 #endif
         if (clicked) HandleLeftClick();
     }
+
 
     // ===== 포인터 추적 & 셀 스냅 =====
     private bool UpdatePointer()
@@ -354,25 +336,6 @@ public class MouseManager : MonoBehaviour
         map.ClearPlayerRange();
         GameManager.UI.CloseUI<EnemyInfoPopUpUI>();
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     //================= Pathfinding의 잔재 더이상 쓸모 없을때 지우기 =================//
