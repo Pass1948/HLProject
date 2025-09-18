@@ -105,7 +105,14 @@ public class MainUI : BaseUI
                     mountBtn.gameObject.SetActive(false);
                     getOffBtn.gameObject.SetActive(false);
                 }
-                break;
+
+                else
+                {
+                    repairBtn.gameObject.SetActive(true);
+
+                }
+                    break;
+
             case VehicleCondition.GetOff: // 내렸을 때
                 if (IsNearVehicle()) // 가까이 있을 때 수리, 리롤
                 {
@@ -114,7 +121,14 @@ public class MainUI : BaseUI
                     mountBtn.gameObject.SetActive(true);
                     getOffBtn.gameObject.SetActive(false);
                 }
-                break;
+
+                else
+                {
+                    rerollBtn.gameObject.SetActive(false);
+                    mountBtn.gameObject.SetActive(false);
+                }
+                    break;
+
             default:
                 rerollBtn.gameObject.SetActive(true);
                 repairBtn.gameObject.SetActive(false);
