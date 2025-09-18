@@ -12,9 +12,6 @@ public class HitEnemyState : BaseEnemyState
 
         animHandler.OnHit();
         // 데미지 적용시키기
-
-
-        stateMachine.ChangeState(stateMachine.DieState);
     }
 
     public override void Excute()

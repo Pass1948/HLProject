@@ -28,7 +28,7 @@ public class BaseEnemy : MonoBehaviour
         {
             controller.model = enemyModel;
             controller.animHandler = animHandler;
-            controller.InitController();
+            controller.InitController(this);
         }
         else
         {
