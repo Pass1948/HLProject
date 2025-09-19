@@ -12,6 +12,9 @@ public class MainUI : BaseUI
 
     [SerializeField] Button rerollBtn;
     [SerializeField] ReloadAmmo reloadBtnObj;
+
+    [SerializeField] Button kickBtn;
+
     //재장전 텍스트
     TMP_Text rerollLabel;
 
@@ -47,6 +50,7 @@ public class MainUI : BaseUI
         repairBtn.onClick.AddListener(RepairButton);
         mountBtn.onClick.AddListener(OnRiding);
         getOffBtn.onClick.AddListener(GetOff);
+        kickBtn.onClick.AddListener(OnKick);
 
         bikeControllBtn.onClick.AddListener(BikeToggle);
         atifactBtn.onClick.AddListener(AtifactToggle);
@@ -156,6 +160,12 @@ public class MainUI : BaseUI
                 getOffBtn.gameObject.SetActive (true);
                 break;
         }
+    }
+
+    void OnKick()
+    {
+        GameManager.Map.attackRange.SetAttackRangeForKick();
+        GameManager.Mouse.IsKicking = true; // 킥버튼 다시 눌렀을때 false로 바꿔주기
     }
 
     private bool IsNearVehicle()
