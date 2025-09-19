@@ -13,7 +13,7 @@ public class MainUI : BaseUI
     [SerializeField] Button rerollBtn;
     [SerializeField] ReloadAmmo reloadBtnObj;
     //재장전 텍스트
-    [SerializeField] TMP_Text rerollLabel;
+    TMP_Text rerollLabel;
 
     [SerializeField] Button deckBtn;
     [SerializeField] ToggleBtnController deckBtnObj;
