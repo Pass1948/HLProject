@@ -172,7 +172,6 @@ public class MainUI : BaseUI
     {
         Vector3 vehiclePos = GameManager.Unit.Vehicle.transform.position;
         Vector3  playerPos = GameManager.Unit.Player.transform.position;
-        Debug.Log($"{vehiclePos}{playerPos}");
         return playerPos == vehiclePos;
     }
     // 타는 로직
