@@ -52,7 +52,7 @@ public class MainUI : BaseUI
         repairBtn.onClick.AddListener(RepairButton);
         mountBtn.onClick.AddListener(OnRiding);
         getOffBtn.onClick.AddListener(GetOff);
-        kickBtn.onClick.AddListener(OnKick);
+        kickBtn.onClick.AddListener(ToggleKick);
 
         bikeControllBtn.onClick.AddListener(BikeToggle);
         atifactBtn.onClick.AddListener(AtifactToggle);
@@ -164,7 +164,7 @@ public class MainUI : BaseUI
         }
     }
 
-    void OnKick()
+    void ToggleKick()
     {
         kickBtnObj.ToggleKick();
     }

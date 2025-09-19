@@ -63,20 +63,19 @@ public class ToggleBtnController : MonoBehaviour
 
     public void ToggleKick()
     {
-        bool IsKick = !GameManager.Mouse.IsKicking;
-        GameManager.Mouse.IsKicking = IsKick;
-
-        if(IsKick)
+        if (GameManager.Mouse.IsKicking)
         {
-            Debug.Log("발차기하기");
-            GameManager.Map.attackRange.SetAttackRangeForKick();
-            GameManager.Mouse.IsKicking = true;
+            Debug.Log("발차기 그만두기");
+            //현재 켜져 있으면 끈다
+            //여기에 범위 끄는거 넣으면 되는데 뭔지 모르게슴;;;
+            GameManager.Mouse.IsKicking = false;
         }
         else
         {
-            Debug.Log("발차기 그만두기");
+            Debug.Log("발차기 하기");
+            //현재 꺼져 있으면 켠다
             GameManager.Map.attackRange.SetAttackRangeForKick();
-            GameManager.Mouse.IsKicking = false;
+            GameManager.Mouse.IsKicking = true;
         }
     }
 }
