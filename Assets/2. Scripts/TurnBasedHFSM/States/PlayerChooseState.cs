@@ -14,7 +14,7 @@ public class PlayerChooseState : BaseTurnState
         didClose = false;
         GameManager.UI.OpenUI<PaseTurnUI>();
         GameManager.Mouse.IsAttacking=true;
-        Debug.Log("Player Choose State Entered");
+        Debug.Log($"초이스 선택");
     }
 
     public override void Tick(float dt)

@@ -166,9 +166,7 @@ public class MouseManager : MonoBehaviour
         else if (map.IsEnemy(cell) && isAttacking == true)
         {
             GameManager.Event.Publish(EventType.PlayerAttack);
-            GameManager.TurnBased.SetSelectedAction(PlayerActionType.Attack);
             isAttacking = false;
-
         }
 
         if (map.IsMovable(cell)&& isAttacking==false) // Terrain
@@ -180,9 +178,7 @@ public class MouseManager : MonoBehaviour
         else if(map.IsMovable(cell) && isAttacking==true)
         {
             GameManager.Event.Publish(EventType.PlayerAttack);
-            GameManager.TurnBased.SetSelectedAction(PlayerActionType.Attack);
             isAttacking = false;
-
         }
 
         isPlayer = false;
@@ -233,8 +229,6 @@ public class MouseManager : MonoBehaviour
     // Terrain 셀 클릭 → 선택된 플레이어가 있으면 이동 시도
     private void OnClickTerrain(Vector3Int destCell)
     {
-
-            GameManager.Map.attackRange.ClearRange();
             if (isPlayer == true)
             {
                 // 이동 페이즈가 아니면 무시 (PlayerMove 단계에서만 허용)

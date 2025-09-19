@@ -4212,7 +4212,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2742fea9550f32e45a778c0d70a8de0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fireBtn: {fileID: 1031609546230970503}
+  turnBtn: {fileID: 1031609546230970503}
   fireBtnObj: {fileID: 830122162788962829}
   rerollBtn: {fileID: 5889160930384264512}
   reloadBtnObj: {fileID: 7921332509101693648}
@@ -6417,7 +6417,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Fire
+  m_text: 'Turn
+
+    End'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -6708,7 +6710,7 @@ GameObject:
   - component: {fileID: 2276649857569103418}
   - component: {fileID: 1031609546230970503}
   m_Layer: 5
-  m_Name: FireBtn
+  m_Name: TurnEnd
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
