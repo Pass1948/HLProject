@@ -14,6 +14,7 @@ public class MainUI : BaseUI
     [SerializeField] ReloadAmmo reloadBtnObj;
 
     [SerializeField] Button kickBtn;
+    [SerializeField] ToggleBtnController kickBtnObj;
 
     //재장전 텍스트
     TMP_Text rerollLabel;
@@ -40,6 +41,7 @@ public class MainUI : BaseUI
     [SerializeField] Button test;
 
     
+    
 
     private void Awake()
     {
@@ -50,7 +52,7 @@ public class MainUI : BaseUI
         repairBtn.onClick.AddListener(RepairButton);
         mountBtn.onClick.AddListener(OnRiding);
         getOffBtn.onClick.AddListener(GetOff);
-        kickBtn.onClick.AddListener(OnKick);
+        kickBtn.onClick.AddListener(ToggleKick);
 
         bikeControllBtn.onClick.AddListener(BikeToggle);
         atifactBtn.onClick.AddListener(AtifactToggle);
@@ -162,17 +164,15 @@ public class MainUI : BaseUI
         }
     }
 
-    void OnKick()
+    void ToggleKick()
     {
-        GameManager.Map.attackRange.SetAttackRangeForKick();
-        GameManager.Mouse.IsKicking = true; // 킥버튼 다시 눌렀을때 false로 바꿔주기
+        kickBtnObj.ToggleKick();
     }
 
     private bool IsNearVehicle()
     {
         Vector3 vehiclePos = GameManager.Unit.Vehicle.transform.position;
         Vector3  playerPos = GameManager.Unit.Player.transform.position;
-        Debug.Log($"{vehiclePos}{playerPos}");
         return playerPos == vehiclePos;
     }
     // 타는 로직

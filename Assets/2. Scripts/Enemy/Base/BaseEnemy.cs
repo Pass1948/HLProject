@@ -35,10 +35,7 @@ public class BaseEnemy : MonoBehaviour
             Debug.LogError("[Enemy] EnemyController or AnimHandler is missing on prefab!");
         }
     }
-    protected virtual void OnDestroy()
-    {
-        GameManager.Unit.enemies.Remove(this);
-    }
+
 
     public void ChenageAttribute()  // 발차기(속성변경)
     {

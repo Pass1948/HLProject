@@ -3131,7 +3131,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 20, y: 120}
+  m_AnchoredPosition: {x: 20, y: 170}
   m_SizeDelta: {x: 300, y: 70}
   m_Pivot: {x: 0, y: 0}
 --- !u!222 &2567731424541296624
@@ -4217,6 +4217,7 @@ MonoBehaviour:
   rerollBtn: {fileID: 5889160930384264512}
   reloadBtnObj: {fileID: 7921332509101693648}
   kickBtn: {fileID: 6275759365274418998}
+  kickBtnObj: {fileID: 2122605686555309026}
   deckBtn: {fileID: 5041803493689964856}
   deckBtnObj: {fileID: 2122605686555309026}
   discardBtn: {fileID: 6017041397092992565}
@@ -5838,7 +5839,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 20, y: 120}
+  m_AnchoredPosition: {x: 20, y: 95}
   m_SizeDelta: {x: 300, y: 70}
   m_Pivot: {x: 0, y: 0}
 --- !u!222 &4430615875389467059
