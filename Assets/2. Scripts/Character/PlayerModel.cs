@@ -29,7 +29,7 @@ public class PlayerModel : UnitModel
         attack = data.Attack;
         attackRange = Random.Range(data.MinAttackRange, data.MaxAttackRange);
         moveRange = data.MoveRange;
-        maxHealth = 1;
+        maxHealth = data.Health;
         currentHealth = maxHealth;
         mulligan = data.Mulligan;
         reload = data.Reload;

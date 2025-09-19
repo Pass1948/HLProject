@@ -175,6 +175,12 @@ public class MouseManager : MonoBehaviour
         {
             GameManager.Event.Publish(EventType.PlayerAttack);
             isAttacking = false;
+
+        }
+        else if (map.IsEnemy(cell) && map.IsMovable(cell) && isAttacking == true)
+        {
+            GameManager.TurnBased.ChangeTo<PlayerKickState>();
+            IsKicking = false;
         }
         else if (map.IsEnemy(cell) && isKicking == true)
         {
@@ -204,7 +210,6 @@ public class MouseManager : MonoBehaviour
             GameManager.TurnBased.ChangeTo<PlayerKickState>();
             IsKicking = false;
         }
-
 
         isPlayer = false;
         // 그 외(Obstacle 등)
@@ -252,6 +257,7 @@ public class MouseManager : MonoBehaviour
     // Terrain 셀 클릭 → 선택된 플레이어가 있으면 이동 시도
     private void OnClickTerrain(Vector3Int destCell)
     {
+        GameManager.UI.CloseUI<EnemyInfoPopUpUI>();
         if (isPlayer == true)
         {
             // 이동 페이즈가 아니면 무시 (PlayerMove 단계에서만 허용)
