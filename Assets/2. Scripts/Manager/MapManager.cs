@@ -116,6 +116,7 @@ public class MapManager : MonoBehaviour
     public void PlayerUpdateRange(Vector3Int playerPos, int moveRange)
     {
         playerMoveInfo.ShowMoveInfoRange(playerPos, moveRange, moveInfoTile, moveInfoTilemap);
+
     }
 
     public void ClearPlayerRange()
@@ -125,19 +126,20 @@ public class MapManager : MonoBehaviour
     }
 
     // 이동할 때
-    public void UpdateObjectPosition(int oldX, int oldY, int newX, int newY, int objectID)
+    public void UpdateObjectPosition(Vector3Int oldX, Vector3Int oldY, Vector3Int newX, Vector3Int newY, int objectID)
     {
-        // 이전 위치를 0으로
-        if (oldX >= 0 && oldY >= 0 && oldX < mapWidth && oldY < mapHeight)
-        {
-            mapData[oldX, oldY] = TileID.Terrain;
-        }
-
         // 새로운 위치에 기록
-        if (newX >= 0 && newY >= 0 && newX < mapWidth && newY < mapHeight)
+        if (newX.x >= 0 && newY.y >= 0 && newX.x < mapWidth && newY.y < mapHeight)
         {
-            mapData[newX, newY] = objectID;
+            mapData[newX.x, newY.y] = objectID;
         }
+        // 이전 위치를 0으로
+        if (oldX.x >= 0 && oldY.y >= 0 && oldX.x < mapWidth && oldY.y < mapHeight)
+        {
+            mapData[oldX.x, oldY.y] = TileID.Terrain;
+        }
+        Debug.Log($"이전 좌표: ({oldX}, {oldY}) | 타일 ID를 {mapData[oldX.x, oldY.y]}으로 변경");
+        Debug.Log($"새로운 좌표: ({newX}, {newY}) | 타일 ID를 {objectID}으로 변경");
     }
 
     public void UpdateAttackTargets(List<Vector3Int> attackCells, List<BaseEnemy> enemies)
