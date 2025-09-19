@@ -60,4 +60,23 @@ public class ToggleBtnController : MonoBehaviour
         }
         artifactListUI.gameObject.SetActive(!artifactListUI.gameObject.activeSelf);
     }
+
+    public void ToggleKick()
+    {
+        bool IsKick = !GameManager.Mouse.IsKicking;
+        GameManager.Mouse.IsKicking = IsKick;
+
+        if(IsKick)
+        {
+            Debug.Log("발차기하기");
+            GameManager.Map.attackRange.SetAttackRangeForKick();
+            GameManager.Mouse.IsKicking = true;
+        }
+        else
+        {
+            Debug.Log("발차기 그만두기");
+            GameManager.Map.attackRange.SetAttackRangeForKick();
+            GameManager.Mouse.IsKicking = false;
+        }
+    }
 }

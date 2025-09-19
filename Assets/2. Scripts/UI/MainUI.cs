@@ -14,6 +14,7 @@ public class MainUI : BaseUI
     [SerializeField] ReloadAmmo reloadBtnObj;
 
     [SerializeField] Button kickBtn;
+    [SerializeField] ToggleBtnController kickBtnObj;
 
     //재장전 텍스트
     TMP_Text rerollLabel;
@@ -39,6 +40,7 @@ public class MainUI : BaseUI
     // 테스트
     [SerializeField] Button test;
 
+    
     
 
     private void Awake()
@@ -164,8 +166,7 @@ public class MainUI : BaseUI
 
     void OnKick()
     {
-        GameManager.Map.attackRange.SetAttackRangeForKick();
-        GameManager.Mouse.IsKicking = true; // 킥버튼 다시 눌렀을때 false로 바꿔주기
+        kickBtnObj.ToggleKick();
     }
 
     private bool IsNearVehicle()
