@@ -42,7 +42,6 @@ public class EnemyController : MonoBehaviour
         minAttackRange = model.minAttackRange;
         maxAttackRange = model.maxAttackRange;
         isDie = model.isDie;
-        Debug.Log(moveRange);
 
         RunStateMaching();
     }

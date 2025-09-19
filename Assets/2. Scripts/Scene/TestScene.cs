@@ -10,7 +10,7 @@ public class TestScene : BaseScene
     {
         GameManager.Map.CreateMap();
         GameManager.Mouse.CreateMouse();
-
+        GameManager.Unit.Vehicle.vehicleHandler.MountVehicle();
     }
 
     public override void SceneExit()

@@ -76,6 +76,8 @@ public class VehicleHandler : MonoBehaviour
         transform.SetParent(player.transform);
         GameManager.Unit.Vehicle.transform.localPosition = Vector3.zero;
         GameManager.Unit.Player.playerModel.moveRange += GameManager.Unit.Vehicle.vehicleModel.moveRange;
+        Debug.Log("Vehicle Move Range: " + GameManager.Unit.Vehicle.vehicleModel.moveRange);
+        Debug.Log("Player Move Range: " + GameManager.Unit.Player.playerModel.moveRange);
         GameManager.Unit.Player.playerModel.health += GameManager.Unit.Vehicle.vehicleModel.health;
     }
     // 내리는 버튼
