@@ -72,7 +72,6 @@ public class PlayerKickState : PlayerActionState
             timer += dt;
             if (timer > 0.1f)
             {
-                GameManager.Map.pathfinding.ResetMapData();
                 ChangeState<PlayerTurnEndState>();
             }
         }

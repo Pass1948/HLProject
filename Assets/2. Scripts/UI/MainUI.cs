@@ -37,12 +37,6 @@ public class MainUI : BaseUI
     [SerializeField] Button getOffBtn;
     [SerializeField] Button settingBtn; 
 
-    // 테스트
-    [SerializeField] Button test;
-
-    
-    
-
     private void Awake()
     {
         turnBtn.onClick.AddListener(OnTurnEnd);
@@ -57,8 +51,6 @@ public class MainUI : BaseUI
         bikeControllBtn.onClick.AddListener(BikeToggle);
         atifactBtn.onClick.AddListener(AtifactToggle);
 
-        // 테스트
-        test.onClick.AddListener(BikeTest);
 
         settingBtn.onClick.AddListener(GameResultUITest);
 
@@ -147,7 +139,6 @@ public class MainUI : BaseUI
                     mountBtn.gameObject.SetActive(true);
                     getOffBtn.gameObject.SetActive(false);
                 }
-
                 else
                 {
                     rerollBtn.gameObject.SetActive(false);
@@ -189,6 +180,7 @@ public class MainUI : BaseUI
     private void RepairButton()
     {
         GameManager.Unit.Vehicle.vehicleHandler.RepairVehicle();
+        GameManager.TurnBased.ChangeTo<PlayerTurnEndState>("Force");
     }
     private void BikeToggle()
     {

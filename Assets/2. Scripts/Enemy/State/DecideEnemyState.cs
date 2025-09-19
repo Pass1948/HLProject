@@ -59,13 +59,57 @@ public class DecideEnemyState : BaseEnemyState
         GameManager.Map.ClearPlayerRange();
 
         int distance = GetDistanceTarget(controller.GridPos, controller.TargetPos);
+
         if (distance >= controller.minAttackRange && distance <= controller.maxAttackRange)
         {
             stateMachine.ChangeState(stateMachine.AttackState);
+        }
+        else if (distance < controller.minAttackRange)
+        {
+            Vector3Int? retreat = SetRetreatPosition(controller.GridPos, controller.TargetPos, controller.moveRange);
+
+            if (retreat.HasValue)
+            {
+                controller.TargetPos = retreat.Value;
+                stateMachine.ChangeState(stateMachine.MoveState);
+            }
         }
         else
         {
             stateMachine.ChangeState(stateMachine.MoveState);
         }
+    }
+
+    private Vector3Int? SetRetreatPosition(Vector3Int enemyPos, Vector3Int playerPos, int moveRange)
+    {
+        Vector3Int? bestCell = null;
+        int bestDist = GetDistanceTarget(enemyPos, playerPos);
+
+        for (int dx = -moveRange; dx <= moveRange; dx++)
+        {
+            for (int dy = -moveRange; dy <= moveRange; dy++)
+            {
+                Vector3Int candidate = new Vector3Int(enemyPos.x + dx, enemyPos.y + dy, 0);
+
+                // 맵 안이고 이동 가능해야 함
+                if (!GameManager.Map.IsMovable(candidate))
+                    continue;
+
+                // 플레이어와의 거리
+                int dist = GetDistanceTarget(candidate, playerPos);
+
+                if (dist > bestDist) // 더 멀리 갈 수 있는 칸
+                {
+                    List<Vector3Int> path = GameManager.Map.FindPath(enemyPos, candidate);
+                    if (path != null && path.Count <= moveRange)
+                    {
+                        bestDist = dist;
+                        bestCell = candidate;
+                    }
+                }
+            }
+        }
+
+        return bestCell;
     }
 }

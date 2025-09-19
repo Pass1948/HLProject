@@ -32,7 +32,6 @@ public class Pathfinding
     public void ResetMapData()
     {
         blocked.Clear();
-
         int mapWidth = GameManager.Map.mapWidth;
         int mapHeight = GameManager.Map.mapHeight;
         int[,] mapData = GameManager.Map.mapData;

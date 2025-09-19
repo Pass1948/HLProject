@@ -1,6 +1,6 @@
 Type,ID,Name,SIze,Attack,MinAttackRange,MaxAttackRange,MoveRange,Health,Attribute,MaxNum,MinNum,Mulligan,Reload,MaxBullet,Additinal
 Player,1001,성기사,1,1,1,1,1,10,,,0,2,3,,
-Vehicle,1501,바이크,1,0,0,0,0,3,,0,0,0,0,16,2
+Vehicle,1501,바이크,1,0,0,0,2,3,,0,0,0,0,16,2
 Enemy,2001,병사1,1,2,1,1,2,1,High,12,4,0,0,0,0
 Enemy,2002,병사2,1,2,1,1,2,1,Low,6,1,0,0,0,0
 Enemy,2003,병사3,1,2,1,2,1,1,High,12,4,0,0,0,0
