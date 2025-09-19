@@ -28,10 +28,11 @@ public class MapManager : MonoBehaviour
     private TileBase wallTile;
     private TileBase moveInfoTile;
     private TileBase redAttackTile;
-    private GameObject pointer; 
 
-    public GameObject grid;
+    public Grid grid;
     
+    public List<GameObject> CurrentEnemyTargets { get; private set; } = new List<GameObject>();
+    public List<Vector3Int> CurrentObstacleCoords { get; private set; } = new List<Vector3Int>();
     
     void Awake()
     {
@@ -71,7 +72,7 @@ public class MapManager : MonoBehaviour
     public void CreateMap()
     {
         Camera mainCamera = Camera.main;
-        grid = GameManager.Resource.Create<GameObject>(Path.Map + "Grid");
+        grid = GameManager.Resource.Create<Grid>(Path.Map + "Grid");
 
         var temp = GameManager.Resource.Create<GameObject>(Path.Map + "Tilemap");
         tilemap = temp.GetComponent<Tilemap>();
@@ -86,8 +87,6 @@ public class MapManager : MonoBehaviour
         
         mapData = new int[mapWidth, mapHeight];
         mapCreator.GenerateMap(mapData, tilemap, groundTile, wallTile);
-        
-        pointer = GameManager.Resource.Load<GameObject>(Path.Mouse + "Pointer");
         
         attackRange.Initialize(attackRangeTilemap, redAttackTile, mainCamera, grid);
 
@@ -139,6 +138,94 @@ public class MapManager : MonoBehaviour
         }
     }
 
+    public void UpdateAttackTargets(List<Vector3Int> attackCells, List<BaseEnemy> enemies)
+    {
+        CurrentEnemyTargets.Clear();
+        CurrentObstacleCoords.Clear();
+        
+        foreach (var cell in attackCells)
+        {
+            if (cell.x >= 0 && cell.x < mapData.GetLength(0) && cell.y >= 0 && cell.y < mapData.GetLength(1))
+            {
+                int tileID = mapData[cell.x, cell.y];
+
+                if (tileID == TileID.Enemy)
+                {
+                    Debug.Log("Enemy 블록 진입!");
+
+                    // ★★★ 이 부분을 아래와 같이 수정합니다. ★★★
+                    if (enemies == null)
+                    {
+                        Debug.LogError("오류: MapManager의 enemies 매개변수가 null입니다!");
+                    }
+                    else
+                    {
+                        Debug.Log($"enemies 리스트의 현재 몬스터 수: {enemies.Count}");
+
+                        foreach (var enemy in enemies)
+                        {
+                            Vector3Int enemyCellPos = GetCellFromWorldPos(enemy.transform.position);
+                            Debug.Log($"비교 중 - 몬스터 '{enemy.name}'의 좌표: {enemyCellPos}, 공격 범위 좌표: {cell}");
+
+                            if (enemyCellPos == cell)
+                            {
+                                CurrentEnemyTargets.Add(enemy.gameObject);
+                                break;
+                            }
+                        }
+                    }
+                }
+                else if (tileID == TileID.Obstacle)
+                {
+                    // ★★★ 이 로그를 추가합니다. ★★★
+                    Debug.Log("Obstacle 블록 진입!");
+                    CurrentObstacleCoords.Add(cell);
+                }
+            }
+        }
+        ///////////
+        if (CurrentEnemyTargets.Count > 0)
+        {
+            string enemyNames = "";
+            foreach (var enemy in CurrentEnemyTargets)
+            {
+                if (enemy != null)
+                {
+                    enemyNames += enemy.name + ", ";
+                }
+            }
+            Debug.Log($"공격 범위에 {CurrentEnemyTargets.Count}마리의 몬스터가 있습니다: {enemyNames}");
+        }
+
+        if (CurrentObstacleCoords.Count > 0)
+        {
+            string obstacleCoords = "";
+            foreach (var coord in CurrentObstacleCoords)
+            {
+                obstacleCoords += coord.ToString() + ", ";
+            }
+            Debug.Log($"공격 범위에 {CurrentObstacleCoords.Count}개의 장애물이 있습니다: {obstacleCoords}");
+        }
+        ///////
+    }
+    public Vector3Int GetCellFromWorldPos(Vector3 worldPosition)
+    {
+        if (grid == null)
+        {
+            Debug.LogError("Grid component is not assigned in MapManager!");
+            return Vector3Int.zero;
+        }
+        
+        return grid.WorldToCell(worldPosition);
+    }
+    
+    public void ClearAttackTargets()
+    {
+        CurrentEnemyTargets.Clear();
+        CurrentObstacleCoords.Clear();
+    }
+    
+    
     // 임시로 선언한 함수들
 
     public List<Vector3Int> FindPath(Vector3Int start, Vector3Int dest)
