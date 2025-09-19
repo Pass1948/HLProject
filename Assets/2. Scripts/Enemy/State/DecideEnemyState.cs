@@ -10,20 +10,16 @@ public class DecideEnemyState : BaseEnemyState
     public override void Enter()
     {
         DecidePreviewPath();
-
-
     }
 
     
 
     public override void Excute()
     {
-        Debug.Log("Decide : Excute");
     }
 
     public override void Exit()
     {
-        Debug.Log("Decide : Exit");
     }
 
     // 타겟(플레이어)와의 거리 계산

@@ -22,7 +22,6 @@ public class AttackRangeDisplay : MonoBehaviour
     
     public List<BaseEnemy> enemies = new List<BaseEnemy>();
 
-
     void Update()
     {
         if (!isInitialized || currentRank == 0)
@@ -31,7 +30,6 @@ public class AttackRangeDisplay : MonoBehaviour
             GameManager.Map.ClearAttackTargets();
             return;
         }
-
         Vector3Int direction = GetDirectionFromMouse();
         List<Vector3Int> newRange = new List<Vector3Int>();
 
@@ -52,7 +50,6 @@ public class AttackRangeDisplay : MonoBehaviour
         }
 
         ShowRange(newRange);
-        
         // 범위를 MapManager로 보내 타겟 목록을 갱신
         GameManager.Map.UpdateAttackTargets(newRange, enemies);
     }
@@ -127,7 +124,6 @@ public class AttackRangeDisplay : MonoBehaviour
         {
             return Vector3Int.zero;
         }
-
         Vector3Int playerCellPos = GetPlayerCellPosition();
         Vector2 playerWorldPos = grid.GetComponent<Grid>().CellToWorld(playerCellPos);
         Vector2 playerScreenPos = mainCamera.WorldToScreenPoint(playerWorldPos);

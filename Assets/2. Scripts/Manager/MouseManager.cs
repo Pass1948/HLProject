@@ -53,6 +53,10 @@ public class MouseManager : MonoBehaviour
     private int selectedMoveRange;
     bool isPlayer = false;
 
+    //==== 공격 상태 =====
+    private bool isAttacking = false;
+    public bool IsAttacking { get { return isAttacking; } set { isAttacking = value; } }
+
     // ===== 내부 캐시 =====
     private Vector3Int lastCell = new Vector3Int(int.MinValue, int.MinValue, 0);
     private Vector3Int lastValidCell;
@@ -152,19 +156,31 @@ public class MouseManager : MonoBehaviour
             OnClickPlayer(cell);
             return;
         }
-        if (map.IsEnemy(cell))
+        if (map.IsEnemy(cell) && isAttacking == false)
         {
             isPlayer = false;
             GameManager.UI.CloseUI<MainUI>();
             OnClickEnemy(cell);
             return;
         }
-        if (map.IsMovable(cell)) // Terrain
+        else if (map.IsEnemy(cell) && isAttacking == true)
+        {
+            GameManager.TurnBased.SetSelectedAction(PlayerActionType.Attack);
+            isAttacking = false;
+        }
+
+        if (map.IsMovable(cell)&& isAttacking==false) // Terrain
         {
             OnClickTerrain(cell);
             GameManager.UI.CloseUI<MainUI>();
             return;
         }
+        else if(map.IsMovable(cell) && isAttacking==true)
+        {
+            GameManager.TurnBased.SetSelectedAction(PlayerActionType.Attack);
+            isAttacking = false;
+        }
+
         isPlayer = false;
         // 그 외(Obstacle 등)
         CancelSelection();
@@ -175,75 +191,82 @@ public class MouseManager : MonoBehaviour
     // Player 셀 클릭 => 선택 + 이동범위 표시
     private void OnClickPlayer(Vector3Int cell)
     {
+        GameManager.UI.CloseUI<EnemyInfoPopUpUI>();
         GameManager.UI.OpenUI<MainUI>();
-        if (isMoving) return; 
+        if (isMoving) return;
         // 셀에서 실제 플레이어 컴포넌트 탐색(보강)
-        selectedPlayer = useOverlapLookup ? FindAtCell<BasePlayer>(cell) : null; selectedPlayerCell = cell; 
+        selectedPlayer = useOverlapLookup ? FindAtCell<BasePlayer>(cell) : null; selectedPlayerCell = cell;
         // 이동 범위 설정(플레이어 모델이 있으면 거기서, 없으면 MapManager의 기본값 사용)
         selectedMoveRange = GameManager.Unit.Player.playerModel.moveRange; // UI/범위 표시
-        map.PlayerUpdateRange(cell, selectedMoveRange); 
-        GameManager.UI.CloseUI<EnemyInfoPopUpUI>(); 
+
+        if (isAttacking == false)// 공격모드 일 경우 이동범위 표시 안함
+        {
+            map.ClearPlayerRange();
+            map.PlayerUpdateRange(cell, selectedMoveRange);
+        }
     }
 
     // Enemy 셀 클릭 => 정보 UI
     private void OnClickEnemy(Vector3Int cell)
     {
+        map.ClearPlayerRange();
+        if (isMoving) return;
+        var enemy = useOverlapLookup ? FindAtCell<BaseEnemy>(cell) : null;
+        // 공격범위 셀 id를 적과 비교해서 일치하면 공격
+        if (enemy != null)
         {
-            if (isMoving) return;
-            var enemy = useOverlapLookup ? FindAtCell<BaseEnemy>(cell) : null;
-            // 공격범위 셀 id를 적과 비교해서 일치하면 공격
-            if (enemy != null)
-            {
-                GameManager.UI.GetUI<EnemyInfoPopUpUI>().SetData(enemy.enemyModel.unitName, enemy.enemyModel.attri, enemy.enemyModel.rank);
-                GameManager.UI.OpenUI<EnemyInfoPopUpUI>();
-            }
-            else
-            { //인스턴스가 없으면 취소(선택 해제)
-                CancelSelection();
-
-            }
+            GameManager.UI.GetUI<EnemyInfoPopUpUI>().SetData(enemy.enemyModel.unitName, enemy.enemyModel.attri, enemy.enemyModel.rank);
+            GameManager.UI.OpenUI<EnemyInfoPopUpUI>();
         }
+        else
+        { //인스턴스가 없으면 취소(선택 해제)
+            CancelSelection();
+        }
+
     }
-            
+
 
     // Terrain 셀 클릭 → 선택된 플레이어가 있으면 이동 시도
     private void OnClickTerrain(Vector3Int destCell)
     {
-        if(isPlayer == true)
-        {
-            // 0) 이동 페이즈가 아니면 무시 (PlayerMove 단계에서만 허용)
-            if (movePhaseActive == false) return;
 
-            //  현재 이동 중이면 무시
-           // if (isMoving) return;
-
-            //  플레이어가 선택되어 있어야 함
-            if (selectedPlayer == null) return;
-
-            //  같은 칸이면 무시
-            if (destCell == selectedPlayerCell) return;
-
-            // 경로 계산
-            List<Vector3Int> path = map.FindPath(selectedPlayerCell, destCell);
-
-            // 경로/범위 검증
-            if (path == null || path.Count > selectedMoveRange)
+            GameManager.Map.attackRange.ClearRange();
+            if (isPlayer == true)
             {
-                CancelSelection();
-                return;
-            }
+                // 이동 페이즈가 아니면 무시 (PlayerMove 단계에서만 허용)
+                if (movePhaseActive == false) return;
 
-            // 이동 시작
-            StopAllCoroutines();
-            StartCoroutine(MoveAlongPath(selectedPlayer.transform, selectedPlayerCell, path, TileID.Player));
-            GameManager.TurnBased.SetSelectedAction(PlayerActionType.Move);
-            // 추가 입력 차단 + 선택/범위 UI 정리
-            movePhaseActive = false;
-            CancelSelection();
-        }
+                //  현재 이동 중이면 무시
+                //if (isMoving) return;
+
+                //  플레이어가 선택되어 있어야 함
+                if (selectedPlayer == null) return;
+
+                //  같은 칸이면 무시
+                if (destCell == selectedPlayerCell) return;
+
+                // 경로 계산
+                List<Vector3Int> path = map.FindPath(selectedPlayerCell, destCell);
+
+                // 경로/범위 검증
+                if (path == null || path.Count > selectedMoveRange)
+                {
+                    CancelSelection();
+                    return;
+                }
+
+                // 이동 시작
+                StopAllCoroutines();
+                StartCoroutine(MoveAlongPath(selectedPlayer.transform, selectedPlayerCell, path, TileID.Player));
+                GameManager.TurnBased.SetSelectedAction(PlayerActionType.Move);
+                // 추가 입력 차단 + 선택/범위 UI 정리
+                movePhaseActive = false;
+                CancelSelection();
+            }
+        
     }
 
-    // ===== 이동 실행(한 칸씩 보간 + 맵데이터 갱신 + 인덱스 갱신) =====
+    // ===== 이동 실행(한 칸씩 보간 + 맵데이터 갱신) =====
     private IEnumerator MoveAlongPath(Transform actor, Vector3Int currentCell, List<Vector3Int> path, int tileIdForActor)
     {
         isMoving = true;
@@ -275,7 +298,13 @@ public class MouseManager : MonoBehaviour
 
     }
 
-    // ===== 공용 유틸 =====
+
+
+
+
+    // =====================================================================
+    //공용 메서드
+    // =====================================================================
     public Vector3Int GetCurrentCell(bool preferValid = true)
         => preferValid ? (lastValidCell == default ? lastCell : lastValidCell) : lastCell;
 
@@ -320,17 +349,19 @@ public class MouseManager : MonoBehaviour
         GameManager.UI.CloseUI<EnemyInfoPopUpUI>();
     }
     // 셀 중심 주변에서 컴포넌트 탐색(보강). MapManager에 셀→유닛 매핑이 있으면 그걸 쓰는 게 최선.
-    private T FindAtCell<T>(Vector3Int cell) where T : Component 
-    { 
+    private T FindAtCell<T>(Vector3Int cell) where T : Component
+    {
         if (!useOverlapLookup) return null;
-        Vector3 center = tilemap.GetCellCenterWorld(cell); 
-        Vector3 size = new Vector3(tilemap.cellSize.x * overlapShrink, overlapHeight, tilemap.cellSize.y * overlapShrink); 
-        var cols = Physics.OverlapBox(center, size * 0.5f, Quaternion.identity, unitDetectMask, QueryTriggerInteraction.Collide); 
-        foreach (var c in cols) 
-        { 
-            var t = c.GetComponentInParent<T>(); if (t) return t; 
-        } return null; 
+        Vector3 center = tilemap.GetCellCenterWorld(cell);
+        Vector3 size = new Vector3(tilemap.cellSize.x * overlapShrink, overlapHeight, tilemap.cellSize.y * overlapShrink);
+        var cols = Physics.OverlapBox(center, size * 0.5f, Quaternion.identity, unitDetectMask, QueryTriggerInteraction.Collide);
+        foreach (var c in cols)
+        {
+            var t = c.GetComponentInParent<T>(); if (t) return t;
+        }
+        return null;
     }
+
     //================= Pathfinding의 잔재 더이상 쓸모 없을때 지우기 =================//
     public void ShowPath(Vector3Int[] path, Tilemap tilemap, int moveRange, GameObject mouse)
     {

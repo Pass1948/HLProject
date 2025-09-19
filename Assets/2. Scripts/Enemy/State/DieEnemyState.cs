@@ -10,7 +10,6 @@ public class DieEnemyState : BaseEnemyState
 
     public override void Enter()
     {
-        Debug.Log("Die : Enter");
 
         controller.isDie = true;
 
@@ -26,12 +25,10 @@ public class DieEnemyState : BaseEnemyState
 
     public override void Excute()
     {
-        Debug.Log("Die : Excute");
     }
 
     public override void Exit()
     {
-        Debug.Log("Die : Exit");
 
         controller.baseEnemy.gameObject.Destroy();
     }

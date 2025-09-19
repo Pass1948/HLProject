@@ -20,9 +20,8 @@ public class EnemyTurnState : BaseTurnState
         if (timer > turnSetVlaue.turnDelayTime)
         {
             GameManager.UI.CloseUI<PaseTurnUI>();
-            turnManager.BeginEnemyPhase();
+            turnManager.BeginEnemyPhase();      // 적 턴 시작
             didClose = true;
-            //GameManager.Event.Publish(EventType.EnemyTurnStart);
         }
 
     }
