@@ -66,8 +66,7 @@ public class ToggleBtnController : MonoBehaviour
         if (GameManager.Mouse.IsKicking)
         {
             Debug.Log("발차기 그만두기");
-            //현재 켜져 있으면 끈다
-            //여기에 범위 끄는거 넣으면 되는데 뭔지 모르게슴;;;
+            GameManager.Map.attackRange.ClearAttackType();
             GameManager.Mouse.IsKicking = false;
         }
         else
