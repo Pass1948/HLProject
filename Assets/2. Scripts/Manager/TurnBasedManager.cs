@@ -137,7 +137,6 @@ public class TurnBasedManager : MonoBehaviour
             enemy.controller.startTurn = false;
             monsterQueue.Enqueue(enemy);
         }
-        Debug.Log($"지금 몬스터숫자 {monsterQueue.Count}");
         TryStartNextEnemy();
     }
 

@@ -31,7 +31,9 @@ public class MapManager : MonoBehaviour
 
     public Grid grid;
     
-    public List<GameObject> CurrentEnemyTargets { get; private set; } = new List<GameObject>();
+
+    public List<BaseEnemy> CurrentEnemyTargets { get; private set; } = new List<BaseEnemy>();
+
     public List<Vector3Int> CurrentObstacleCoords { get; private set; } = new List<Vector3Int>();
     
     void Awake()
@@ -151,9 +153,11 @@ public class MapManager : MonoBehaviour
 
                 if (tileID == TileID.Enemy)
                 {
+
                     if (enemies == null)
                     {
                         Debug.LogError("MapManager의 enemies가 null");
+
                     }
                     else
                     {
@@ -166,6 +170,7 @@ public class MapManager : MonoBehaviour
                             if (enemyCellPos == cell)
                             {
                                 CurrentEnemyTargets.Add(enemy.gameObject);
+
                                 break;
                             }
                         }
@@ -173,11 +178,11 @@ public class MapManager : MonoBehaviour
                 }
                 else if (tileID == TileID.Obstacle)
                 {
-                    //
                     CurrentObstacleCoords.Add(cell);
                 }
             }
         }
+
     }
     public Vector3Int GetCellFromWorldPos(Vector3 worldPosition)
     {

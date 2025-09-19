@@ -21,7 +21,7 @@ public class AttackRangeDisplay : MonoBehaviour
     private int currentRank = 0;
     
     private bool isKickAttack = false;
-    
+
     public List<BaseEnemy> enemies = new List<BaseEnemy>();
 
     void Update()
@@ -59,10 +59,12 @@ public class AttackRangeDisplay : MonoBehaviour
             }
         }
         
+
         ShowRange(newRange);
         // 범위를 MapManager로 보내 타겟 목록을 갱신
         GameManager.Map.UpdateAttackTargets(newRange, enemies);
     }
+
 
     public void SetAttackRange(Suit suit, int rank) // 기본공격 <- 이걸 버튼에 연결
     {
@@ -218,7 +220,8 @@ public class AttackRangeDisplay : MonoBehaviour
         int effectiveRange = 2 + range_plus;
         for (int i = 1; i <= effectiveRange; i++)
         {
-            range.Add(playerPos + diagonalDirection * i);
+            range.Add(playerPos + leftDirection * i);
+            range.Add(playerPos + rightDirection * i);
         }
         return range;
     }
