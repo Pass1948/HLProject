@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using VHierarchy.Libs;
 
 public class DieEnemyState : BaseEnemyState
 {
@@ -13,9 +12,9 @@ public class DieEnemyState : BaseEnemyState
         if (controller.isDie)
         {
             animHandler.OnDie();
-            // ¾Ö´Ï¸ÞÀÌ¼Ç Àç»ý
+            // ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ ï¿½ï¿½ï¿½
 
-            // ÈÄ ÆÄ±«
+            // ï¿½ï¿½ ï¿½Ä±ï¿½
             Exit();
         }
     }
