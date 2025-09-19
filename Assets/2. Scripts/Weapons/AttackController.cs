@@ -152,7 +152,6 @@ public class AttackController : MonoBehaviour
         selectedAmmoBtn = null;
         selectBulletBg = null;
         bullet = null;
-
         Debug.Log("Fire");
     }
 

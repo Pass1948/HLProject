@@ -165,8 +165,10 @@ public class MouseManager : MonoBehaviour
         }
         else if (map.IsEnemy(cell) && isAttacking == true)
         {
+            GameManager.Event.Publish(EventType.PlayerAttack);
             GameManager.TurnBased.SetSelectedAction(PlayerActionType.Attack);
             isAttacking = false;
+
         }
 
         if (map.IsMovable(cell)&& isAttacking==false) // Terrain
@@ -177,8 +179,10 @@ public class MouseManager : MonoBehaviour
         }
         else if(map.IsMovable(cell) && isAttacking==true)
         {
+            GameManager.Event.Publish(EventType.PlayerAttack);
             GameManager.TurnBased.SetSelectedAction(PlayerActionType.Attack);
             isAttacking = false;
+
         }
 
         isPlayer = false;
