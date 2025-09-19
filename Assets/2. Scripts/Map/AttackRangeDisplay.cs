@@ -166,15 +166,11 @@ public class AttackRangeDisplay : MonoBehaviour
             return Vector3Int.zero;
         }
         
-        Vector2 normalizedDirection = new Vector2(directionVector.x, directionVector.y).normalized;
-
-        // 정방향
         if (relativePos.x == 0 && relativePos.y > 0) return Vector3Int.up;
         if (relativePos.x > 0 && relativePos.y == 0) return Vector3Int.right;
         if (relativePos.x == 0 && relativePos.y < 0) return Vector3Int.down;
         if (relativePos.x < 0 && relativePos.y == 0) return Vector3Int.left;
-
-        // 사분면을
+        
         if (relativePos.x > 0 && relativePos.y > 0) // 오른쪽 상단
         {
             return Vector3Int.up;
@@ -189,9 +185,8 @@ public class AttackRangeDisplay : MonoBehaviour
         }
         else // 왼쪽 상단
         {
-            return Vector3Int.left
+            return Vector3Int.left;
         }
-        return bestDirection;
     }
 
     private List<Vector3Int> GetDiamondRange(Vector3Int direction)
