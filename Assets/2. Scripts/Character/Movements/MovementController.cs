@@ -19,9 +19,9 @@ public class MovementController : MonoBehaviour
 
     public Vector3Int _cellPosition; // 플레이어 현재 위치
     public bool _isMoving = false;  // 움직임 감지
-    public bool isPlayer = false;
-    public GameObject mouse;
-    private Pathfinding _pathfinding;
+    public bool isPlayer = false;   // 현재 객체가 플레이어인지
+    public GameObject mouse;        // 커서 비주얼 프리팹
+    private Pathfinding _pathfinding;// A* 알고리즘 인스턴스
 
     private BasePlayer basePlayer;
     Vector3Int[] dirs;
@@ -52,7 +52,6 @@ public class MovementController : MonoBehaviour
     private void Update()
     {
         GetCellPosition();
-        //TODO: 마우스가 움직일 때마다 경로 미리보기(장보석,이영신)
 
         //if (isPlayer == true)
         //{
@@ -261,7 +260,6 @@ public class MovementController : MonoBehaviour
         _cellPosition = targetCell;
 
         GameManager.Map.UpdateObjectPosition((int)start.x, (int)start.y, (int)_cellPosition.x, (int)_cellPosition.y, TileID.Player);
-        Debug.Log($"이건 못참지 {GameManager.Map.GetPlayerPosition()}");
 
         _isMoving = false;
     }

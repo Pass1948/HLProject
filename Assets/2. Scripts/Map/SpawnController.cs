@@ -25,7 +25,7 @@ public class SpawnController : MonoBehaviour
     {
         SpawnPlayer();
         SpawnObstacles(10);
-        SpawnEnemys(1); //TODO: Test 용으로 1마리만 스폰(테스트후 변경요망)
+        SpawnEnemys(5); 
     }
     
     private void SpawnPlayer()

@@ -175,6 +175,12 @@ public class MouseManager : MonoBehaviour
         {
             GameManager.Event.Publish(EventType.PlayerAttack);
             isAttacking = false;
+
+        }
+        else if (map.IsEnemy(cell) && map.IsMovable(cell) && isAttacking == true)
+        {
+            GameManager.TurnBased.ChangeTo<PlayerKickState>();
+            IsKicking = false;
         }
         else if (map.IsEnemy(cell) && isKicking == true)
         {
@@ -205,7 +211,6 @@ public class MouseManager : MonoBehaviour
             IsKicking = false;
         }
 
-
         isPlayer = false;
         // 그 외(Obstacle 등)
         CancelSelection();
@@ -234,6 +239,11 @@ public class MouseManager : MonoBehaviour
     // Enemy 셀 클릭 => 정보 UI
     private void OnClickEnemy(Vector3Int cell)
     {
+        if(isKicking == true)
+        {
+            GameManager.TurnBased.ChangeTo<PlayerKickState>();
+            IsKicking = false;
+        }
         map.ClearPlayerRange();
         if (isMoving) return;
         var enemy = useOverlapLookup ? FindAtCell<BaseEnemy>(cell) : null;
@@ -252,6 +262,7 @@ public class MouseManager : MonoBehaviour
     // Terrain 셀 클릭 → 선택된 플레이어가 있으면 이동 시도
     private void OnClickTerrain(Vector3Int destCell)
     {
+        GameManager.UI.CloseUI<EnemyInfoPopUpUI>();
         if (isPlayer == true)
         {
             // 이동 페이즈가 아니면 무시 (PlayerMove 단계에서만 허용)
@@ -366,7 +377,7 @@ public class MouseManager : MonoBehaviour
         map.ClearPlayerRange();
         GameManager.UI.CloseUI<EnemyInfoPopUpUI>();
     }
-    // 셀 중심 주변에서 컴포넌트 탐색(보강). MapManager에 셀→유닛 매핑이 있으면 그걸 쓰는 게 최선.
+    // 셀 중심 주변에서 컴포넌트 탐색
     private T FindAtCell<T>(Vector3Int cell) where T : Component
     {
         if (!useOverlapLookup) return null;
