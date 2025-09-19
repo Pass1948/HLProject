@@ -80,9 +80,6 @@ public class MouseManager : MonoBehaviour
         map = GameManager.Map;
         tilemap = map.tilemap;
         cam = Camera.main;
-        // 포인터를 살짝 띄워 Z-fighting 방지(오브젝트가 겹치는 현상)
-        var p = pointer.position; p.y = groundY + 0.01f;
-        pointer.position = p;
     }
 
     public void MovingMouse()   // MouseFollower클래스에 LateUpdate()안에서 호출
@@ -126,7 +123,7 @@ public class MouseManager : MonoBehaviour
             if (clampToBounds) { cell = ClampCell(cell); inside = true; }
         }
 
-        // Terrain만 허용(옵션)
+        // Terrain만 허용
         bool allowed = true;
         if (restrictPointerToMovable && inside)
             allowed = map.IsMovable(cell);
@@ -148,73 +145,146 @@ public class MouseManager : MonoBehaviour
     // =====================================================================
     // 클릭 처리 (TileID 기반)
     // =====================================================================
+    /*   private void HandleLeftClick()
+       {
+           if (blockWhenUI && EventSystem.current && EventSystem.current.IsPointerOverGameObject())
+               return;
+
+           var cell = GetCurrentCell();
+           if (!IsInside(cell)) return;
+
+           // =============Player=============
+           if (map.IsPlayer(cell))
+           {
+               isPlayer = true;
+               OnClickPlayer(cell);
+               return;
+           }
+
+           // =============Enemy=============
+           if (map.IsEnemy(cell))
+           {
+               isPlayer = false;
+               OnClickEnemy(cell);
+               return;
+           }
+           else if (map.IsEnemy(cell) && isAttacking == true)
+           {
+               GameManager.Event.Publish(EventType.PlayerAttack);
+               isAttacking = false;
+
+           }
+           else if (map.IsEnemy(cell) && map.IsMovable(cell) && isAttacking == true)
+           {
+               GameManager.TurnBased.ChangeTo<PlayerKickState>();
+               IsKicking = false;
+           }
+           else if (map.IsEnemy(cell) && isKicking == true)
+           {
+               GameManager.TurnBased.ChangeTo<PlayerKickState>();
+               IsKicking = false;
+           }
+           else if (map.IsEnemy(cell) && map.IsMovable(cell) &&  isKicking == true)
+           {
+               GameManager.TurnBased.ChangeTo<PlayerKickState>();
+               IsKicking = false;
+           }
+
+
+           // =============Terrain=============
+           if (map.IsMovable(cell) && isAttacking == false && isKicking == false)
+          {
+              OnClickTerrain(cell);
+              return;
+          }
+          else if (map.IsMovable(cell) && isAttacking == true)
+          {
+              GameManager.Event.Publish(EventType.PlayerAttack);
+              isAttacking = false;
+          }
+           else if (map.IsMovable(cell) && isKicking == true)      // 범위 각도 고처지면 변경해야함
+           {
+               GameManager.TurnBased.ChangeTo<PlayerKickState>();
+               IsKicking = false;
+           }
+
+           isPlayer = false;
+           // 그 외(Obstacle 등)
+           CancelSelection();
+       }*/
+
     private void HandleLeftClick()
     {
+        // 0) 공통 가드
         if (blockWhenUI && EventSystem.current && EventSystem.current.IsPointerOverGameObject())
             return;
 
         var cell = GetCurrentCell();
-        if (!IsInside(cell)) return;
+        if (!IsInside(cell)) { CancelSelection(); return; }
 
-        // =============Player=============
-        if (map.IsPlayer(cell))
+        // 1) 셀 분류 결과를 1회만 계산 (중복 호출 제거)
+        bool cellIsPlayer = map.IsPlayer(cell);
+        bool cellIsEnemy = map.IsEnemy(cell);
+        bool cellIsTerrain = map.IsMovable(cell); // Terrain
+
+        // 2) 공격 모드 우선
+        if (isAttacking)
+        {
+            // 적이거나(타격), 지면(샷건 확정 같은 커밋 포인트)일 때 공격 실행
+            if (cellIsEnemy || cellIsTerrain)
+            {
+                GameManager.Event.Publish(EventType.PlayerAttack);
+                isAttacking = false;
+            }
+            else
+            {
+                CancelSelection();
+            }
+            return;
+        }
+
+        // 3) 킥 모드 우선
+        if (isKicking)
+        {
+            // 적이거나 지면(커밋 포인트)일 때 킥 상태로 전환
+            if (cellIsEnemy || cellIsTerrain)
+            {
+                GameManager.TurnBased.ChangeTo<PlayerKickState>();
+                isKicking = false;
+            }
+            else
+            {
+                CancelSelection();
+            }
+            return;
+        }
+
+        // 4) 일반 모드
+        if (cellIsPlayer)
         {
             isPlayer = true;
             OnClickPlayer(cell);
             return;
         }
 
-        // =============Enemy=============
-        if (map.IsEnemy(cell))
+        if (cellIsEnemy)
         {
             isPlayer = false;
             OnClickEnemy(cell);
             return;
         }
-        else if (map.IsEnemy(cell) && isAttacking == true)
-        {
-            GameManager.Event.Publish(EventType.PlayerAttack);
-            isAttacking = false;
 
-        }
-        else if (map.IsEnemy(cell) && map.IsMovable(cell) && isAttacking == true)
+        if (cellIsTerrain)
         {
-            GameManager.TurnBased.ChangeTo<PlayerKickState>();
-            IsKicking = false;
-        }
-        else if (map.IsEnemy(cell) && isKicking == true)
-        {
-            GameManager.TurnBased.ChangeTo<PlayerKickState>();
-            IsKicking = false;
-        }
-        else if (map.IsEnemy(cell) && map.IsMovable(cell) &&  isKicking == true)
-        {
-            GameManager.TurnBased.ChangeTo<PlayerKickState>();
-            IsKicking = false;
+            OnClickTerrain(cell);
+            return;
         }
 
-
-        // =============Terrain=============
-        if (map.IsMovable(cell) && isAttacking == false && isKicking == false)
-       {
-           OnClickTerrain(cell);
-           return;
-       }
-       else if (map.IsMovable(cell) && isAttacking == true)
-       {
-           GameManager.Event.Publish(EventType.PlayerAttack);
-           isAttacking = false;
-       }
-        else if (map.IsMovable(cell) && isKicking == true)      // 범위 각도 고처지면 변경해야함
-        {
-            GameManager.TurnBased.ChangeTo<PlayerKickState>();
-            IsKicking = false;
-        }
-
+        // 5) 기타(Obstacle 등)
         isPlayer = false;
-        // 그 외(Obstacle 등)
         CancelSelection();
     }
+
 
     // ===== 클릭 동작별 핸들러 =====
 
@@ -319,7 +389,7 @@ public class MouseManager : MonoBehaviour
             actor.position = end;
 
             // 맵데이터 갱신(셀 기준)
-            map.UpdateObjectPosition(currentCell.x, currentCell.y, nextCell.x, nextCell.y, tileIdForActor);
+            map.UpdateObjectPosition(currentCell, currentCell, nextCell, nextCell, tileIdForActor);
 
             // 내부 상태 갱신
             currentCell = nextCell;
