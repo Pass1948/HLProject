@@ -35,6 +35,7 @@ public class PlayerMoveInfo : MonoBehaviour
                         new Vector3Int(1, 0, 0),
                         new Vector3Int(-1, 0, 0),
                         new Vector3Int(0, 1, 0),
+                        new Vector3Int(0, -1, 0),
                      };
 
                     foreach (var dir in dirs)
@@ -62,6 +63,5 @@ public class PlayerMoveInfo : MonoBehaviour
     public void RemoveMoveInfoRange(Tilemap overlayTilemap)
     {
         overlayTilemap.ClearAllTiles();
-        Debug.Log("아 제발");
     }
 }

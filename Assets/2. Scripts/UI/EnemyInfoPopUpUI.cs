@@ -34,12 +34,10 @@ public class EnemyInfoPopUpUI : BaseUI
         string attri = null;
         if(attribute == EnemyAttribute.High)
         {
-            Debug.Log($"지금 몬스터 상태는{attribute}");
             attri = "High";
         }
         else if(attribute == EnemyAttribute.Low)
         {
-            Debug.Log($"지금 몬스터 상태는{attribute}");
             attri = "Low";
         }
         attributeText.text = attri;

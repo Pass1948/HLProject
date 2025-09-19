@@ -82,7 +82,6 @@ public class PlayerAttackState : PlayerActionState
             timer += dt;
             if (timer > 1f) 
             {
-                GameManager.Map.pathfinding.ResetMapData();
                 if (turnManager.EnemyDieCheck())
                 {
                     ChangeState<WinState>();

@@ -12,7 +12,6 @@ public class PlayerChooseState : BaseTurnState
     {
         timer = turnSetVlaue.resetTime;
         didClose = false;
-        GameManager.UI.OpenUI<PaseTurnUI>();
         GameManager.Mouse.IsAttacking=true;
         Debug.Log($"초이스 선택");
     }
@@ -23,7 +22,6 @@ public class PlayerChooseState : BaseTurnState
         timer += dt;
         if (timer > turnSetVlaue.turnDelayTime)
         {
-            GameManager.UI.CloseUI<PaseTurnUI>();
             GameManager.UI.OpenUI<MainUI>();
             didClose = true;// 한 번만 처리하게 설정
         }
