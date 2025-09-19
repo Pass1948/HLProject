@@ -17,28 +17,35 @@ public class MapManager : MonoBehaviour
     public MapCreator mapCreator;
     public PlayerMoveInfo playerMoveInfo;
     private SpawnController spawnController;
-
+    public AttackRangeDisplay attackRange;
+    
     public Pathfinding pathfinding;
     public Tilemap tilemap;
     public Tilemap moveInfoTilemap;
+    public Tilemap attackRangeTilemap;
 
     private TileBase groundTile;
     private TileBase wallTile;
     private TileBase moveInfoTile;
+    private TileBase redAttackTile;
+    private GameObject pointer; 
 
-    GameObject grid;
-
+    public GameObject grid;
+    
+    
     void Awake()
     {
         mapCreator = gameObject.AddComponent<MapCreator>();
         spawnController = gameObject.AddComponent<SpawnController>();
         playerMoveInfo = gameObject.AddComponent< PlayerMoveInfo >();
+        attackRange = gameObject.AddComponent<AttackRangeDisplay>();
         
         spawnController.InitializeSpawnersAndPools();
         
         groundTile = GameManager.Resource.Load<TileBase>(Path.Map + "White");
         wallTile = GameManager.Resource.Load<TileBase>(Path.Map + "Black");
         moveInfoTile = GameManager.Resource.Load<TileBase>(Path.Map + "Green");
+        redAttackTile = GameManager.Resource.Load<TileBase>(Path.Map + "RedAttackTile");
 
     }
     void Start()
@@ -63,6 +70,7 @@ public class MapManager : MonoBehaviour
 
     public void CreateMap()
     {
+        Camera mainCamera = Camera.main;
         grid = GameManager.Resource.Create<GameObject>(Path.Map + "Grid");
 
         var temp = GameManager.Resource.Create<GameObject>(Path.Map + "Tilemap");
@@ -72,14 +80,22 @@ public class MapManager : MonoBehaviour
         var moveInfo = GameManager.Resource.Create<GameObject>(Path.Map + "MoveInfoTilemap");
         moveInfoTilemap = moveInfo.GetComponent<Tilemap>();
         moveInfoTilemap.transform.SetParent(grid.transform);
-    
+        
+        var attacktile = GameManager.Resource.Create<GameObject>(Path.Map + "AttackRangeTilemap");
+        attackRangeTilemap = attacktile.GetComponent<Tilemap>();
+        
         mapData = new int[mapWidth, mapHeight];
         mapCreator.GenerateMap(mapData, tilemap, groundTile, wallTile);
+        
+        pointer = GameManager.Resource.Load<GameObject>(Path.Mouse + "Pointer");
+        
+        attackRange.Initialize(attackRangeTilemap, redAttackTile, mainCamera, grid);
 
         pathfinding = new Pathfinding(tilemap);
 
         spawnController.SpawnAllObjects();
     }
+    
     public void CreateMovePoint()
     {
         var temp = GameManager.Resource.Create<GameObject>(Path.Map + "Tilemap");

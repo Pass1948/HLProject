@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class VehicleHandler : MonoBehaviour
 {
-    // TODO: ������ �ѹ��� �����ϰ� ��. ���߿� RepairVehicle() �Լ��� �Ű������� ������ �ް� �� ������(JBS)
-    [SerializeField] private int repairAmount = 3; // ������
+   
+    [SerializeField] private int repairAmount = 3; 
 
     private BasePlayer player;
     private BaseVehicle vehicle;
@@ -24,15 +24,6 @@ public class VehicleHandler : MonoBehaviour
     {
         GetEffectiveMoveRange();
     }
-    private void OnEnable()
-    {
-
-
-    }
-    private void OnDisable()
-    {
-
-    }
 
 
     // Debugging Dragon
@@ -41,24 +32,23 @@ public class VehicleHandler : MonoBehaviour
         DamageVehicle(3);
     }
 
-    // ž�� ���� �̸鼭 ü���� 0�� �ƴϸ� �̵��� ����
+
     public int GetEffectiveMoveRange()
     {
-        if (isMounted && vehicle.vehicleModel.health > 0)
+        if (isMounted && GameManager.Unit.Vehicle.vehicleModel.health > 0)
         {
-            Debug.Log("����ũ ž�»���");
             return GameManager.Unit.Player.playerModel.moveRange + GameManager.Unit.Vehicle.vehicleModel.additinalMove;
         }
         else
             return GameManager.Unit.Player.playerModel.moveRange;
     }
 
-    // ž�� ����, ü���� 0�� �ƴϸ� ��� ������ ���� 0 �Ǹ� �ı�
+
     public void DamageVehicle(int amount )
     {
         GameManager.Unit.Vehicle.vehicleModel.health -= amount;
 
-        if(vehicle.vehicleModel.health <= 0)
+        if(GameManager.Unit.Vehicle.vehicleModel.health <= 0)
         {
             GameManager.Unit.Vehicle.vehicleModel.condition = VehicleCondition.Destruction;
             GameManager.Unit.Player.playerModel.viecleBording.CompareTo(ViecleBording.off);
@@ -66,24 +56,21 @@ public class VehicleHandler : MonoBehaviour
         }
     }
 
-    // ž������ ����,���� ���,�����ϸ� ž�� ���·� ����
-    //TODO: ���࿡ ������ �� �� ���� ��� �� ��� ������ ���� ����.(�庸��)
     public void RepairVehicle()
     {
         GameManager.Unit.Vehicle.vehicleModel.health += repairAmount;
-        if(vehicle.vehicleModel.health > 0)
+        if(GameManager.Unit.Vehicle.vehicleModel.health > 0)
         {
             MountVehicle();
         }
     }
-    // ž�� ����
+    //탑승 버튼
     public void MountVehicle()
     {
         if(GameManager.Unit.Vehicle.vehicleModel.isDestruction)
         {
             return;
         }
-
         GameManager.Unit.Vehicle.vehicleModel.condition = VehicleCondition.Riding;
         GameManager.Unit.Player.playerModel.viecleBording = ViecleBording.On;
         transform.SetParent(player.transform);
@@ -91,13 +78,13 @@ public class VehicleHandler : MonoBehaviour
         GameManager.Unit.Player.playerModel.moveRange += GameManager.Unit.Vehicle.vehicleModel.moveRange;
         GameManager.Unit.Player.playerModel.health += GameManager.Unit.Vehicle.vehicleModel.health;
     }
-    // ž�� ����
+    // 내리는 버튼
     public void DismountVehicle()
     {
         GameManager.Unit.Vehicle.vehicleModel.condition = VehicleCondition.GetOff;
         GameManager.Unit.Player.playerModel.viecleBording = ViecleBording.off;
         GameManager.Unit.Vehicle.transform.SetParent(null);
-        if(vehicle.vehicleModel.health > 0)
+        if(GameManager.Unit.Vehicle.vehicleModel.health > 0)
         {
             GameManager.Unit.Player.playerModel.moveRange -= GameManager.Unit.Vehicle.vehicleModel.moveRange;
             GameManager.Unit.Player.playerModel.health -= GameManager.Unit.Vehicle.vehicleModel.health;

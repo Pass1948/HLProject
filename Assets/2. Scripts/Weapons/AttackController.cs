@@ -42,6 +42,9 @@ public class AttackController : MonoBehaviour
             selectedAmmoBtn = null;
             selectBulletBg = null;
             bullet = null;
+            
+            GameManager.Map.attackRange.ClearAttackType();
+            
             return;
         }
 
@@ -71,8 +74,22 @@ public class AttackController : MonoBehaviour
         selectedAmmoBtn = btn;
         bullet = slotRoot;
         selectBulletBg = bg;
+
         var selectAmmo = bullet.GetComponent<BulletView>();
         GameManager.TurnBased.turnSettingValue.fireAmmo = selectAmmo.ammo;
+        //
+        BulletView bulletView = bullet.GetComponent<BulletView>();
+
+        // bulletView가 유효한지 확인 후 SetAttackRange를 호출합니다.
+        if (bulletView != null)
+        {
+            // Ammo 데이터의 suit와 rank를 직접 가져와 함수에 전달합니다.
+            Suit suit = bulletView.ammo.suit;
+            int rank = bulletView.ammo.rank;
+    
+            GameManager.Map.attackRange.SetAttackRange(suit, rank);
+        }
+        //
 
         if (selectBulletBg)
         {

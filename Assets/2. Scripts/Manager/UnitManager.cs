@@ -26,7 +26,7 @@ public class UnitManager : MonoBehaviour
     {
         if (unit.unitType == UnitType.Player)
         {
-            unit.currentHealth -= damage;
+            Player.playerHandler.TakeDamage(damage);
         }
         else if (unit.unitType == UnitType.Enemy)
         {
@@ -35,20 +35,27 @@ public class UnitManager : MonoBehaviour
             switch (enemy.attri)
             {
                 case EnemyAttribute.High:
-                    if (enemy.rank < ammo.rank)
+                    if (enemy.rank == 13 && ammo.rank == 1)
+                    {
                         unit.currentHealth -= damage;
+                    }
+                    else if (enemy.rank < ammo.rank)
+                    {                        
+                        unit.currentHealth -= damage;
+                    }
                     break;
                 case EnemyAttribute.Low:
-                    if (enemy.rank > ammo.rank)
+                    if(enemy.rank == 1 && ammo.rank == 13)
+                    {
                         unit.currentHealth -= damage;
+                    }
+                    else if (enemy.rank > ammo.rank)
+                    {
+                        unit.currentHealth -= damage;
+                    }
                     break;
             }
         }
-        else if (unit.unitType == UnitType.Vehicle)
-        {
-
-        }
-
     }
 
 }
