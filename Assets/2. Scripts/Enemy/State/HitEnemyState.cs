@@ -8,7 +8,6 @@ public class HitEnemyState : BaseEnemyState
 
     public override void Enter()
     {
-        Debug.Log("Hit : Enter");
 
         animHandler.OnHit();
         // 데미지 적용시키기
@@ -16,11 +15,9 @@ public class HitEnemyState : BaseEnemyState
 
     public override void Excute()
     {
-        Debug.Log("Hit : Excute");
     }
 
     public override void Exit()
     {
-        Debug.Log("Hit : Exit");
     }
 }
