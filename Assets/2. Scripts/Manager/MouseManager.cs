@@ -15,6 +15,7 @@ public class MouseManager : MonoBehaviour
     [SerializeField] public Tilemap tilemap;     // 비우면 map.tilemap
     [SerializeField] public Camera cam;          // 비우면 Camera.main
     [SerializeField] public Transform pointer;   // 포인터(커서 비주얼). 비우면 생성
+    [SerializeField] public Vector3Int PointerCell => tilemap.WorldToCell(pointer.position);
 
     [Header("Pointer Resource (선택)")]
     [Tooltip("GameManager.Resource 경로를 쓰는 경우에만 사용. 비워도 됨.")]
@@ -215,22 +216,22 @@ public class MouseManager : MonoBehaviour
 
     private void HandleLeftClick()
     {
-        // 0) 공통 가드
+        //공통 가드
         if (blockWhenUI && EventSystem.current && EventSystem.current.IsPointerOverGameObject())
             return;
 
         var cell = GetCurrentCell();
         if (!IsInside(cell)) { CancelSelection(); return; }
 
-        // 1) 셀 분류 결과를 1회만 계산 (중복 호출 제거)
+        // 셀 분류 결과를 1회만 계산 (중복 호출 제거)
         bool cellIsPlayer = map.IsPlayer(cell);
         bool cellIsEnemy = map.IsEnemy(cell);
         bool cellIsTerrain = map.IsMovable(cell); // Terrain
 
-        // 2) 공격 모드 우선
+        // 공격 모드 우선
         if (isAttacking)
         {
-            // 적이거나(타격), 지면(샷건 확정 같은 커밋 포인트)일 때 공격 실행
+            // 적이거나, 지면일 때 공격 실행
             if (cellIsEnemy || cellIsTerrain)
             {
                 GameManager.Event.Publish(EventType.PlayerAttack);
@@ -243,10 +244,10 @@ public class MouseManager : MonoBehaviour
             return;
         }
 
-        // 3) 킥 모드 우선
+        // 킥 모드 우선
         if (isKicking)
         {
-            // 적이거나 지면(커밋 포인트)일 때 킥 상태로 전환
+            // 적이거나 지면일 때 킥 상태로 전환
             if (cellIsEnemy || cellIsTerrain)
             {
                 GameManager.TurnBased.ChangeTo<PlayerKickState>();
@@ -259,7 +260,7 @@ public class MouseManager : MonoBehaviour
             return;
         }
 
-        // 4) 일반 모드
+        // 일반 모드
         if (cellIsPlayer)
         {
             isPlayer = true;
@@ -280,7 +281,7 @@ public class MouseManager : MonoBehaviour
             return;
         }
 
-        // 5) 기타(Obstacle 등)
+        // 기타(Obstacle 등)
         isPlayer = false;
         CancelSelection();
     }
@@ -299,7 +300,7 @@ public class MouseManager : MonoBehaviour
         // 이동 범위 설정(플레이어 모델이 있으면 거기서, 없으면 MapManager의 기본값 사용)
         selectedMoveRange = GameManager.Unit.Player.playerModel.moveRange; // UI/범위 표시
 
-        if (isAttacking == false)// 공격모드 일 경우 이동범위 표시 안함
+        if (isAttacking == false )// 공격모드 일 경우 이동범위 표시 안함
         {
             map.ClearPlayerRange();
             map.PlayerUpdateRange(cell, selectedMoveRange);

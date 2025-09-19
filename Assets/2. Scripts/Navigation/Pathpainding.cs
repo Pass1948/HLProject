@@ -32,7 +32,6 @@ public class Pathfinding
     public void ResetMapData()
     {
         blocked.Clear();
-        Debug.Log($"블락 카운트{blocked.Count}");
         int mapWidth = GameManager.Map.mapWidth;
         int mapHeight = GameManager.Map.mapHeight;
         int[,] mapData = GameManager.Map.mapData;
@@ -50,7 +49,6 @@ public class Pathfinding
                 }
             }
         }
-        Debug.Log($"블락 카운트{blocked.Count}");
     }
 
     /// <summary>
