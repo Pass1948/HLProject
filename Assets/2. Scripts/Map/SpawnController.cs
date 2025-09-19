@@ -116,6 +116,9 @@ public class SpawnController : MonoBehaviour
                     baseEnemy.controller.UpdatePlayerPos();
 
                     GameManager.Map.SetObjectPosition(randX, randY, TileID.Enemy);
+                    
+                    FindObjectOfType<AttackRangeDisplay>().enemies.Add(baseEnemy);
+                    
                     break;
                 }
             }
