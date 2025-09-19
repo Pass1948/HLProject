@@ -416,13 +416,11 @@ public class MouseManager : MonoBehaviour
         playerRangeVisible = true;
         map.ClearPlayerRange();
         map.PlayerUpdateRange(cell, selectedMoveRange);
-        GameManager.UI.OpenUI<MainUI>();
     }
     private void HidePlayerRange()
     {
         playerRangeVisible = false;
         map.ClearPlayerRange();
-        GameManager.UI.CloseUI<MainUI>();
     }
 
     // ====== Enemy Popup 토글 유틸 ======

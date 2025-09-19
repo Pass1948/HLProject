@@ -45,8 +45,6 @@ public class SpawnController : MonoBehaviour
 
                 GameObject vehicleSpawn = GameManager.Resource.Create<GameObject>(Path.Player + "Vehicle");
 
-                
-                Debug.Log($"{GameManager.Unit.Vehicle}");
                 BaseVehicle baseVehicle = GameManager.Unit.Vehicle.GetComponent<BaseVehicle>();
 
                 basePlayer.playerModel.InitData(GameManager.Data.GetUnit(UnitType.Player, 1001));
