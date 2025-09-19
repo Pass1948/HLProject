@@ -18,7 +18,7 @@ public class MapManager : MonoBehaviour
     public PlayerMoveInfo playerMoveInfo;
     private SpawnController spawnController;
     public AttackRangeDisplay attackRange;
-    
+        
     public Pathfinding pathfinding;
     public Tilemap tilemap;
     public Tilemap moveInfoTilemap;
