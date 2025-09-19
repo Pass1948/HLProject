@@ -6,6 +6,7 @@ using UnityEngine.InputSystem.XR;
 
 public class EnemyController : MonoBehaviour
 {
+    public BaseEnemy baseEnemy;
     public EnemyModel model;
     public EnemyAnimHandler animHandler;
     private EnemyStateMachine stateMachine;
@@ -32,11 +33,11 @@ public class EnemyController : MonoBehaviour
         GameManager.Event.Unsubscribe(EventType.EnemyTurnStart, StartTurn);
     }
 
-    public void InitController()
+    public void InitController(BaseEnemy enemy)
     {
         Vector2Int player = GameManager.Map.GetPlayerPosition();
         // 상태머신 할당, Init 초기 상태 Idle로
-
+        baseEnemy = enemy;
         moveRange = model.moveRange;
         minAttackRange = model.minAttackRange;
         maxAttackRange = model.maxAttackRange;
@@ -98,6 +99,7 @@ public class EnemyController : MonoBehaviour
     {
         // 이미 죽었으면 무시
         if (isDie) return;
+ 
 
         // 중복 시작 방지
         if (startTurn && !isDone) return;

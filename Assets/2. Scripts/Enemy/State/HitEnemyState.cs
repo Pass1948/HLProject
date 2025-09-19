@@ -8,22 +8,24 @@ public class HitEnemyState : BaseEnemyState
 
     public override void Enter()
     {
-        Debug.Log("Hit : Enter");
-
         animHandler.OnHit();
         // 데미지 적용시키기
-
-
-        stateMachine.ChangeState(stateMachine.DieState);
     }
 
     public override void Excute()
     {
-        Debug.Log("Hit : Excute");
+        if(controller.model.currentHealth <=0)
+        {
+            controller.isDie = true;
+            stateMachine.ChangeState(stateMachine.DieState);
+        }
+        else
+        {
+            stateMachine.ChangeState(stateMachine.IdleState);
+        }
     }
 
     public override void Exit()
     {
-        Debug.Log("Hit : Exit");
     }
 }

@@ -26,14 +26,16 @@ public class PlayerHandler : MonoBehaviour
         if(GameManager.Unit.Vehicle.vehicleModel.health <= 0 && playerBording)
         {
             GameManager.Unit.Player.playerModel.health -= amount;
+            Debug.Log($"플레이어 체력 : {GameManager.Unit.Player.playerModel.health}");
         }
         if(GameManager.Unit.Player.playerModel.health <= 0)
         {
-            //사망처리
+            this.gameObject.SetActive(false);
         }
         else
         {
             GameManager.Unit.Vehicle.vehicleModel.health -= amount;
+            Debug.Log($"오토바이 체력 : {GameManager.Unit.Player.playerModel.health}");
         }
     }
     public void VehicleControll()

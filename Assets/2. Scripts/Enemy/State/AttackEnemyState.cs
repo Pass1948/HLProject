@@ -15,7 +15,6 @@ public class AttackEnemyState : BaseEnemyState
 
     public override void Enter()
     {
-        Debug.Log("Attack : Enter");
 
         ShowAttackPreview(controller.GridPos, minRange, maxRange);
 
@@ -24,14 +23,10 @@ public class AttackEnemyState : BaseEnemyState
 
     public override void Excute()
     {
-
-        //Debug.Log("Attack : Excute");
     }
 
     public override void Exit()
     {
-        Debug.Log("Attack : Exit");
-
     }
 
     private IEnumerator AttackRoutine()

@@ -4,19 +4,29 @@ using UnityEngine;
 
 public class ClearCheckState : BaseTurnState
 {
-   public ClearCheckState() { }
+    float timer;
+    private bool didClose;
+    public ClearCheckState() { }
     public override void OnEnter()
     {
+        timer = turnSetVlaue.resetTime;
+        didClose = false;
     }
     public override void Tick(float dt)
     {
-/*        if ()// 클리어 조건 체크로 진행
+        if (didClose) return;
+        timer += dt;
+        if (timer > turnSetVlaue.turnDelayTime)
         {
-            ChangeState<WinState>();
+            if (turnManager.IsPlayerDead())
+            {
+                Debug.Log("플레이어 사망");
+                ChangeState<LoseState>();
+            }
+            else
+            {
+                ChangeState<IdleState>();
+            }
         }
-       else if ()// 클리어 조건 체크로 진행
-        {
-            ChangeState<LoseState>();
-        }*/
     }
 }

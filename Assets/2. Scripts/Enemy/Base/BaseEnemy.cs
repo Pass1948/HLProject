@@ -28,7 +28,7 @@ public class BaseEnemy : MonoBehaviour
         {
             controller.model = enemyModel;
             controller.animHandler = animHandler;
-            controller.InitController();
+            controller.InitController(this);
         }
         else
         {
@@ -40,7 +40,7 @@ public class BaseEnemy : MonoBehaviour
         GameManager.Unit.enemies.Remove(this);
     }
 
-    public void ChenageAttribute()
+    public void ChenageAttribute()  // 발차기(속성변경)
     {
         if(enemyModel.attri == EnemyAttribute.High)
         {
