@@ -10,7 +10,12 @@ public class EvaluateEnemyState : BaseEnemyState
 
     public override void Enter()
     {
-        Debug.Log("Evaluate : Enter");
+
+        if(GameManager.Unit.Player.playerModel.die)
+        {
+            stateMachine.ChangeState(stateMachine.EndState);
+            return;
+        }
 
         stateMachine.ChangeState(stateMachine.DecideState);
 
@@ -18,14 +23,12 @@ public class EvaluateEnemyState : BaseEnemyState
 
     public override void Excute()
     {
-        Debug.Log("Evaluate : Excute");
 
         // Do nothing!!
     }
 
     public override void Exit()
     {
-        Debug.Log("Evaluate : Exit");
     }
 
 

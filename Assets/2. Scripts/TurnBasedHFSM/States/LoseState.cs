@@ -8,8 +8,7 @@ public class LoseState : BaseTurnState
 
     public void GameOverUI()
     {
-        //BaseUI backUI = GameManager.UI.GetUI<ResultUI>();
-        //BaseUI overUI = GameManager.UI.GetUI<OverUI>();
-        //overUI.gameObject.transform.SetParent(backUI.transform);
+        ResultUI backUI = GameManager.UI.GetUI<ResultUI>();
+        backUI.GetResultType(ResultType.Over);
     }
 }

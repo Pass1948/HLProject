@@ -11,7 +11,6 @@ public class IdleEnemyState : BaseEnemyState
 
     public override void Enter()
     {
-        Debug.Log("Idle : Enter");
 
     }
 
@@ -30,7 +29,6 @@ public class IdleEnemyState : BaseEnemyState
 
     public override void Exit()
     {
-        Debug.Log("Idle : Exit");
         controller.UpdatePlayerPos();
     }
 }
