@@ -15,9 +15,11 @@ public class PlayerModel : UnitModel
     public ViecleBording viecleBording;
     public int attack;
     public int attackRange;
-    public int moveRange;
+    public int baseMoveRange = 1;
+    public int moveRange = 1;
     public int mulligan;
     public int reload;
+    public int baseHealth;
     public int health;
     public bool die => health <= 0; //0이하면 트루
     public void InitData(UnitData data)

@@ -155,41 +155,38 @@ public class AttackRangeDisplay : MonoBehaviour
         {
             return Vector3Int.zero;
         }
-        
+
         Vector3Int playerCellPos = GetPlayerCellPosition();
         Vector3Int mouseCellPos = GameManager.Mouse.PointerCell;
         
-        Vector3Int directionVector = mouseCellPos - playerCellPos;
+        Vector3Int relativePos = mouseCellPos - playerCellPos;
         
-        if (directionVector.magnitude < 0.5f)
+        if (relativePos == Vector3Int.zero)
         {
             return Vector3Int.zero;
         }
         
-        Vector2 normalizedDirection = new Vector2(directionVector.x, directionVector.y).normalized;
-
-        Vector2[] cardinalDirections = new Vector2[]
+        if (relativePos.x == 0 && relativePos.y > 0) return Vector3Int.up;
+        if (relativePos.x > 0 && relativePos.y == 0) return Vector3Int.right;
+        if (relativePos.x == 0 && relativePos.y < 0) return Vector3Int.down;
+        if (relativePos.x < 0 && relativePos.y == 0) return Vector3Int.left;
+        
+        if (relativePos.x > 0 && relativePos.y > 0) // 오른쪽 상단
         {
-            Vector2.up,
-            Vector2.down,
-            Vector2.left,
-            Vector2.right
-        };
-
-        Vector3Int bestDirection = Vector3Int.zero;
-        float maxDot = -1f;
-
-        for (int i = 0; i < cardinalDirections.Length; i++)
-        {
-            float dotProduct = Vector2.Dot(normalizedDirection, cardinalDirections[i]);
-
-            if (dotProduct > maxDot)
-            {
-                maxDot = dotProduct;
-                bestDirection = new Vector3Int((int)cardinalDirections[i].x, (int)cardinalDirections[i].y, 0);
-            }
+            return Vector3Int.up;
         }
-        return bestDirection;
+        else if (relativePos.x > 0 && relativePos.y < 0) // 오른쪽 하단
+        {
+            return Vector3Int.right;
+        }
+        else if (relativePos.x < 0 && relativePos.y < 0) // 왼쪽 하단
+        {
+            return Vector3Int.down;
+        }
+        else // 왼쪽 상단
+        {
+            return Vector3Int.left;
+        }
     }
 
     private List<Vector3Int> GetDiamondRange(Vector3Int direction)

@@ -139,7 +139,6 @@ public class MainUI : BaseUI
                     mountBtn.gameObject.SetActive(true);
                     getOffBtn.gameObject.SetActive(false);
                 }
-
                 else
                 {
                     rerollBtn.gameObject.SetActive(false);
@@ -181,6 +180,7 @@ public class MainUI : BaseUI
     private void RepairButton()
     {
         GameManager.Unit.Vehicle.vehicleHandler.RepairVehicle();
+        GameManager.TurnBased.ChangeTo<PlayerTurnEndState>("Force");
     }
     private void BikeToggle()
     {
