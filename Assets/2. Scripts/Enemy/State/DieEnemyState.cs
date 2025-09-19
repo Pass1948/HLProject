@@ -10,9 +10,6 @@ public class DieEnemyState : BaseEnemyState
 
     public override void Enter()
     {
-
-
-
         if (controller.isDie)
         {
             animHandler.OnDie();
@@ -29,6 +26,8 @@ public class DieEnemyState : BaseEnemyState
 
     public override void Exit()
     {
-        controller.baseEnemy.gameObject.Destroy();
+        GameManager.Unit.enemies.Remove(controller.baseEnemy);
+        controller.baseEnemy.gameObject.SetActive(false);
+        //controller.baseEnemy.gameObject.Destroy();
     }
 }
