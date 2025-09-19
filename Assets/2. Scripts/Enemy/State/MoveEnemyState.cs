@@ -66,7 +66,6 @@ public class MoveEnemyState : BaseEnemyState
     private IEnumerator MoveAnim(List<Vector3Int> path)
     {
         Vector3Int oldPos = controller.GridPos; 
-
         if (oldPos.x >= 0 && oldPos.y >= 0 && oldPos.x < GameManager.Map.mapWidth && oldPos.y < GameManager.Map.mapHeight)
         {
             int oldTileID = GameManager.Map.mapData[oldPos.x, oldPos.y];
