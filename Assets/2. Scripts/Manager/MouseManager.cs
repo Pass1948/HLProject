@@ -170,15 +170,17 @@ public class MouseManager : MonoBehaviour
         // 공격 모드 우선
         if (isAttacking)
         {
-            // 적이거나, 지면일 때 공격 실행
-            if (cellIsEnemy || cellIsTerrain)
+            if (IsCellInAttackOrKickRange(cell))
             {
-                GameManager.Event.Publish(EventType.PlayerAttack);
+                GameManager.Event.Publish(EventType.PlayerAttack); // 공격 State에서 일괄 처리
                 isAttacking = false;
+            
             }
             else
             {
-                CancelSelection();
+                // TODO : 범위 밖 클릭 → 실행 안 함 + 범위 끄기(기획자들과 상의후 설정)
+                //CancelAttackOrKickRange();
+                isAttacking = false;
             }
             return;
         }
@@ -187,14 +189,17 @@ public class MouseManager : MonoBehaviour
         if (isKicking)
         {
             // 적이거나 지면일 때 킥 상태로 전환
-            if (cellIsEnemy || cellIsTerrain)
+            if (IsCellInAttackOrKickRange(cell))
             {
                 GameManager.TurnBased.ChangeTo<PlayerKickState>();
                 isKicking = false;
+                // 킥 범위는 상태 진입 시/후 정리 루틴에 맡김
             }
             else
             {
-                CancelSelection();
+                // TODO : 범위 밖 클릭 → 실행 안 함 + 범위 끄기 (기획자들과 상의후 설정)
+                //CancelAttackOrKickRange();
+                isKicking = false;
             }
             return;
         }
@@ -439,4 +444,22 @@ public class MouseManager : MonoBehaviour
         selectedEnemy = null;
         GameManager.UI.CloseUI<EnemyInfoPopUpUI>();
     }
+    
+    // 공격범위안에 있다는 bool 메서드
+    private bool IsCellInAttackOrKickRange(Vector3Int cell)
+    {
+        return map != null 
+               && map.attackRangeTilemap != null 
+               && map.attackRangeTilemap.HasTile(cell);
+    }
+    //공격 범위 끄기
+    private void CancelAttackOrKickRange()
+    {
+        if (GameManager.Map != null && GameManager.Map.attackRange != null)
+        {
+            GameManager.Map.attackRange.ClearAttackType(); // 내부적으로 타일/타겟도 비움
+        }
+    }
+    
+    
 }
