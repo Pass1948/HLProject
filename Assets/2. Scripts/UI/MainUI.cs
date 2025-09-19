@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -27,6 +28,7 @@ public class MainUI : BaseUI
     [SerializeField] Button repairBtn;
     [SerializeField] Button mountBtn;
     [SerializeField] Button getOffBtn;
+    [SerializeField] Button settingBtn; 
 
     // 테스트
     [SerializeField] Button test;
@@ -47,9 +49,17 @@ public class MainUI : BaseUI
         // 테스트
         test.onClick.AddListener(BikeTest);
 
+        settingBtn.onClick.AddListener(GameResultUITest);
 
         //시작시에 한번 실행되게
         fireBtn.interactable = (fireBtnObj != null) && fireBtnObj.IsBtnSel;
+    }
+
+    private void GameResultUITest()
+    {
+        ResultUI backUI = GameManager.UI.GetUI<ResultUI>();
+        //backUI.resulttype = ResultType.Over;
+        backUI.GetResultType(ResultType.Over);
     }
 
     private void Update()
