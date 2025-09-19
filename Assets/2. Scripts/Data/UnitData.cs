@@ -10,6 +10,8 @@ public class UnitData
     public string Name;
     public int Size;
     public int Attack;
+    public int BaseMoveRange;
+    public int BaseHealth;
     public int MinAttackRange;
     public int MaxAttackRange;
     public int MoveRange;
