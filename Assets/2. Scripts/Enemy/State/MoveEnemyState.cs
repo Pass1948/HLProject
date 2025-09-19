@@ -11,7 +11,6 @@ public class MoveEnemyState : BaseEnemyState
 
     public override void Enter()
     {
-        Debug.Log("Move : Enter");
 
         //GameManager.Map.PlayerUpdateRange(controller.GridPos, controller.moveRange);
 
@@ -49,13 +48,11 @@ public class MoveEnemyState : BaseEnemyState
 
     public override void Excute()
     {
-        Debug.Log("Move : Excute");
 
     }
 
     public override void Exit()
     {
-        Debug.Log("Move : Exit");
         animHandler.OnMove(false);
         GameManager.Map.ClearPlayerRange();
     }

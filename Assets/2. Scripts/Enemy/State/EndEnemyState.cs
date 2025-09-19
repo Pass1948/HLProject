@@ -8,7 +8,6 @@ public class EndEnemyState : BaseEnemyState
 
     public override void Enter()
     {
-        Debug.Log("End : Enter");
         controller.CompleteTurn();
 
         stateMachine.ChangeState(stateMachine.IdleState);
@@ -16,12 +15,10 @@ public class EndEnemyState : BaseEnemyState
 
     public override void Excute()
     {
-        Debug.Log("End : Excute");
     }
 
     public override void Exit()
     {
-        Debug.Log("End : Exit");
 
     }
 
