@@ -37,12 +37,6 @@ public class MainUI : BaseUI
     [SerializeField] Button getOffBtn;
     [SerializeField] Button settingBtn; 
 
-    // 테스트
-    [SerializeField] Button test;
-
-    
-    
-
     private void Awake()
     {
         turnBtn.onClick.AddListener(OnTurnEnd);
@@ -57,8 +51,6 @@ public class MainUI : BaseUI
         bikeControllBtn.onClick.AddListener(BikeToggle);
         atifactBtn.onClick.AddListener(AtifactToggle);
 
-        // 테스트
-        test.onClick.AddListener(BikeTest);
 
         settingBtn.onClick.AddListener(GameResultUITest);
 
