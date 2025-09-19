@@ -20,10 +20,22 @@ public class AttackController : MonoBehaviour
     //UI에서 쓰는 선택상태
     public bool IsBtnSel => (selectedAmmoBtn != null) && (bullet != null);
 
+    private void OnEnable()
+    {
+        GameManager.Event.Subscribe(EventType.PlayerAttack, Fire);
+    }
+    private void OnDisable()
+    {
+        GameManager.Event.Unsubscribe(EventType.PlayerAttack, Fire);
+    }
+
+
+
     //탄환버튼 OnClick
     public void SelectAmmo(Button btn)
     {
-        if(btn == null)
+
+        if (btn == null)
         {
             return;
         }
@@ -44,7 +56,7 @@ public class AttackController : MonoBehaviour
             bullet = null;
             
             GameManager.Map.attackRange.ClearAttackType();
-            
+            GameManager.Mouse.IsAttacking = false;
             return;
         }
 
@@ -79,15 +91,14 @@ public class AttackController : MonoBehaviour
         GameManager.TurnBased.turnSettingValue.fireAmmo = selectAmmo.ammo;
         //
         BulletView bulletView = bullet.GetComponent<BulletView>();
-
-        // bulletView가 유효한지 확인 후 SetAttackRange를 호출합니다.
+        
         if (bulletView != null)
         {
-            // Ammo 데이터의 suit와 rank를 직접 가져와 함수에 전달합니다.
             Suit suit = bulletView.ammo.suit;
             int rank = bulletView.ammo.rank;
     
             GameManager.Map.attackRange.SetAttackRange(suit, rank);
+            GameManager.Mouse.IsAttacking = true;
         }
         //
 
