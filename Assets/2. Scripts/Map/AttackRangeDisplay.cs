@@ -20,41 +20,53 @@ public class AttackRangeDisplay : MonoBehaviour
     private Suit currentSuit = Suit.Spade;
     private int currentRank = 0;
     
+    private bool isKickAttack = false;
+
     public List<BaseEnemy> enemies = new List<BaseEnemy>();
 
     void Update()
     {
-        if (!isInitialized || currentRank == 0)
+        if (!isInitialized || (currentRank == 0 && !isKickAttack))
         {
             ClearRange();
             GameManager.Map.ClearAttackTargets();
             return;
         }
+
         Vector3Int direction = GetDirectionFromMouse();
         List<Vector3Int> newRange = new List<Vector3Int>();
 
-        switch (currentSuit)
+        if (isKickAttack)
         {
-            case Suit.Diamond:
-                newRange = GetDiamondRange(direction);
-                break;
-            case Suit.Heart:
-                newRange = GetHeartRange(direction);
-                break;
-            case Suit.Spade:
-                newRange = GetSpadeRange(direction);
-                break;
-            case Suit.Club:
-                newRange = GetCloverRange(direction);
-                break;
+            newRange = GetKickRange(direction);
         }
+        else
+        {
+            switch (currentSuit)
+            {
+                case Suit.Diamond:
+                    newRange = GetDiamondRange(direction);
+                    break;
+                case Suit.Heart:
+                    newRange = GetHeartRange(direction);
+                    break;
+                case Suit.Spade:
+                    newRange = GetSpadeRange(direction);
+                    break;
+                case Suit.Club:
+                    newRange = GetCloverRange(direction);
+                    break;
+            }
+        }
+        
 
         ShowRange(newRange);
         // 범위를 MapManager로 보내 타겟 목록을 갱신
         GameManager.Map.UpdateAttackTargets(newRange, enemies);
     }
 
-    public void SetAttackRange(Suit suit, int rank)
+
+    public void SetAttackRange(Suit suit, int rank) // 기본공격 <- 이걸 버튼에 연결
     {
         if (currentSuit == suit && currentRank == rank)
         {
@@ -64,13 +76,21 @@ public class AttackRangeDisplay : MonoBehaviour
         {
             currentSuit = suit;
             currentRank = rank;
+            isKickAttack = false;
         }
     }
+    
+    public void SetAttackRangeForKick() // 킥 공격 <- 이걸 버튼에 연결
+    {
+        isKickAttack = true; 
+        currentRank = 0;
+    }
 
-    public void ClearAttackType()
+    public void ClearAttackType() // 범위 지우기
     {
         currentSuit = Suit.Spade;
         currentRank = 0;
+        isKickAttack = false;
         ClearRange();
         GameManager.Map.ClearAttackTargets();
     }
@@ -177,18 +197,35 @@ public class AttackRangeDisplay : MonoBehaviour
     {
         Vector3Int playerPos = GetPlayerCellPosition();
         var range = new List<Vector3Int>();
-
-        Vector3Int leftDirection = new Vector3Int(-direction.y, direction.x, 0);
-        Vector3Int rightDirection = new Vector3Int(direction.y, -direction.x, 0);
-
+        
+        Vector3Int diagonalDirection;
+        
+        if (direction.x > 0)
+        {
+            diagonalDirection = new Vector3Int(1, -1, 0);
+        }
+        else if (direction.x < 0)
+        {
+            diagonalDirection = new Vector3Int(-1, 1, 0);
+        }
+        else if (direction.y > 0)
+        {
+            diagonalDirection = new Vector3Int(1, 1, 0);
+        }
+        else
+        {
+            diagonalDirection = new Vector3Int(-1, -1, 0);
+        }
+        
         int effectiveRange = 2 + range_plus;
         for (int i = 1; i <= effectiveRange; i++)
         {
-            range.Add(playerPos + leftDirection * i);
-            range.Add(playerPos + rightDirection * i);
+            range.Add(playerPos + diagonalDirection * i);
         }
         return range;
+
     }
+
 
     private List<Vector3Int> GetSpadeRange(Vector3Int direction)
     {
@@ -226,6 +263,16 @@ public class AttackRangeDisplay : MonoBehaviour
             range.Add(playerPos + diagRight * i);
         }
 
+        return range;
+    }
+    
+    private List<Vector3Int> GetKickRange(Vector3Int direction)
+    {
+        Vector3Int playerPos = GetPlayerCellPosition();
+        var range = new List<Vector3Int>();
+        
+        range.Add(playerPos + direction);
+        
         return range;
     }
 }

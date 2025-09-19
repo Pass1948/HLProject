@@ -57,6 +57,11 @@ public class MouseManager : MonoBehaviour
     private bool isAttacking = false;
     public bool IsAttacking { get { return isAttacking; } set { isAttacking = value; } }
 
+
+    //==== 발차기 상태 =====
+    private bool isKicking = false;
+    public bool IsKicking { get { return isKicking; } set { isKicking = value; } }
+
     // ===== 내부 캐시 =====
     private Vector3Int lastCell = new Vector3Int(int.MinValue, int.MinValue, 0);
     private Vector3Int lastValidCell;

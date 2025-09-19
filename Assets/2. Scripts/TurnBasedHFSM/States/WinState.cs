@@ -10,6 +10,7 @@ public class WinState : BaseTurnState
     {
         ResultUI backUI = GameManager.UI.GetUI<ResultUI>();
         backUI.GetResultType(ResultType.Clear);
+        backUI.OpenUI();
     }
 
 }

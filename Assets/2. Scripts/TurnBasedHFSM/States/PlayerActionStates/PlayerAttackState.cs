@@ -83,15 +83,23 @@ public class PlayerAttackState : PlayerActionState
         {
             timer = turnSetVlaue.resetTime;
             GameManager.Map.attackRange.ClearAttackType();
+
         }
         public override void Tick(float dt)
         {
-            //ChangeState<ClearCheckState>(); <=몬스터 처리 후 클리어 체크
+
             timer += dt;
-            if (timer > 3f) // TODO: A_Recover time 
+            if (timer > 1f) 
             {
                 GameManager.Map.pathfinding.ResetMapData();
-                ChangeState<PlayerTurnEndState>();
+                if (turnManager.EnemyDieCheck())
+                {
+                    ChangeState<WinState>();
+                }
+                else
+                {
+                    ChangeState<PlayerTurnEndState>();
+                }
             }
         }
     }
