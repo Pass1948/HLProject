@@ -24,7 +24,7 @@ public class MoveEnemyState : BaseEnemyState
         
         if (path == null || path.Count == 0)
         {
-            Debug.Log("±æÃ£±â ¸ð´ã");
+            Debug.Log("ï¿½ï¿½Ã£ï¿½ï¿½ ï¿½ï¿½ï¿½");
             stateMachine.ChangeState(stateMachine.EndState);
             return;
         }
@@ -57,23 +57,34 @@ public class MoveEnemyState : BaseEnemyState
         GameManager.Map.ClearPlayerRange();
     }
 
-    // Å¸°Ù(ÇÃ·¹ÀÌ¾î)¿ÍÀÇ °Å¸® °è»ê
+    // Å¸ï¿½ï¿½(ï¿½Ã·ï¿½ï¿½Ì¾ï¿½)ï¿½ï¿½ï¿½ï¿½ ï¿½Å¸ï¿½ ï¿½ï¿½ï¿½
     private int GetDistanceTarget(Vector3Int pos, Vector3Int target)
     {
         return Mathf.Abs(pos.x - target.x) + Mathf.Abs(pos.y - target.y);
     }
-
+    
     private IEnumerator MoveAnim(List<Vector3Int> path)
     {
+        Vector3Int oldPos = path[0];
+        
+        if (oldPos.x >= 0 && oldPos.y >= 0 && oldPos.x < GameManager.Map.mapWidth && oldPos.y < GameManager.Map.mapHeight)
+        {
+            int oldTileID = GameManager.Map.mapData[oldPos.x, oldPos.y];
+            Debug.Log($"ëª¬ìŠ¤í„°ê°€ ë– ë‚œ ì´ì „ ì¢Œí‘œ: ({oldPos.x}, {oldPos.y}) | íƒ€ì¼ ID: {oldTileID}");
+        }
+        
         yield return controller.MoveAlongPath(path);
-        Debug.Log(path.Count);
-        Vector3Int last = path[path.Count - 1];
-        controller.GridPos = last;
-
-        GameManager.Map.UpdateObjectPosition(controller.GridPos.x, controller.GridPos.y, last.x, last.y, TileID.Enemy);
-
-        controller.transform.position = GameManager.Map.tilemap.GetCellCenterWorld(last);
-
+        
+        Vector3Int newPos = path[path.Count - 1];
+        
+        controller.GridPos = newPos;
+        
+        GameManager.Map.UpdateObjectPosition(oldPos.x, oldPos.y, newPos.x, newPos.y, TileID.Enemy);
+        
+        controller.transform.position = GameManager.Map.tilemap.GetCellCenterWorld(newPos);
+        
         stateMachine.ChangeState(stateMachine.EndState);
     }
+    
+    
 }
