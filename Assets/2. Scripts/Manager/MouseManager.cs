@@ -67,6 +67,12 @@ public class MouseManager : MonoBehaviour
     private Vector3Int lastCell = new Vector3Int(int.MinValue, int.MinValue, 0);
     private Vector3Int lastValidCell;
 
+    // --- 토글 상태 ---
+    private bool playerRangeVisible = false;
+    private BaseEnemy selectedEnemy;       // 현재 팝업이 열린 적
+    private bool enemyPopupVisible = false;
+
+
     private readonly List<GameObject> activeTiles = new List<GameObject>();
 
     public void CreateMouse() // Scene넘어갔을때 실행
@@ -146,74 +152,7 @@ public class MouseManager : MonoBehaviour
     // =====================================================================
     // 클릭 처리 (TileID 기반)
     // =====================================================================
-    /*   private void HandleLeftClick()
-       {
-           if (blockWhenUI && EventSystem.current && EventSystem.current.IsPointerOverGameObject())
-               return;
-
-           var cell = GetCurrentCell();
-           if (!IsInside(cell)) return;
-
-           // =============Player=============
-           if (map.IsPlayer(cell))
-           {
-               isPlayer = true;
-               OnClickPlayer(cell);
-               return;
-           }
-
-           // =============Enemy=============
-           if (map.IsEnemy(cell))
-           {
-               isPlayer = false;
-               OnClickEnemy(cell);
-               return;
-           }
-           else if (map.IsEnemy(cell) && isAttacking == true)
-           {
-               GameManager.Event.Publish(EventType.PlayerAttack);
-               isAttacking = false;
-
-           }
-           else if (map.IsEnemy(cell) && map.IsMovable(cell) && isAttacking == true)
-           {
-               GameManager.TurnBased.ChangeTo<PlayerKickState>();
-               IsKicking = false;
-           }
-           else if (map.IsEnemy(cell) && isKicking == true)
-           {
-               GameManager.TurnBased.ChangeTo<PlayerKickState>();
-               IsKicking = false;
-           }
-           else if (map.IsEnemy(cell) && map.IsMovable(cell) &&  isKicking == true)
-           {
-               GameManager.TurnBased.ChangeTo<PlayerKickState>();
-               IsKicking = false;
-           }
-
-
-           // =============Terrain=============
-           if (map.IsMovable(cell) && isAttacking == false && isKicking == false)
-          {
-              OnClickTerrain(cell);
-              return;
-          }
-          else if (map.IsMovable(cell) && isAttacking == true)
-          {
-              GameManager.Event.Publish(EventType.PlayerAttack);
-              isAttacking = false;
-          }
-           else if (map.IsMovable(cell) && isKicking == true)      // 범위 각도 고처지면 변경해야함
-           {
-               GameManager.TurnBased.ChangeTo<PlayerKickState>();
-               IsKicking = false;
-           }
-
-           isPlayer = false;
-           // 그 외(Obstacle 등)
-           CancelSelection();
-       }*/
-
+   
     private void HandleLeftClick()
     {
         //공통 가드
@@ -292,47 +231,56 @@ public class MouseManager : MonoBehaviour
     // Player 셀 클릭 => 선택 + 이동범위 표시
     private void OnClickPlayer(Vector3Int cell)
     {
-        GameManager.UI.CloseUI<EnemyInfoPopUpUI>();
-        GameManager.UI.OpenUI<MainUI>();
-        if (isMoving) return;
-        // 셀에서 실제 플레이어 컴포넌트 탐색(보강)
-        selectedPlayer = useOverlapLookup ? FindAtCell<BasePlayer>(cell) : null; selectedPlayerCell = cell;
-        // 이동 범위 설정(플레이어 모델이 있으면 거기서, 없으면 MapManager의 기본값 사용)
-        selectedMoveRange = GameManager.Unit.Player.playerModel.moveRange; // UI/범위 표시
+        // 적 팝업은 닫아둠
+        HideEnemyPopup();
 
-        if (isAttacking == false )// 공격모드 일 경우 이동범위 표시 안함
-        {
-            map.ClearPlayerRange();
-            map.PlayerUpdateRange(cell, selectedMoveRange);
-        }
+        if (isMoving) return;
+
+        // 선택/범위 기초값 세팅은 기존 그대로 유지
+        selectedPlayer = useOverlapLookup ? FindAtCell<BasePlayer>(cell) : null;
+        selectedPlayerCell = cell;
+        selectedMoveRange = GameManager.Unit.Player.playerModel.moveRange;
+
+        if (isAttacking) return;
+
+        // 현재 범위가 떠 있고 같은 칸을 다시 눌렀다면 끄고, 아니면 켠다
+        if (playerRangeVisible && selectedPlayerCell == cell)
+            HidePlayerRange();
+        else
+            ShowPlayerRange(cell);
+
     }
 
     // Enemy 셀 클릭 => 정보 UI
     private void OnClickEnemy(Vector3Int cell)
     {
-        if(isKicking == true)
-        {
-            GameManager.TurnBased.ChangeTo<PlayerKickState>();
-            IsKicking = false;
-        }
-        map.ClearPlayerRange();
+        // 플레이어 이동범위는 닫아둠
+        HidePlayerRange();
+
         if (isMoving) return;
+
         var enemy = useOverlapLookup ? FindAtCell<BaseEnemy>(cell) : null;
-        if (enemy != null)
+        if (enemy == null)
         {
-            GameManager.UI.GetUI<EnemyInfoPopUpUI>().SetData(enemy.enemyModel.unitName, enemy.enemyModel.attri, enemy.enemyModel.rank);
-            GameManager.UI.OpenUI<EnemyInfoPopUpUI>();
-        }
-        else
-        { //인스턴스가 없으면 취소(선택 해제)
+            // 해당 칸에서 적을 찾지 못하면 닫고 선택 해제
+            HideEnemyPopup();
             CancelSelection();
+            return;
         }
+
+        // 같은 적을 다시 클릭하면 닫기, 아니면 새로 열기
+        if (enemyPopupVisible && selectedEnemy == enemy)
+            HideEnemyPopup();
+        else
+            ShowEnemyPopup(enemy);
+
     }
 
 
     // Terrain 셀 클릭 → 선택된 플레이어가 있으면 이동 시도
     private void OnClickTerrain(Vector3Int destCell)
     {
+        map.ClearPlayerRange();
         GameManager.UI.CloseUI<EnemyInfoPopUpUI>();
         if (isPlayer == true)
         {
@@ -462,34 +410,35 @@ public class MouseManager : MonoBehaviour
         return null;
     }
 
-    //================= Pathfinding의 잔재 더이상 쓸모 없을때 지우기 =================//
-    public void ShowPath(Vector3Int[] path, Tilemap tilemap, int moveRange, GameObject mouse)
+    // ====== Player Range 토글 유틸 ======
+    private void ShowPlayerRange(Vector3Int cell)
     {
-        ClearPath();
-
-        // 이동 범위 제한
-        int maxRange = Mathf.Min(path.Length, moveRange);
-        for (int i = 0; i < path.Length; i++)
-        {
-            if (tilemap == null) return;
-
-            Vector3 worldPos = tilemap.GetCellCenterWorld(path[i]);
-            if (i < moveRange)
-            {
-                mouse.transform.position = worldPos;
-            }
-            else
-                return;
-        }
-
+        playerRangeVisible = true;
+        map.ClearPlayerRange();
+        map.PlayerUpdateRange(cell, selectedMoveRange);
+        GameManager.UI.OpenUI<MainUI>();
+    }
+    private void HidePlayerRange()
+    {
+        playerRangeVisible = false;
+        map.ClearPlayerRange();
+        GameManager.UI.CloseUI<MainUI>();
     }
 
-    public void ClearPath()
+    // ====== Enemy Popup 토글 유틸 ======
+    private void ShowEnemyPopup(BaseEnemy enemy)
     {
-        foreach (var tile in activeTiles)
-        {
-            Destroy(tile);
-        }
-        activeTiles.Clear();
+        if (enemy == null) return;
+        selectedEnemy = enemy;
+        enemyPopupVisible = true;
+        GameManager.UI.GetUI<EnemyInfoPopUpUI>()
+            .SetData(enemy.enemyModel.unitName, enemy.enemyModel.attri, enemy.enemyModel.rank);
+        GameManager.UI.OpenUI<EnemyInfoPopUpUI>();
+    }
+    private void HideEnemyPopup()
+    {
+        enemyPopupVisible = false;
+        selectedEnemy = null;
+        GameManager.UI.CloseUI<EnemyInfoPopUpUI>();
     }
 }
