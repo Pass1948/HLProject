@@ -151,12 +151,9 @@ public class MapManager : MonoBehaviour
 
                 if (tileID == TileID.Enemy)
                 {
-                    Debug.Log("Enemy 블록 진입!");
-
-                    // ★★★ 이 부분을 아래와 같이 수정합니다. ★★★
                     if (enemies == null)
                     {
-                        Debug.LogError("오류: MapManager의 enemies 매개변수가 null입니다!");
+                        Debug.LogError("MapManager의 enemies가 null");
                     }
                     else
                     {
@@ -165,7 +162,6 @@ public class MapManager : MonoBehaviour
                         foreach (var enemy in enemies)
                         {
                             Vector3Int enemyCellPos = GetCellFromWorldPos(enemy.transform.position);
-                            Debug.Log($"비교 중 - 몬스터 '{enemy.name}'의 좌표: {enemyCellPos}, 공격 범위 좌표: {cell}");
 
                             if (enemyCellPos == cell)
                             {
@@ -177,36 +173,11 @@ public class MapManager : MonoBehaviour
                 }
                 else if (tileID == TileID.Obstacle)
                 {
-                    // ★★★ 이 로그를 추가합니다. ★★★
-                    Debug.Log("Obstacle 블록 진입!");
+                    //
                     CurrentObstacleCoords.Add(cell);
                 }
             }
         }
-        ///////////
-        if (CurrentEnemyTargets.Count > 0)
-        {
-            string enemyNames = "";
-            foreach (var enemy in CurrentEnemyTargets)
-            {
-                if (enemy != null)
-                {
-                    enemyNames += enemy.name + ", ";
-                }
-            }
-            Debug.Log($"공격 범위에 {CurrentEnemyTargets.Count}마리의 몬스터가 있습니다: {enemyNames}");
-        }
-
-        if (CurrentObstacleCoords.Count > 0)
-        {
-            string obstacleCoords = "";
-            foreach (var coord in CurrentObstacleCoords)
-            {
-                obstacleCoords += coord.ToString() + ", ";
-            }
-            Debug.Log($"공격 범위에 {CurrentObstacleCoords.Count}개의 장애물이 있습니다: {obstacleCoords}");
-        }
-        ///////
     }
     public Vector3Int GetCellFromWorldPos(Vector3 worldPosition)
     {

@@ -77,7 +77,7 @@ public class AttackController : MonoBehaviour
 
         var selectAmmo = bullet.GetComponent<BulletView>();
         GameManager.TurnBased.turnSettingValue.fireAmmo = selectAmmo.ammo;
-        //
+        // 버튼을 누르면 범위 선택
         BulletView bulletView = bullet.GetComponent<BulletView>();
         
         if (bulletView != null)
