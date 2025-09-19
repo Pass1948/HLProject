@@ -65,8 +65,8 @@ public class MoveEnemyState : BaseEnemyState
     
     private IEnumerator MoveAnim(List<Vector3Int> path)
     {
-        Vector3Int oldPos = path[0];
-        
+        Vector3Int oldPos = controller.GridPos; 
+
         if (oldPos.x >= 0 && oldPos.y >= 0 && oldPos.x < GameManager.Map.mapWidth && oldPos.y < GameManager.Map.mapHeight)
         {
             int oldTileID = GameManager.Map.mapData[oldPos.x, oldPos.y];
@@ -79,8 +79,8 @@ public class MoveEnemyState : BaseEnemyState
         
         controller.GridPos = newPos;
         
-        GameManager.Map.UpdateObjectPosition(oldPos.x, oldPos.y, newPos.x, newPos.y, TileID.Enemy);
-        
+        GameManager.Map.UpdateObjectPosition(oldPos, oldPos, newPos, newPos, TileID.Enemy);
+        GameManager.Map.pathfinding.ResetMapData();
         controller.transform.position = GameManager.Map.tilemap.GetCellCenterWorld(newPos);
         
         stateMachine.ChangeState(stateMachine.EndState);

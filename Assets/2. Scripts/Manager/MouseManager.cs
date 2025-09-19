@@ -319,7 +319,7 @@ public class MouseManager : MonoBehaviour
             actor.position = end;
 
             // 맵데이터 갱신(셀 기준)
-            map.UpdateObjectPosition(currentCell.x, currentCell.y, nextCell.x, nextCell.y, tileIdForActor);
+            map.UpdateObjectPosition(currentCell, currentCell, nextCell, nextCell, tileIdForActor);
 
             // 내부 상태 갱신
             currentCell = nextCell;
