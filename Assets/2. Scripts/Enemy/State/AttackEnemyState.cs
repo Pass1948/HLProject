@@ -41,11 +41,10 @@ public class AttackEnemyState : BaseEnemyState
         if (dist >= minRange && dist <= maxRange)
         {
             GameManager.Unit.ChangeHealth(GameManager.Unit.Player.playerModel, controller.model.attack);
+            animHandler.OnAttack();
         }
 
         ClearPreveiwTiles();
-
-        animHandler.OnAttack();
 
         stateMachine.ChangeState(stateMachine.EndState);
     }
