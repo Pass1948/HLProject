@@ -10,13 +10,17 @@ public class ClearCheckState : BaseTurnState
     }
     public override void Tick(float dt)
     {
-/*        if ()// 클리어 조건 체크로 진행
+         if (turnManager.EnemyDieCheck())
         {
             ChangeState<WinState>();
         }
-       else if ()// 클리어 조건 체크로 진행
+       else if (turnManager.IsPlayerDead())
         {
             ChangeState<LoseState>();
-        }*/
+        }
+        else
+        {
+            ChangeState<IdleState>();
+        }
     }
 }

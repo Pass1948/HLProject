@@ -8,9 +8,8 @@ public class WinState : BaseTurnState
 
     public void StageClearUI()
     {
-        //BaseUI backUI = GameManager.UI.GetUI<ResultUI>();
-        //BaseUI clearUI = GameManager.UI.GetUI<ClearUI>();
-        //clearUI.gameObject.transform.SetParent(backUI.transform);
+        ResultUI backUI = GameManager.UI.GetUI<ResultUI>();
+        backUI.GetResultType(ResultType.Clear);
     }
 
 }
