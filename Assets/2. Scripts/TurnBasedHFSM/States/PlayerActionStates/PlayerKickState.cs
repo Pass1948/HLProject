@@ -23,7 +23,6 @@ public class PlayerKickState : PlayerActionState
             timer += dt;
             if (timer > 0.1f)
             {
-                GameManager.UI.CloseUI<MainUI>();
                 ChangeState<K_Execute>();
             }
         }
@@ -66,6 +65,7 @@ public class PlayerKickState : PlayerActionState
         public override void OnEnter()
         {
             timer = turnSetVlaue.resetTime;
+            GameManager.Map.attackRange.ClearAttackType();
         }
         public override void Tick(float dt)
         {

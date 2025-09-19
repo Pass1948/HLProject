@@ -36,8 +36,6 @@ public class PlayerAttackState : PlayerActionState
         public override void OnEnter()
         {
             timer = turnSetVlaue.resetTime;
-            GameManager.UI.CloseUI<MainUI>();
-
             AttackEnemy();
             Debug.Log($"°ø°ÝÁß");
         }
@@ -83,7 +81,6 @@ public class PlayerAttackState : PlayerActionState
         {
             timer = turnSetVlaue.resetTime;
             GameManager.Map.attackRange.ClearAttackType();
-
         }
         public override void Tick(float dt)
         {
