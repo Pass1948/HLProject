@@ -11,6 +11,7 @@ public abstract class UnitModel
     public int size;
     public int maxHealth;
     public int currentHealth;
+    public int baseMoveRange;
     public int moveRange;
     public bool die;
 }
