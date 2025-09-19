@@ -23,7 +23,6 @@ public class PlayerMoveState : PlayerActionState
             timer += dt;
             if (timer > 0.1f)
             {
-                GameManager.UI.CloseUI<MainUI>();
                 ChangeState<M_Execute>();
             }
         }

@@ -25,7 +25,7 @@ public class SpawnController : MonoBehaviour
     {
         SpawnPlayer();
         SpawnObstacles(10);
-        SpawnEnemys(5);
+        SpawnEnemys(5); 
     }
     
     private void SpawnPlayer()

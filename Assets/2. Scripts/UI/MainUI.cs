@@ -12,6 +12,10 @@ public class MainUI : BaseUI
 
     [SerializeField] Button rerollBtn;
     [SerializeField] ReloadAmmo reloadBtnObj;
+
+    [SerializeField] Button kickBtn;
+    [SerializeField] ToggleBtnController kickBtnObj;
+
     //재장전 텍스트
     TMP_Text rerollLabel;
 
@@ -37,6 +41,7 @@ public class MainUI : BaseUI
     [SerializeField] Button test;
 
     
+    
 
     private void Awake()
     {
@@ -47,6 +52,7 @@ public class MainUI : BaseUI
         repairBtn.onClick.AddListener(RepairButton);
         mountBtn.onClick.AddListener(OnRiding);
         getOffBtn.onClick.AddListener(GetOff);
+        kickBtn.onClick.AddListener(ToggleKick);
 
         bikeControllBtn.onClick.AddListener(BikeToggle);
         atifactBtn.onClick.AddListener(AtifactToggle);
@@ -57,6 +63,15 @@ public class MainUI : BaseUI
         settingBtn.onClick.AddListener(GameResultUITest);
 
         InitReloadUI();
+    }
+
+    private void OnEnable()
+    {
+        reloadBtnObj.ReloadChange += OnReloadChanged;
+    }
+    private void OnDisable()
+    {
+        reloadBtnObj.ReloadChange -= OnReloadChanged;
     }
 
     private void GameResultUITest()
@@ -149,11 +164,15 @@ public class MainUI : BaseUI
         }
     }
 
+    void ToggleKick()
+    {
+        kickBtnObj.ToggleKick();
+    }
+
     private bool IsNearVehicle()
     {
         Vector3 vehiclePos = GameManager.Unit.Vehicle.transform.position;
         Vector3  playerPos = GameManager.Unit.Player.transform.position;
-        Debug.Log($"{vehiclePos}{playerPos}");
         return playerPos == vehiclePos;
     }
     // 타는 로직
@@ -197,10 +216,14 @@ public class MainUI : BaseUI
     //재장전 텍스트 적용 텍스트에선 남은 횟수만 보이게
     private void ApplyReloadUI(int remain, int max)
     {
-        if (rerollBtn)
-        {
-            rerollBtn.interactable = (remain > 0) && rerollBtn.gameObject.activeInHierarchy;
-        }
+           if( (remain > 0) || rerollBtn.gameObject.activeInHierarchy)
+            {
+                rerollBtn.interactable = true;
+            }
+            else
+            {
+                rerollBtn.interactable = false;
+            }
             
         if (!rerollLabel && rerollBtn)
         {
@@ -221,11 +244,5 @@ public class MainUI : BaseUI
             rerollLabel = rerollBtn.GetComponentInChildren<TMP_Text>(true);
         }
 
-        //중복 방지하기
-        if (reloadBtnObj != null)
-        {
-            reloadBtnObj.ReloadChange -= OnReloadChanged; 
-            reloadBtnObj.ReloadChange += OnReloadChanged;
-        }
     }
 }

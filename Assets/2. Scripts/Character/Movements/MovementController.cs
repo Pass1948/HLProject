@@ -52,7 +52,6 @@ public class MovementController : MonoBehaviour
     private void Update()
     {
         GetCellPosition();
-        //TODO: 마우스가 움직일 때마다 경로 미리보기(장보석,이영신)
 
         //if (isPlayer == true)
         //{

@@ -4216,6 +4216,8 @@ MonoBehaviour:
   fireBtnObj: {fileID: 830122162788962829}
   rerollBtn: {fileID: 5889160930384264512}
   reloadBtnObj: {fileID: 7921332509101693648}
+  kickBtn: {fileID: 6275759365274418998}
+  kickBtnObj: {fileID: 2122605686555309026}
   deckBtn: {fileID: 5041803493689964856}
   deckBtnObj: {fileID: 2122605686555309026}
   discardBtn: {fileID: 6017041397092992565}

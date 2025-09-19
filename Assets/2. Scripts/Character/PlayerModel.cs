@@ -15,7 +15,7 @@ public class PlayerModel : UnitModel
     public ViecleBording viecleBording;
     public int attack;
     public int attackRange;
-    public int moveRange = 1;
+    public int moveRange;
     public int mulligan;
     public int reload;
     public int health;

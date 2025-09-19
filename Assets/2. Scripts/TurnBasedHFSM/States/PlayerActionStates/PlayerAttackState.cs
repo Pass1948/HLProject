@@ -21,10 +21,8 @@ public class PlayerAttackState : PlayerActionState
         public override void Tick(float dt)
         {
             timer += dt;
-            if (timer > 0.1f) // TODO: Attack windup time
+            if (timer > 0.1f) 
             {
-                Debug.Log($"공격댐");
-
                 ChangeState<A_Execute>();
             }
         }
@@ -36,10 +34,7 @@ public class PlayerAttackState : PlayerActionState
         public override void OnEnter()
         {
             timer = turnSetVlaue.resetTime;
-            GameManager.UI.CloseUI<MainUI>();
-
             AttackEnemy();
-            Debug.Log($"공격중");
         }
         public override void Tick(float dt)
         {
@@ -60,15 +55,12 @@ public class PlayerAttackState : PlayerActionState
                 {
 
                     if (enemy == null || enemy.controller == null || enemy.controller.isDie) continue;
-                    Debug.Log($"지금 몬스터 : {enemy.enemyModel.unitName}, {enemy.enemyModel.currentHealth}");
                     GameManager.Unit.ChangeHealth(
                         enemy.enemyModel,
                         GameManager.Unit.Player.playerModel.attack,
                         turnSetVlaue.fireAmmo
                     );
-                    Debug.Log($"지금 몬스터 : {enemy.enemyModel.unitName}, {enemy.enemyModel.currentHealth}");
                     enemy.controller.OnHitState();
-                    Debug.Log($"지금 몬스터 : {enemy.enemyModel.unitName}, {enemy.enemyModel.currentHealth}");
                 }
             }
         }
@@ -86,12 +78,19 @@ public class PlayerAttackState : PlayerActionState
         }
         public override void Tick(float dt)
         {
-            //ChangeState<ClearCheckState>(); <=몬스터 처리 후 클리어 체크
+
             timer += dt;
-            if (timer > 3f) // TODO: A_Recover time 
+            if (timer > 1f) 
             {
                 GameManager.Map.pathfinding.ResetMapData();
-                ChangeState<PlayerTurnEndState>();
+                if (turnManager.EnemyDieCheck())
+                {
+                    ChangeState<WinState>();
+                }
+                else
+                {
+                    ChangeState<PlayerTurnEndState>();
+                }
             }
         }
     }
