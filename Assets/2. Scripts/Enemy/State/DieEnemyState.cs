@@ -29,7 +29,7 @@ public class DieEnemyState : BaseEnemyState
 
     public override void Exit()
     {
-
+        GameManager.Unit.enemies.Remove(this.stateMachine.Controller.baseEnemy);
         controller.baseEnemy.gameObject.Destroy();
     }
 }
