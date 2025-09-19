@@ -23,7 +23,6 @@ public class PlayerKickState : PlayerActionState
             timer += dt;
             if (timer > 0.1f)
             {
-                GameManager.UI.CloseUI<MainUI>();
                 ChangeState<K_Execute>();
             }
         }
@@ -35,8 +34,7 @@ public class PlayerKickState : PlayerActionState
         public override void OnEnter()
         {
             timer = turnSetVlaue.resetTime;
-            // TODO : 여기서 발차기 했을 때 정보 바꿔주기
-            GameManager.Unit.enemies[0].ChenageAttribute();
+            ChangeAttirEnemy();
         }
         public override void Tick(float dt)
         {
@@ -44,6 +42,19 @@ public class PlayerKickState : PlayerActionState
             if (timer > 0.1f)
             {
                 ChangeState<K_Recover>();
+            }
+        }
+        void ChangeAttirEnemy()
+        {
+            var targets = GameManager.Map.CurrentEnemyTargets;
+            if (targets != null && targets.Count > 0)
+            {
+                foreach (var enemy in targets)
+                {
+                    if (enemy == null || enemy.controller == null || enemy.controller.isDie) continue;
+                    enemy.ChenageAttribute();
+                    GameManager.UI.GetUI<EnemyInfoPopUpUI>().SetData(enemy.enemyModel.unitName, enemy.enemyModel.attri, enemy.enemyModel.rank);
+                }
             }
         }
     }
@@ -54,6 +65,7 @@ public class PlayerKickState : PlayerActionState
         public override void OnEnter()
         {
             timer = turnSetVlaue.resetTime;
+            GameManager.Map.attackRange.ClearAttackType();
         }
         public override void Tick(float dt)
         {

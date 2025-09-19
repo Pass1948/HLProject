@@ -28,10 +28,13 @@ public class MapManager : MonoBehaviour
     private TileBase wallTile;
     private TileBase moveInfoTile;
     private TileBase redAttackTile;
-    private GameObject pointer; 
 
-    public GameObject grid;
+    public Grid grid;
     
+
+    public List<BaseEnemy> CurrentEnemyTargets { get; private set; } = new List<BaseEnemy>();
+
+    public List<Vector3Int> CurrentObstacleCoords { get; private set; } = new List<Vector3Int>();
     
     void Awake()
     {
@@ -71,7 +74,7 @@ public class MapManager : MonoBehaviour
     public void CreateMap()
     {
         Camera mainCamera = Camera.main;
-        grid = GameManager.Resource.Create<GameObject>(Path.Map + "Grid");
+        grid = GameManager.Resource.Create<Grid>(Path.Map + "Grid");
 
         var temp = GameManager.Resource.Create<GameObject>(Path.Map + "Tilemap");
         tilemap = temp.GetComponent<Tilemap>();
@@ -86,8 +89,6 @@ public class MapManager : MonoBehaviour
         
         mapData = new int[mapWidth, mapHeight];
         mapCreator.GenerateMap(mapData, tilemap, groundTile, wallTile);
-        
-        pointer = GameManager.Resource.Load<GameObject>(Path.Mouse + "Pointer");
         
         attackRange.Initialize(attackRangeTilemap, redAttackTile, mainCamera, grid);
 
@@ -139,6 +140,68 @@ public class MapManager : MonoBehaviour
         }
     }
 
+    public void UpdateAttackTargets(List<Vector3Int> attackCells, List<BaseEnemy> enemies)
+    {
+        CurrentEnemyTargets.Clear();
+        CurrentObstacleCoords.Clear();
+        
+        foreach (var cell in attackCells)
+        {
+            if (cell.x >= 0 && cell.x < mapData.GetLength(0) && cell.y >= 0 && cell.y < mapData.GetLength(1))
+            {
+                int tileID = mapData[cell.x, cell.y];
+
+                if (tileID == TileID.Enemy)
+                {
+
+                    if (enemies == null)
+                    {
+                        Debug.LogError("MapManager의 enemies가 null");
+
+                    }
+                    else
+                    {
+                        Debug.Log($"enemies 리스트의 현재 몬스터 수: {enemies.Count}");
+
+                        foreach (var enemy in enemies)
+                        {
+                            Vector3Int enemyCellPos = GetCellFromWorldPos(enemy.transform.position);
+
+                            if (enemyCellPos == cell)
+                            {
+                                CurrentEnemyTargets.Add(enemy);
+
+                                break;
+                            }
+                        }
+                    }
+                }
+                else if (tileID == TileID.Obstacle)
+                {
+                    CurrentObstacleCoords.Add(cell);
+                }
+            }
+        }
+
+    }
+    public Vector3Int GetCellFromWorldPos(Vector3 worldPosition)
+    {
+        if (grid == null)
+        {
+            Debug.LogError("Grid component is not assigned in MapManager!");
+            return Vector3Int.zero;
+        }
+        
+        return grid.WorldToCell(worldPosition);
+    }
+    
+    public void ClearAttackTargets()
+    {
+        CurrentEnemyTargets.Clear();
+        CurrentObstacleCoords.Clear();
+    }
+    
+    
     // 임시로 선언한 함수들
 
     public List<Vector3Int> FindPath(Vector3Int start, Vector3Int dest)

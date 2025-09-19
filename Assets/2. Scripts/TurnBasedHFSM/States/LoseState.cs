@@ -10,5 +10,6 @@ public class LoseState : BaseTurnState
     {
         ResultUI backUI = GameManager.UI.GetUI<ResultUI>();
         backUI.GetResultType(ResultType.Over);
+        backUI.OpenUI();
     }
 }

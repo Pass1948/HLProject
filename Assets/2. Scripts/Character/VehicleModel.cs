@@ -17,7 +17,6 @@ public class VehicleModel : UnitModel
     public int maxBullet;
     public int additinalMove;
     public int additinalHealth;
-    public int moveRange = 2;
 
     public VehicleCondition condition;
 

@@ -23,7 +23,8 @@ public class PlayerAttackState : PlayerActionState
             timer += dt;
             if (timer > 0.1f) // TODO: Attack windup time
             {
-                GameManager.UI.CloseUI<MainUI>();
+                Debug.Log($"공격댐");
+
                 ChangeState<A_Execute>();
             }
         }
@@ -34,29 +35,43 @@ public class PlayerAttackState : PlayerActionState
         float timer;
         public override void OnEnter()
         {
-            Debug.Log($"지금 몬스터는? {GameManager.Unit.enemies[0].enemyModel.unitName}");
-            Debug.Log($"지금 몬스터 체력은? {GameManager.Unit.enemies[0].enemyModel.currentHealth}");
             timer = turnSetVlaue.resetTime;
-
-            //TODO: 첫 매개변수로 공격 -> 마우스 클릭시 감지되는 적 인덱스 넣어주기!! enemyModel로 해주시면 됩니다.
-            GameManager.Unit.ChangeHealth(
-                GameManager.Unit.enemies[0].enemyModel,
-                GameManager.Unit.Player.playerModel.attack,
-                turnSetVlaue.fireAmmo
-                );
-            GameManager.Unit.enemies[0].controller.OnHitState();
-            Debug.Log($"지금 몬스터는? {GameManager.Unit.enemies[0].enemyModel.unitName}");
-            Debug.Log($"지금 몬스터 체력은? {GameManager.Unit.enemies[0].enemyModel.currentHealth}");
-
+            AttackEnemy();
+            Debug.Log($"공격중");
         }
         public override void Tick(float dt)
         {
             timer += dt;
-            if (timer > 0.1f) // TODO: A_Execute time 
+            if (timer > 0.1f) 
             {
                 ChangeState<A_Recover>();
             }
         }
+
+        void AttackEnemy()
+        {
+            // 범위내에 있는 적들 전원 공격
+            var targets = GameManager.Map.CurrentEnemyTargets;
+            if (targets != null && targets.Count > 0)
+            {
+                foreach (var enemy in targets)
+                {
+
+                    if (enemy == null || enemy.controller == null || enemy.controller.isDie) continue;
+                    Debug.Log($"지금 몬스터 : {enemy.enemyModel.unitName}, {enemy.enemyModel.currentHealth}");
+                    GameManager.Unit.ChangeHealth(
+                        enemy.enemyModel,
+                        GameManager.Unit.Player.playerModel.attack,
+                        turnSetVlaue.fireAmmo
+                    );
+                    Debug.Log($"지금 몬스터 : {enemy.enemyModel.unitName}, {enemy.enemyModel.currentHealth}");
+                    enemy.controller.OnHitState();
+                    Debug.Log($"지금 몬스터 : {enemy.enemyModel.unitName}, {enemy.enemyModel.currentHealth}");
+                }
+            }
+        }
+
+
     }
 
     class A_Recover : PlayerActionState
@@ -65,20 +80,23 @@ public class PlayerAttackState : PlayerActionState
         public override void OnEnter()
         {
             timer = turnSetVlaue.resetTime;
-
-            if(turnManager.monsterQueue.Count <= 0)
-            {
-                ChangeState<WinState>("Force");
-            }
+            GameManager.Map.attackRange.ClearAttackType();
         }
         public override void Tick(float dt)
         {
-            //ChangeState<ClearCheckState>(); <=몬스터 처리 후 클리어 체크
+
             timer += dt;
-            if (timer > 0.1f) // TODO: A_Recover time 
+            if (timer > 1f) 
             {
                 GameManager.Map.pathfinding.ResetMapData();
-                ChangeState<PlayerTurnEndState>();
+                if (turnManager.EnemyDieCheck())
+                {
+                    ChangeState<WinState>();
+                }
+                else
+                {
+                    ChangeState<PlayerTurnEndState>();
+                }
             }
         }
     }

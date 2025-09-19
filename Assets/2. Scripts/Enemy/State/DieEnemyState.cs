@@ -11,7 +11,7 @@ public class DieEnemyState : BaseEnemyState
     public override void Enter()
     {
 
-        controller.isDie = true;
+
 
         if (controller.isDie)
         {
@@ -29,7 +29,6 @@ public class DieEnemyState : BaseEnemyState
 
     public override void Exit()
     {
-        GameManager.Unit.enemies.Remove(this.stateMachine.Controller.baseEnemy);
         controller.baseEnemy.gameObject.Destroy();
     }
 }

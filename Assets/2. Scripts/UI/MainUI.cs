@@ -3,14 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class MainUI : BaseUI
 {
-    [SerializeField] Button fireBtn;
+    [SerializeField] Button turnBtn;
     [SerializeField] AttackController fireBtnObj;
 
     [SerializeField] Button rerollBtn;
     [SerializeField] ReloadAmmo reloadBtnObj;
+
+    [SerializeField] Button kickBtn;
+
+    //재장전 텍스트
+    TMP_Text rerollLabel;
 
     [SerializeField] Button deckBtn;
     [SerializeField] ToggleBtnController deckBtnObj;
@@ -33,15 +39,18 @@ public class MainUI : BaseUI
     // 테스트
     [SerializeField] Button test;
 
+    
+
     private void Awake()
     {
-        fireBtn.onClick.AddListener(OnFire);
+        turnBtn.onClick.AddListener(OnTurnEnd);
         rerollBtn.onClick.AddListener(OnReload);
         deckBtn.onClick.AddListener(DeckToggle);
         discardBtn.onClick.AddListener(DiscardToggle);
         repairBtn.onClick.AddListener(RepairButton);
         mountBtn.onClick.AddListener(OnRiding);
         getOffBtn.onClick.AddListener(GetOff);
+        kickBtn.onClick.AddListener(OnKick);
 
         bikeControllBtn.onClick.AddListener(BikeToggle);
         atifactBtn.onClick.AddListener(AtifactToggle);
@@ -51,8 +60,16 @@ public class MainUI : BaseUI
 
         settingBtn.onClick.AddListener(GameResultUITest);
 
-        //시작시에 한번 실행되게
-        fireBtn.interactable = (fireBtnObj != null) && fireBtnObj.IsBtnSel;
+        InitReloadUI();
+    }
+
+    private void OnEnable()
+    {
+        reloadBtnObj.ReloadChange += OnReloadChanged;
+    }
+    private void OnDisable()
+    {
+        reloadBtnObj.ReloadChange -= OnReloadChanged;
     }
 
     private void GameResultUITest()
@@ -64,16 +81,13 @@ public class MainUI : BaseUI
 
     private void Update()
     {
-        //선택 없으면 버튼 비활성하기 <- 이러면 리스너 실행안됨
-        fireBtn.interactable = (fireBtnObj != null) && fireBtnObj.IsBtnSel;
         RefreshVehicleUI();
     }
 
     
-    private void OnFire()
+    private void OnTurnEnd()
     {
-        GameManager.TurnBased.SetSelectedAction(PlayerActionType.Attack);
-        fireBtnObj.Fire();
+        GameManager.TurnBased.ChangeTo<PlayerTurnEndState>("Force");
     }
 
     private void OnReload()
@@ -148,6 +162,12 @@ public class MainUI : BaseUI
         }
     }
 
+    void OnKick()
+    {
+        GameManager.Map.attackRange.SetAttackRangeForKick();
+        GameManager.Mouse.IsKicking = true; // 킥버튼 다시 눌렀을때 false로 바꿔주기
+    }
+
     private bool IsNearVehicle()
     {
         Vector3 vehiclePos = GameManager.Unit.Vehicle.transform.position;
@@ -185,5 +205,44 @@ public class MainUI : BaseUI
     private void BikeTest()
     {
         GameManager.Unit.Vehicle.vehicleHandler.DamageVehicle(3);
+    }
+
+    
+    private void OnReloadChanged(int remain, int max)
+    {
+        ApplyReloadUI(remain, max);
+    }
+
+    //재장전 텍스트 적용 텍스트에선 남은 횟수만 보이게
+    private void ApplyReloadUI(int remain, int max)
+    {
+           if( (remain > 0) || rerollBtn.gameObject.activeInHierarchy)
+            {
+                rerollBtn.interactable = true;
+            }
+            else
+            {
+                rerollBtn.interactable = false;
+            }
+            
+        if (!rerollLabel && rerollBtn)
+        {
+            rerollLabel = rerollBtn.GetComponentInChildren<TMP_Text>(true);
+        }
+
+        if (rerollLabel)
+        {
+            rerollLabel.text = $"재장전 x{remain}";
+        }    
+    }
+
+    private void InitReloadUI()
+    {
+        //라벨 참조
+        if (!rerollLabel && rerollBtn)
+        {
+            rerollLabel = rerollBtn.GetComponentInChildren<TMP_Text>(true);
+        }
+
     }
 }

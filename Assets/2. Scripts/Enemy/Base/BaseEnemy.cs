@@ -37,7 +37,7 @@ public class BaseEnemy : MonoBehaviour
     }
 
 
-    public void ChenageAttribute()
+    public void ChenageAttribute()  // 발차기(속성변경)
     {
         if(enemyModel.attri == EnemyAttribute.High)
         {
