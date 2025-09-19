@@ -15,7 +15,8 @@ public class MouseManager : MonoBehaviour
     [SerializeField] public Tilemap tilemap;     // 비우면 map.tilemap
     [SerializeField] public Camera cam;          // 비우면 Camera.main
     [SerializeField] public Transform pointer;   // 포인터(커서 비주얼). 비우면 생성
-
+    public Vector3Int PointerCell => tilemap.WorldToCell(pointer.position);
+    
     [Header("Pointer Resource (선택)")]
     [Tooltip("GameManager.Resource 경로를 쓰는 경우에만 사용. 비워도 됨.")]
     public string pointerResourcePath = Path.Mouse + "Pointer";
