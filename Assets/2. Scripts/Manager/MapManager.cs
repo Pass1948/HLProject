@@ -18,7 +18,7 @@ public class MapManager : MonoBehaviour
     public PlayerMoveInfo playerMoveInfo;
     private SpawnController spawnController;
     public AttackRangeDisplay attackRange;
-    
+        
     public Pathfinding pathfinding;
     public Tilemap tilemap;
     public Tilemap moveInfoTilemap;
@@ -138,8 +138,6 @@ public class MapManager : MonoBehaviour
         {
             mapData[oldX.x, oldY.y] = TileID.Terrain;
         }
-        Debug.Log($"이전 좌표: ({oldX}, {oldY}) | 타일 ID를 {mapData[oldX.x, oldY.y]}으로 변경");
-        Debug.Log($"새로운 좌표: ({newX}, {newY}) | 타일 ID를 {objectID}으로 변경");
     }
 
     public void UpdateAttackTargets(List<Vector3Int> attackCells, List<BaseEnemy> enemies)
