@@ -24,12 +24,11 @@ public class MoveEnemyState : BaseEnemyState
         
         if (path == null || path.Count == 0)
         {
-            Debug.Log("��ã�� ���");
             stateMachine.ChangeState(stateMachine.EndState);
             return;
         }
 
-        if (path[path.Count - 1] == dest && GameManager.Map.IsPlayer(dest))
+        if (path[path.Count - 1] == dest && GameManager.Map.IsPlayer(dest) || GameManager.Map.IsVehicle(dest))
             path.RemoveAt(path.Count - 1);
 
         int range = Mathf.Min(controller.moveRange, path.Count);
