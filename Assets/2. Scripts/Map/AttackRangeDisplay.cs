@@ -31,8 +31,6 @@ public class AttackRangeDisplay : MonoBehaviour
             ClearRange();
             return;
         }
-        if (GameManager.Mouse.IsAttacking == false) // 공격시 범위 멈춤 (작성자: 이영신)
-        {
             Vector3Int direction = GetDirectionFromMouse();
             List<Vector3Int> newRange = new List<Vector3Int>();
             switch (currentSuit)
@@ -51,7 +49,7 @@ public class AttackRangeDisplay : MonoBehaviour
                     break;
             }
             ShowRange(newRange);
-        }
+        
     }
 
 

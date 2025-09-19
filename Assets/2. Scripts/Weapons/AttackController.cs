@@ -20,10 +20,22 @@ public class AttackController : MonoBehaviour
     //UI에서 쓰는 선택상태
     public bool IsBtnSel => (selectedAmmoBtn != null) && (bullet != null);
 
+    private void OnEnable()
+    {
+        GameManager.Event.Subscribe(EventType.PlayerAttack, Fire);
+    }
+    private void OnDisable()
+    {
+        GameManager.Event.Unsubscribe(EventType.PlayerAttack, Fire);
+    }
+
+
+
     //탄환버튼 OnClick
     public void SelectAmmo(Button btn)
     {
-        if(btn == null)
+
+        if (btn == null)
         {
             return;
         }
@@ -88,7 +100,7 @@ public class AttackController : MonoBehaviour
             int rank = bulletView.ammo.rank;
     
             GameManager.Map.attackRange.SetAttackRange(suit, rank);
-            GameManager.Mouse.IsAttacking = true;   
+            GameManager.Mouse.IsAttacking = true;
         }
         //
 

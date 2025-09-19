@@ -17,14 +17,14 @@ public class PlayerAttackState : PlayerActionState
         public override void OnEnter()
         {
             timer = turnSetVlaue.resetTime;
+            GameManager.Event.Publish(EventType.PlayerAttack);
         }
         public override void Tick(float dt)
         {
             timer += dt;
             if (timer > 0.1f) // TODO: Attack windup time
             {
-                GameManager.UI.CloseUI<MainUI>();
-                GameManager.Map.attackRange.ClearRange();
+                GameManager.Map.attackRange.ClearAttackType();
                 ChangeState<A_Execute>();
             }
         }
@@ -36,6 +36,7 @@ public class PlayerAttackState : PlayerActionState
         public override void OnEnter()
         {
             timer = turnSetVlaue.resetTime;
+            GameManager.UI.CloseUI<MainUI>();
         }
         public override void Tick(float dt)
         {
