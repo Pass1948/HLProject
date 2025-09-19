@@ -15,7 +15,6 @@ public class PlayerTurnState : BaseTurnState
         // 턴 시작 시 커맨드 초기화후 입력 대기
         GameManager.UI.OpenUI<PaseTurnUI>();
         GameManager.Mouse.ToggleMovePhase();
-        GameManager.Unit.Vehicle.vehicleHandler.MountVehicle();
     }
 
     public override void Tick(float dt)
