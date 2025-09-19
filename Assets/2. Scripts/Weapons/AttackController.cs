@@ -44,7 +44,7 @@ public class AttackController : MonoBehaviour
             bullet = null;
             
             GameManager.Map.attackRange.ClearAttackType();
-            
+            GameManager.Mouse.IsAttacking = false;
             return;
         }
 
@@ -88,6 +88,7 @@ public class AttackController : MonoBehaviour
             int rank = bulletView.ammo.rank;
     
             GameManager.Map.attackRange.SetAttackRange(suit, rank);
+            GameManager.Mouse.IsAttacking = true;   
         }
         //
 

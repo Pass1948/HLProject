@@ -171,7 +171,7 @@ public class TurnBasedManager : MonoBehaviour
                 enemy.controller.isDone = false;
                 enemy.controller.StartTurn();
                 currentEnemy = enemy;
-                return; // 현재 적이 완료되면 OnEnemyTurnEnded 이벤트로 이어짐
+                return; // 현재 적이 완료되면 OnEnemyTurnEnded 로 이어짐
             }
         }
 
@@ -179,8 +179,34 @@ public class TurnBasedManager : MonoBehaviour
         if (currentEnemy == null)
         {
             enemyPhaseActive = false;
-            ChangeTo<PlayerTurnState>("Enemy phase finished");
+            ChangeTo<ClearCheckState>("Enemy phase finished");
         }
     }
+    public bool EnemyDieCheck()
+    {
+        var monsters = (GameManager.Unit != null) ? GameManager.Unit.enemies : null;
+        // 적 리스트가 없거나 비어 있으면 '모두 처치됨'으로 간주 (원하시면 false로 바꾸세요)
+        if (monsters == null || monsters.Count == 0)
+            return true;
 
+        foreach (var e in monsters)
+        {
+            if (e == null)  // null 이면 바로 반환
+                continue;
+
+            // 하나라도 살아있으면 false 반환
+            if (!e.controller.isDie)
+                return false;
+        }
+        return true;
+    }
+
+    public bool IsPlayerDead()
+    {
+        var p = (GameManager.Unit != null) ? GameManager.Unit.Player : null;
+        if (p == null) return true;
+
+        bool flagDead = (p.controller != null) && p.playerModel.die;
+        return flagDead;
+    }
 }

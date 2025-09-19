@@ -53,6 +53,10 @@ public class MouseManager : MonoBehaviour
     private int selectedMoveRange;
     bool isPlayer = false;
 
+    //==== 공격 상태 =====
+    private bool isAttacking = false;
+    public bool IsAttacking { get { return isAttacking; } set { isAttacking = value; } }
+
     // ===== 내부 캐시 =====
     private Vector3Int lastCell = new Vector3Int(int.MinValue, int.MinValue, 0);
     private Vector3Int lastValidCell;
@@ -181,7 +185,10 @@ public class MouseManager : MonoBehaviour
         selectedPlayer = useOverlapLookup ? FindAtCell<BasePlayer>(cell) : null; selectedPlayerCell = cell; 
         // 이동 범위 설정(플레이어 모델이 있으면 거기서, 없으면 MapManager의 기본값 사용)
         selectedMoveRange = GameManager.Unit.Player.playerModel.moveRange; // UI/범위 표시
-        map.PlayerUpdateRange(cell, selectedMoveRange); 
+        if (isAttacking == false)
+        {
+            map.PlayerUpdateRange(cell, selectedMoveRange);
+        }
         GameManager.UI.CloseUI<EnemyInfoPopUpUI>(); 
     }
 
@@ -200,7 +207,6 @@ public class MouseManager : MonoBehaviour
             else
             { //인스턴스가 없으면 취소(선택 해제)
                 CancelSelection();
-
             }
         }
     }
@@ -209,37 +215,45 @@ public class MouseManager : MonoBehaviour
     // Terrain 셀 클릭 → 선택된 플레이어가 있으면 이동 시도
     private void OnClickTerrain(Vector3Int destCell)
     {
-        if(isPlayer == true)
+        if(isAttacking == true)
         {
-            // 0) 이동 페이즈가 아니면 무시 (PlayerMove 단계에서만 허용)
-            if (movePhaseActive == false) return;
-
-            //  현재 이동 중이면 무시
-           // if (isMoving) return;
-
-            //  플레이어가 선택되어 있어야 함
-            if (selectedPlayer == null) return;
-
-            //  같은 칸이면 무시
-            if (destCell == selectedPlayerCell) return;
-
-            // 경로 계산
-            List<Vector3Int> path = map.FindPath(selectedPlayerCell, destCell);
-
-            // 경로/범위 검증
-            if (path == null || path.Count > selectedMoveRange)
+            GameManager.TurnBased.SetSelectedAction(PlayerActionType.Attack);
+            isAttacking = false;
+        }
+        else
+        {
+            if (isPlayer == true)
             {
-                CancelSelection();
-                return;
-            }
+                // 0) 이동 페이즈가 아니면 무시 (PlayerMove 단계에서만 허용)
+                if (movePhaseActive == false) return;
 
-            // 이동 시작
-            StopAllCoroutines();
-            StartCoroutine(MoveAlongPath(selectedPlayer.transform, selectedPlayerCell, path, TileID.Player));
-            GameManager.TurnBased.SetSelectedAction(PlayerActionType.Move);
-            // 추가 입력 차단 + 선택/범위 UI 정리
-            movePhaseActive = false;
-            CancelSelection();
+                //  현재 이동 중이면 무시
+                // if (isMoving) return;
+
+                //  플레이어가 선택되어 있어야 함
+                if (selectedPlayer == null) return;
+
+                //  같은 칸이면 무시
+                if (destCell == selectedPlayerCell) return;
+
+                // 경로 계산
+                List<Vector3Int> path = map.FindPath(selectedPlayerCell, destCell);
+
+                // 경로/범위 검증
+                if (path == null || path.Count > selectedMoveRange)
+                {
+                    CancelSelection();
+                    return;
+                }
+
+                // 이동 시작
+                StopAllCoroutines();
+                StartCoroutine(MoveAlongPath(selectedPlayer.transform, selectedPlayerCell, path, TileID.Player));
+                GameManager.TurnBased.SetSelectedAction(PlayerActionType.Move);
+                // 추가 입력 차단 + 선택/범위 UI 정리
+                movePhaseActive = false;
+                CancelSelection();
+            }
         }
     }
 
@@ -275,7 +289,13 @@ public class MouseManager : MonoBehaviour
 
     }
 
-    // ===== 공용 유틸 =====
+
+
+
+
+    // =====================================================================
+    //공용 메서드
+    // =====================================================================
     public Vector3Int GetCurrentCell(bool preferValid = true)
         => preferValid ? (lastValidCell == default ? lastCell : lastValidCell) : lastCell;
 
@@ -331,6 +351,7 @@ public class MouseManager : MonoBehaviour
             var t = c.GetComponentInParent<T>(); if (t) return t; 
         } return null; 
     }
+
     //================= Pathfinding의 잔재 더이상 쓸모 없을때 지우기 =================//
     public void ShowPath(Vector3Int[] path, Tilemap tilemap, int moveRange, GameObject mouse)
     {

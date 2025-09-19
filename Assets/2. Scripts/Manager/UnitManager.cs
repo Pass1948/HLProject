@@ -37,19 +37,14 @@ public class UnitManager : MonoBehaviour
                 case EnemyAttribute.High:
                     if (enemy.rank < ammo.rank)
                     {
-                        Debug.Log($"몬스터의 체력은(enemy.currentHealth) : {enemy.currentHealth},몬스터의 체력은(unit.currentHealth){unit.currentHealth}");
                         unit.currentHealth -= damage;
-                        Debug.Log($"몬스터의 체력은(enemy.currentHealth) : {enemy.currentHealth},몬스터의 체력은(unit.currentHealth){unit.currentHealth}");
-
                     }
           
                     break;
                 case EnemyAttribute.Low:
                     if (enemy.rank > ammo.rank)
                     {
-                        Debug.Log($"몬스터의 체력은(enemy.currentHealth) : {enemy.currentHealth},몬스터의 체력은(unit.currentHealth){unit.currentHealth}");
                         unit.currentHealth -= damage;
-                        Debug.Log($"몬스터의 체력은(enemy.currentHealth) : {enemy.currentHealth},몬스터의 체력은(unit.currentHealth){unit.currentHealth}");
                     }
                     break;
             }
