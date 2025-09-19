@@ -31,7 +31,7 @@ public class MapManager : MonoBehaviour
 
     public Grid grid;
     
-    public List<GameObject> CurrentEnemyTargets { get; private set; } = new List<GameObject>();
+    public List<BaseEnemy> CurrentEnemyTargets { get; private set; } = new List<BaseEnemy>();
     public List<Vector3Int> CurrentObstacleCoords { get; private set; } = new List<Vector3Int>();
     
     void Awake()
@@ -169,7 +169,7 @@ public class MapManager : MonoBehaviour
 
                             if (enemyCellPos == cell)
                             {
-                                CurrentEnemyTargets.Add(enemy.gameObject);
+                                CurrentEnemyTargets.Add(enemy);
                                 break;
                             }
                         }

@@ -99,6 +99,7 @@ public class EnemyController : MonoBehaviour
     {
         // 이미 죽었으면 무시
         if (isDie) return;
+ 
 
         // 중복 시작 방지
         if (startTurn && !isDone) return;

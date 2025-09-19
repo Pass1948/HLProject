@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class ClearCheckState : BaseTurnState
 {
-   public ClearCheckState() { }
+    float timer;
+    public ClearCheckState() { }
     public override void OnEnter()
     {
+        timer = 0f;
     }
     public override void Tick(float dt)
     {

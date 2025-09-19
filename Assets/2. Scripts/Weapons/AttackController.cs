@@ -150,8 +150,8 @@ public class AttackController : MonoBehaviour
         selectedAmmoBtn = null;
         selectBulletBg = null;
         bullet = null;
-
         Debug.Log("Fire");
+        GameManager.TurnBased.SetSelectedAction(PlayerActionType.Attack);
     }
 
     //탄창 비우고 탄 리스트 반환

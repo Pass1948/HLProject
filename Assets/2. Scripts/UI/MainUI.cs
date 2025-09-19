@@ -7,7 +7,7 @@ using TMPro;
 
 public class MainUI : BaseUI
 {
-    [SerializeField] Button fireBtn;
+    [SerializeField] Button turnBtn;
     [SerializeField] AttackController fireBtnObj;
 
     [SerializeField] Button rerollBtn;
@@ -40,7 +40,7 @@ public class MainUI : BaseUI
 
     private void Awake()
     {
-        fireBtn.onClick.AddListener(OnFire);
+        turnBtn.onClick.AddListener(OnTurnEnd);
         rerollBtn.onClick.AddListener(OnReload);
         deckBtn.onClick.AddListener(DeckToggle);
         discardBtn.onClick.AddListener(DiscardToggle);
@@ -56,9 +56,6 @@ public class MainUI : BaseUI
 
         settingBtn.onClick.AddListener(GameResultUITest);
 
-        //시작시에 한번 실행되게
-        fireBtn.interactable = (fireBtnObj != null) && fireBtnObj.IsBtnSel;
-
         InitReloadUI();
     }
 
@@ -71,16 +68,13 @@ public class MainUI : BaseUI
 
     private void Update()
     {
-        //선택 없으면 버튼 비활성하기 <- 이러면 리스너 실행안됨
-        fireBtn.interactable = (fireBtnObj != null) && fireBtnObj.IsBtnSel;
         RefreshVehicleUI();
     }
 
     
-    private void OnFire()
+    private void OnTurnEnd()
     {
-        GameManager.TurnBased.SetSelectedAction(PlayerActionType.Attack);
-        fireBtnObj.Fire();
+        GameManager.TurnBased.ChangeTo<PlayerTurnEndState>("Force");
     }
 
     private void OnReload()
