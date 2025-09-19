@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class MainUI : BaseUI
 {
@@ -11,6 +12,8 @@ public class MainUI : BaseUI
 
     [SerializeField] Button rerollBtn;
     [SerializeField] ReloadAmmo reloadBtnObj;
+    //재장전 텍스트
+    [SerializeField] TMP_Text rerollLabel;
 
     [SerializeField] Button deckBtn;
     [SerializeField] ToggleBtnController deckBtnObj;
@@ -33,6 +36,8 @@ public class MainUI : BaseUI
     // 테스트
     [SerializeField] Button test;
 
+    
+
     private void Awake()
     {
         fireBtn.onClick.AddListener(OnFire);
@@ -53,6 +58,8 @@ public class MainUI : BaseUI
 
         //시작시에 한번 실행되게
         fireBtn.interactable = (fireBtnObj != null) && fireBtnObj.IsBtnSel;
+
+        InitReloadUI();
     }
 
     private void GameResultUITest()
@@ -185,5 +192,46 @@ public class MainUI : BaseUI
     private void BikeTest()
     {
         GameManager.Unit.Vehicle.vehicleHandler.DamageVehicle(3);
+    }
+
+    
+    private void OnReloadChanged(int remain, int max)
+    {
+        ApplyReloadUI(remain, max);
+    }
+
+    //재장전 텍스트 적용 텍스트에선 남은 횟수만 보이게
+    private void ApplyReloadUI(int remain, int max)
+    {
+        if (rerollBtn)
+        {
+            rerollBtn.interactable = (remain > 0) && rerollBtn.gameObject.activeInHierarchy;
+        }
+            
+        if (!rerollLabel && rerollBtn)
+        {
+            rerollLabel = rerollBtn.GetComponentInChildren<TMP_Text>(true);
+        }
+
+        if (rerollLabel)
+        {
+            rerollLabel.text = $"재장전 x{remain}";
+        }    
+    }
+
+    private void InitReloadUI()
+    {
+        //라벨 참조
+        if (!rerollLabel && rerollBtn)
+        {
+            rerollLabel = rerollBtn.GetComponentInChildren<TMP_Text>(true);
+        }
+
+        //중복 방지하기
+        if (reloadBtnObj != null)
+        {
+            reloadBtnObj.ReloadChange -= OnReloadChanged; 
+            reloadBtnObj.ReloadChange += OnReloadChanged;
+        }
     }
 }
