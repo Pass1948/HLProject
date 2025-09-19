@@ -4225,6 +4225,7 @@ MonoBehaviour:
   repairBtn: {fileID: 1358183122330545507}
   mountBtn: {fileID: 4435923645813011581}
   getOffBtn: {fileID: 5927758628712113050}
+  settingBtn: {fileID: 4109881642658001301}
   test: {fileID: 3141610987342010207}
 --- !u!114 &2122605686555309026
 MonoBehaviour:
