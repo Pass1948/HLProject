@@ -12,7 +12,7 @@ public class TurnBasedManager : MonoBehaviour
     [HideInInspector] public TurnSettingValue turnSettingValue { get; private set; }
 
 
-    Queue<BaseEnemy> monsterQueue = new Queue<BaseEnemy>();
+    public Queue<BaseEnemy> monsterQueue = new Queue<BaseEnemy>();
 
     // 현재 진행 중인 몬스터(없으면 null)
     private BaseEnemy currentEnemy;

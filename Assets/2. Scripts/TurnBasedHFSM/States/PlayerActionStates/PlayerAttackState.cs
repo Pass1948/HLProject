@@ -70,6 +70,11 @@ public class PlayerAttackState : PlayerActionState
         public override void OnEnter()
         {
             timer = turnSetVlaue.resetTime;
+
+            if(turnManager.monsterQueue.Count <= 0)
+            {
+                ChangeState<WinState>("Force");
+            }
         }
         public override void Tick(float dt)
         {
