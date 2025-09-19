@@ -72,7 +72,8 @@ public class Pathfinding
         Dictionary<Vector3Int, Node> allNodes = new Dictionary<Vector3Int, Node>();
 
         allNodes[start] = startNode;
-        while (openSet.Count > 0)
+        int safety = 50; // 세이프가드
+        while (openSet.Count > 0 && safety-- > 0)
         {
             // openSet에서 fCost가 가장 낮은 노드를 선택
             Node currentNode = openSet[0];

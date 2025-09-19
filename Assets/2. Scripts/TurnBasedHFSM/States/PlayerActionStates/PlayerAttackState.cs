@@ -34,7 +34,8 @@ public class PlayerAttackState : PlayerActionState
         float timer;
         public override void OnEnter()
         {
-            Debug.Log(GameManager.Unit.enemies[0].enemyModel);
+            Debug.Log($"지금 몬스터는? {GameManager.Unit.enemies[0].enemyModel.unitName}");
+            Debug.Log($"지금 몬스터 체력은? {GameManager.Unit.enemies[0].enemyModel.currentHealth}");
             timer = turnSetVlaue.resetTime;
 
             //TODO: 첫 매개변수로 공격 -> 마우스 클릭시 감지되는 적 인덱스 넣어주기!! enemyModel로 해주시면 됩니다.
@@ -43,6 +44,10 @@ public class PlayerAttackState : PlayerActionState
                 GameManager.Unit.Player.playerModel.attack,
                 turnSetVlaue.fireAmmo
                 );
+            GameManager.Unit.enemies[0].controller.OnHitState();
+            Debug.Log($"지금 몬스터는? {GameManager.Unit.enemies[0].enemyModel.unitName}");
+            Debug.Log($"지금 몬스터 체력은? {GameManager.Unit.enemies[0].enemyModel.currentHealth}");
+
         }
         public override void Tick(float dt)
         {
@@ -60,6 +65,11 @@ public class PlayerAttackState : PlayerActionState
         public override void OnEnter()
         {
             timer = turnSetVlaue.resetTime;
+
+            if(turnManager.monsterQueue.Count <= 0)
+            {
+                ChangeState<WinState>("Force");
+            }
         }
         public override void Tick(float dt)
         {

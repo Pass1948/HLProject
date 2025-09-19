@@ -25,7 +25,7 @@ public class AttackEnemyState : BaseEnemyState
     public override void Excute()
     {
 
-        Debug.Log("Attack : Excute");
+        //Debug.Log("Attack : Excute");
     }
 
     public override void Exit()

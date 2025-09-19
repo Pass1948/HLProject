@@ -12,6 +12,7 @@ public enum EventType
     PlayerMove,
     EnemyTurnStart,
     EnemyTurnEnd,
+    EnemyHit,
     VehicleOnMounted,
     VehicleOnDismounted,
     VehicleOnRepaired,
