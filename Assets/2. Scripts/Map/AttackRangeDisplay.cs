@@ -15,6 +15,8 @@ public class AttackRangeDisplay : MonoBehaviour
 
     public int range_plus = 0;
 
+    public MovementController playerMovementController;
+    
     private List<Vector3Int> currentAttackTiles = new List<Vector3Int>();
 
     private Suit currentSuit = Suit.Spade;
@@ -58,8 +60,6 @@ public class AttackRangeDisplay : MonoBehaviour
                     break;
             }
         }
-        
-
         ShowRange(newRange);
         // 범위를 MapManager로 보내 타겟 목록을 갱신
         GameManager.Map.UpdateAttackTargets(newRange, enemies);
@@ -137,48 +137,59 @@ public class AttackRangeDisplay : MonoBehaviour
         Vector2Int playerPos2D = GameManager.Map.GetPlayerPosition();
         return new Vector3Int(playerPos2D.x, playerPos2D.y, 0);
     }
+    
+    private Vector3 GetPlayerWorldPosition()
+    {
+        if (playerMovementController != null)
+        {
+            Vector3 playerPos = playerMovementController.transform.position;
+            return playerMovementController.transform.position;
+        }
+        
+        return Vector3.zero;
+    }
 
     private Vector3Int GetDirectionFromMouse()
     {
-        if (mainCamera == null || grid == null)
+        if (GameManager.Mouse == null || grid == null || GameManager.Mouse.tilemap == null)
         {
             return Vector3Int.zero;
         }
+        
         Vector3Int playerCellPos = GetPlayerCellPosition();
-        Vector2 playerWorldPos = grid.GetComponent<Grid>().CellToWorld(playerCellPos);
-        Vector2 playerScreenPos = mainCamera.WorldToScreenPoint(playerWorldPos);
-
-        Vector2 mouseScreenPos = Input.mousePosition;
-        Vector2 screenDistanceVector = mouseScreenPos - playerScreenPos;
-
-        if (screenDistanceVector.magnitude < 1)
+        Vector3Int mouseCellPos = GameManager.Mouse.PointerCell;
+        
+        Vector3Int directionVector = mouseCellPos - playerCellPos;
+        
+        if (directionVector.magnitude < 0.5f)
         {
             return Vector3Int.zero;
         }
+        
+        Vector2 normalizedDirection = new Vector2(directionVector.x, directionVector.y).normalized;
 
-        float angle = Mathf.Atan2(screenDistanceVector.y, screenDistanceVector.x) * Mathf.Rad2Deg;
-        angle -= 20f;
-        if (angle < 0)
+        Vector2[] cardinalDirections = new Vector2[]
         {
-            angle += 360;
-        }
+            Vector2.up,
+            Vector2.down,
+            Vector2.left,
+            Vector2.right
+        };
 
-        if (angle >= 45f && angle < 135f)
+        Vector3Int bestDirection = Vector3Int.zero;
+        float maxDot = -1f;
+
+        for (int i = 0; i < cardinalDirections.Length; i++)
         {
-            return Vector3Int.up;
+            float dotProduct = Vector2.Dot(normalizedDirection, cardinalDirections[i]);
+
+            if (dotProduct > maxDot)
+            {
+                maxDot = dotProduct;
+                bestDirection = new Vector3Int((int)cardinalDirections[i].x, (int)cardinalDirections[i].y, 0);
+            }
         }
-        else if (angle >= 135f && angle < 225f)
-        {
-            return Vector3Int.left;
-        }
-        else if (angle >= 225f && angle < 315f)
-        {
-            return Vector3Int.down;
-        }
-        else
-        {
-            return Vector3Int.right;
-        }
+        return bestDirection;
     }
 
     private List<Vector3Int> GetDiamondRange(Vector3Int direction)
