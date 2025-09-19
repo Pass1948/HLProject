@@ -83,7 +83,7 @@ public class AttackRangeDisplay : MonoBehaviour
     public void SetAttackRangeForKick() // 킥 공격 <- 이걸 버튼에 연결
     {
         isKickAttack = true; 
-        currentRank = 0; /
+        currentRank = 0;
     }
 
     public void ClearAttackType() // 범위 지우기
@@ -220,10 +220,10 @@ public class AttackRangeDisplay : MonoBehaviour
         int effectiveRange = 2 + range_plus;
         for (int i = 1; i <= effectiveRange; i++)
         {
-            range.Add(playerPos + leftDirection * i);
-            range.Add(playerPos + rightDirection * i);
+            range.Add(playerPos + diagonalDirection * i);
         }
         return range;
+
     }
 
 

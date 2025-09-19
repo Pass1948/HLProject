@@ -169,7 +169,7 @@ public class MapManager : MonoBehaviour
 
                             if (enemyCellPos == cell)
                             {
-                                CurrentEnemyTargets.Add(enemy.gameObject);
+                                CurrentEnemyTargets.Add(enemy);
 
                                 break;
                             }
