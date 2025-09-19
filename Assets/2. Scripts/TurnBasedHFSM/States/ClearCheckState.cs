@@ -5,24 +5,27 @@ using UnityEngine;
 public class ClearCheckState : BaseTurnState
 {
     float timer;
+    private bool didClose;
     public ClearCheckState() { }
     public override void OnEnter()
     {
-        timer = 0f;
+        timer = turnSetVlaue.resetTime;
+        didClose = false;
     }
     public override void Tick(float dt)
     {
-         if (turnManager.EnemyDieCheck())
+        if (didClose) return;
+        timer += dt;
+        if (timer > turnSetVlaue.turnDelayTime)
         {
-            ChangeState<WinState>();
-        }
-       else if (turnManager.IsPlayerDead())
-        {
-            ChangeState<LoseState>();
-        }
-        else
-        {
-            ChangeState<IdleState>();
+            if (turnManager.IsPlayerDead())
+            {
+                ChangeState<LoseState>();
+            }
+            else
+            {
+                ChangeState<IdleState>();
+            }
         }
     }
 }

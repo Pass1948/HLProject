@@ -15,7 +15,7 @@ public class PlayerModel : UnitModel
     public ViecleBording viecleBording;
     public int attack;
     public int attackRange;
-    public int moveRange = 1;
+    public int moveRange;
     public int mulligan;
     public int reload;
     public int health;
@@ -29,7 +29,7 @@ public class PlayerModel : UnitModel
         attack = data.Attack;
         attackRange = Random.Range(data.MinAttackRange, data.MaxAttackRange);
         moveRange = data.MoveRange;
-        maxHealth = data.Health;
+        maxHealth = 1;
         currentHealth = maxHealth;
         mulligan = data.Mulligan;
         reload = data.Reload;
