@@ -21,8 +21,7 @@ public class DecideEnemyState : BaseEnemyState
     public override void Exit()
     {
     }
-
-    // Å¸°Ù(ÇÃ·¹ÀÌ¾î)¿ÍÀÇ °Å¸® °è»ê
+    
     private int GetDistanceTarget(Vector3Int pos, Vector3Int target)
     {
         return Mathf.Abs(pos.x - target.x) + Mathf.Abs(pos.y - target.y);
@@ -37,7 +36,6 @@ public class DecideEnemyState : BaseEnemyState
 
         if (path == null || path.Count == 0)
         {
-            Debug.Log("³ë ÀÌµ¿");
             stateMachine.ChangeState(stateMachine.EndState);
             return;
         }
@@ -91,14 +89,14 @@ public class DecideEnemyState : BaseEnemyState
             {
                 Vector3Int candidate = new Vector3Int(enemyPos.x + dx, enemyPos.y + dy, 0);
 
-                // ¸Ê ¾ÈÀÌ°í ÀÌµ¿ °¡´ÉÇØ¾ß ÇÔ
+                // ï¿½ï¿½ ï¿½ï¿½ï¿½Ì°ï¿½ ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ø¾ï¿½ ï¿½ï¿½
                 if (!GameManager.Map.IsMovable(candidate))
                     continue;
 
-                // ÇÃ·¹ÀÌ¾î¿ÍÀÇ °Å¸®
+                // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ï¿½ ï¿½Å¸ï¿½
                 int dist = GetDistanceTarget(candidate, playerPos);
 
-                if (dist > bestDist) // ´õ ¸Ö¸® °¥ ¼ö ÀÖ´Â Ä­
+                if (dist > bestDist) // ï¿½ï¿½ ï¿½Ö¸ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö´ï¿½ Ä­
                 {
                     List<Vector3Int> path = GameManager.Map.FindPath(enemyPos, candidate);
                     if (path != null && path.Count <= moveRange)
