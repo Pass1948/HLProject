@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class ReloadAmmo : MonoBehaviour
@@ -7,8 +8,15 @@ public class ReloadAmmo : MonoBehaviour
     [SerializeField] private AttackController magazine;
     [SerializeField] private bool autoReload = true;
 
-    [Header("Optional: Deck List UI")]
     [SerializeField] private RectTransform deckBg;//덱 표시되는 Bg
+
+    private int maxReloads = 4;
+    private int usedReloads = 0;
+
+    public int Remaining => Mathf.Max(0, maxReloads - usedReloads);
+    public bool CanReload => Remaining > 0;
+
+    public event Action<int, int> ReloadChange;
 
     void Start()
     {
@@ -31,6 +39,14 @@ public class ReloadAmmo : MonoBehaviour
             return;
         }
 
+        if (!CanReload)
+        {
+            Debug.LogWarning("탄약없음!");
+            //탄약없을때도 UI갱신시키기
+            ReloadChange?.Invoke(Remaining, maxReloads);
+            return;
+        }
+
         magazine.ClearMagazine();
 
         if (deck != null)
@@ -40,6 +56,9 @@ public class ReloadAmmo : MonoBehaviour
             magazine.AddBullets(draw);
         }
 
+        //사용탄약 증가
+        usedReloads = Mathf.Min(usedReloads + 1, maxReloads);
+
         RefreshDeckUI();
     }
 
@@ -48,6 +67,8 @@ public class ReloadAmmo : MonoBehaviour
     {
         if (deckBg == null) 
         {
+            //탄환집 클릭안하면 Bg가 안나오는데 남은 Reload숫자는 갱신해야하니까
+            ReloadChange?.Invoke(Remaining, maxReloads);
             return;
         }
         
@@ -61,6 +82,8 @@ public class ReloadAmmo : MonoBehaviour
                 SpawnDeckItem(deckBg, a);
             }
         }
+
+        ReloadChange?.Invoke(Remaining, maxReloads);
     }
 
     // 프리팹 생성
