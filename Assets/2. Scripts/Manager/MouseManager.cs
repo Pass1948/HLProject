@@ -155,16 +155,19 @@ public class MouseManager : MonoBehaviour
 
         var cell = GetCurrentCell();
         if (!IsInside(cell)) return;
+
+        // =============Player=============
         if (map.IsPlayer(cell))
         {
             isPlayer = true;
             OnClickPlayer(cell);
             return;
         }
-        if (map.IsEnemy(cell) && isAttacking == false)
+
+        // =============Enemy=============
+        if (map.IsEnemy(cell))
         {
             isPlayer = false;
-            GameManager.UI.CloseUI<MainUI>();
             OnClickEnemy(cell);
             return;
         }
@@ -173,18 +176,35 @@ public class MouseManager : MonoBehaviour
             GameManager.Event.Publish(EventType.PlayerAttack);
             isAttacking = false;
         }
+        else if (map.IsEnemy(cell) && isKicking == true)
+        {
+            GameManager.TurnBased.ChangeTo<PlayerKickState>();
+            IsKicking = false;
+        }
+        else if (map.IsEnemy(cell) && map.IsMovable(cell) &&  isKicking == true)
+        {
+            GameManager.TurnBased.ChangeTo<PlayerKickState>();
+            IsKicking = false;
+        }
 
-        if (map.IsMovable(cell)&& isAttacking==false) // Terrain
+
+        // =============Terrain=============
+        if (map.IsMovable(cell) && isAttacking == false && isKicking == false)
+       {
+           OnClickTerrain(cell);
+           return;
+       }
+       else if (map.IsMovable(cell) && isAttacking == true)
+       {
+           GameManager.Event.Publish(EventType.PlayerAttack);
+           isAttacking = false;
+       }
+        else if (map.IsMovable(cell) && isKicking == true)      // 범위 각도 고처지면 변경해야함
         {
-            OnClickTerrain(cell);
-            GameManager.UI.CloseUI<MainUI>();
-            return;
+            GameManager.TurnBased.ChangeTo<PlayerKickState>();
+            IsKicking = false;
         }
-        else if(map.IsMovable(cell) && isAttacking==true)
-        {
-            GameManager.Event.Publish(EventType.PlayerAttack);
-            isAttacking = false;
-        }
+
 
         isPlayer = false;
         // 그 외(Obstacle 등)
@@ -217,7 +237,6 @@ public class MouseManager : MonoBehaviour
         map.ClearPlayerRange();
         if (isMoving) return;
         var enemy = useOverlapLookup ? FindAtCell<BaseEnemy>(cell) : null;
-        // 공격범위 셀 id를 적과 비교해서 일치하면 공격
         if (enemy != null)
         {
             GameManager.UI.GetUI<EnemyInfoPopUpUI>().SetData(enemy.enemyModel.unitName, enemy.enemyModel.attri, enemy.enemyModel.rank);
@@ -227,46 +246,45 @@ public class MouseManager : MonoBehaviour
         { //인스턴스가 없으면 취소(선택 해제)
             CancelSelection();
         }
-
     }
 
 
     // Terrain 셀 클릭 → 선택된 플레이어가 있으면 이동 시도
     private void OnClickTerrain(Vector3Int destCell)
     {
-            if (isPlayer == true)
+        if (isPlayer == true)
+        {
+            // 이동 페이즈가 아니면 무시 (PlayerMove 단계에서만 허용)
+            if (movePhaseActive == false) return;
+
+            //  현재 이동 중이면 무시
+            //if (isMoving) return;
+
+            //  플레이어가 선택되어 있어야 함
+            if (selectedPlayer == null) return;
+
+            //  같은 칸이면 무시
+            if (destCell == selectedPlayerCell) return;
+
+            // 경로 계산
+            List<Vector3Int> path = map.FindPath(selectedPlayerCell, destCell);
+
+            // 경로/범위 검증
+            if (path == null || path.Count > selectedMoveRange)
             {
-                // 이동 페이즈가 아니면 무시 (PlayerMove 단계에서만 허용)
-                if (movePhaseActive == false) return;
-
-                //  현재 이동 중이면 무시
-                //if (isMoving) return;
-
-                //  플레이어가 선택되어 있어야 함
-                if (selectedPlayer == null) return;
-
-                //  같은 칸이면 무시
-                if (destCell == selectedPlayerCell) return;
-
-                // 경로 계산
-                List<Vector3Int> path = map.FindPath(selectedPlayerCell, destCell);
-
-                // 경로/범위 검증
-                if (path == null || path.Count > selectedMoveRange)
-                {
-                    CancelSelection();
-                    return;
-                }
-
-                // 이동 시작
-                StopAllCoroutines();
-                StartCoroutine(MoveAlongPath(selectedPlayer.transform, selectedPlayerCell, path, TileID.Player));
-                GameManager.TurnBased.SetSelectedAction(PlayerActionType.Move);
-                // 추가 입력 차단 + 선택/범위 UI 정리
-                movePhaseActive = false;
                 CancelSelection();
+                return;
             }
-        
+
+            // 이동 시작
+            StopAllCoroutines();
+            StartCoroutine(MoveAlongPath(selectedPlayer.transform, selectedPlayerCell, path, TileID.Player));
+            GameManager.TurnBased.SetSelectedAction(PlayerActionType.Move);
+            // 추가 입력 차단 + 선택/범위 UI 정리
+            movePhaseActive = false;
+            CancelSelection();
+        }
+
     }
 
     // ===== 이동 실행(한 칸씩 보간 + 맵데이터 갱신) =====
@@ -300,9 +318,6 @@ public class MouseManager : MonoBehaviour
         isMoving = false;
 
     }
-
-
-
 
 
     // =====================================================================
