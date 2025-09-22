@@ -3969,6 +3969,7 @@ MonoBehaviour:
   bikeControllBtnObj: {fileID: 2122605686555309026}
   atifactBtn: {fileID: 1491103076486934695}
   atifactBtnObj: {fileID: 2122605686555309026}
+  movementText: {fileID: 6865020363108175844}
   repairBtn: {fileID: 1358183122330545507}
   mountBtn: {fileID: 4435923645813011581}
   getOffBtn: {fileID: 5927758628712113050}
