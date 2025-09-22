@@ -18,15 +18,16 @@ public class VehicleHandler : MonoBehaviour
     private void Awake()
     {
         GameManager.Unit.Player.playerModel.viecleBording = ViecleBording.On;
-        vehicleDestruction =  GetComponent<GameObject>();
+        
         MountVehicle();
         currentPlayerMoveRange = GameManager.Unit.Player.playerModel.moveRange;
         currentPlayerHP = GameManager.Unit.Player.playerModel.health;
     }
     private void Start()
     {
-
         GetEffectiveMoveRange();
+        vehicleDestruction = GameManager.Resource.Create<GameObject>(Path.Player + "VehicleDistructionImage", transform);
+        vehicleDestruction.SetActive(false);
     }
 
 
@@ -51,7 +52,7 @@ public class VehicleHandler : MonoBehaviour
     public void DamageVehicle(int amount )
     {
         GameManager.Unit.Vehicle.vehicleModel.health -= amount;
-        vehicleDestruction.transform.localPosition = transform.position;
+        vehicleDestruction.transform.position = transform.position;
         if(GameManager.Unit.Vehicle.vehicleModel.health <= 0)
         {
             GameManager.Unit.Vehicle.vehicleModel.condition = VehicleCondition.Destruction;

@@ -1,10 +1,8 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CurrencyManager : MonoBehaviour
 {
+    // 나중에 데이터 관리가 열리면 그 데이터로 연결.
     private int gold;
 
     private void Awake()
@@ -19,7 +17,7 @@ public class CurrencyManager : MonoBehaviour
 
     public void AddGold(int amount)
     {
-        gold += gold;
+        gold += amount;
         // 골드 추가시 여기에
         GameManager.Event.Publish(EventType.OnGoldChanged, gold);
         
@@ -36,7 +34,6 @@ public class CurrencyManager : MonoBehaviour
         else
         {
             Debug.Log("돈이 없으"); // TODO: 유아이 추가 작업 필요(JBS)
-            
             return false;
         }
     }

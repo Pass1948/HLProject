@@ -118,7 +118,7 @@ public class MainUI : BaseUI
             case VehicleCondition.Destruction: // 파괴 되었을 때
                 if (IsNearVehicle()) // 가까이 있을 때 수리, 리롤
                 {
-                    rerollBtn.gameObject.SetActive(false);
+                    rerollBtn.gameObject.SetActive(true);
                     repairBtn.gameObject.SetActive(true);
                     mountBtn.gameObject.SetActive(false);
                     getOffBtn.gameObject.SetActive(false);
@@ -126,16 +126,15 @@ public class MainUI : BaseUI
 
                 else
                 {
-                    repairBtn.gameObject.SetActive(true);
-
+                    repairBtn.gameObject.SetActive(false);
                 }
-                    break;
+                break;
 
             case VehicleCondition.GetOff: // 내렸을 때
                 if (IsNearVehicle()) // 가까이 있을 때 수리, 리롤
                 {
                     rerollBtn.gameObject.SetActive(true);
-                    repairBtn.gameObject.SetActive(false);
+                    repairBtn.gameObject.SetActive(true);
                     mountBtn.gameObject.SetActive(true);
                     getOffBtn.gameObject.SetActive(false);
                 }
@@ -143,8 +142,9 @@ public class MainUI : BaseUI
                 {
                     rerollBtn.gameObject.SetActive(false);
                     mountBtn.gameObject.SetActive(false);
+                    repairBtn.gameObject.SetActive(false);
                 }
-                    break;
+                break;
 
             default:
                 rerollBtn.gameObject.SetActive(true);

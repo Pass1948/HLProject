@@ -31,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 0.27, z: 1.2}
+  m_LocalScale: {x: 1, y: 0.27, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -125,5 +125,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   repairAmount: 3
-  vehicleDestruction: {fileID: 5399642406065635717, guid: 642f3d53daaad0e498e12f42d33d9774,
+  vehicleDestruction: {fileID: 8547604471291096673, guid: 642f3d53daaad0e498e12f42d33d9774,
     type: 3}
