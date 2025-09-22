@@ -100,7 +100,6 @@ public class AttackController : MonoBehaviour
             GameManager.Map.attackRange.SetAttackRange(suit, rank);
             GameManager.Mouse.IsAttacking = true;
         }
-        //
 
         if (selectBulletBg)
         {
