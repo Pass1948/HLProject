@@ -68,7 +68,6 @@ public class MapManager : MonoBehaviour
         //mapCreator.GenerateMap(mapData, tilemap, groundTile, wallTile);
 
         //spawnController.SpawnAllObjects(); // SpawnAll();에서 변경
-
     }
 
     public void CreateMap()
@@ -237,10 +236,19 @@ public class MapManager : MonoBehaviour
         int tileID = mapData[cell.x, cell.y];
         return tileID == TileID.Terrain;
     }
+    public bool IsVehicle(Vector3Int cell)
+    {
+        return mapData[cell.x,cell.y] == TileID.Motor;
+    }
 
     public bool IsPlayer(Vector3Int cell)
     {
         return mapData[cell.x, cell.y] == TileID.Player;
+    }
+
+    public bool IsVehicle(Vector3Int cell)
+    {
+        return mapData[cell.x, cell.y] == TileID.Motor;
     }
 
     public bool IsObstacle(Vector3Int cell)
