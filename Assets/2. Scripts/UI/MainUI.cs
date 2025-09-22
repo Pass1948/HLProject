@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public class MainUI : BaseUI
 {
@@ -37,7 +38,15 @@ public class MainUI : BaseUI
     [SerializeField] Button repairBtn;
     [SerializeField] Button mountBtn;
     [SerializeField] Button getOffBtn;
-    [SerializeField] Button settingBtn; 
+    [SerializeField] Button settingBtn;
+
+    //플레이어 HP
+    [SerializeField] private Image playerHp;
+    [SerializeField] private TMP_Text playerHpText;
+
+    //바이크 HP
+    [SerializeField] private Image vehicleHp;
+    [SerializeField] private TMP_Text vehicleHpText;
 
     private void Awake()
     {
@@ -79,6 +88,8 @@ public class MainUI : BaseUI
     {
         RefreshVehicleUI();
         RefreshMovement();
+        RefreshPlayerHP();
+        RefreshVehicleHP();
     }
 
     
@@ -248,5 +259,30 @@ public class MainUI : BaseUI
             move = GameManager.Map.moveRange;
         }
         movementText.text = ($"Movement: {move}");
+    }
+
+    private void RefreshPlayerHP()
+    {
+        // 보장된다고 했으니 바로 접근 (null-가드 필요하면 if 추가)
+        var m = GameManager.Unit.Player.playerModel;
+
+        int cur = m.health;
+        int max = m.maxHealth;
+
+        float t = (max > 0) ? (float)cur / max : 0f;
+        if (playerHp) playerHp.fillAmount = Mathf.Clamp01(t);
+        if (playerHpText) playerHpText.text = $"{cur}/{max}";
+    }
+
+    private void RefreshVehicleHP()
+    {
+        var m = GameManager.Unit.Vehicle.vehicleModel;
+
+        int cur = m.health;
+        int max = m.maxHealth;
+
+        float t = (max > 0) ? (float)cur / max : 0f;
+        if (vehicleHp) vehicleHp.fillAmount = Mathf.Clamp01(t);
+        if (vehicleHpText) vehicleHpText.text = $"{cur}/{max}";
     }
 }
