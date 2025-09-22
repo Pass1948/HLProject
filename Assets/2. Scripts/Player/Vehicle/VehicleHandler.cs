@@ -7,18 +7,22 @@ public class VehicleHandler : MonoBehaviour
    
     [SerializeField] private int repairAmount = 3; 
 
-    public bool isMounted => GameManager.Unit.Player.playerModel.viecleBording == ViecleBording.On; // ž�� ����
+    public bool isMounted => GameManager.Unit.Player.playerModel.viecleBording == ViecleBording.On;
+
+    private int currentPlayerMoveRange;
+    private int currentPlayerHP;
 
     private void Awake()
     {
- 
-
         GameManager.Unit.Player.playerModel.viecleBording = ViecleBording.On;
 
         MountVehicle();
+        currentPlayerMoveRange = GameManager.Unit.Player.playerModel.moveRange;
+        currentPlayerHP = GameManager.Unit.Player.playerModel.health;
     }
     private void Start()
     {
+
         GetEffectiveMoveRange();
     }
 
@@ -50,11 +54,9 @@ public class VehicleHandler : MonoBehaviour
             GameManager.Unit.Vehicle.vehicleModel.condition = VehicleCondition.Destruction;
             GameManager.Unit.Player.playerModel.viecleBording = ViecleBording.off;
             GameManager.Unit.Vehicle.transform.SetParent(null);
-            if (GameManager.Unit.Vehicle.vehicleModel.health <= 0)
-            {
-                GameManager.Unit.Player.playerModel.moveRange -= GameManager.Unit.Vehicle.vehicleModel.moveRange;
-                GameManager.Unit.Player.playerModel.health -= GameManager.Unit.Vehicle.vehicleModel.health;
-            }
+            GameManager.Map.mapData[(int)transform.position.x, (int)transform.position.y] = TileID.Motor;
+            GameManager.Unit.Player.playerModel.moveRange = currentPlayerMoveRange;
+            GameManager.Unit.Player.playerModel.health -= GameManager.Unit.Vehicle.vehicleModel.health;
         }
     }
 
@@ -79,6 +81,7 @@ public class VehicleHandler : MonoBehaviour
         GameManager.Unit.Vehicle.transform.localPosition = Vector3.zero;
         GameManager.Unit.Player.playerModel.moveRange += GameManager.Unit.Vehicle.vehicleModel.moveRange;
         GameManager.Unit.Player.playerModel.health += GameManager.Unit.Vehicle.vehicleModel.health;
+        GameManager.Map.mapData[(int)transform.position.x, (int)transform.position.y] = 0;
     }
     // 내리는 버튼
     public void DismountVehicle()
@@ -86,9 +89,9 @@ public class VehicleHandler : MonoBehaviour
         GameManager.Unit.Vehicle.vehicleModel.condition = VehicleCondition.GetOff;
         GameManager.Unit.Player.playerModel.viecleBording = ViecleBording.off;
         GameManager.Unit.Vehicle.transform.SetParent(null);
-        GameManager.Unit.Player.playerModel.moveRange -= GameManager.Unit.Vehicle.vehicleModel.moveRange;
+        GameManager.Unit.Player.playerModel.moveRange = currentPlayerMoveRange;
         GameManager.Unit.Player.playerModel.health -= GameManager.Unit.Vehicle.vehicleModel.health;
-
+        GameManager.Map.mapData[(int)transform.position.x, (int)transform.position.y] = TileID.Motor;
     }
     
 }

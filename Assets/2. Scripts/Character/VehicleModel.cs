@@ -32,6 +32,7 @@ public class VehicleModel : UnitModel
         unitName = data.Name;
         size = data.Size;
         moveRange = data.MoveRange;
+        baseMoveRange = data.MoveRange;
         maxHealth = data.Health;
         currentHealth = maxHealth;
         maxBullet = data.MaxBullet;

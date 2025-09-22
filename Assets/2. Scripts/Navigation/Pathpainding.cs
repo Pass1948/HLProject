@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 public class Pathfinding
@@ -59,6 +60,18 @@ public class Pathfinding
     /// <returns></returns>
     public List<Vector3Int> FindPath(Vector3Int start, Vector3Int goal)
     {
+        int[,] mapdata = GameManager.Map.mapData;
+        int startID = mapdata[start.x, start.y];
+
+        // 만약에 애너미로 시작이 된다면
+        if (startID == TileID.Enemy)
+        {
+            // 오토바이를 막힌 벽으로 인식 해라.
+            if (GameManager.Map.mapData[start.x,start.y] == TileID.Motor && !blocked.Contains(start))
+            {
+                blocked.Add(start);
+            }
+        }
         //탐색 후보군 (openSet) 과 이미 방문한 집합 (closedSet)
         List<Node> openSet = new List<Node>();
         HashSet<Vector3Int> closedSet = new HashSet<Vector3Int>();
@@ -95,6 +108,7 @@ public class Pathfinding
             {
                 return RetracePath(currentNode);
             }
+
             // 이웃 노드 탐색 (4방형 : 상ㅡ하ㅡ좌ㅡ우)
             foreach (var neighbourPos in GetNeighbours(currentNode.Position))
             {
