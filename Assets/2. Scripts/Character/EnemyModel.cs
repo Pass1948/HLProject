@@ -35,3 +35,4 @@ public class EnemyModel : UnitModel
         moveRange = data.MoveRange;
     }
 }
+

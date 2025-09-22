@@ -17,6 +17,7 @@ public enum EventType
     VehicleOnDismounted,
     VehicleOnRepaired,
     VehicleOnDestroyed,
+    OnGoldChanged,
 }
 
 public static class Path

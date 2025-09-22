@@ -125,3 +125,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   repairAmount: 3
+  vehicleDestruction: {fileID: 5399642406065635717, guid: 642f3d53daaad0e498e12f42d33d9774,
+    type: 3}
