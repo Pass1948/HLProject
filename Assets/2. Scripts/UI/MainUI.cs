@@ -119,35 +119,39 @@ public class MainUI : BaseUI
                 getOffBtn.gameObject.SetActive(false);
                 break;
             case VehicleCondition.Destruction: // 파괴 되었을 때
-                if (IsNearVehicle()) // 가까이 있을 때 수리, 리롤
+                if (IsNearVehicle()) // 위치가 일치해 있을 때 수리, 리롤
                 {
-                    rerollBtn.gameObject.SetActive(false);
+                    rerollBtn.gameObject.SetActive(true);
                     repairBtn.gameObject.SetActive(true);
                     mountBtn.gameObject.SetActive(false);
                     getOffBtn.gameObject.SetActive(false);
                 }
+                else if(IsSideVehicle())// 주변에 있어도 
+                    rerollBtn.gameObject.SetActive(true);
 
                 else
                 {
-                    repairBtn.gameObject.SetActive(true);
-
+                    repairBtn.gameObject.SetActive(false);
                 }
-                    break;
+                break;
 
             case VehicleCondition.GetOff: // 내렸을 때
-                if (IsNearVehicle()) // 가까이 있을 때 수리, 리롤
+                if (IsNearVehicle()) // 위치가 일치해 있을 때 수리,
                 {
                     rerollBtn.gameObject.SetActive(true);
-                    repairBtn.gameObject.SetActive(false);
+                    repairBtn.gameObject.SetActive(true);
                     mountBtn.gameObject.SetActive(true);
                     getOffBtn.gameObject.SetActive(false);
                 }
+                else if(IsSideVehicle())// 주변에 있어도 
+                    rerollBtn.gameObject.SetActive(true);
                 else
                 {
                     rerollBtn.gameObject.SetActive(false);
                     mountBtn.gameObject.SetActive(false);
+                    repairBtn.gameObject.SetActive(false);
                 }
-                    break;
+                break;
 
             default:
                 rerollBtn.gameObject.SetActive(true);
@@ -168,6 +172,13 @@ public class MainUI : BaseUI
         Vector3 vehiclePos = GameManager.Unit.Vehicle.transform.position;
         Vector3  playerPos = GameManager.Unit.Player.transform.position;
         return playerPos == vehiclePos;
+    }
+
+    private bool IsSideVehicle()
+    {
+        Vector3 vehiclePos = GameManager.Unit.Vehicle.transform.position;
+        Vector3  playerPos = GameManager.Unit.Player.transform.position;
+        return Vector3.Distance(vehiclePos, playerPos) >= 1f;
     }
     // 타는 로직
     private void OnRiding()
