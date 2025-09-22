@@ -1,4 +1,4 @@
-public enum SceneType
+using System;public enum SceneType
 {
     Test,
     Test2
@@ -64,7 +64,7 @@ public static class TileID
     public const int Terrain = 0;
     public const int Wall = 1;
     public const int Player = 2;
-    public const int Motor = 3;
+    public const int Vehicle = 3;
     public const int Obstacle = 4;
     public const int Enemy = 5;
 }

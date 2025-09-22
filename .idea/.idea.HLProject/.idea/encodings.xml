@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/Assets/2. Scripts/Character/PlayerModel.cs" charset="x-windows-949" />
     <file url="file://$PROJECT_DIR$/Assets/2. Scripts/Manager/ResourceManager.cs" charset="x-windows-949" />
     <file url="file://$PROJECT_DIR$/Assets/2. Scripts/Manager/SceneLoadManager.cs" charset="x-windows-949" />
     <file url="file://$PROJECT_DIR$/Assets/2. Scripts/Navigation/Node.cs" charset="x-windows-949" />

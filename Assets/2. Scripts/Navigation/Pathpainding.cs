@@ -67,7 +67,7 @@ public class Pathfinding
         if (startID == TileID.Enemy)
         {
             // 오토바이를 막힌 벽으로 인식 해라.
-            if (GameManager.Map.mapData[start.x,start.y] == TileID.Motor && !blocked.Contains(start))
+            if (GameManager.Map.mapData[start.x,start.y] == TileID.Vehicle && !blocked.Contains(start))
             {
                 blocked.Add(start);
             }
