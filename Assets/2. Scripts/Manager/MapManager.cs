@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
@@ -245,6 +245,7 @@ public class MapManager : MonoBehaviour
     {
         return mapData[cell.x, cell.y] == TileID.Player;
     }
+
     public bool IsObstacle(Vector3Int cell)
     {
         return mapData[cell.x, cell.y] == TileID.Obstacle;

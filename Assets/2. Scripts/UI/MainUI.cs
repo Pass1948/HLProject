@@ -31,6 +31,8 @@ public class MainUI : BaseUI
     [SerializeField] Button atifactBtn;
     [SerializeField] ToggleBtnController atifactBtnObj;
 
+    [SerializeField] TMP_Text movementText;
+
     //오토바이
     [SerializeField] Button repairBtn;
     [SerializeField] Button mountBtn;
@@ -76,6 +78,7 @@ public class MainUI : BaseUI
     private void Update()
     {
         RefreshVehicleUI();
+        RefreshMovement();
     }
 
     
@@ -246,6 +249,15 @@ public class MainUI : BaseUI
         {
             rerollLabel = rerollBtn.GetComponentInChildren<TMP_Text>(true);
         }
+    }
 
+    private void RefreshMovement()
+    {
+        int move = 0;
+        if(GameManager.Map != null)
+        {
+            move = GameManager.Map.moveRange;
+        }
+        movementText.text = ($"Movement: {move}");
     }
 }
