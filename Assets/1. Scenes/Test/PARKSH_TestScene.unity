@@ -873,6 +873,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: RewardSlotUI
       objectReference: {fileID: 0}
+    - target: {fileID: 7530850542916900557, guid: e48002f24fc0db14c82166d25a43b035,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1285,6 +1290,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8353295369018606893, guid: fe984ee02844bfb48ac59173ca5ca983,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8383683097784508959, guid: fe984ee02844bfb48ac59173ca5ca983,
         type: 3}
