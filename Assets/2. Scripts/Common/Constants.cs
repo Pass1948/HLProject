@@ -34,6 +34,7 @@ public enum RarityType // 아이템 레어도 타입
 [UGS(typeof(ItemType))]
 public enum ItemType   // 유물, 화약 구분
 {
+    Relic,
     Artifact,
     GunPowder,
 }
