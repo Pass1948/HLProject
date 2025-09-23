@@ -20,6 +20,15 @@ public enum EventType
     OnGoldChanged,
 }
 
+public enum ShopItemType
+{
+    Bullet,
+    SpecialTotem,
+    PowderBundle,
+    RemoveBullet,
+    Heal,
+}
+
 public static class Path
 {
     public const string Prefab = "Prefab/";
@@ -69,3 +78,4 @@ public static class TileID
     public const int Obstacle = 4;
     public const int Enemy = 5;
 }
+
