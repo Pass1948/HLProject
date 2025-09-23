@@ -9,7 +9,7 @@ public enum EventType
     PlayerAction,
     PlayerAttack,
     PlayerKick,
-    PlayerMove,
+    PlayerMove, 
     EnemyTurnStart,
     EnemyTurnEnd,
     EnemyHit,
@@ -18,6 +18,22 @@ public enum EventType
     VehicleOnRepaired,
     VehicleOnDestroyed,
 }
+
+public enum RarityType // 아이템 레어도 타입
+{
+    Common,
+    Normal,
+    Rare,
+    Elite,
+    Legendary,
+}
+
+public enum ItemType   // 유물, 화약 구분
+{
+    Artifact,
+    GunPowder,
+}
+
 
 public static class Path
 {
