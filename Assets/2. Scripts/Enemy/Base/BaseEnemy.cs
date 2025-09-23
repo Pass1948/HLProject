@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using DataTable;
+using UnityEditor.Profiling.Memory.Experimental;
 using UnityEngine;
 
 public class BaseEnemy : MonoBehaviour
@@ -12,7 +14,7 @@ public class BaseEnemy : MonoBehaviour
         
     }
 
-    public void InitEnemy(UnitData data)
+    public void InitEnemy(EntityData data)
     {
         if (!GameManager.Unit.enemies.Contains(this))
             GameManager.Unit.enemies.Add(this);

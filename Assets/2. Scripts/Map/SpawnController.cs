@@ -47,10 +47,10 @@ public class SpawnController : MonoBehaviour
 
                 BaseVehicle baseVehicle = GameManager.Unit.Vehicle.GetComponent<BaseVehicle>();
 
-                basePlayer.playerModel.InitData(GameManager.Data.GetUnit(UnitType.Player, 1001));
+                basePlayer.playerModel.InitData(GameManager.Data.entityDataGroup.GetEntityData(1001));
                 basePlayer.controller.GetPosition(randX, randY);
 
-                baseVehicle.vehicleModel.InitData(GameManager.Data.GetUnit(UnitType.Vehicle, 1501));
+                baseVehicle.vehicleModel.InitData(GameManager.Data.entityDataGroup.GetEntityData(1501));
 
                 //좌표 보정
                 GridSnapper.SnapToCellCenter(playerSpawn.transform, GameManager.Map.tilemap, new Vector2Int(randX, randY));
@@ -109,7 +109,7 @@ public class SpawnController : MonoBehaviour
                     //좌표 
                     GridSnapper.SnapToCellCenter(enemy.transform, GameManager.Map.tilemap, new Vector2Int(randX, randY));
 
-                    baseEnemy.InitEnemy(GameManager.Data.GetUnit(UnitType.Enemy, Random.Range(2001, 2010)));
+                    baseEnemy.InitEnemy(GameManager.Data.entityDataGroup.GetEntityData(Random.Range(2001, 2010)));
                     baseEnemy.controller.SetPosition(randX, randY);
                     baseEnemy.controller.UpdatePlayerPos();
 
