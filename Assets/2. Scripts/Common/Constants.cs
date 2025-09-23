@@ -1,4 +1,7 @@
-using System;public enum SceneType
+using System;
+using GoogleSheet.Core.Type;
+
+public enum SceneType
 {
     Test,
     Test2
