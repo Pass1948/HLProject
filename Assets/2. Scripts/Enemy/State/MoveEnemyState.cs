@@ -19,8 +19,6 @@ public class MoveEnemyState : BaseEnemyState
         List<Vector3Int> path = GameManager.Map.FindPath(start, dest);
 
         //Debug.Log(dest);
-
-
         
         if (path == null || path.Count == 0)
         {

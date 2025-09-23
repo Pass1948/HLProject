@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using GoogleSheet.Core.Type;
 using UnityEngine;
 
+[UGS(typeof(UnitType))]
 public enum UnitType
 {
     Player,

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using DataTable;
 using UnityEditor.Profiling.Memory.Experimental;
 using UnityEngine;
 
@@ -13,17 +14,17 @@ public class BaseEnemy : MonoBehaviour
         
     }
 
-    public void InitEnemy(UnitData data)
+    public void InitEnemy(EntityData data)
     {
         if (!GameManager.Unit.enemies.Contains(this))
             GameManager.Unit.enemies.Add(this);
-        // µ¥ÀÌÅÍ ·Îµå ½Ã null °¡µå
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Îµï¿½ ï¿½ï¿½ null ï¿½ï¿½ï¿½ï¿½
 
         enemyModel = new EnemyModel();
         enemyModel.InitData(data);
         animHandler = GetComponent<EnemyAnimHandler>();
         controller = GetComponent<EnemyController>();
-        // ¸ðµ¨ & ¾Ö´Ï¸ÞÀÌ¼Ç ÇÚµé·¯°¡ ÁØºñµÈ ÈÄ¿¡¸¸ ÃÊ±âÈ­
+        // ï¿½ï¿½ & ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ ï¿½Úµé·¯ï¿½ï¿½ ï¿½Øºï¿½ï¿½ ï¿½Ä¿ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­
         if (controller != null && animHandler != null)
         {
             controller.model = enemyModel;
@@ -37,7 +38,7 @@ public class BaseEnemy : MonoBehaviour
     }
 
 
-    public void ChenageAttribute()  // ¹ßÂ÷±â(¼Ó¼ºº¯°æ)
+    public void ChenageAttribute()  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(ï¿½Ó¼ï¿½ï¿½ï¿½ï¿½ï¿½)
     {
         if(enemyModel.attri == EnemyAttribute.High)
         {
