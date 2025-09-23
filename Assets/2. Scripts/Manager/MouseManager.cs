@@ -67,13 +67,14 @@ public class MouseManager : MonoBehaviour
     private Vector3Int lastCell = new Vector3Int(int.MinValue, int.MinValue, 0);
     private Vector3Int lastValidCell;
 
-    // --- 토글 상태 ---
+    // --- 마우스 토글 상태 ---
     private bool playerRangeVisible = false;
     private BaseEnemy selectedEnemy;       // 현재 팝업이 열린 적
     private bool enemyPopupVisible = false;
 
-
-    private readonly List<GameObject> activeTiles = new List<GameObject>();
+    // --- Overlap관련 최적화 ---
+    private readonly Collider[] oneHit = new Collider[1];// OverlapBoxNonAlloc 결과 담는 1칸
+    
 
     public void CreateMouse() // Scene넘어갔을때 실행
     {
@@ -170,15 +171,17 @@ public class MouseManager : MonoBehaviour
         // 공격 모드 우선
         if (isAttacking)
         {
-            // 적이거나, 지면일 때 공격 실행
-            if (cellIsEnemy || cellIsTerrain)
+            if (IsCellInAttackOrKickRange(cell))
             {
-                GameManager.Event.Publish(EventType.PlayerAttack);
+                GameManager.Event.Publish(EventType.PlayerAttack); // 공격 State에서 일괄 처리
                 isAttacking = false;
+            
             }
             else
             {
-                CancelSelection();
+                // TODO : 범위 밖 클릭 → 실행 안 함 + 범위 끄기(기획자들과 상의후 설정)
+                //CancelAttackOrKickRange();
+                isAttacking = false;
             }
             return;
         }
@@ -187,14 +190,17 @@ public class MouseManager : MonoBehaviour
         if (isKicking)
         {
             // 적이거나 지면일 때 킥 상태로 전환
-            if (cellIsEnemy || cellIsTerrain)
+            if (IsCellInAttackOrKickRange(cell))
             {
                 GameManager.TurnBased.ChangeTo<PlayerKickState>();
                 isKicking = false;
+                // 킥 범위는 상태 진입 시/후 정리 루틴에 맡김
             }
             else
             {
-                CancelSelection();
+                // TODO : 범위 밖 클릭 → 실행 안 함 + 범위 끄기 (기획자들과 상의후 설정)
+                //CancelAttackOrKickRange();
+                isKicking = false;
             }
             return;
         }
@@ -399,15 +405,37 @@ public class MouseManager : MonoBehaviour
     // 셀 중심 주변에서 컴포넌트 탐색
     private T FindAtCell<T>(Vector3Int cell) where T : Component
     {
-        if (!useOverlapLookup) return null;
+        if (!useOverlapLookup || tilemap == null) return null;  // 칸에 오브젝트가 없을경우 
+
+        // 셀 중심과 halfExtents(반지름) 계산
         Vector3 center = tilemap.GetCellCenterWorld(cell);
-        Vector3 size = new Vector3(tilemap.cellSize.x * overlapShrink, overlapHeight, tilemap.cellSize.y * overlapShrink);
-        var cols = Physics.OverlapBox(center, size * 0.5f, Quaternion.identity, unitDetectMask, QueryTriggerInteraction.Collide);
-        foreach (var c in cols)
-        {
-            var t = c.GetComponentInParent<T>(); if (t) return t;
-        }
-        return null;
+        Vector3 halfExtents = new Vector3(
+            tilemap.cellSize.x * 0.5f * overlapShrink,   // XZ 셀을 살짝 축소해 오검출 방지
+            overlapHeight* 0.5f,               // 높이는 프로젝트에 맞게
+            tilemap.cellSize.y * 0.5f * overlapShrink
+        );
+
+        // 트리거 제외가 일반적이면 Ignore, 필요하면 Collide 유지
+        int hitCount = Physics.OverlapBoxNonAlloc(
+            center,
+            halfExtents,
+            oneHit,// 1칸 버퍼
+            Quaternion.identity,
+            unitDetectMask,
+            QueryTriggerInteraction.Ignore      // isTirgger 콜라이더는 제외(마우스 포인터의 경우 isTrigger로 제외됨)
+        );
+
+        if (hitCount <= 0) return null;
+
+        var col = oneHit[0];
+        if (!col) return null;
+
+        // 빠른 경로: 바로 붙은 컴포넌트
+        if (col.TryGetComponent<T>(out var direct))
+            return direct;
+
+        // 예외적으로 자식/부모에 있을 수 있으므로 부모에서 한 번만 검색
+        return col.GetComponentInParent<T>(true);
     }
 
     // ====== Player Range 토글 유틸 ======
@@ -439,4 +467,22 @@ public class MouseManager : MonoBehaviour
         selectedEnemy = null;
         GameManager.UI.CloseUI<EnemyInfoPopUpUI>();
     }
+    
+    // 공격범위안에 있다는 bool 메서드
+    private bool IsCellInAttackOrKickRange(Vector3Int cell)
+    {
+        return map != null 
+               && map.attackRangeTilemap != null 
+               && map.attackRangeTilemap.HasTile(cell);
+    }
+    //공격 범위 끄기
+    private void CancelAttackOrKickRange()
+    {
+        if (GameManager.Map != null && GameManager.Map.attackRange != null)
+        {
+            GameManager.Map.attackRange.ClearAttackType(); // 내부적으로 타일/타겟도 비움
+        }
+    }
+    
+    
 }

@@ -255,7 +255,7 @@ public class MapManager : MonoBehaviour
     }
     public bool IsVehicle(Vector3Int cell)
     {
-        return mapData[cell.x,cell.y] == TileID.Motor;
+        return mapData[cell.x,cell.y] == TileID.Vehicle;
     }
 
     public bool IsPlayer(Vector3Int cell)
