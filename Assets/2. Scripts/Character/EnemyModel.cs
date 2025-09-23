@@ -7,6 +7,7 @@ using UnityEngine;
 [UGS(typeof(EnemyAttribute))]
 public enum EnemyAttribute
 {
+    None,
     Low,
     High
 }

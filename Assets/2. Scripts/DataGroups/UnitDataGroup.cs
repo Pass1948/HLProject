@@ -7,6 +7,6 @@ public class EntityDataGroup : EntityData
 {
     public EntityData GetEntityData(int idx)
     {
-        return EntityData.EntityDataMap[idx];
+        return EntityDataMap[idx];
     }
 }
