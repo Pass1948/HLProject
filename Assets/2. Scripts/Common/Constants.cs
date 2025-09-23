@@ -27,6 +27,7 @@ public enum ShopItemType
     PowderBundle,
     RemoveBullet,
     Heal,
+    Reroll,
 }
 
 public enum Rare

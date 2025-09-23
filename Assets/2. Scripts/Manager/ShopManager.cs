@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class ShopManager : MonoBehaviour
 {
@@ -57,19 +58,15 @@ public class ShopManager : MonoBehaviour
      */
     public Deck deck; // 플레이어 덱 참조
     public List<PowderData> powders; // 화약
-    public List<RelicData> relics;
+    public List<RelicData> relics; // 유물 풀
     
     
     public Rare rare;
     public List<ShopItem> offers = new(); // 상점 카드 오퍼
+    public int rerollCost = 1; // 현재 리롤 비용
+    public bool canRemoveBullet; // 탄환 제거 가능 여부
+    public int powerBundleLeft; // 화약 꾸러미 남은 횟수
     
-    
-    
-    public int rerollCount = 2; // 리롤 카운트,코스트
-    public int rerollCost = 1;
-
-    private int deckCount = 3;
-
     private int playerGold; //달란티
 
     private void Start()
@@ -79,16 +76,71 @@ public class ShopManager : MonoBehaviour
     }
 //플레이어 모델 ㅡ게임메니저,데이터 메니저
 
-    public void ShopStart()
+    public void ShopStart(List<string> playerOwnedRelics)
     {
         offers.Clear();
-        rerollCount = 2;
         rerollCost = 1;
+        canRemoveBullet = false;
+        powerBundleLeft = 2;
+        
+        
+        // 카드 오퍼 
+        
+        // 특수 유물 오퍼
+        
+        // 화약꾸러미(2개 슬롯)
+        
+        // 리롤 버튼
+        
+        // 응급처치
+        
+        // 탄환제거
+        
+        
+        
+    }
+    // 카드 오퍼 생성(플레이어 소지 제외, 최대 5개)
+    private void GenerateCardOffers(List<Ammo> playerOwned)
+    {
+        // 스
+        var snapShot = deck.GetDrawSnapshot();
+        Shuffle(snapShot);
+
+        int added = 0;
+        foreach (var card in snapShot)
+        {
+            // Exists는 리스트 안에 조건을 만족하는 요소가 하나라도 있으면 true 없으면 false 반환.
+            // p는 playerOwned 안에 있는 각 탄환(Ammo)뜻 한다.
+            // 비교 기준은 무늬가 같은가?, 숫자가 같은가? = 둘 다 같은 카드가 있으면 true
+            bool owned = playerOwned.Exists(p => p.suit == card.suit && p.rank == card.rank);
+            if(owned) continue;
+
+            int price = 3;
+            if (card.powder != null)
+            {
+                
+            }
+        }
     }
 
+    private void GenerrateRelicOffers(RelicData relicManager)
+    {
+        var pool = new List<RelicData>(relics);
+        Shuffle(pool);
+
+        int added = 0;
+        foreach (var relic in pool)
+        {
+        }
+    }
+    
+    
+    
+    
+    
     public void TryBuy(int index)
     {
-        if (index < 0 || index >= rerollCount) return;
+        if(index < 0 || index >= offers.Count) return;
         var item = offers[index];
 
         if (playerGold < item.price)
@@ -117,21 +169,77 @@ public class ShopManager : MonoBehaviour
             case ShopItemType.RemoveBullet:
                 Debug.Log("자 총알 지우기를 샀네요"); // 총알 
                 break;
+            case ShopItemType.Reroll:
+                
+                break;
+        }
+    }
+
+    private void TryReroll()
+    {
+        if (playerGold < rerollCost)
+        {
+            // 돈 부족 유아이 추가
+            return;
+        }
+        playerGold -= rerollCost;
+        rerollCost++;
+        ShopStart(new List<string>());
+    }
+
+    private void StartPowderBundle(List<Ammo> playerOwned)
+    {
+        // 복사본 새 리스트
+        var candidates = new List<Ammo>(playerOwned);
+        Shuffle(candidates);
+        
+        if(candidates.Count > 6)
+            candidates = candidates.GetRange(0,6);
+        var pool = new List<PowderData>(powders);
+        Shuffle(pool);
+        var powderOffers = pool.GetRange(0, Mathf.Min(3, pool.Count));
+
+        foreach (var ammo in candidates )
+        {
+            //
+        }
+
+        foreach (var powder in powderOffers)
+        {
+            
+        }
+    }
+
+
+    // 셔플. (유틸)
+    private void Shuffle<T>(List<T> list)
+    {
+        for (int i = 0; i < list.Count; i++)
+        {
+            int j = Random.Range(0, i);
+            T temp = list[i];
+            list[i] = list[j];
+            list[j] = temp;
+            
         }
     }
     
-
+    [Serializable]
     public struct ShopItem
     {
         public ShopItemType type;
         public string name;
         public int price;
+        public Ammo ammo;       // 탄환일 경우
+        public RelicData relic; //유물일 경우
 
-        public ShopItem(ShopItemType type, string name, int price)
+        public ShopItem(ShopItemType type, string name, int price , Ammo ammo, RelicData relic)
         {
             this.type = type;
             this.name = name;
             this.price = price;
+            this.ammo = ammo;
+            this.relic = relic;
         }
     }
     
