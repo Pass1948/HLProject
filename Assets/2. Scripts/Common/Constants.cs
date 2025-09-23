@@ -19,7 +19,7 @@ public enum EventType
     VehicleOnDestroyed,
     OnGoldChanged,
 }
-
+[UGS(typeof(RarityType))]
 public enum RarityType // 아이템 레어도 타입
 {
     Common,
@@ -28,7 +28,7 @@ public enum RarityType // 아이템 레어도 타입
     Elite,
     Legendary,
 }
-
+[UGS(typeof(ItemType))]
 public enum ItemType   // 유물, 화약 구분
 {
     Artifact,
