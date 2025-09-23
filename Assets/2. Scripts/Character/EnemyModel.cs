@@ -38,3 +38,4 @@ public class EnemyModel : UnitModel
         moveRange = data.moveRange;
     }
 }
+

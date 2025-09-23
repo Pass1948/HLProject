@@ -9,7 +9,7 @@ public enum ViecleBording
     On,
     off,
 }
-// TODO : ³ªÁß¿¡ ¿ÀÅä¹ÙÀÌ Ã¼·ÂÀ» ÇÕÄ¥²¨¶ó¸é ¸Æ½º Ã¼·Âµµ ¸¸µé¾î¾ß ÇÏ³ª? ,¹«ºê·¹ÀÎÁöµµ(JBS)
+// TODO : ìˆ«ìžëŠ” ìž„ì‹œë¡œ ì§€ì • í•´ ë†“ì€ ê°’ìž…ë‹ˆë‹¤(JBS)
 public class PlayerModel : UnitModel
 {
     public ViecleBording viecleBording;
@@ -21,7 +21,7 @@ public class PlayerModel : UnitModel
     public int reload;
     public int baseHealth;
     public int health;
-    public bool die => health <= 0; //0ÀÌÇÏ¸é Æ®·ç
+    public bool die => health <= 0; //0ï¿½ï¿½ï¿½Ï¸ï¿½ Æ®ï¿½ï¿½
     public void InitData(UnitData data)
     {
         unitType = data.Type;
