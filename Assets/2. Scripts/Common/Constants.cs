@@ -17,6 +17,7 @@ public enum EventType
     VehicleOnDismounted,
     VehicleOnRepaired,
     VehicleOnDestroyed,
+    OnGoldChanged,
 }
 
 public enum RarityType // 아이템 레어도 타입

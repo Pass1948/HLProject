@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using Microsoft.Unity.VisualStudio.Editor;
 using UnityEngine;
 
 public class VehicleHandler : MonoBehaviour
 {
    
-    [SerializeField] private int repairAmount = 3; 
+    [SerializeField] private int repairAmount = 3;
+
+    [SerializeField] private GameObject vehicleDestruction; // 부셔지면 띄우는 이미지
 
     public bool isMounted => GameManager.Unit.Player.playerModel.viecleBording == ViecleBording.On;
 
@@ -15,15 +18,16 @@ public class VehicleHandler : MonoBehaviour
     private void Awake()
     {
         GameManager.Unit.Player.playerModel.viecleBording = ViecleBording.On;
-
+        
         MountVehicle();
         currentPlayerMoveRange = GameManager.Unit.Player.playerModel.moveRange;
         currentPlayerHP = GameManager.Unit.Player.playerModel.health;
     }
     private void Start()
     {
-
         GetEffectiveMoveRange();
+        vehicleDestruction = GameManager.Resource.Create<GameObject>(Path.Player + "VehicleDistructionImage", transform);
+        vehicleDestruction.SetActive(false);
     }
 
 
@@ -48,15 +52,20 @@ public class VehicleHandler : MonoBehaviour
     public void DamageVehicle(int amount )
     {
         GameManager.Unit.Vehicle.vehicleModel.health -= amount;
-
+        vehicleDestruction.transform.position = transform.position;
         if(GameManager.Unit.Vehicle.vehicleModel.health <= 0)
         {
             GameManager.Unit.Vehicle.vehicleModel.condition = VehicleCondition.Destruction;
             GameManager.Unit.Player.playerModel.viecleBording = ViecleBording.off;
             GameManager.Unit.Vehicle.transform.SetParent(null);
-            GameManager.Map.mapData[(int)transform.position.x, (int)transform.position.y] = TileID.Vehicle;
+            vehicleDestruction.SetActive(true); 
+            GameManager.Map.mapData[(int)transform.position.x, (int)transform.position.y] = TileID.Motor;
             GameManager.Unit.Player.playerModel.moveRange = currentPlayerMoveRange;
             GameManager.Unit.Player.playerModel.health -= GameManager.Unit.Vehicle.vehicleModel.health;
+        }
+        else
+        {
+            vehicleDestruction.SetActive(false); 
         }
     }
 
@@ -91,7 +100,7 @@ public class VehicleHandler : MonoBehaviour
         GameManager.Unit.Vehicle.transform.SetParent(null);
         GameManager.Unit.Player.playerModel.moveRange = currentPlayerMoveRange;
         GameManager.Unit.Player.playerModel.health -= GameManager.Unit.Vehicle.vehicleModel.health;
-        GameManager.Map.mapData[(int)transform.position.x, (int)transform.position.y] = TileID.Vehicle;
+        GameManager.Map.mapData[(int)transform.position.x, (int)transform.position.y] = TileID.Motor;
     }
     
 }

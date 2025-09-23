@@ -44,6 +44,13 @@ public class GameManager : MonoBehaviour
     private static ItemControlManger itemControlManger;
     public static ItemControlManger ItemControl => itemControlManger;
 
+    private static CurrencyManager currency;
+    public static CurrencyManager Currency => currency;
+    
+    private static RewardManager reward;
+    public static RewardManager Reward => reward;
+
+
     private void Awake()
     {
         if (instance != null) { Destroy(this); return; }
@@ -71,6 +78,8 @@ public class GameManager : MonoBehaviour
         mouseManager = CreateChildManager<MouseManager>("MouseManager");
         saveLoadManager = CreateChildManager<SaveLoadManager>("SaveLoadManager");
         itemControlManger = CreateChildManager<ItemControlManger>("ItemControlManger");
+        currency = CreateChildManager<CurrencyManager>("CurrencyManager");
+        reward = CreateChildManager<RewardManager>("RewardManager");
     }
     private T CreateChildManager<T>(string goName) where T : Component
     {
