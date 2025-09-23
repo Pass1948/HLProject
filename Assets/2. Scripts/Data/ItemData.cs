@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class ItemData : MonoBehaviour
+public class ItemData : MonoBehaviour   // 구글엑셀 시트의 왼쪽->오른쪽 순으로 입력함
 {
     public int ID;
     public ItemType ItemType;
