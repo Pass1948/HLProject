@@ -14,7 +14,7 @@ public class SpawnController : MonoBehaviour
     {
         obstaclePool = gameObject.AddComponent<BasicObstaclePool>();
         
-        enemyPrefab = GameManager.Resource.Load<GameObject>(Path.Enemy + "Enemy");
+        enemyPrefab = GameManager.Resource.Load<GameObject>(Path.Enemy + "NormalEnemy");
         obstaclePrefab = GameManager.Resource.Load<GameObject>(Path.Map + "Obstacle");
         
         obstaclePool.prefab = obstaclePrefab;
@@ -109,7 +109,7 @@ public class SpawnController : MonoBehaviour
                     //좌표 
                     GridSnapper.SnapToCellCenter(enemy.transform, GameManager.Map.tilemap, new Vector2Int(randX, randY));
 
-                    baseEnemy.InitEnemy(GameManager.Data.entityDataGroup.GetEntityData(Random.Range(2001, 2010)));
+                    baseEnemy.InitEnemy(GameManager.Data.entityDataGroup.GetEntityData(Random.Range(2001, 2010)), EnemyType.Normal);
                     baseEnemy.controller.SetPosition(randX, randY);
                     baseEnemy.controller.UpdatePlayerPos();
 
