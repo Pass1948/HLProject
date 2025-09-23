@@ -40,6 +40,9 @@ public class GameManager : MonoBehaviour
     
     private static SaveLoadManager saveLoadManager;
     public static SaveLoadManager SaveLoad => saveLoadManager;
+    
+    private static ItemControlManger itemControlManger;
+    public static ItemControlManger ItemControl => itemControlManger;
 
     private static CurrencyManager currency;
     public static CurrencyManager Currency => currency;
@@ -74,6 +77,7 @@ public class GameManager : MonoBehaviour
         mapManager = CreateChildManager<MapManager>("MapManager");
         mouseManager = CreateChildManager<MouseManager>("MouseManager");
         saveLoadManager = CreateChildManager<SaveLoadManager>("SaveLoadManager");
+        itemControlManger = CreateChildManager<ItemControlManger>("ItemControlManger");
         currency = CreateChildManager<CurrencyManager>("CurrencyManager");
         reward = CreateChildManager<RewardManager>("RewardManager");
     }
