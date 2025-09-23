@@ -35,7 +35,6 @@ public class MouseManager : MonoBehaviour
     public bool clampToBounds = true;                 // 맵 밖이면 모서리로 클램프
     public bool freezeWhenOutside = false;            // 맵 밖이면 정지(클램프 대신)
     public bool restrictPointerToMovable = false;     // 포인터가 Terrain만 허용(색 반영)
-    public bool restrictMoveToRange = true;           // 경로 길이가 이동범위 초과면 막기
 
     // ===== 유닛 탐색 보강(선택) =====
     [Header("Instance Lookup (Optional)")]

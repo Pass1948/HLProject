@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using DataTable;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
