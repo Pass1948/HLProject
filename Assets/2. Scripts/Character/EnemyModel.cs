@@ -1,7 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using DataTable;
+using GoogleSheet.Core.Type;
 using UnityEngine;
 
+[UGS(typeof(EnemyAttribute))]
 public enum EnemyAttribute
 {
     Low,
@@ -19,19 +22,19 @@ public class EnemyModel : UnitModel
     public bool isDie = false;
     public bool isDone = true;
 
-    public void InitData(UnitData data)
+    public void InitData(EntityData data)
     {
-        unitType = data.Type;
-        id = data.ID;
-        size = data.Size;
-        unitName = data.Name;
-        attri = data.Attribute;
-        rank = Random.Range(data.MinNum, data.MaxNum);
-        maxHealth = data.Health;
-        currentHealth = data.Health;
-        attack = data.Attack;
-        minAttackRange = data.MinAttackRange;
-        maxAttackRange = data.MaxAttackRange;
-        moveRange = data.MoveRange;
+        unitType = data.type;
+        id = data.id;
+        size = data.size;
+        unitName = data.name;
+        attri = data.attribute;
+        rank = Random.Range(data.minNum, data.maxNum);
+        maxHealth = data.health;
+        currentHealth = maxHealth;
+        attack = data.attack;
+        minAttackRange = data.minAttackRange;
+        maxAttackRange = data.minAttackRange;
+        moveRange = data.moveRange;
     }
 }

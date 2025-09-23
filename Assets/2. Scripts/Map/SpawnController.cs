@@ -109,7 +109,7 @@ public class SpawnController : MonoBehaviour
                     //좌표 
                     GridSnapper.SnapToCellCenter(enemy.transform, GameManager.Map.tilemap, new Vector2Int(randX, randY));
 
-                    baseEnemy.InitEnemy(GameManager.Data.GetUnit(UnitType.Enemy, Random.Range(2001, 2010)));
+                    baseEnemy.InitEnemy(GameManager.Data.entityDataGroup.GetEntityData(Random.Range(2001, 2010)));
                     baseEnemy.controller.SetPosition(randX, randY);
                     baseEnemy.controller.UpdatePlayerPos();
 

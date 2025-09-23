@@ -1,22 +1,32 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-
+using DataTable;
+using UGS;
 
 [Serializable]
 public class DataManager : MonoBehaviour
 {
-    // csvÆÄÀÏ ºÒ·¯¿À±â
+    // csvï¿½ï¿½ï¿½ï¿½ ï¿½Ò·ï¿½ï¿½ï¿½ï¿½ï¿½
     [Header("CSV Files")]
     public TextAsset unitCSV;
-
+    
+    public EntityDataGroup entityDataGroup;
+    
     [SerializeField] private Dictionary<UnitType, Dictionary<int, UnitData>> unitDB;
 
     private void Awake()
     {
         unitDB = new Dictionary<UnitType, Dictionary<int, UnitData>>();
+
     }
 
+    public void Initialize()
+    {
+        UnityGoogleSheet.LoadAllData();
+        entityDataGroup = new EntityDataGroup();
+    }
+    
     private void Start()
     {
         unitCSV = GameManager.Resource.Load<TextAsset>(Path.Data+"UnitData");
@@ -116,7 +126,7 @@ public class DataManager : MonoBehaviour
             return data;
         }
 
-        Debug.Log("µ¥ÀÌÅÍ ¾ö½¿");
+        Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
 
         return null;
     }
