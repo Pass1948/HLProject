@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -21,7 +19,8 @@ public class PlayerModel : UnitModel
     public int reload;
     public int baseHealth;
     public int health;
-    public bool die => health <= 0; //0���ϸ� Ʈ��
+    public int monney = 10;
+    public bool die => health <= 0; 
     public void InitData(UnitData data)
     {
         unitType = data.Type;

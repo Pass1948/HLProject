@@ -29,6 +29,14 @@ public enum ShopItemType
     Heal,
 }
 
+public enum Rare
+{
+    Nomal,
+    Rare,
+    Unique,
+    Legendary,
+}
+
 public static class Path
 {
     public const string Prefab = "Prefab/";
