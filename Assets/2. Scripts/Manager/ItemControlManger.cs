@@ -1,7 +1,6 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using DataTable;
 using UnityEngine;
 
 public class ItemControlManger : MonoBehaviour
@@ -95,11 +94,11 @@ public class ItemControlManger : MonoBehaviour
             if (pool.Count == 0) // 해당 등급이 비었으면 폴백
             {
                 if (powders.Count == 0) break;
-                result.Add(powders[Random.Range(0, powders.Count)]);
+                result.Add(powders[UnityEngine.Random.Range(0, powders.Count)]);
             }
             else
             {
-                result.Add(pool[Random.Range(0, pool.Count)]);
+                result.Add(pool[UnityEngine.Random.Range(0, pool.Count)]);
             }
         }
         return result;
@@ -125,11 +124,11 @@ public class ItemControlManger : MonoBehaviour
 
             if (pool.Count == 0)
             {
-                result.Add(relicItems[Random.Range(0, relics.Count)]);
+                result.Add(relicItems[UnityEngine.Random.Range(0, relics.Count)]);
             }
             else
             {
-                result.Add(pool[Random.Range(0, pool.Count)]);
+                result.Add(pool[UnityEngine.Random.Range(0, pool.Count)]);
             }
         }
 
@@ -158,11 +157,11 @@ public class ItemControlManger : MonoBehaviour
 
             if (pool.Count == 0)
             {
-                result.Add(relicItems[Random.Range(0, powders.Count)]);
+                result.Add(relicItems[UnityEngine.Random.Range(0, powders.Count)]);
             }
             else
             {
-                result.Add(pool[Random.Range(0, pool.Count)]);
+                result.Add(pool[UnityEngine.Random.Range(0, pool.Count)]);
             }
         }
 

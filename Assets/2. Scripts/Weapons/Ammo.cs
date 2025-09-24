@@ -7,6 +7,13 @@ public enum Suit { Spade, Heart, Diamond, Club }
 public class Ammo
 {
     public Suit suit;
+    public PowderData powder; // 붙을 화약, 없으면 넣
+
+    public override string ToString()
+    {
+        string core = $"{suit}{rank}";
+        return powder == null ? core : $"{core}[{powder.name}]";
+    }
 
     //1~13까지 범위지정
     [Range(1, 13)]
