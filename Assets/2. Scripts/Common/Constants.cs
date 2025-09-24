@@ -40,6 +40,24 @@ public enum ItemType   // 유물, 화약 구분
 }
 
 
+public enum ShopItemType
+{
+    Bullet,
+    SpecialTotem,
+    PowderBundle,
+    RemoveBullet,
+    Heal,
+    Reroll,
+}
+
+public enum Rare
+{
+    Nomal,
+    Rare,
+    Unique,
+    Legendary,
+}
+
 public static class Path
 {
     public const string Prefab = "Prefab/";
@@ -89,3 +107,4 @@ public static class TileID
     public const int Obstacle = 4;
     public const int Enemy = 5;
 }
+
