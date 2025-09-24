@@ -49,7 +49,7 @@ public class ObstacleDamageEffect : MonoBehaviour, ITurnEndEffect
                 GameManager.Unit.ChangeHealth(targetEnemy.enemyModel, damageAmount);
             }
         }
-        else if (tileID == TileID.Motor)
+        else if (tileID == TileID.Vehicle)
         {
             if (GameManager.Unit.Vehicle != null)
             {
