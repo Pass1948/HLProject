@@ -1,3 +1,4 @@
+
 using UnityEngine;
 
 
@@ -20,19 +21,19 @@ public class PlayerModel : UnitModel
     public int baseHealth;
     public int health;
     public int monney = 10;
-    public bool die => health <= 0; 
-    public void InitData(UnitData data)
+    public bool die => health <= 0; //0���ϸ� Ʈ��
+    public void InitData(EntityData data)
     {
-        unitType = data.Type;
-        id = data.ID;
-        unitName = data.Name;
-        size = data.Size;
-        attack = data.Attack;
-        attackRange = Random.Range(data.MinAttackRange, data.MaxAttackRange);
-        moveRange = data.MoveRange;
-        maxHealth = data.Health;
+        unitType = data.type;
+        id = data.id;
+        unitName = data.name;
+        size = data.size;
+        attack = data.attack;
+        attackRange = Random.Range(data.minAttackRange, data.maxAttackRange);
+        moveRange = data.moveRange;
+        maxHealth = data.health;
         currentHealth = maxHealth;
-        mulligan = data.Mulligan;
-        reload = data.Reload;
+        mulligan = data.mulligan;
+        reload = data.reload;
     }
 }

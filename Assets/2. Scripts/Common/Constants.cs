@@ -1,3 +1,6 @@
+using System;
+using GoogleSheet.Core.Type;
+
 public enum SceneType
 {
     Test,
@@ -9,7 +12,7 @@ public enum EventType
     PlayerAction,
     PlayerAttack,
     PlayerKick,
-    PlayerMove,
+    PlayerMove, 
     EnemyTurnStart,
     EnemyTurnEnd,
     EnemyHit,
@@ -19,6 +22,23 @@ public enum EventType
     VehicleOnDestroyed,
     OnGoldChanged,
 }
+[UGS(typeof(RarityType))]
+public enum RarityType // 아이템 레어도 타입
+{
+    Common,
+    Normal,
+    Rare,
+    Elite,
+    Legendary,
+}
+[UGS(typeof(ItemType))]
+public enum ItemType   // 유물, 화약 구분
+{
+    Relic,
+    Artifact,
+    GunPowder,
+}
+
 
 public enum ShopItemType
 {
@@ -83,7 +103,7 @@ public static class TileID
     public const int Terrain = 0;
     public const int Wall = 1;
     public const int Player = 2;
-    public const int Motor = 3;
+    public const int Vehicle = 3;
     public const int Obstacle = 4;
     public const int Enemy = 5;
 }

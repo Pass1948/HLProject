@@ -356,6 +356,7 @@ GameObject:
   - component: {fileID: 1116542077}
   - component: {fileID: 1116542076}
   - component: {fileID: 1116542079}
+  - component: {fileID: 1116542080}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -404,7 +405,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 60.000004
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -481,6 +482,26 @@ MonoBehaviour:
     mipBias: 0
     varianceClampScale: 0.9
     contrastAdaptiveSharpening: 0
+--- !u!114 &1116542080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1116542075}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aae615335f80a5540bc237d68a29f14e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  followTarget: {fileID: 0}
+  player: {fileID: 0}
+  moveSpeed: 10
+  zoomSpeed: 5
+  minZoom: 5
+  maxZoom: 20
+  edgeSize: 20
+  recentSpeed: 5
 --- !u!1 &1148201788
 GameObject:
   m_ObjectHideFlags: 0
@@ -872,6 +893,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: RewardSlotUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 7530850542916900557, guid: e48002f24fc0db14c82166d25a43b035,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1285,6 +1311,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8353295369018606893, guid: fe984ee02844bfb48ac59173ca5ca983,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8383683097784508959, guid: fe984ee02844bfb48ac59173ca5ca983,
         type: 3}
