@@ -178,6 +178,9 @@ public class TurnBasedManager : MonoBehaviour
         if (currentEnemy == null)
         {
             enemyPhaseActive = false;
+            
+            GameManager.Event.Publish(EventType.EnemyTurnEnd);
+            
             ChangeTo<ClearCheckState>("Enemy phase finished");
         }
     }

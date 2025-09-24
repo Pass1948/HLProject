@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using DataTable;
 using UnityEngine;
 
 public class ItemModel // 데이터 바인딩용
@@ -20,26 +21,26 @@ public class ItemModel // 데이터 바인딩용
     public int reducedDamage;
     public int addBikeHealth;
     public int bikeAddMoveRange;
-    public bool conditionall;
+    public int conditionall;
     
-    public void InitData(ItemData data) // 초기화용 메서드
+    public void InitData(RelicData data) // 초기화용 메서드
     {
-        id = data.ID;
-        itemType = data.ItemType;
+        id = data.id;
+        itemType = data.itemType;
         name = data.name;
-        rarity = data.Rarity;
-        description = data.Description;
+        rarity = data.rarityType;
+        description = data.descript;
         addAttack = data.AddAttack;
         addAttackRange = data.AddAttackRange;
         addMoveRange = data.AddMoveRange;
-        addMaxHealth = data.AddMaxHealth;
+        addMaxHealth = data.AddHealth;
         addMulligan = data.AddMulligan;
         addMaxBullet = data.AddMaxBullet;
         moneyBonus = data.MoneyBonus;
         damageBonus = data.DamageBonus;
-        reducedDamage = data.ReducedDamage;
+        reducedDamage = data.reducedDamage;
         addBikeHealth = data.AddBikeHealth;
-        bikeAddMoveRange = data.BikeAddMoveRange;
+        bikeAddMoveRange = data.bikeAdditinal;
         conditionall = data.Conditionall;
     }
 }
