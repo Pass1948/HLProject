@@ -73,6 +73,7 @@ public class MapManager : MonoBehaviour
 
     public void CreateMap()
     {
+        
         Camera mainCamera = Camera.main;
         grid = GameManager.Resource.Create<Grid>(Path.Map + "Grid");
 

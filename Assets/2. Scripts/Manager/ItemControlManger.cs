@@ -45,7 +45,7 @@ public class ItemControlManger : MonoBehaviour
 
         for (int i = 0; i < list.Count; i++)
         {
-            BaseItem.InitItem(GameManager.Data.relicDataGroup.GetEntityData(list[i].id));
+            BaseItem.InitItem(GameManager.Data.relicDataGroup.GetRelicData(list[i].id));
         }
 
         DivideItems(items);
