@@ -1,7 +1,0 @@
-id : int,suit : string,min : int,max : int
-탄환 ID,문양 타입,최소 랭크,최대 랭크
-9001,Spade,1,13
-9002,Heart,1,13
-9003,Diamond,1,13
-9004,Club,1,13
-9005,Random,1,13

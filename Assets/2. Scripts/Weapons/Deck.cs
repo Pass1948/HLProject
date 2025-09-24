@@ -58,6 +58,7 @@ public class Deck : MonoBehaviour
     {
         drawPile.Clear();
 
+        /*
         var deck = GameManager.Data.bulletDataGroup.GetBulletData(9005);
 
         for(int r = deck.min; r <= deck.max; r++)
@@ -65,6 +66,7 @@ public class Deck : MonoBehaviour
             var s = (Suit)UnityEngine.Random.Range(0, 4);
             drawPile.Add(new Ammo { suit = s, rank = r });
         }
+        */
 
         //기존 로직인데 올 랜덤덱을 만들때 쓸수있을것같으니 밑에처럼 남겨놓음
         /*
