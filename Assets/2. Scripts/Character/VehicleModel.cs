@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using DataTable;
 using UnityEngine;
 
 
@@ -25,16 +26,16 @@ public class VehicleModel : UnitModel
 
     public int health = 3;
 
-    public void InitData(UnitData data)
+    public void InitData(EntityData data)
     {
-        unitType = data.Type;
-        id = data.ID;
-        unitName = data.Name;
-        size = data.Size;
-        moveRange = data.MoveRange;
-        baseMoveRange = data.MoveRange;
-        maxHealth = data.Health;
+        unitType = data.type;
+        id = data.id;
+        unitName = data.name;
+        size = data.size;
+        moveRange = data.moveRange;
+        baseMoveRange = data.moveRange;
+        maxHealth = data.health;
         currentHealth = maxHealth;
-        maxBullet = data.MaxBullet;
+        maxBullet = data.maxBullet;
     }
 }

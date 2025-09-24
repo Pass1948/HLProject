@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/Assets/2. Scripts/Character/PlayerModel.cs" charset="x-windows-949" />
+    <file url="file://$PROJECT_DIR$/Assets/2. Scripts/Enemy/State/IdleEnemyState.cs" charset="x-windows-949" />
+    <file url="file://$PROJECT_DIR$/Assets/2. Scripts/Manager/ResourceManager.cs" charset="x-windows-949" />
+    <file url="file://$PROJECT_DIR$/Assets/2. Scripts/Manager/SceneLoadManager.cs" charset="x-windows-949" />
+    <file url="file://$PROJECT_DIR$/Assets/2. Scripts/Navigation/Node.cs" charset="x-windows-949" />
+    <file url="file://$PROJECT_DIR$/Assets/2. Scripts/Navigation/Pathpainding.cs" charset="x-windows-949" />
+    <file url="file://$PROJECT_DIR$/Assets/2. Scripts/TurnBasedHFSM/Base/BaseTurnState.cs" charset="x-windows-949" />
+    <file url="file://$PROJECT_DIR$/Assets/2. Scripts/TurnBasedHFSM/States/ClearCheckState.cs" charset="x-windows-949" />
+    <file url="file://$PROJECT_DIR$/Assets/2. Scripts/TurnBasedHFSM/States/EnemyTurnState.cs" charset="x-windows-949" />
+    <file url="file://$PROJECT_DIR$/Assets/2. Scripts/TurnBasedHFSM/States/IdleState.cs" charset="x-windows-949" />
+    <file url="file://$PROJECT_DIR$/Assets/2. Scripts/TurnBasedHFSM/States/PlayerActionStates/Base/PlayerActionState.cs" charset="x-windows-949" />
+    <file url="file://$PROJECT_DIR$/Assets/2. Scripts/TurnBasedHFSM/States/PlayerActionStates/PlayerAttackState.cs" charset="x-windows-949" />
+    <file url="file://$PROJECT_DIR$/Assets/2. Scripts/TurnBasedHFSM/States/PlayerActionStates/PlayerKickState.cs" charset="x-windows-949" />
+    <file url="file://$PROJECT_DIR$/Assets/2. Scripts/TurnBasedHFSM/States/PlayerActionStates/PlayerMoveState.cs" charset="x-windows-949" />
+    <file url="file://$PROJECT_DIR$/Assets/2. Scripts/TurnBasedHFSM/States/PlayerTurnEndState.cs" charset="x-windows-949" />
+    <file url="file://$PROJECT_DIR$/Assets/2. Scripts/TurnBasedHFSM/TurnSettingValue.cs" charset="x-windows-949" />
+    <file url="file://$PROJECT_DIR$/Assets/2. Scripts/TurnBasedHFSM/TurnStateMachine.cs" charset="x-windows-949" />
+    <file url="file://$PROJECT_DIR$/Assets/2. Scripts/UI/EnemyInfoPopUpUI.cs" charset="x-windows-949" />
+    <file url="file://$PROJECT_DIR$/Assets/2. Scripts/UI/OverUI.cs" charset="x-windows-949" />
+    <file url="file://$PROJECT_DIR$/Assets/2. Scripts/UI/RewardSlotUI.cs" charset="x-windows-949" />
+  </component>
+</project>

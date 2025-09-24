@@ -59,7 +59,7 @@ public class VehicleHandler : MonoBehaviour
             GameManager.Unit.Player.playerModel.viecleBording = ViecleBording.off;
             GameManager.Unit.Vehicle.transform.SetParent(null);
             vehicleDestruction.SetActive(true); 
-            GameManager.Map.mapData[(int)transform.position.x, (int)transform.position.y] = TileID.Motor;
+            GameManager.Map.mapData[(int)transform.position.x, (int)transform.position.y] = TileID.Vehicle;
             GameManager.Unit.Player.playerModel.moveRange = currentPlayerMoveRange;
             GameManager.Unit.Player.playerModel.health -= GameManager.Unit.Vehicle.vehicleModel.health;
         }
@@ -100,7 +100,7 @@ public class VehicleHandler : MonoBehaviour
         GameManager.Unit.Vehicle.transform.SetParent(null);
         GameManager.Unit.Player.playerModel.moveRange = currentPlayerMoveRange;
         GameManager.Unit.Player.playerModel.health -= GameManager.Unit.Vehicle.vehicleModel.health;
-        GameManager.Map.mapData[(int)transform.position.x, (int)transform.position.y] = TileID.Motor;
+        GameManager.Map.mapData[(int)transform.position.x, (int)transform.position.y] = TileID.Vehicle;
     }
     
 }
