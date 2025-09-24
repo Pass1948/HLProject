@@ -30,12 +30,13 @@ public class MapManager : MonoBehaviour
     private TileBase redAttackTile;
 
     public Grid grid;
-    
 
     public List<BaseEnemy> CurrentEnemyTargets { get; private set; } = new List<BaseEnemy>();
-
+    // 범위에 들어온 파괴 가능한 장애물 리스트
     public List<Vector3Int> CurrentObstacleCoords { get; private set; } = new List<Vector3Int>();
-    
+    // 턴끝 행동을 위한 장애물 리스트
+    public List<ITurnEndEffect> turnEndEffects = new List<ITurnEndEffect>();
+
     void Awake()
     {
         mapCreator = gameObject.AddComponent<MapCreator>();
@@ -199,7 +200,23 @@ public class MapManager : MonoBehaviour
         CurrentEnemyTargets.Clear();
         CurrentObstacleCoords.Clear();
     }
-    
+    // 턴끝 행동을 위한 기능
+    public void RegisterTurnEndEffect(ITurnEndEffect effect)
+    {
+        if (!turnEndEffects.Contains(effect))
+        {
+            turnEndEffects.Add(effect);
+        }
+    }
+    public void UnregisterTurnEndEffect(ITurnEndEffect effect)
+    {
+        turnEndEffects.Remove(effect);
+    }
+    //범위 판단
+    public bool IsInside(Vector3Int c)
+    {
+        return c.x >= 0 && c.x < mapWidth && c.y >= 0 && c.y < mapHeight;
+    }
     
     // 임시로 선언한 함수들
 
@@ -245,7 +262,8 @@ public class MapManager : MonoBehaviour
     {
         return mapData[cell.x, cell.y] == TileID.Player;
     }
-    public bool IsObstacle(Vector3Int cell)
+
+    public bool IsObstacle_Breakable(Vector3Int cell)
     {
         return mapData[cell.x, cell.y] == TileID.Obstacle;
     }
