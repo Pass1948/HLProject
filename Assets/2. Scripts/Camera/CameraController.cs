@@ -12,7 +12,7 @@ public class CameraController : MonoBehaviour
     private float moveSpeed = 10f;
     private float zoomSpeed = 20f;
     private float minZoom = 20f;
-    private float maxZoom = 80f;
+    private float maxZoom = 60f;
     private float edgeSize = 20f;
     private float recentSpeed= 5f;
     

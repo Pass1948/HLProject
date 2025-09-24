@@ -3,8 +3,8 @@ using GoogleSheet.Core.Type;
 
 public enum SceneType
 {
+    Title,
     Test,
-    Test2
 }
 
 public enum EventType
@@ -106,5 +106,45 @@ public static class TileID
     public const int Vehicle = 3;
     public const int Obstacle = 4;
     public const int Enemy = 5;
+}
+
+[UGS(typeof(EliteType))]
+public enum EliteType
+{
+    Enhance,
+    IronWall,
+    Berserk,
+    Sniper,
+    Haste,
+    Cripple,
+    PackBoost,
+    Disarm,
+    Explosion,
+    SuicideBomber,
+}
+
+[UGS(typeof(ObstacleType))]
+public enum ObstacleType
+{
+    StonePillar,
+    FallingRockZone,
+    SlowZone,
+    VortexZone,
+    IcePillar,
+    FragileIceWall,
+    BlizzardZone,
+    FlamingPillar,
+    LavaZone,
+    VolcanoZone,
+}
+
+[UGS(typeof(SuitType))]
+public enum SuitType
+{
+    Spade,
+    Heart,
+    Diamond,
+    Club,
+    Random
 }
 

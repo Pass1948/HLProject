@@ -57,26 +57,12 @@ namespace DataTable
 /* Fields. */
 
 		public System.Int32 id;
-		public System.Int32 mapId;
 		public System.Int32 size;
-		public System.Int32 stonePillar;
-		public System.Int32 fallingRocksZone;
-		public System.Int32 floodedArea;
-		public System.Int32 linkedPuddles;
-		public System.Int32 whirlpool;
-		public System.Int32 icePillar;
-		public System.Int32 crevasse;
-		public System.Int32 blizzardZone;
-		public System.Int32 flamePillar;
-		public System.Int32 lava;
-		public System.Int32 meteorZone;
-		public System.Int32 monsterID1;
-		public System.Int32 monsterID1Count;
-		public System.Int32 monsterID2;
-		public System.Int32 monsterID2Count;
-		public System.Int32 monsterID3;
-		public System.Int32 monsterID4;
-		public System.Int32 monsterID5;
+		public System.Collections.Generic.List<Int32> obstacleList;
+		public System.Collections.Generic.List<Int32> obstacleCount;
+		public System.Collections.Generic.List<Int32> enemyList;
+		public System.Collections.Generic.List<Int32> enemyCount;
+		public System.Int32 eliteId;
   
 
 #region fuctions
