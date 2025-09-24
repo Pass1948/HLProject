@@ -3,8 +3,8 @@ using GoogleSheet.Core.Type;
 
 public enum SceneType
 {
+    Title,
     Test,
-    Test2
 }
 
 public enum EventType
