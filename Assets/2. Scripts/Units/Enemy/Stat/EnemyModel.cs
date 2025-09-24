@@ -12,7 +12,7 @@ public enum EnemyAttribute
     High
 }
 
-[UGS(typeof(EnemyType))]
+// [UGS(typeof(EnemyType))]
 public enum EnemyType
 {
     Normal,
