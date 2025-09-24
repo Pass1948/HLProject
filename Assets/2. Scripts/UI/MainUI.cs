@@ -115,7 +115,7 @@ public class MainUI : BaseUI
 
     private void RefreshVehicleUI()
     {
-        switch (GameManager.Unit.Vehicle.vehicleModel.condition)
+        switch (GameManager.Unit.Vehicle.vehicleModel.condition)    // 다들 여기서 에러남
         {
             case VehicleCondition.Riding: // 위로 올라탔을 때
                 rerollBtn.gameObject.SetActive(true);
