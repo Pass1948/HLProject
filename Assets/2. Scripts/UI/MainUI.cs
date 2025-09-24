@@ -274,7 +274,6 @@ public class MainUI : BaseUI
 
     private void RefreshPlayerHP()
     {
-        // 보장된다고 했으니 바로 접근 (null-가드 필요하면 if 추가)
         var m = GameManager.Unit.Player.playerModel;
 
         int cur = m.health;
