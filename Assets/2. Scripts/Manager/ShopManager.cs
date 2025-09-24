@@ -237,7 +237,7 @@ public class ShopManager : MonoBehaviour
 
     private void RemoveOfferAt(int index)
     {
-        if (index >= 0 || index < offers.Count)
+        if (index >= 0 && index < offers.Count)
             offers.RemoveAt(index);
     }
     private void TryReroll()
@@ -343,7 +343,7 @@ public class ShopManager : MonoBehaviour
             if (roll <= acc) picked = RarityType.Rare;
             else
             {
-                acc += weightRare;
+                acc += weightElite;
                 if (roll <= acc) picked = RarityType.Elite;
                 else picked = RarityType.Legendary;
             }
