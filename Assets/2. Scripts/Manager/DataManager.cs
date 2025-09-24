@@ -21,7 +21,9 @@ public class DataManager : MonoBehaviour
 
     public void Initialize()
     {
+        relicData   = new RelicData();
         entityDataGroup = new EntityDataGroup();
         relicDataGroup = new RelicDataGroup();
+        GameManager.ItemControl.ItemDataSet();  // 아이템데이터 리스트 초기 세팅
     }
 }

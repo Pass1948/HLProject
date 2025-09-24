@@ -17,34 +17,39 @@ public class ItemControlManger : MonoBehaviour
     [HideInInspector] public int gunPowderID = 3501; // 화약 초기 세팅시 필요한 첫번째 id
 
     // ===== 모든 아이템 리스트에 필요한 값 =====
-    [HideInInspector] public List<BaseItem> items = new List<BaseItem>(); // 모든 아이템 리스트
-    private BaseItem baseItem;
-
-    [HideInInspector]
-    public BaseItem BaseItem
-    {
-        get { return baseItem; }
-        set { baseItem = value; }
-    }
-
+    [HideInInspector] public List<ItemModel> items = new List<ItemModel>(); // 모든 아이템 리스트
+    private ItemModel[] byId;
     // ===== 유물아이템 리스트 =====
-    [HideInInspector] public List<BaseItem> relicItems = new List<BaseItem>();
+    [HideInInspector] public List<ItemModel> relicItems = new List<ItemModel>();
 
     // ===== 화약아이템 리스트 =====
-    [HideInInspector] public List<BaseItem> powderItems = new List<BaseItem>();
-
+    [HideInInspector] public List<ItemModel> powderItems = new List<ItemModel>();
+    
+    // ===== 아이템 Prefab을 위한 변수들 =====
+    public BaseItem baseItem;
+    public BaseItem BaseItem { get { return baseItem; } set { baseItem = value; } }
+    
+    public Transform relicRoot;
+    public Transform powderRoot;
     // =====================================================================
     // 아이템 데이터 관련 로직
     // =====================================================================
     public void ItemDataSet() // 아이템 리스트에 데이터 입력(데이터매니저에서 호출)
     {
         var list = RelicDataGroup.GetList();
-
+        // 최대 ID 기준으로 배열 사이즈 결정 (희소 ID도 null로 둠)
+        int maxId = list.Max(r => r.id);
+        byId = new ItemModel[maxId + 1];
+        
+        items.Clear();
         for (int i = 0; i < list.Count; i++)
         {
-            BaseItem.InitItem(GameManager.Data.relicDataGroup.GetRelicData(list[i].id));
+            var m = new ItemModel();
+            m.InitData(list[i]); // 스프레드시트 → 런타임 모델 매핑
+            items.Add(m);
+            if (m.id >= 0 && m.id < byId.Length) 
+                byId[m.id] = m; // 희소 ID 안전
         }
-
         DivideItems(items);
     }
 
@@ -55,7 +60,7 @@ public class ItemControlManger : MonoBehaviour
     }
 
     // 화약과 유물을 가려내는 로직
-    public void DivideItems(List<BaseItem> items)
+    public void DivideItems(List<ItemModel> items)
     {
         relicItems.Clear();
         powderItems.Clear();
@@ -64,12 +69,12 @@ public class ItemControlManger : MonoBehaviour
         
         for (int i = 0; i < items.Count; i++)
         {
-            if (items[i].itemModel.itemType == ItemType.Relic)
+            if (items[i].itemType == ItemType.Relic)
             {
                 relicItems.Add(items[i]);
             }
 
-            if (items[i].itemModel.itemType == ItemType.GunPowder)
+            if (items[i].itemType == ItemType.GunPowder)
             {
                 powderItems.Add(items[i]);
             }
@@ -80,9 +85,9 @@ public class ItemControlManger : MonoBehaviour
     // 아이템 확률 관련 로직
     // =====================================================================
     // 불릿용 확률로직(5개 등급을 3~5개 불릿슬롯에 같은 확률(화약이 불릿에 적용될 확률)로 유지&등록)
-    public List<BaseItem> BulletWeightSampling(List<BaseItem> powders, int slotCount)
+    public List<ItemModel> BulletWeightSampling(List<ItemModel> powders, int slotCount)
     {
-        var result = new List<BaseItem>();
+        var result = new List<ItemModel>();
         var weights = new Dictionary<RarityType, float>
         {
             { RarityType.Common, Mathf.Max(0f, common) },
@@ -110,9 +115,9 @@ public class ItemControlManger : MonoBehaviour
     }
 
     // 유물아이템용 확률로직(2개슬롯에 4개 등급(common제외) 확률 등록)
-    public List<BaseItem> RelicWeightSampling(List<BaseItem> relics, int slotCount)
+    public List<ItemModel> RelicWeightSampling(List<ItemModel> relics, int slotCount)
     {
-        var result = new List<BaseItem>();
+        var result = new List<ItemModel>();
         if (relicItems == null || relicItems.Count == 0)
             return result;
         var weights = new Dictionary<RarityType, float>
@@ -143,9 +148,9 @@ public class ItemControlManger : MonoBehaviour
 
     // 화약아이템용 확률로직(2개슬롯에 4개 등급(common제외) 확률 등록) 
     // 화약주머니 메서드(3개 들어감)
-    public List<BaseItem> PowderWeightSampling(List<BaseItem> powders, int count)
+    public List<ItemModel> PowderWeightSampling(List<ItemModel> powders, int count)
     {
-        var result = new List<BaseItem>();
+        var result = new List<ItemModel>();
         if (relicItems == null || relicItems.Count == 0)
             return result;
         var weights = new Dictionary<RarityType, float>
@@ -197,14 +202,14 @@ public class ItemControlManger : MonoBehaviour
     }
 
     // 특정 등급의 아이템 풀
-    private List<BaseItem> FilterByRarity(List<BaseItem> pool, RarityType rarity)
+    private List<ItemModel> FilterByRarity(List<ItemModel> pool, RarityType rarity)
     {
-        var list = new List<BaseItem>();
+        var list = new List<ItemModel>();
         for (int i = 0; i < pool.Count; i++)
         {
             var it = pool[i];
-            if (it == null || it.itemModel == null) continue;
-            if (it.itemModel.rarity == rarity)
+            if (it == null) continue;
+            if (it.rarity == rarity)
                 list.Add(it);
         }
 
