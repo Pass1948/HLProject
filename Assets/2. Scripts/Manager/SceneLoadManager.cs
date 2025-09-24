@@ -16,6 +16,7 @@ public class SceneLoadManager : MonoBehaviour
     private void Awake()
     {
         // 씬 클래스와 enum 매핑
+        _scenes.Add(SceneType.Title, new TitleScene());
         _scenes.Add(SceneType.Test, new TestScene());
     }
 
