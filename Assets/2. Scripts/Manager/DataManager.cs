@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 using DataTable;
@@ -10,9 +10,11 @@ public class DataManager : MonoBehaviour
     private EntityData entityData;
     private ObstacleData obstacleData;
     public RelicData relicData;
+    public BulletData bulletData;
 
     public EntityDataGroup entityDataGroup;
     public RelicDataGroup relicDataGroup;
+    public BulletDataGroup bulletDataGroup;
 
     private void Start()
     {
@@ -23,5 +25,7 @@ public class DataManager : MonoBehaviour
     {
         entityDataGroup = new EntityDataGroup();
         relicDataGroup = new RelicDataGroup();
+        bulletDataGroup = new BulletDataGroup();
+        
     }
 }
