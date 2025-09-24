@@ -57,6 +57,11 @@ public class ItemControlManger : MonoBehaviour
     // 화약과 유물을 가려내는 로직
     public void DivideItems(List<BaseItem> items)
     {
+        relicItems.Clear();
+        powderItems.Clear();
+        if(items == null || items.Count == 0)
+            return;
+        
         for (int i = 0; i < items.Count; i++)
         {
             if (items[i].itemModel.itemType == ItemType.Relic)
