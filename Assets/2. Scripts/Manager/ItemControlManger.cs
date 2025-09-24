@@ -37,7 +37,7 @@ public class ItemControlManger : MonoBehaviour
     // =====================================================================
     // 아이템 데이터 관련 로직
     // =====================================================================
-    public void ItemDataSet() // 아이템 리스트에 데이터 입력
+    public void ItemDataSet() // 아이템 리스트에 데이터 입력(데이터매니저에서 호출)
     {
         var list = RelicDataGroup.GetList();
 
@@ -97,11 +97,11 @@ public class ItemControlManger : MonoBehaviour
             if (pool.Count == 0) // 해당 등급이 비었으면 폴백
             {
                 if (powders.Count == 0) break;
-                result.Add(powders[UnityEngine.Random.Range(0, powders.Count)]);
+                result.Add(powders[Random.Range(0, powders.Count)]);
             }
             else
             {
-                result.Add(pool[UnityEngine.Random.Range(0, pool.Count)]);
+                result.Add(pool[Random.Range(0, pool.Count)]);
             }
         }
         return result;
@@ -127,11 +127,11 @@ public class ItemControlManger : MonoBehaviour
 
             if (pool.Count == 0)
             {
-                result.Add(relicItems[UnityEngine.Random.Range(0, relics.Count)]);
+                result.Add(relicItems[Random.Range(0, relics.Count)]);
             }
             else
             {
-                result.Add(pool[UnityEngine.Random.Range(0, pool.Count)]);
+                result.Add(pool[Random.Range(0, pool.Count)]);
             }
         }
 
@@ -139,8 +139,9 @@ public class ItemControlManger : MonoBehaviour
         
     }
 
-    // 화약아이템용 확률로직(2개슬롯에 4개 등급(common제외) 확률 등록)
-    public List<BaseItem> PowderWeightSampling(List<BaseItem> powders, int slotCount)
+    // 화약아이템용 확률로직(2개슬롯에 4개 등급(common제외) 확률 등록) 
+    // 화약주머니 메서드(3개 들어감)
+    public List<BaseItem> PowderWeightSampling(List<BaseItem> powders, int count)
     {
         var result = new List<BaseItem>();
         if (relicItems == null || relicItems.Count == 0)
@@ -152,18 +153,18 @@ public class ItemControlManger : MonoBehaviour
             { RarityType.Elite, Mathf.Max(0f, elite) },
             { RarityType.Legendary, Mathf.Max(0f, legendary) },
         };
-        for (int i = 0; i < slotCount; i++)
+        for (int i = 0; i < count; i++)
         {
             var pickedRarity = PickRarity(weights);
             var pool = FilterByRarity(powders, pickedRarity);
 
             if (pool.Count == 0)
             {
-                result.Add(relicItems[UnityEngine.Random.Range(0, powders.Count)]);
+                result.Add(relicItems[Random.Range(0, powders.Count)]);
             }
             else
             {
-                result.Add(pool[UnityEngine.Random.Range(0, pool.Count)]);
+                result.Add(pool[Random.Range(0, pool.Count)]);
             }
         }
 
