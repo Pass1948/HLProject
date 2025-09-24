@@ -65,13 +65,11 @@ public class ToggleBtnController : MonoBehaviour
     {
         if (GameManager.Mouse.IsKicking)
         {
-            Debug.Log("발차기 그만두기");
             GameManager.Map.attackRange.ClearAttackType();
             GameManager.Mouse.IsKicking = false;
         }
         else
         {
-            Debug.Log("발차기 하기");
             //현재 꺼져 있으면 켠다
             GameManager.Map.attackRange.SetAttackRangeForKick();
             GameManager.Mouse.IsKicking = true;
