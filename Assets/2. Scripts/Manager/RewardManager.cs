@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,12 +12,12 @@ public class RewardManager : MonoBehaviour
         {5, 50},
     };
     
-    
+
     public void GiveReward(int stageId)
     {
         if (stageRewards.TryGetValue(stageId, out int gold))
         {
-            GameManager.Currency.AddGold(gold);
+            GameManager.Unit.Player.playerHandler.AddGold(gold);
         }
     }
 }

@@ -4,15 +4,7 @@ using UnityEngine;
 
 public class PlayerHandler : MonoBehaviour
 {
-
-    private void Awake()
-    {
-    }
-    public void Update()
-    {
-
-    }
-
+    public int playerMonney;
     public void TakeDamage(int amount)
     {
         var player = GameManager.Unit.Player.playerModel;
@@ -32,9 +24,40 @@ public class PlayerHandler : MonoBehaviour
             }
         }
     }
-    public void VehicleControll()
+    private void Awake()
     {
-
+        playerMonney = 0;
     }
 
+    public int GetGold()
+    {
+        return playerMonney;
+    }
+
+    public void AddGold(int amount)
+    {
+        playerMonney += amount;
+        // 골드 추가시 여기에
+        GameManager.Event.Publish(EventType.OnGoldChanged, playerMonney);
+        
+    }
+
+    public bool SpendGold(int amount)
+    {
+        if (playerMonney >= amount)
+        {
+            playerMonney -= amount;
+            GameManager.Event.Publish(EventType.OnGoldChanged, playerMonney);
+            return true;
+        }
+        else
+        {
+            Debug.Log("돈이 없으"); // TODO: 유아이 추가 작업 필요(JBS)
+            return false;
+        }
+    }
+    
+    
+    
+    
 }
