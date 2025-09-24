@@ -5,7 +5,7 @@ using DataTable;
 
 public class RelicDataGroup : RelicData
 {
-    public RelicData GetEntityData(int idx)
+    public RelicData GetRelicData(int idx)
     {
         return RelicDataMap[idx];
     }
