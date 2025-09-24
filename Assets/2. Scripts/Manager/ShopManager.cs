@@ -72,7 +72,6 @@ public class ShopManager : MonoBehaviour
     private void Start()
     {
         playerGold = GameManager.Unit.Player.playerHandler.playerMonney;
-        ShopStart();
     }
 //플레이어 모델 ㅡ게임메니저,데이터 메니저
 
@@ -94,7 +93,7 @@ public class ShopManager : MonoBehaviour
         
         // 응급처치
         
-        // 탄환제거
+        // 탄환제거AA
         
         
         
@@ -164,7 +163,7 @@ public class ShopManager : MonoBehaviour
                 Debug.Log("자 화약을 샀네요");  
                 break;
             case ShopItemType.Heal : 
-                Debug.Log("자 회복 아이템을 샀네요"); // 사면 바로 힐되면 됨
+                Debug.Log("자 지 회복할 아이템을 샀네요"); // 사면 바로 힐되면 됨
                 break;
             case ShopItemType.RemoveBullet:
                 Debug.Log("자 총알 지우기를 샀네요"); // 총알 
@@ -199,18 +198,39 @@ public class ShopManager : MonoBehaviour
         Shuffle(pool);
         var powderOffers = pool.GetRange(0, Mathf.Min(3, pool.Count));
 
-        foreach (var ammo in candidates )
-        {
-            //
-        }
+        Debug.Log("화약 꾸러미 선택 시작");
+        foreach (var ammo in candidates)
+            Debug.Log($"카드 후보: {ammo}");
 
         foreach (var powder in powderOffers)
-        {
-            
-        }
+            Debug.Log($"화약 후보: {powder.name} ({powder.rarity})");
     }
 
+    public void ApplyPowder(Ammo target, PowderData powder)
+    {
+        target.powder = powder;
+        
+    }
 
+    // 파우더 가격.
+    private int GetPowderPrice(Rare rerity) => rerity switch
+    {
+        // 케이스 문.
+        Rare.Nomal => 1,
+        Rare.Rare => 3,
+        Rare.Unique => 5,
+        Rare.Legendary => 7,
+        _ => 0
+    };
+    // 유물 가격
+    private int GetRelicPrice(Rare rarity) => rarity switch
+    {
+        Rare.Nomal => 5,
+        Rare.Rare => 7,
+        Rare.Unique => 9,
+        Rare.Legendary => 11,
+        _ => 0
+    };
     // 셔플. (유틸)
     private void Shuffle<T>(List<T> list)
     {
@@ -220,7 +240,6 @@ public class ShopManager : MonoBehaviour
             T temp = list[i];
             list[i] = list[j];
             list[j] = temp;
-            
         }
     }
     
