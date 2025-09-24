@@ -108,3 +108,43 @@ public static class TileID
     public const int Enemy = 5;
 }
 
+[UGS(typeof(EliteType))]
+public enum EliteType
+{
+    Enhanced,
+    IronWall,
+    Berserk,
+    Sniper,
+    Haste,
+    Cripple,
+    PackBoost,
+    Disarm,
+    Explosion,
+    SuicideBomber,
+}
+
+[UGS(typeof(ObstacleType))]
+public enum ObstacleType
+{
+    StonePillar,
+    FallingRockZone,
+    SlowZone,
+    VortexZone,
+    IcePillar,
+    FragileIceWall,
+    BlizzardZone,
+    FlamingPillar,
+    LavaZone,
+    VolcanoZone,
+}
+
+[UGS(typeof(SuitType))]
+public enum SuitType
+{
+    Spade,
+    Heart,
+    Diamond,
+    Club,
+    Random
+}
+

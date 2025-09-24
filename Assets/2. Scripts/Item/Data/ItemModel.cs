@@ -30,18 +30,18 @@ public class ItemModel // 데이터 바인딩용
         name = data.name;
         rarity = data.rarityType;
         description = data.descript;
-        addAttack = data.AddAttack;
-        addAttackRange = data.AddAttackRange;
-        addMoveRange = data.AddMoveRange;
-        addMaxHealth = data.AddHealth;
-        addMulligan = data.AddMulligan;
-        addMaxBullet = data.AddMaxBullet;
-        moneyBonus = data.MoneyBonus;
-        damageBonus = data.DamageBonus;
+        addAttack = data.addAttack;
+        addAttackRange = data.addAttackRange;
+        addMoveRange = data.addMoveRange;
+        addMaxHealth = data.addHealth;
+        addMulligan = data.addMulligan;
+        addMaxBullet = data.addMaxBullet;
+        moneyBonus = data.moneyBonus;
+        damageBonus = data.damageBonus;
         reducedDamage = data.reducedDamage;
-        addBikeHealth = data.AddBikeHealth;
+        addBikeHealth = data.addBikeHealth;
         bikeAddMoveRange = data.bikeAdditinal;
-        conditionall = data.Conditionall;
+        conditionall = data.conditionall;
     }
 }
 

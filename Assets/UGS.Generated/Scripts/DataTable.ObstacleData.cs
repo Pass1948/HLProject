@@ -57,7 +57,7 @@ namespace DataTable
 /* Fields. */
 
 		public System.Int32 id;
-		public System.String type;
+		public ObstacleType type;
 		public System.String name;
 		public System.Int32 size;
 		public System.String descript;
