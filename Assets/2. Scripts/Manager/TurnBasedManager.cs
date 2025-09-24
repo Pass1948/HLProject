@@ -20,6 +20,7 @@ public class TurnBasedManager : MonoBehaviour
     // 적 턴 진행 여부 플래그
     private bool enemyPhaseActive;
 
+    public bool isStarted = false;
 
     private readonly Dictionary<Type, ITurnState> _stateCache = new Dictionary<Type, ITurnState>();
     private void Awake()
@@ -57,6 +58,15 @@ public class TurnBasedManager : MonoBehaviour
     {
         turnHFSM.FixedTick(Time.fixedDeltaTime);
     }
+    
+    public void StartTotalTurn() => isStarted = !isStarted;
+
+    public void ChangStartTurn()    // TODO:스테이지 시작과 종료 시점에 호출해주기 바람
+    {
+        StartTotalTurn();
+        ChangeTo<IdleState>("Force");
+    }
+    
     public void SetTo<T>(string reason = null) where T : ITurnState, new()
     {
         var next = GetState<T>();
