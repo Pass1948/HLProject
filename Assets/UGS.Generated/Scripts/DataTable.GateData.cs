@@ -17,63 +17,47 @@ using UnityEngine;
 namespace DataTable
 {
     [GoogleSheet.Attribute.TableStruct]
-    public partial class RelicData : ITable
+    public partial class GateData : ITable
     { 
 
-        public delegate void OnLoadedFromGoogleSheets(List<RelicData> loadedList, Dictionary<int, RelicData> loadedDictionary);
+        public delegate void OnLoadedFromGoogleSheets(List<GateData> loadedList, Dictionary<int, GateData> loadedDictionary);
 
         static bool isLoaded = false;
         static string spreadSheetID = "1wT-JLsTOYQyd86GO0Wwr1EZD4ngGNQ8FehDamlQiz0I"; // it is file id
-        static string sheetID = "42906991"; // it is sheet id
+        static string sheetID = "1094615182"; // it is sheet id
         static UnityFileReader reader = new UnityFileReader();
 
 /* Your Loaded Data Storage. */
     
-        public static Dictionary<int, RelicData> RelicDataMap = new Dictionary<int, RelicData>();  
-        public static List<RelicData> RelicDataList = new List<RelicData>();   
+        public static Dictionary<int, GateData> GateDataMap = new Dictionary<int, GateData>();  
+        public static List<GateData> GateDataList = new List<GateData>();   
 
         /// <summary>
-        /// Get RelicData List 
+        /// Get GateData List 
         /// Auto Load
         /// </summary>
-        public static List<RelicData> GetList()
+        public static List<GateData> GetList()
         {{
            if (isLoaded == false) Load();
-           return RelicDataList;
+           return GateDataList;
         }}
 
         /// <summary>
-        /// Get RelicData Dictionary, keyType is your sheet A1 field type.
+        /// Get GateData Dictionary, keyType is your sheet A1 field type.
         /// - Auto Load
         /// </summary>
-        public static Dictionary<int, RelicData>  GetDictionary()
+        public static Dictionary<int, GateData>  GetDictionary()
         {{
            if (isLoaded == false) Load();
-           return RelicDataMap;
+           return GateDataMap;
         }}
 
     
 
 /* Fields. */
 
-		public System.Int32 id;
-		public ItemType itemType;
-		public System.String name;
-		public RarityType rarityType;
-		public System.String descript;
-		public System.Int32 addAttack;
-		public System.Int32 addAttackRange;
-		public System.Int32 addMoveRange;
-		public System.Int32 addHealth;
-		public System.Int32 addMulligan;
-		public System.Int32 addMaxBullet;
-		public System.Int32 moneyBonus;
-		public System.Int32 damageBonus;
-		public System.Int32 reducedDamage;
-		public System.Int32 addBikeHealth;
-		public System.Int32 bikeAdditinal;
-		public System.Int32 conditionall;
-		public System.String path;
+		public System.Int32 mapId;
+		public System.Collections.Generic.List<Int32> stageList;
   
 
 #region fuctions
@@ -84,7 +68,7 @@ namespace DataTable
             if(isLoaded && forceReload == false)
             {
 #if UGS_DEBUG
-                 Debug.Log("RelicData is already loaded! if you want reload then, forceReload parameter set true");
+                 Debug.Log("GateData is already loaded! if you want reload then, forceReload parameter set true");
 #endif
                  return;
             }
@@ -100,7 +84,7 @@ namespace DataTable
         }
  
 
-        public static void LoadFromGoogle(System.Action<List<RelicData>, Dictionary<int, RelicData>> onLoaded, bool updateCurrentData = false)
+        public static void LoadFromGoogle(System.Action<List<GateData>, Dictionary<int, GateData>> onLoaded, bool updateCurrentData = false)
         {      
                 IHttpProtcol webInstance = null;
     #if UNITY_EDITOR
@@ -128,14 +112,14 @@ namespace DataTable
                
 
 
-    public static (List<RelicData> list, Dictionary<int, RelicData> map) CommonLoad(Dictionary<string, Dictionary<string, List<string>>> jsonObject, bool forceReload){
-            Dictionary<int, RelicData> Map = new Dictionary<int, RelicData>();
-            List<RelicData> List = new List<RelicData>();     
+    public static (List<GateData> list, Dictionary<int, GateData> map) CommonLoad(Dictionary<string, Dictionary<string, List<string>>> jsonObject, bool forceReload){
+            Dictionary<int, GateData> Map = new Dictionary<int, GateData>();
+            List<GateData> List = new List<GateData>();     
             TypeMap.Init();
-            FieldInfo[] fields = typeof(RelicData).GetFields(BindingFlags.Public | BindingFlags.Instance);
+            FieldInfo[] fields = typeof(GateData).GetFields(BindingFlags.Public | BindingFlags.Instance);
             List<(string original, string propertyName, string type)> typeInfos = new List<(string, string, string)>(); 
             List<List<string>> rows = new List<List<string>>();
-            var sheet = jsonObject["RelicData"];
+            var sheet = jsonObject["GateData"];
 
             foreach (var column in sheet.Keys)
             {
@@ -154,7 +138,7 @@ namespace DataTable
                         int rowCount = rows[0].Count;
                         for (int i = 0; i < rowCount; i++)
                         {
-                            RelicData instance = new RelicData();
+                            GateData instance = new GateData();
                             for (int j = 0; j < typeInfos.Count; j++)
                             {
                                 try
@@ -191,12 +175,12 @@ namespace DataTable
                               
                             }
                             List.Add(instance); 
-                            Map.Add(instance.id, instance);
+                            Map.Add(instance.mapId, instance);
                         }
                         if(isLoaded == false || forceReload)
                         { 
-                            RelicDataList = List;
-                            RelicDataMap = Map;
+                            GateDataList = List;
+                            GateDataMap = Map;
                             isLoaded = true;
                         }
                     } 
@@ -206,10 +190,10 @@ namespace DataTable
 
  
 
-        public static void Write(RelicData data, System.Action<WriteObjectResult> onWriteCallback = null)
+        public static void Write(GateData data, System.Action<WriteObjectResult> onWriteCallback = null)
         { 
             TypeMap.Init();
-            FieldInfo[] fields = typeof(RelicData).GetFields(BindingFlags.Public | BindingFlags.Instance);
+            FieldInfo[] fields = typeof(GateData).GetFields(BindingFlags.Public | BindingFlags.Instance);
             var datas = new string[fields.Length];
             for (int i = 0; i < fields.Length; i++)
             {

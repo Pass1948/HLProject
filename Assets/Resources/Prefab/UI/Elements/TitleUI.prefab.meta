@@ -1,0 +1,11 @@
+fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Resources/Prefab/UI/Elements/TitleUI.prefab.meta
+guid: e8a9874d36db75943bb92ad7fff538a3
+========
+guid: ad8233e87b4a03d44bb8e129640e2605
+>>>>>>>> Develop:Assets/Resources/Prefab/UI/Elements/ItemUI.prefab.meta
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

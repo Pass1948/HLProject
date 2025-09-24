@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-
-//덱(오토바이): 기본 12장 덱 구성
+using DataTable;
+//덱(오토바이): 기본 13장 덱 구성
 public class Deck : MonoBehaviour
 {
     //시작 덱 장수
-    [SerializeField] private int initialDeckSize = 12;
+    [SerializeField] private int initialDeckSize = 13;
     //시작 풀
     [SerializeField] private List<Ammo> startPool = new();
 
@@ -17,10 +17,21 @@ public class Deck : MonoBehaviour
 
     private void Awake()
     {
-            //덱 구성
-            BuildInitialDeck();
-            //섞기
-            Shuffle(drawPile);
+            
+            
+    }
+
+    private void Start()
+    {
+        
+    }
+
+    private void OnEnable()
+    {
+        //덱 구성
+        BuildInitialDeck();
+        //섞기
+        Shuffle(drawPile);
     }
 
     //덱 상단에서 탄환 뽑기(부족하면 가진 만큼)
@@ -47,6 +58,18 @@ public class Deck : MonoBehaviour
     {
         drawPile.Clear();
 
+        /*
+        var deck = GameManager.Data.bulletDataGroup.GetBulletData(9005);
+
+        for(int r = deck.min; r <= deck.max; r++)
+        {
+            var s = (Suit)UnityEngine.Random.Range(0, 4);
+            drawPile.Add(new Ammo { suit = s, rank = r });
+        }
+        */
+
+        //기존 로직인데 올 랜덤덱을 만들때 쓸수있을것같으니 밑에처럼 남겨놓음
+        /*
         if (startPool != null && startPool.Count > 0)
         {
             //중복 유지
@@ -61,6 +84,7 @@ public class Deck : MonoBehaviour
         int take = Mathf.Min(initialDeckSize, library52.Count);
         for (int i = 0; i < take; i++)
             drawPile.Add(library52[i]);
+        */
     }
 
     //52장 라이브러리
