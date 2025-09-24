@@ -111,7 +111,7 @@ public static class TileID
 [UGS(typeof(EliteType))]
 public enum EliteType
 {
-    Enhanced,
+    Enhance,
     IronWall,
     Berserk,
     Sniper,
