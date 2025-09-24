@@ -1,10 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class PlayerHandler : MonoBehaviour
 {
     public int playerMonney;
+    
+    public List<Ammo> bullets = new();
+    public List<int> ownedRelics = new();
+    
+    private void Awake()
+    {
+        playerMonney = 0;
+    }
+    
     public void TakeDamage(int amount)
     {
         var player = GameManager.Unit.Player.playerModel;
@@ -24,10 +34,14 @@ public class PlayerHandler : MonoBehaviour
             }
         }
     }
-    private void Awake()
+    // 회복.
+    public void Heal(int amount)
     {
-        playerMonney = 0;
+        var player = GameManager.Unit.Player.playerModel;
+        player.health += amount;
+        Debug.Log($"체력 회복: {amount}, 현재 체력: {player.health}");
     }
+    
 
     public int GetGold()
     {
@@ -56,7 +70,23 @@ public class PlayerHandler : MonoBehaviour
             return false;
         }
     }
-    
+    //탄환 관리
+    public void AddBullet(Ammo ammo)
+    {
+        if(ammo != null)
+            bullets.Add(ammo);
+    }
+
+    public void RemoveBullet(Ammo ammo)
+    {
+        if(bullets.Contains(ammo))
+            bullets.Remove(ammo);
+    }
+
+    public void AddRelic(int relicid)
+    {
+        ownedRelics.Add(relicid);
+    }
     
     
     
