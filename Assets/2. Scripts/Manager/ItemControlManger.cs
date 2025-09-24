@@ -41,11 +41,9 @@ public class ItemControlManger : MonoBehaviour
     {
         var list = RelicDataGroup.GetList();
 
-        Debug.Log($"지금 유물의 갯수는?{list.Count()}");
-
         for (int i = 0; i < list.Count; i++)
         {
-            BaseItem.InitItem(GameManager.Data.relicDataGroup.GetEntityData(list[i].id));
+            BaseItem.InitItem(GameManager.Data.relicDataGroup.GetRelicData(list[i].id));
         }
 
         DivideItems(items);
@@ -73,7 +71,7 @@ public class ItemControlManger : MonoBehaviour
             }
         }
     }
-
+    
     // =====================================================================
     // 아이템 확률 관련 로직
     // =====================================================================
