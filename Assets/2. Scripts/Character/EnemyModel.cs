@@ -12,8 +12,16 @@ public enum EnemyAttribute
     High
 }
 
+[UGS(typeof(EnemyType))]
+public enum EnemyType
+{
+    Normal,
+    Elite,
+}
+
 public class EnemyModel : UnitModel
 {
+    public EnemyType enemyType;
     public EnemyAttribute attri;
     public int rank;
     public int attack;
@@ -23,9 +31,10 @@ public class EnemyModel : UnitModel
     public bool isDie = false;
     public bool isDone = true;
 
-    public void InitData(EntityData data)
+    public void InitData(EntityData data, EnemyType enemyType)
     {
         unitType = data.type;
+        enemyType = enemyType;
         id = data.id;
         size = data.size;
         unitName = data.name;

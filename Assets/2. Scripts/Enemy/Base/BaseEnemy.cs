@@ -14,14 +14,14 @@ public class BaseEnemy : MonoBehaviour
         
     }
 
-    public void InitEnemy(EntityData data)
+    public void InitEnemy(EntityData data, EnemyType enemyType)
     {
         if (!GameManager.Unit.enemies.Contains(this))
             GameManager.Unit.enemies.Add(this);
         // ������ �ε� �� null ����
 
         enemyModel = new EnemyModel();
-        enemyModel.InitData(data);
+        enemyModel.InitData(data, enemyType);
         animHandler = GetComponent<EnemyAnimHandler>();
         controller = GetComponent<EnemyController>();
         // �� & �ִϸ��̼� �ڵ鷯�� �غ�� �Ŀ��� �ʱ�ȭ

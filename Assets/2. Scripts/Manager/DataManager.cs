@@ -17,7 +17,7 @@ public class DataManager : MonoBehaviour
     public void Initialize()
     {
         UnityGoogleSheet.LoadAllData();
-        entityData = new EntityData();
+        // entityData = new EntityData();
         entityDataGroup = new EntityDataGroup();
         relicData = new RelicData();
         relicDataGroup = new RelicDataGroup();

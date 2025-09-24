@@ -402,7 +402,7 @@ public class MouseManager : MonoBehaviour
         GameManager.UI.CloseUI<EnemyInfoPopUpUI>();
     }
     // 셀 중심 주변에서 컴포넌트 탐색
-    private T FindAtCell<T>(Vector3Int cell) where T : Component
+    public T FindAtCell<T>(Vector3Int cell) where T : Component
     {
         if (!useOverlapLookup || tilemap == null) return null;  // 칸에 오브젝트가 없을경우 
 
