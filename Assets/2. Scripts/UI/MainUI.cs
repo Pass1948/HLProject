@@ -102,6 +102,7 @@ public class MainUI : BaseUI
         discardBtnObj.ToggleDiscard();
     }
 
+    // ReSharper disable Unity.PerformanceAnalysis
     private void RefreshVehicleUI()
     {
         switch (GameManager.Unit.Vehicle.vehicleModel.condition)
