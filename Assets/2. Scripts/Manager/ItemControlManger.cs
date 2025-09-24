@@ -18,7 +18,7 @@ public class ItemControlManger : MonoBehaviour
 
     // ===== 모든 아이템 리스트에 필요한 값 =====
     [HideInInspector] public List<ItemModel> items = new List<ItemModel>(); // 모든 아이템 리스트
-    private ItemModel[] byId;
+    private ItemModel[] ItemIds;
     // ===== 유물아이템 리스트 =====
     [HideInInspector] public List<ItemModel> relicItems = new List<ItemModel>();
 
@@ -26,20 +26,27 @@ public class ItemControlManger : MonoBehaviour
     [HideInInspector] public List<ItemModel> powderItems = new List<ItemModel>();
     
     // ===== 아이템 Prefab을 위한 변수들 =====
-    public BaseItem baseItem;
+    private BaseItem baseItem;
     public BaseItem BaseItem { get { return baseItem; } set { baseItem = value; } }
     
-    public Transform relicRoot;
-    public Transform powderRoot;
+    private GameObject itemPrefab;
+    private GameObject relicRoot;
+    private GameObject powderRoot;
     // =====================================================================
     // 아이템 데이터 관련 로직
     // =====================================================================
     public void ItemDataSet() // 아이템 리스트에 데이터 입력(데이터매니저에서 호출)
     {
+        // 정리용 오브젝트
+        (relicRoot = new GameObject("RelicRoot")).transform.SetParent(transform);   
+        (powderRoot = new GameObject("PowderRoot")).transform.SetParent(transform);
+        
+        // 데이터 리스트 생성
         var list = RelicDataGroup.GetList();
+        
         // 최대 ID 기준으로 배열 사이즈 결정 (희소 ID도 null로 둠)
         int maxId = list.Max(r => r.id);
-        byId = new ItemModel[maxId + 1];
+        ItemIds = new ItemModel[maxId + 1];
         
         items.Clear();
         for (int i = 0; i < list.Count; i++)
@@ -47,8 +54,8 @@ public class ItemControlManger : MonoBehaviour
             var m = new ItemModel();
             m.InitData(list[i]); // 스프레드시트 → 런타임 모델 매핑
             items.Add(m);
-            if (m.id >= 0 && m.id < byId.Length) 
-                byId[m.id] = m; // 희소 ID 안전
+            if (m.id >= 0 && m.id < ItemIds.Length) 
+                ItemIds[m.id] = m; // 희소 ID 안전
         }
         DivideItems(items);
     }
@@ -56,6 +63,9 @@ public class ItemControlManger : MonoBehaviour
     public void ClearData() // 아이템 리스트를 비우고 새롭게 할당할경우 사용
     {
         items.Clear();
+        ItemIds = null;
+        relicItems.Clear();
+        powderItems.Clear();
         ItemDataSet();
     }
 
@@ -188,13 +198,12 @@ public class ItemControlManger : MonoBehaviour
 
         // 총합이 0f 일경우 첫키를 반환하도록 안전처리
         if (total <= 0f) return weights.Keys.First();
-
-
+        
         float roll = UnityEngine.Random.Range(0f, total);
         float a = 0f;
         foreach (var w in weights)
         {
-            a += w.Value;
+            a += Mathf.Max(0f, w.Value);
             if (roll <= a) return w.Key;
         }
 
@@ -205,14 +214,45 @@ public class ItemControlManger : MonoBehaviour
     private List<ItemModel> FilterByRarity(List<ItemModel> pool, RarityType rarity)
     {
         var list = new List<ItemModel>();
+        if (pool == null) return list;
         for (int i = 0; i < pool.Count; i++)
         {
             var it = pool[i];
-            if (it == null) continue;
-            if (it.rarity == rarity)
+            if (it != null && it.rarity == rarity) 
                 list.Add(it);
         }
 
         return list;
     }
+    
+    // =====================================================================
+    // 아이템 오브젝트 생성
+    // =====================================================================
+    private void CreateItemObjects()    // path로 생성될수있게 리팩토링 필요함
+    {
+        // 유물 생성
+        CreateObjectsFromList(relicItems, relicRoot.transform);
+        // 화약 생성
+        CreateObjectsFromList(powderItems, powderRoot.transform);
+    }
+    private void CreateObjectsFromList(List<ItemModel> lists, Transform parent)
+    {
+        if (lists == null || lists.Count == 0) return;
+
+        for (int i = 0; i < lists.Count; i++)
+        {
+            if (lists[i] == null) continue;
+
+               var go = GameManager.Resource.Create<BaseItem>("");  // TODO:이후 path 추가입력되게 추가
+               go.name = lists[i].name;
+               go.transform.SetParent(parent, false);
+               go.itemModel = lists[i];
+        }
+    }
+
+    
+    
+    
+    
+    
 }
