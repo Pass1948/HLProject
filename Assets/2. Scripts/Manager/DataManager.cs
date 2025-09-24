@@ -14,13 +14,14 @@ public class DataManager : MonoBehaviour
     public EntityDataGroup entityDataGroup;
     public RelicDataGroup relicDataGroup;
 
-    public void Initialize()
+    private void Start()
     {
         UnityGoogleSheet.LoadAllData();
-        // entityData = new EntityData();
+    }
+
+    public void Initialize()
+    {
         entityDataGroup = new EntityDataGroup();
-        relicData = new RelicData();
         relicDataGroup = new RelicDataGroup();
-        GameManager.ItemControl.ItemDataSet();  // 아이템데이터 리스트 초기 세팅
     }
 }
