@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using DataTable;
 using UnityEngine;
 
@@ -22,6 +20,7 @@ public class PlayerModel : UnitModel
     public int reload;
     public int baseHealth;
     public int health;
+    public int monney = 10;
     public bool die => health <= 0; //0���ϸ� Ʈ��
     public void InitData(EntityData data)
     {

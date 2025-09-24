@@ -102,6 +102,7 @@ public class MainUI : BaseUI
         discardBtnObj.ToggleDiscard();
     }
 
+    // ReSharper disable Unity.PerformanceAnalysis
     private void RefreshVehicleUI()
     {
         switch (GameManager.Unit.Vehicle.vehicleModel.condition)    // 다들 여기서 에러남
@@ -128,7 +129,6 @@ public class MainUI : BaseUI
                 }
                 else if(IsSideVehicle())// 주변에 있어도 
                     rerollBtn.gameObject.SetActive(true);
-
                 else
                 {
                     repairBtn.gameObject.SetActive(false);
@@ -222,24 +222,24 @@ public class MainUI : BaseUI
     //재장전 텍스트 적용 텍스트에선 남은 횟수만 보이게
     private void ApplyReloadUI(int remain, int max)
     {
-           if( (remain > 0) || rerollBtn.gameObject.activeInHierarchy)
-            {
-                rerollBtn.interactable = true;
-            }
-            else
-            {
-                rerollBtn.interactable = false;
-            }
+       if( (remain > 0) || rerollBtn.gameObject.activeInHierarchy)
+       {
+            rerollBtn.interactable = true;
+       }
+       else
+       {
+            rerollBtn.interactable = false;
+       }
             
-        if (!rerollLabel && rerollBtn)
-        {
+       if (!rerollLabel && rerollBtn)
+       {
             rerollLabel = rerollBtn.GetComponentInChildren<TMP_Text>(true);
-        }
+       }
 
-        if (rerollLabel)
-        {
+       if (rerollLabel)
+       {
             rerollLabel.text = $"재장전 x{remain}";
-        }    
+       }    
     }
 
     private void InitReloadUI()
