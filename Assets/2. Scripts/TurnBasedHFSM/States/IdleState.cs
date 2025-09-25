@@ -7,6 +7,7 @@ public class IdleState : BaseTurnState
     float timer;
     public IdleState() { }
     
+        
     public override void OnEnter() 
     {
         if (turnManager.isStarted == true)

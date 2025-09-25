@@ -86,5 +86,4 @@ public class GameManager : MonoBehaviour
         go.transform.SetParent(transform, false);
         return go.AddComponent<T>();
     }
-
 }
