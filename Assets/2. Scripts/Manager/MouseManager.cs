@@ -323,7 +323,7 @@ public class MouseManager : MonoBehaviour
     }
 
     // ===== 이동 실행(한 칸씩 보간 + 맵데이터 갱신) =====
-    private IEnumerator MoveAlongPath(Transform actor, Vector3Int currentCell, List<Vector3Int> path, int tileIdForActor)
+    public IEnumerator MoveAlongPath(Transform actor, Vector3Int currentCell, List<Vector3Int> path, int tileIdForActor)
     {
         isMoving = true;
 
