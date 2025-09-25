@@ -43,11 +43,14 @@ public class GameManager : MonoBehaviour
     private static ItemControlManger itemControlManger;
     public static ItemControlManger ItemControl => itemControlManger;
     
-    private static RewardManager reward;
-    public static RewardManager Reward => reward;
+    private static RewardManager rewardManager;
+    public static RewardManager Reward => rewardManager;
     
     private ShopManager shopManager;
     public ShopManager ShopManager => shopManager;
+
+    private StrategyManager strategyManager;
+    public StrategyManager Strategy => strategyManager;
 
 
     private void Awake()
@@ -77,8 +80,8 @@ public class GameManager : MonoBehaviour
         mouseManager = CreateChildManager<MouseManager>("MouseManager");
         saveLoadManager = CreateChildManager<SaveLoadManager>("SaveLoadManager");
         itemControlManger = CreateChildManager<ItemControlManger>("ItemControlManger");
-        reward = CreateChildManager<RewardManager>("RewardManager");
-        
+        rewardManager = CreateChildManager<RewardManager>("RewardManager");
+        strategyManager = CreateChildManager<StrategyManager>("StrategyManager");
         data.Initialize();
     }
     private T CreateChildManager<T>(string goName) where T : Component
