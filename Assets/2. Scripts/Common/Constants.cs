@@ -65,11 +65,29 @@ public enum Rare
     Unique,
     Legendary,
 }
+public enum StatusId    // 상태이상 관련 열거형
+{
+    Stun,      // 기절
+    Bleed,     // 출혈
+    Burn,      // 화상
+    Regen,     // 재생
+    Slow,      // 감속
+    Haste,     // 가속
+    Blind,     // 실명
+    Berserk,   // 광폭
+    Freeze,    // 빙결
+    Confuse    // 혼란
+}
+
+
+// ======= 클래스 구역 ========
 
 public static class Path
 {
     public const string Prefab = "Prefab/";
     public const string UI = Prefab + "UI/";
+    public const string UIElements = Prefab + "UI/Elements";
+    public const string UISprites = Prefab + "UI/Sprites";
     public const string Character = Prefab + "Character/";
     public const string Enemy = Prefab + "Enemy/";
     public const string Item = Prefab + "Item/";
