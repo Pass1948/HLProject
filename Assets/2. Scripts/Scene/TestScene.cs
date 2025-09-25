@@ -9,7 +9,7 @@ public class TestScene : BaseScene
 {
     public override void SceneEnter()
     {
-        GameManager.Data.Initialize();
+        
         GameManager.Map.CreateMap();
         GameManager.Mouse.CreateMouse();
         GameManager.Unit.Vehicle.vehicleHandler.MountVehicle();

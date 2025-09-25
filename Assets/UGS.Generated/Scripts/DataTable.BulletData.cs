@@ -57,7 +57,7 @@ namespace DataTable
 /* Fields. */
 
 		public System.Int32 id;
-		public System.String suit;
+		public SuitType type;
 		public System.Int32 min;
 		public System.Int32 max;
   
