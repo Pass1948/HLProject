@@ -46,10 +46,7 @@ public class MapManager : MonoBehaviour
         
         spawnController.InitializeSpawnersAndPools();
         
-        groundTile = GameManager.Resource.Load<TileBase>(Path.Map + "White");
-        wallTile = GameManager.Resource.Load<TileBase>(Path.Map + "Black");
-        moveInfoTile = GameManager.Resource.Load<TileBase>(Path.Map + "Green");
-        redAttackTile = GameManager.Resource.Load<TileBase>(Path.Map + "RedAttackTile");
+
 
     }
     void Start()
@@ -71,8 +68,12 @@ public class MapManager : MonoBehaviour
         //spawnController.SpawnAllObjects(); // SpawnAll();에서 변경
     }
 
-    public void CreateMap()
+    public void CreateMap(Stage stage)
     {
+        groundTile = GameManager.Resource.Load<TileBase>(Path.Map + "White");
+        wallTile = GameManager.Resource.Load<TileBase>(Path.Map + "Black");
+        moveInfoTile = GameManager.Resource.Load<TileBase>(Path.Map + "Green");
+        redAttackTile = GameManager.Resource.Load<TileBase>(Path.Map + "RedAttackTile");
         
         Camera mainCamera = Camera.main;
         grid = GameManager.Resource.Create<Grid>(Path.Map + "Grid");
@@ -88,14 +89,14 @@ public class MapManager : MonoBehaviour
         var attacktile = GameManager.Resource.Create<GameObject>(Path.Map + "AttackRangeTilemap");
         attackRangeTilemap = attacktile.GetComponent<Tilemap>();
         
-        mapData = new int[mapWidth, mapHeight];
+        mapData = new int[stage.mapSize, stage.mapSize];
         mapCreator.GenerateMap(mapData, tilemap, groundTile, wallTile);
         
         attackRange.Initialize(attackRangeTilemap, redAttackTile, mainCamera, grid);
 
         pathfinding = new Pathfinding(tilemap);
 
-        spawnController.SpawnAllObjects();
+        spawnController.SpawnAllObjects(stage);
     }
     
     public void CreateMovePoint()
@@ -228,12 +229,12 @@ public class MapManager : MonoBehaviour
 
     public Vector2Int GetPlayerPosition()
     {
-        if (mapData == null)
-        {
-            Debug.Log("맵 데이터 없슴");
-            
-            return new Vector2Int(-1, -1);
-        }
+        // if (mapData == null)
+        // {
+        //     Debug.Log("맵 데이터 없슴");
+        //     
+        //     return new Vector2Int(-1, -1);
+        // }
 
         for(int x = 0; x < mapWidth; x++)
         {

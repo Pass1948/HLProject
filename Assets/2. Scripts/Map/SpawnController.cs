@@ -14,18 +14,22 @@ public class SpawnController : MonoBehaviour
     {
         obstaclePool = gameObject.AddComponent<BasicObstaclePool>();
         
+
+    }
+    
+    public void SpawnAllObjects(Stage stage)
+    {
         enemyPrefab = GameManager.Resource.Load<GameObject>(Path.Enemy + "NormalEnemy");
         obstaclePrefab = GameManager.Resource.Load<GameObject>(Path.Map + "Obstacle");
         
         obstaclePool.prefab = obstaclePrefab;
         obstaclePool.InitializePool(20);
-    }
-    
-    public void SpawnAllObjects()
-    {
+        
         SpawnPlayer();
-        SpawnObstacles(10);
-        SpawnEnemys(5); 
+        SpawnObstacles(5, stage.obstaclesDict);
+        // SpawnEnemys(stage.enemiesDict); 
+        SpawnEnemies(stage.enemiesDict);
+        
     }
     
     private void SpawnPlayer()
@@ -62,8 +66,9 @@ public class SpawnController : MonoBehaviour
 
     }
     
+    // TODO: 장애물 구현하신거에 맞게 구현 해주세용
     // 장애물 스폰
-    private void SpawnObstacles(int count)
+    private void SpawnObstacles(int count, Dictionary<int, int> obstacles)
     {
         for (int i = 0; i < count; i++)
         {
@@ -87,37 +92,34 @@ public class SpawnController : MonoBehaviour
             }
         }
     }
-
+    
     // 적 스폰
-    private void SpawnEnemys(int count)
+    private void SpawnEnemies(Dictionary<int, int> enemies)
     {
-        for (int i = 0; i < count; i++)
+        foreach (var enemy in enemies)
         {
-            GameObject enemy =  Instantiate(enemyPrefab, transform);
-            BaseEnemy baseEnemy = enemy.GetComponent<BaseEnemy>();
-            
-            int maxAttempts = 100;
-            for (int j = 0; j < maxAttempts; j++)
+            for (int i = 0; i < enemy.Value; i++)
             {
                 int randX = Random.Range(0, GameManager.Map.mapWidth);
                 int randY = Random.Range(0, GameManager.Map.mapHeight);
 
-                // 플레이어, 장애물이 없는 곳 / (0,0) - (3,3) 아닌 곳
                 if (GameManager.Map.mapData[randX, randY] == TileID.Terrain &&
                     !(randX >= 0 && randX <= 3 && randY >= 0 && randY <= 3))
                 {
-                    //좌표 
-                    GridSnapper.SnapToCellCenter(enemy.transform, GameManager.Map.tilemap, new Vector2Int(randX, randY));
+                    GameObject obj =  Instantiate(enemyPrefab, transform);
+                    BaseEnemy baseEnemy = obj.GetComponent<BaseEnemy>();
 
-                    baseEnemy.InitEnemy(GameManager.Data.entityDataGroup.GetEntityData(Random.Range(2001, 2010)), EnemyType.Normal);
+                    GridSnapper.SnapToCellCenter(obj.transform, GameManager.Map.tilemap, new Vector2Int(randX, randY));
+                    
+                    baseEnemy.InitEnemy(GameManager.Data.entityDataGroup.GetEntityData(enemy.Key), EnemyType.Normal);
                     baseEnemy.controller.SetPosition(randX, randY);
                     baseEnemy.controller.UpdatePlayerPos();
-
+                    
                     GameManager.Map.SetObjectPosition(randX, randY, TileID.Enemy);
                     
                     FindObjectOfType<AttackRangeDisplay>().enemies.Add(baseEnemy);
-                    
-                    break;
+
+                    // break;
                 }
             }
         }
