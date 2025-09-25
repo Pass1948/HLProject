@@ -18,23 +18,16 @@ public class CameraController : MonoBehaviour
     
     private Camera cam;
     private bool recentering = false;
-
-    private void Awake()
+    
+    public void InitCamera()
     {
         cam = Camera.main;
         cam.transform.rotation = Quaternion.Euler(60f, 45f, 0f);
-    }
-
-    private void Start()
-    {
         Vector3 playerPos = new Vector3(GameManager.Map.GetPlayerPosition().x, GameManager.Map.GetPlayerPosition().y, 0);
 
         player = playerPos;
-        
-        Debug.Log(player);
-
     }
-    
+
     void Update()
     {
         HandleZoom();
@@ -44,6 +37,8 @@ public class CameraController : MonoBehaviour
     
     private void HandleZoom()
     {
+        if (cam == null) return;
+        
         float scroll = Input.GetAxis("Mouse ScrollWheel");
         
         if (Mathf.Abs(scroll) > 0.01f)
@@ -54,6 +49,8 @@ public class CameraController : MonoBehaviour
     
     private void HandleEdgeScroll()
     {
+        if (cam == null) return;
+        
         Vector3 moveDir = Vector3.zero;
         Vector2 mousePos = Input.mousePosition;
 
