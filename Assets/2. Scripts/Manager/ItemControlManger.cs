@@ -32,6 +32,7 @@ public class ItemControlManger : MonoBehaviour
     
     public GameObject itemPrefab;
     public GameObject relicRoot;// 구매한 아이템 보관함
+    
     // =====================================================================
     // 아이템 데이터 관련 로직
     // =====================================================================
@@ -158,7 +159,7 @@ public class ItemControlManger : MonoBehaviour
     public List<ItemModel> PowderBundleWeightSampling(int count)
     {
         var result = new List<ItemModel>();
-        if (relicItems == null || relicItems.Count == 0)
+        if (powderItems == null || powderItems.Count == 0)
             return result;
         var weights = new Dictionary<RarityType, float>
         {
