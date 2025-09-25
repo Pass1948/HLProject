@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class ItemControlManger : MonoBehaviour
 {
@@ -29,9 +30,8 @@ public class ItemControlManger : MonoBehaviour
     private BaseItem baseItem;
     public BaseItem BaseItem { get { return baseItem; } set { baseItem = value; } }
     
-    private GameObject itemPrefab;
-    private GameObject relicRoot;
-    private GameObject powderRoot;
+    public GameObject itemPrefab;
+    public GameObject relicRoot;// 구매한 아이템 보관함
     // =====================================================================
     // 아이템 데이터 관련 로직
     // =====================================================================
@@ -39,7 +39,6 @@ public class ItemControlManger : MonoBehaviour
     {
         // 정리용 오브젝트
         (relicRoot = new GameObject("RelicRoot")).transform.SetParent(transform);   
-        (powderRoot = new GameObject("PowderRoot")).transform.SetParent(transform);
         
         // 데이터 리스트 생성
         var list = RelicDataGroup.GetList();
@@ -95,7 +94,7 @@ public class ItemControlManger : MonoBehaviour
     // 아이템 확률 관련 로직
     // =====================================================================
     // 불릿용 확률로직(5개 등급을 3~5개 불릿슬롯에 같은 확률(화약이 불릿에 적용될 확률)로 유지&등록)
-    public List<ItemModel> BulletWeightSampling(List<ItemModel> powders, int slotCount)
+    public List<ItemModel> BulletWeightSampling(int slotCount)
     {
         var result = new List<ItemModel>();
         var weights = new Dictionary<RarityType, float>
@@ -110,11 +109,11 @@ public class ItemControlManger : MonoBehaviour
         for (int i = 0; i < slotCount; i++)
         {
             var pickedRarity = PickRarity(weights);
-            var pool = FilterByRarity(powders, pickedRarity);
+            var pool = FilterByRarity(powderItems, pickedRarity);
             if (pool.Count == 0) // 해당 등급이 비었으면 폴백
             {
-                if (powders.Count == 0) break;
-                result.Add(powders[UnityEngine.Random.Range(0, powders.Count)]);
+                if (powderItems.Count == 0) break;
+                result.Add(powderItems[UnityEngine.Random.Range(0, powderItems.Count)]);
             }
             else
             {
@@ -125,7 +124,7 @@ public class ItemControlManger : MonoBehaviour
     }
 
     // 유물아이템용 확률로직(2개슬롯에 4개 등급(common제외) 확률 등록)
-    public List<ItemModel> RelicWeightSampling(List<ItemModel> relics, int slotCount)
+    public List<ItemModel> RelicWeightSampling(int slotCount)
     {
         var result = new List<ItemModel>();
         if (relicItems == null || relicItems.Count == 0)
@@ -140,11 +139,11 @@ public class ItemControlManger : MonoBehaviour
         for (int i = 0; i < slotCount; i++)
         {
             var pickedRarity = PickRarity(weights);
-            var pool = FilterByRarity(relics, pickedRarity);
+            var pool = FilterByRarity(relicItems, pickedRarity);
 
             if (pool.Count == 0)
             {
-                result.Add(relicItems[UnityEngine.Random.Range(0, relics.Count)]);
+                result.Add(relicItems[UnityEngine.Random.Range(0, relicItems.Count)]);
             }
             else
             {
@@ -153,12 +152,11 @@ public class ItemControlManger : MonoBehaviour
         }
 
         return result;
-        
     }
 
     // 화약아이템용 확률로직(2개슬롯에 4개 등급(common제외) 확률 등록) 
-    // 화약주머니 메서드(3개 들어감)
-    public List<ItemModel> PowderWeightSampling(List<ItemModel> powders, int count)
+    // 화약주머니 메서드(3개 들어감)(이후 추가해야함)
+    public List<ItemModel> PowderBundleWeightSampling(int count)
     {
         var result = new List<ItemModel>();
         if (relicItems == null || relicItems.Count == 0)
@@ -173,11 +171,11 @@ public class ItemControlManger : MonoBehaviour
         for (int i = 0; i < count; i++)
         {
             var pickedRarity = PickRarity(weights);
-            var pool = FilterByRarity(powders, pickedRarity);
+            var pool = FilterByRarity(powderItems, pickedRarity);
 
             if (pool.Count == 0)
             {
-                result.Add(relicItems[UnityEngine.Random.Range(0, powders.Count)]);
+                result.Add(relicItems[UnityEngine.Random.Range(0, powderItems.Count)]);
             }
             else
             {
@@ -230,28 +228,26 @@ public class ItemControlManger : MonoBehaviour
     // =====================================================================
     private void CreateItemObjects()    // path로 생성될수있게 리팩토링 필요함
     {
-        // 유물 생성
-        CreateObjectsFromList(relicItems, relicRoot.transform);
-        // 화약 생성
-        CreateObjectsFromList(powderItems, powderRoot.transform);
+        //유물 생성
+        //유물은 ItemManager 밑에 붙이기(게임오버 or 종료시 relicRoot만 밀기)
+        CreateRelicObject(RelicWeightSampling(4), transform);
     }
-    private void CreateObjectsFromList(List<ItemModel> lists, Transform parent)
+    
+    private void CreateRelicObject(List<ItemModel> lists, Transform parent) // 유물 슬롯과 이미지 생성
     {
         if (lists == null || lists.Count == 0) return;
 
         for (int i = 0; i < lists.Count; i++)
         {
             if (lists[i] == null) continue;
-
-               var go = GameManager.Resource.Create<BaseItem>("");  // TODO:이후 path 추가입력되게 추가
+            
+               var go = GameManager.Resource.Create<BaseItem>(Path.UIElements+"RelicIconUI");
                go.name = lists[i].name;
                go.transform.SetParent(parent, false);
                go.itemModel = lists[i];
+               go.gameObject.GetComponent<Image>().sprite = GameManager.Resource.Load<Sprite>(Path.UISprites+lists[i].path);
         }
     }
-
-    
-    
     
     
     

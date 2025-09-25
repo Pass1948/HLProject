@@ -78,6 +78,8 @@ public static class Path
 {
     public const string Prefab = "Prefab/";
     public const string UI = Prefab + "UI/";
+    public const string UIElements = Prefab + "UI/Elements";
+    public const string UISprites = Prefab + "UI/Sprites";
     public const string Character = Prefab + "Character/";
     public const string Enemy = Prefab + "Enemy/";
     public const string Item = Prefab + "Item/";

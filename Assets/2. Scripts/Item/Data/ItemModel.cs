@@ -22,7 +22,7 @@ public class ItemModel // 데이터 바인딩용
     public int addBikeHealth;
     public int bikeAddMoveRange;
     public int conditionall;
-    
+    public string path;
     public void InitData(RelicData data) // 초기화용 메서드
     {
         id = data.id;
@@ -42,7 +42,7 @@ public class ItemModel // 데이터 바인딩용
         addBikeHealth = data.AddBikeHealth;
         bikeAddMoveRange = data.bikeAdditinal;
         conditionall = data.Conditionall;
-        
+       // path =  data.path;
     }
 }
 
