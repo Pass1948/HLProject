@@ -7,13 +7,12 @@ using UGS;
 [Serializable]
 public class DataManager : MonoBehaviour
 {
-    private EntityData entityData;
-    private ObstacleData obstacleData;
-    public RelicData relicData;
-    public BulletData bulletData;
-
     public EntityDataGroup entityDataGroup;
     public RelicDataGroup relicDataGroup;
+    public ObstacleDataGroup obstacleDataGroup;
+    public EliteDataGroup eliteDataGroup;
+    public GateDataGroup gateDataGroup;
+    public StageDataGroup stageDataGroup;
     public BulletDataGroup bulletDataGroup;
 
     private void Start()
@@ -25,6 +24,10 @@ public class DataManager : MonoBehaviour
     {
         entityDataGroup = new EntityDataGroup();
         relicDataGroup = new RelicDataGroup();
+        obstacleDataGroup = new ObstacleDataGroup();
+        eliteDataGroup = new EliteDataGroup();
+        gateDataGroup = new GateDataGroup();
+        stageDataGroup = new StageDataGroup();
         bulletDataGroup = new BulletDataGroup();
         
     }
