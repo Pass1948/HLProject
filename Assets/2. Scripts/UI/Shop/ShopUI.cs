@@ -80,7 +80,7 @@ public class ShopUI : BaseUI
 
         if (offers == null || gridRoot == null) return;
 
-        // 카드 생성 (offers 기준으로!)
+        // 카드 생성 offers 기준으로
         for (int i = 0; i < offers.Count; i++)
         {
             int idx = i;

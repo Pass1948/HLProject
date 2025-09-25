@@ -77,9 +77,6 @@ public class PowderBundleModalUI : BaseUI
     private void Clear(Transform root)
     {
         for (int i = root.childCount -1 ; i >= 0; i--) Destroy(root.GetChild(i).gameObject);
-        {
-            
-        }
     }
 }
 

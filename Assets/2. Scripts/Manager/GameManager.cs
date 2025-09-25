@@ -46,8 +46,8 @@ public class GameManager : MonoBehaviour
     private static RewardManager reward;
     public static RewardManager Reward => reward;
     
-    private ShopManager shopManager;
-    public ShopManager ShopManager => shopManager;
+    private ShopManager shop;
+    public ShopManager Shop => shop;
 
 
     private void Awake()
@@ -78,6 +78,7 @@ public class GameManager : MonoBehaviour
         saveLoadManager = CreateChildManager<SaveLoadManager>("SaveLoadManager");
         itemControlManger = CreateChildManager<ItemControlManger>("ItemControlManger");
         reward = CreateChildManager<RewardManager>("RewardManager");
+        shop = CreateChildManager<ShopManager>("ShopManager");
         
         data.Initialize();
     }
