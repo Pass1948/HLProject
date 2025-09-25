@@ -62,6 +62,9 @@ public class ShopManager : MonoBehaviour
     public PlayerHandler player;        // 플레이어
     public List<RelicData> relicPool;   // 유물 풀 (JSON 로드된 리스트)
     public List<PowderData> powderPool; // 화약 풀 (JSON 로드된 리스트)
+    private List<Ammo> bundleAmmoCache; 
+    private List<PowderData> bundlePowderCache; 
+    private List<Ammo> removeCandidates;
 
     [Header("상점 상태")]
     public List<ShopItem> offers = new();
@@ -81,6 +84,9 @@ public class ShopManager : MonoBehaviour
         EnterShop();
     }
 
+    private void OnEnable()
+    {   
+    }
 
     /// 상점 입장 > 상품 생성
     public void EnterShop()
@@ -91,7 +97,7 @@ public class ShopManager : MonoBehaviour
         GenerateOffers();
     }
 
-    /// <summary>상품 구성만 다시 생성(리롤 시 이거만 호출)</summary>
+    //상품 구성만 다시 생성(리롤 시 이거만 호출)
     private void GenerateOffers()
     {
         offers.Clear();
@@ -115,7 +121,7 @@ public class ShopManager : MonoBehaviour
 
         // 6) 리롤 (현재 비용 표시)
         offers.Add(new ShopItem(ShopItemType.Reroll, "리롤", rerollCost));
-
+        GameManager.Event.Publish(EventType.ShopOffersChanged, offers);
         Debug.Log("상점 상품 재구성 완료");
     }
 
@@ -156,7 +162,9 @@ public class ShopManager : MonoBehaviour
     private int GetBulletOfferCount()
     {
         //TODO: 유물,버프에 의해 슬롯이 증가되면 여기서 계산.
-        return Random.Range(3, 6);
+        int baseCount = 3;
+        int bonusCount = 0;
+        return baseCount + bonusCount;
     }
 
 
@@ -191,11 +199,14 @@ public class ShopManager : MonoBehaviour
         if (!player.SpendGold(item.price))
             return;
 
+        bool changed = false;
+
         switch (item.type)
         {
             case ShopItemType.Bullet:
                 player.AddBullet(item.ammo);
                 RemoveOfferAt(index);
+                changed =  true;
                 break;
 
             case ShopItemType.SpecialTotem:
@@ -203,6 +214,7 @@ public class ShopManager : MonoBehaviour
                 {
                     player.AddRelic(item.relic.id);
                     RemoveOfferAt(index);
+                    changed = true;
                 }
                 break;
 
@@ -212,6 +224,7 @@ public class ShopManager : MonoBehaviour
                     powderBundleLeft--;
                     StartPowderBundle(player.bullets);
                     RemoveOfferAt(index);
+                    changed = true;
                 }
                 break;
 
@@ -226,13 +239,16 @@ public class ShopManager : MonoBehaviour
                     canRemoveBullet = false;
                     RemoveOfferAt(index);
                     Debug.Log("탄환 제거 UI 열기");
+                    changed = true;
                 }
                 break;
 
             case ShopItemType.Reroll:
                 TryReroll();
-                break;
+                return;
         }
+        if(changed)
+            GameManager.Event.Publish(EventType.ShopOffersChanged, offers);
     }
 
     private void RemoveOfferAt(int index)
@@ -245,7 +261,7 @@ public class ShopManager : MonoBehaviour
         if (!player.SpendGold(rerollCost)) return;
 
         rerollCost++;
-        EnterShop();
+        GenerateOffers();
     }
 
     // ────────────── 화약 꾸러미 ──────────────
@@ -259,7 +275,11 @@ public class ShopManager : MonoBehaviour
 
        
         var powderCandidates = BuildPowderCandidates(3);
-        // 이벤트 연결
+
+        bundleAmmoCache = candidates;
+        bundlePowderCache = powderCandidates;
+        // 이벤트 연결 UI에 신호 + 후보 전달 
+        GameManager.Event.Publish(EventType.ShopPowderBundlePrompt,(bundleAmmoCache, bundlePowderCache));
     }
     // UI에서 선택 완료 시 호출(탄환 1개 + 화약 1개)
     public void ConfirmPowderBundle(Ammo target, PowderData powder)
@@ -280,7 +300,9 @@ public class ShopManager : MonoBehaviour
         if (candidates.Count > 6)
             candidates = candidates.GetRange(0, 6);
         
-        // 이벤트 추가 
+        removeCandidates = candidates;
+        // 이벤트 추가 UI에 제거 후보 신호 + 후보 전달
+        GameManager.Event.Publish(EventType.ShopRemoveBulletPrompt,removeCandidates);
     }
 
     public void ConfirmRemoveBullet(Ammo target)
