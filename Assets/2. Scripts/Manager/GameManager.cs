@@ -11,6 +11,9 @@ public class GameManager : MonoBehaviour
 
     // Managers=========================
 
+    private static DataManager dataManager;
+    public static DataManager Data => dataManager;
+    
     private static ResourceManager resourceManager;
     public static ResourceManager Resource => resourceManager;
 
@@ -28,9 +31,6 @@ public class GameManager : MonoBehaviour
 
     private static TurnBasedManager turnBasedManager;
     public static TurnBasedManager TurnBased => turnBasedManager;
-
-    private static DataManager data;
-    public static DataManager Data => data;
 
     private static MapManager mapManager;
     public static MapManager Map => mapManager;
@@ -69,20 +69,20 @@ public class GameManager : MonoBehaviour
 
     private void InitManagers()
     {
+        dataManager = CreateChildManager<DataManager>("DataManager");
+        dataManager.Initialize();
         resourceManager = CreateChildManager<ResourceManager>("ResourceManager");
         sceneLoadManager = CreateChildManager<SceneLoadManager>("SceneLoadManager");
         unitManager = CreateChildManager<UnitManager>("UnitManager");
         uiManager = CreateChildManager<UIManager>("UIManager");
         eventManager = CreateChildManager<EventManager>("EventManager");
         turnBasedManager = CreateChildManager<TurnBasedManager>("TurnBasedManager");
-        data = CreateChildManager<DataManager>("DataManager");
         mapManager = CreateChildManager<MapManager>("MapManager");
         mouseManager = CreateChildManager<MouseManager>("MouseManager");
         saveLoadManager = CreateChildManager<SaveLoadManager>("SaveLoadManager");
         itemControlManger = CreateChildManager<ItemControlManger>("ItemControlManger");
         rewardManager = CreateChildManager<RewardManager>("RewardManager");
         strategyManager = CreateChildManager<StrategyManager>("StrategyManager");
-        data.Initialize();
     }
     private T CreateChildManager<T>(string goName) where T : Component
     {
