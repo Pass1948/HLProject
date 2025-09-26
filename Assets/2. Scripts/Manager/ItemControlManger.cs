@@ -20,6 +20,7 @@ public class ItemControlManger : MonoBehaviour
     // ===== 모든 아이템 리스트에 필요한 값 =====
     [HideInInspector] public List<ItemModel> items = new List<ItemModel>(); // 모든 아이템 리스트
     private ItemModel[] ItemIds;
+    
     // ===== 유물아이템 리스트 =====
     [HideInInspector] public List<ItemModel> relicItems = new List<ItemModel>();
     [HideInInspector] public List<ItemModel> relicStatItems = new List<ItemModel>();    // 스탯증가부
@@ -31,11 +32,12 @@ public class ItemControlManger : MonoBehaviour
     [HideInInspector] public List<ItemModel> powderRogicItems = new List<ItemModel>();    // 논리조건부
     
     // ===== 아이템 Prefab을 위한 변수들 =====
-    private BaseItem baseItem;
-    public BaseItem BaseItem { get { return baseItem; } set { baseItem = value; } }
     
     public GameObject itemPrefab;
     public GameObject relicRoot;// 구매한 아이템 보관함
+    
+    private Dictionary<string, BaseItem> itemsDictionary = new Dictionary<string, BaseItem>();
+    
     
     // =====================================================================
     // 아이템 데이터 관련 로직
@@ -319,7 +321,9 @@ public class ItemControlManger : MonoBehaviour
         }
     }
 
-    
+    // =====================================================================
+    // 아이템 데이터 관련 로직
+    // =====================================================================
     
     
 }
