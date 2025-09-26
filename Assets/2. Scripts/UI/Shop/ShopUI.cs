@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.UI; 
 
 public class ShopUI : BaseUI
 {
@@ -8,7 +9,7 @@ public class ShopUI : BaseUI
     private ShopManager shop;
     [SerializeField] private Transform gridRoot;
     [SerializeField] private GameObject cardPrefab; // ShopCardUI 컴포넌트 포함 프리팹
-    [SerializeField] private Text rerollCostText;
+    [SerializeField] private TextMeshProUGUI rerollCostText;
 
     private readonly List<GameObject> spawned = new();
 
