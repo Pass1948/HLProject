@@ -79,6 +79,7 @@ public class GameManager : MonoBehaviour
         saveLoadManager = CreateChildManager<SaveLoadManager>("SaveLoadManager");
         itemControlManger = CreateChildManager<ItemControlManger>("ItemControlManger");
         rewardManager = CreateChildManager<RewardManager>("RewardManager");
+        shopManager = CreateChildManager<ShopManager>("ShopManager");
     }
     private T CreateChildManager<T>(string goName) where T : Component
     {

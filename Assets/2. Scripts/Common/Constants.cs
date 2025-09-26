@@ -21,6 +21,14 @@ public enum EventType
     VehicleOnRepaired,
     VehicleOnDestroyed,
     OnGoldChanged,
+    //--- 상점
+    ShopOffersChanged,
+    ShopPowderBundlePrompt,
+    ShopRemoveBulletPrompt,
+    ShopTryBuyIndex,
+    ShopPowderBundleConfirm,
+    ShopRemoveBulletConfirm,
+    //---
 }
 [UGS(typeof(RarityType))]
 public enum RarityType // 아이템 레어도 타입

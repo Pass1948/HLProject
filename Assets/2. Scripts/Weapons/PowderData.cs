@@ -7,6 +7,6 @@ using UnityEngine;
 public class PowderData
 {
     public string name; 
-    public Rare rarity;
+    public RarityType rarity;
     public string effect;
 }
