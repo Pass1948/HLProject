@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using GoogleSheet.Core.Type;
 
 public enum SceneType
@@ -28,6 +28,8 @@ public enum EventType
     ShopTryBuyIndex,
     ShopPowderBundleConfirm,
     ShopRemoveBulletConfirm,
+    //--- 덱
+    SelectDeck
     //---
 }
 [UGS(typeof(RarityType))]
