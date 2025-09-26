@@ -22,6 +22,7 @@ public enum EventType
     VehicleOnDestroyed,
     OnGoldChanged,
 }
+
 [UGS(typeof(RarityType))]
 public enum RarityType // 아이템 레어도 타입
 {
@@ -38,7 +39,6 @@ public enum ItemType   // 유물, 화약 구분
     Artifact,
     GunPowder,
 }
-
 
 public enum ShopItemType
 {
@@ -70,6 +70,20 @@ public enum StatusId    // 상태이상 관련 열거형
     Freeze,    // 빙결
     Confuse    // 혼란
 }
+
+public enum RelicApply
+{
+    
+}
+public enum PowderApply
+{
+    
+}
+
+
+
+
+
 
 
 // ======= 클래스 구역 ========

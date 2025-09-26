@@ -9,6 +9,7 @@ public class LoseState : BaseTurnState
     public override void OnEnter()
     {
         GameOverUI();
+        turnManager.ResetCount();
     }
     public void GameOverUI()
     {
