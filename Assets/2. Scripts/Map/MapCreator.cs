@@ -10,16 +10,17 @@ public class MapCreator : MonoBehaviour
     {
         int mapWidth = GameManager.Map.mapWidth;
         int mapHeight = GameManager.Map.mapHeight;
-        
+
         for (int x = 0; x < mapWidth; x++)
         {
             for (int y = 0; y < mapHeight; y++)
             {
                 Vector3Int tilePosition = new Vector3Int(x, y, 0);
-                
-                    GameManager.Map.mapData[x, y] = TileID.Terrain;
-                    tilemap.SetTile(tilePosition, groundTile);
-                }
+
+                GameManager.Map.mapData[x, y] = TileID.Terrain;
+                tilemap.SetTile(tilePosition, groundTile);
+
             }
         }
     }
+}
