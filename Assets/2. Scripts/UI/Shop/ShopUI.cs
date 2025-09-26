@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class ShopUI : BaseUI
 {
     [Header("참조(인스펙터에서 할당)")]
-    [SerializeField] private ShopManager shop;
+    private ShopManager shop;
     [SerializeField] private Transform gridRoot;
     [SerializeField] private GameObject cardPrefab; // ShopCardUI 컴포넌트 포함 프리팹
     [SerializeField] private Text rerollCostText;
@@ -17,6 +17,7 @@ public class ShopUI : BaseUI
         if (!shop) Debug.LogWarning("[ShopUI] ShopManager 참조가 비었습니다. 인스펙터에서 할당하세요.");
         if (!gridRoot) Debug.LogWarning("[ShopUI] gridRoot 참조가 비었습니다.");
         if (!cardPrefab) Debug.LogWarning("[ShopUI] cardPrefab 참조가 비었습니다.");
+        
     }
 
     private void OnEnable()
