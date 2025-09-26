@@ -11,6 +11,9 @@ public class GameManager : MonoBehaviour
 
     // Managers=========================
 
+    private static DataManager dataManager;
+    public static DataManager Data => dataManager;
+    
     private static ResourceManager resourceManager;
     public static ResourceManager Resource => resourceManager;
 
@@ -29,9 +32,6 @@ public class GameManager : MonoBehaviour
     private static TurnBasedManager turnBasedManager;
     public static TurnBasedManager TurnBased => turnBasedManager;
 
-    private static DataManager data;
-    public static DataManager Data => data;
-
     private static MapManager mapManager;
     public static MapManager Map => mapManager;
 
@@ -43,8 +43,8 @@ public class GameManager : MonoBehaviour
     private static ItemControlManger itemControlManger;
     public static ItemControlManger ItemControl => itemControlManger;
     
-    private static RewardManager reward;
-    public static RewardManager Reward => reward;
+    private static RewardManager rewardManager;
+    public static RewardManager Reward => rewardManager;
     
     private ShopManager shopManager;
     public ShopManager ShopManager => shopManager;
@@ -66,20 +66,19 @@ public class GameManager : MonoBehaviour
 
     private void InitManagers()
     {
+        dataManager = CreateChildManager<DataManager>("DataManager");
+        dataManager.Initialize();
         resourceManager = CreateChildManager<ResourceManager>("ResourceManager");
         sceneLoadManager = CreateChildManager<SceneLoadManager>("SceneLoadManager");
         unitManager = CreateChildManager<UnitManager>("UnitManager");
         uiManager = CreateChildManager<UIManager>("UIManager");
         eventManager = CreateChildManager<EventManager>("EventManager");
         turnBasedManager = CreateChildManager<TurnBasedManager>("TurnBasedManager");
-        data = CreateChildManager<DataManager>("DataManager");
         mapManager = CreateChildManager<MapManager>("MapManager");
         mouseManager = CreateChildManager<MouseManager>("MouseManager");
         saveLoadManager = CreateChildManager<SaveLoadManager>("SaveLoadManager");
         itemControlManger = CreateChildManager<ItemControlManger>("ItemControlManger");
-        reward = CreateChildManager<RewardManager>("RewardManager");
-        
-        data.Initialize();
+        rewardManager = CreateChildManager<RewardManager>("RewardManager");
     }
     private T CreateChildManager<T>(string goName) where T : Component
     {
@@ -87,5 +86,4 @@ public class GameManager : MonoBehaviour
         go.transform.SetParent(transform, false);
         return go.AddComponent<T>();
     }
-
 }

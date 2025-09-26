@@ -7,17 +7,17 @@ public enum Suit { Spade, Heart, Diamond, Club }
 public class Ammo
 {
     public Suit suit;
-    public PowderData powder; // 붙을 화약, 없으면 넣
-
-    public override string ToString()
-    {
-        string core = $"{suit}{rank}";
-        return powder == null ? core : $"{core}[{powder.name}]";
-    }
+    public PowderData powder; // 붙을 화약, 없으면 넣어
 
     //1~13까지 범위지정
     [Range(1, 13)]
     //1=A, 11=J, 12=Q, 13=K
     public int rank; 
+    
+    public override string ToString()
+    {
+        string core = $"{suit}{rank}";
+        return powder == null ? core : $"{core}[{powder.name}]";
+    }
 }
 
