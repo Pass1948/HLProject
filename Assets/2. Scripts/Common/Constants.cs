@@ -88,6 +88,7 @@ public static class Path
     public const string Player = Prefab + "Player/";
     public const string Weapon = Prefab + "Weapons/";
     public const string Mouse = Prefab + "Mouse/";
+    public const string Obstacle = Prefab + "Obstacle/";
     public const string Data = "Data/";
     public const string Sound = "Sound/";
 }
@@ -124,6 +125,7 @@ public static class TileID
     public const int Vehicle = 3;
     public const int Obstacle = 4;
     public const int Enemy = 5;
+    public const int Obstacle_B = 6;
 }
 
 [UGS(typeof(EliteType))]
