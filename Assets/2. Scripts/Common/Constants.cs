@@ -81,11 +81,11 @@ public enum StatusId    // 상태이상 관련 열거형
     Confuse    // 혼란
 }
 
-public enum RelicApply
+public enum RelicApplyType
 {
     
 }
-public enum PowderApply
+public enum PowderApplyType
 {
     
 }
