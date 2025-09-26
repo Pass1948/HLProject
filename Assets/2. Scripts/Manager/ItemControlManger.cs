@@ -22,9 +22,13 @@ public class ItemControlManger : MonoBehaviour
     private ItemModel[] ItemIds;
     // ===== 유물아이템 리스트 =====
     [HideInInspector] public List<ItemModel> relicItems = new List<ItemModel>();
+    [HideInInspector] public List<ItemModel> relicStatItems = new List<ItemModel>();    // 스탯증가부
+    [HideInInspector] public List<ItemModel> relicRogicItems = new List<ItemModel>();    // 논리조건부
 
     // ===== 화약아이템 리스트 =====
     [HideInInspector] public List<ItemModel> powderItems = new List<ItemModel>();
+    [HideInInspector] public List<ItemModel> powderStatItems = new List<ItemModel>();    // 스탯증가부
+    [HideInInspector] public List<ItemModel> powderRogicItems = new List<ItemModel>();    // 논리조건부
     
     // ===== 아이템 Prefab을 위한 변수들 =====
     private BaseItem baseItem;
@@ -58,6 +62,7 @@ public class ItemControlManger : MonoBehaviour
                 ItemIds[m.id] = m; // 희소 ID 안전
         }
         DivideItems(items);
+
     }
 
     public void ClearData() // 아이템 리스트를 비우고 새롭게 할당할경우 사용
@@ -87,6 +92,51 @@ public class ItemControlManger : MonoBehaviour
             if (items[i].itemType == ItemType.GunPowder)
             {
                 powderItems.Add(items[i]);
+            }
+        }
+        DivideRelicItems(relicItems);
+        DividePowderItems(powderItems);
+    }
+    
+    // (전략패턴전용) 유물아이템 로직부와 스탯부 나누기
+    public void DivideRelicItems(List<ItemModel> items)
+    {
+        relicStatItems.Clear();
+        relicRogicItems.Clear();
+        if(items == null || items.Count == 0)
+            return;
+        
+        for (int i = 0; i < items.Count; i++)
+        {
+            if (items[i].conditionall == 0) // 스택
+            {
+                relicStatItems.Add(items[i]);
+            }
+
+            if (items[i].conditionall == 1)// 로직
+            {
+                relicRogicItems.Add(items[i]);
+            }
+        }
+    }
+    // (전략패턴전용) 화약아이템 로직부와 스탯부 나누기
+    public void DividePowderItems(List<ItemModel> items)
+    {
+        powderStatItems.Clear();
+        powderRogicItems.Clear();
+        if(items == null || items.Count == 0)
+            return;
+        
+        for (int i = 0; i < items.Count; i++)
+        {
+            if (items[i].conditionall == 0) // 스택
+            {
+                powderStatItems.Add(items[i]);
+            }
+
+            if (items[i].conditionall == 1)// 로직
+            {
+                powderRogicItems.Add(items[i]);
             }
         }
     }
