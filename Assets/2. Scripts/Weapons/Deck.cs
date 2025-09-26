@@ -1,30 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using DataTable;
-//덱(오토바이): 기본 13장 덱 구성
+
 public class Deck : MonoBehaviour
 {
     //시작 덱 장수
-    [SerializeField] private int initialDeckSize = 13;
-    //시작 풀
-    [SerializeField] private List<Ammo> startPool = new();
+    //현재 사용안함
+    //[SerializeField] private int initialDeckSize = 13;
 
     //현재 덱
     [SerializeField] private List<Ammo> drawPile = new();
     //덱 잔량만 유지
     public int Count => drawPile.Count;
-
-    private void Awake()
-    {
-            
-            
-    }
-
-    private void Start()
-    {
-        
-    }
 
     private void OnEnable()
     {
@@ -58,7 +45,11 @@ public class Deck : MonoBehaviour
     {
         drawPile.Clear();
 
-        /*
+        //==============================
+        //기본덱
+        //숫자 1~13 각 1장, 문양은 랜덤
+        //==============================
+        
         var deck = GameManager.Data.bulletDataGroup.GetBulletData(9005);
 
         for(int r = deck.min; r <= deck.max; r++)
@@ -66,17 +57,67 @@ public class Deck : MonoBehaviour
             var s = (Suit)UnityEngine.Random.Range(0, 4);
             drawPile.Add(new Ammo { suit = s, rank = r });
         }
+        
+
+        //==============================
+        //다이아 덱
+        //숫자 1~13 각 1장, 문양은 다이아몬드
+        //==============================
+        /*
+        var deck2 = GameManager.Data.bulletDataGroup.GetBulletData(9003);
+        Suit fixedSuit = (Suit)deck2.type;
+        for (int r = deck2.min; r <= deck2.max; r++)
+        {
+            drawPile.Add(new Ammo { suit = fixedSuit, rank = r });
+        }
+        */
+
+        //==============================
+        //하트 덱
+        //숫자 1이랑 13 2장,2~12 각 1장, 문양은 하트
+        //==============================
+        /*
+        var deck3 = GameManager.Data.bulletDataGroup.GetBulletData(9002);
+        Suit fixedSuit2 = (Suit)deck3.type;
+        for (int r = deck3.min; r <= deck3.max; r++)
+        {
+            drawPile.Add(new Ammo { suit = fixedSuit2, rank = r });
+
+            if(r == 1 || r == 13)
+            {
+                drawPile.Add(new Ammo { suit = fixedSuit2, rank = r});
+            }
+        }
+        */
+
+        //==============================
+        //스페이드 덱
+        //숫자 1~13 각 1장, 문양은 스페이드
+        //==============================
+        /*
+        var deck4 = GameManager.Data.bulletDataGroup.GetBulletData(9001);
+        Suit fixedSuit3 = (Suit)deck4.type;
+        for (int r = deck4.min; r <= deck4.max; r++)
+        {
+            drawPile.Add(new Ammo { suit = fixedSuit3, rank = r });
+        }
+        */
+
+        //==============================
+        //클로버 덱
+        //숫자 1~13 각 1장, 문양은 클로버
+        //==============================
+        /*
+        var deck5 = GameManager.Data.bulletDataGroup.GetBulletData(9004);
+        Suit fixedSuit4 = (Suit)deck5.type;
+        for (int r = deck5.min; r <= deck5.max; r++)
+        {
+            drawPile.Add(new Ammo { suit = fixedSuit4, rank = r });
+        }
         */
 
         //기존 로직인데 올 랜덤덱을 만들때 쓸수있을것같으니 밑에처럼 남겨놓음
         /*
-        if (startPool != null && startPool.Count > 0)
-        {
-            //중복 유지
-            drawPile.AddRange(startPool);
-            return;
-        }
-
         // 표준 52장 생성하고 셔플한뒤 initialDeckSize만큼 뽑음
         var library52 = BuildStandard();
         Shuffle(library52);
@@ -88,7 +129,8 @@ public class Deck : MonoBehaviour
     }
 
     //52장 라이브러리
-    //나중에 이걸로 랜덤 덱 구성할수도 있으니 남겨놓음
+    //나중에 이걸로 올랜덤 덱 구성할수도 있으니 남겨놓음
+    /*
     private List<Ammo> BuildStandard()
     {
         var lib = new List<Ammo>(52);
@@ -97,6 +139,7 @@ public class Deck : MonoBehaviour
                 lib.Add(new Ammo { suit = s, rank = r });
         return lib;
     }
+    */
 
     //피셔-예이츠 셔플방식
     //랜덤보다 메모리가 더 효율적임

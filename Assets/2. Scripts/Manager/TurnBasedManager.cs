@@ -61,7 +61,7 @@ public class TurnBasedManager : MonoBehaviour
     
     public void StartTotalTurn() => isStarted = !isStarted;
 
-    public void ChangStartTurn()    // TODO:스테이지 시작과 종료 시점에 호출해주기 바람
+    public void ChangeStartTurn()    // TODO:스테이지 시작과 종료 시점에 호출해주기 바람
     {
         StartTotalTurn();
         ChangeTo<IdleState>("Force");
