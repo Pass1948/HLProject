@@ -31,6 +31,15 @@ public enum EventType
     //--- 덱
     SelectDeck
     //---
+    
+    // =====(유물)=====
+    AddAttackPoint,
+    AddMoveRangePoint,
+    AddMulliganPoint,
+    AddBulletPoint,
+    AddHealthPoint,
+    
+    // =====(화약)=====
 }
 
 [UGS(typeof(RarityType))]
@@ -67,34 +76,6 @@ public enum Rare
     Unique,
     Legendary,
 }
-public enum StatusId    // 상태이상 관련 열거형
-{
-    Stun,      // 기절
-    Bleed,     // 출혈
-    Burn,      // 화상
-    Regen,     // 재생
-    Slow,      // 감속
-    Haste,     // 가속
-    Blind,     // 실명
-    Berserk,   // 광폭
-    Freeze,    // 빙결
-    Confuse    // 혼란
-}
-
-public enum RelicApplyType
-{
-    
-}
-public enum PowderApplyType
-{
-    
-}
-
-
-
-
-
-
 
 // ======= 클래스 구역 ========
 

@@ -49,9 +49,6 @@ public class GameManager : MonoBehaviour
     private ShopManager shopManager;
     public ShopManager ShopManager => shopManager;
 
-    private ItemApplyManager itemApplyManager;
-    public ItemApplyManager ItemApply => itemApplyManager;
-
 
     private void Awake()
     {
