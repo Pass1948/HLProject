@@ -29,7 +29,7 @@ public enum EventType
     ShopPowderBundleConfirm,
     ShopRemoveBulletConfirm,
     //--- 덱
-    SelectDeck
+    SelectDeck,
     //---
     
     // =====(유물)=====
