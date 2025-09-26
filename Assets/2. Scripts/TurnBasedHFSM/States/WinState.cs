@@ -8,6 +8,7 @@ public class WinState : BaseTurnState
     public override void OnEnter()
     {
         StageClearUI();
+        turnManager.ResetCount();
     }
     public void StageClearUI()
     {

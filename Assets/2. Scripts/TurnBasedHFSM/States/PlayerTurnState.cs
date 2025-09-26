@@ -12,6 +12,7 @@ public class PlayerTurnState : BaseTurnState
     {
         timer = turnSetVlaue.resetTime;
         didClose = false;
+        turnManager.AddCount();
         // 턴 시작 시 커맨드 초기화후 입력 대기
         GameManager.UI.OpenUI<PaseTurnUI>();
         GameManager.Mouse.ToggleMovePhase();

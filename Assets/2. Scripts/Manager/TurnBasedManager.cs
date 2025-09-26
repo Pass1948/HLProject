@@ -11,6 +11,7 @@ public class TurnBasedManager : MonoBehaviour
     [HideInInspector] public TurnStateMachine turnHFSM { get; private set; }
     [HideInInspector] public TurnSettingValue turnSettingValue { get; private set; }
 
+    public int count = 0;
 
     public Queue<BaseEnemy> monsterQueue = new Queue<BaseEnemy>();
 
@@ -60,6 +61,12 @@ public class TurnBasedManager : MonoBehaviour
     }
     
     public void StartTotalTurn() => isStarted = !isStarted;
+
+
+    public void AddCount() => count++;
+    public void ResetCount() => count = 0; // TODO : 턴카운터 초기화
+    
+    
 
     public void ChangeStartTurn()    // TODO:스테이지 시작과 종료 시점에 호출해주기 바람
     {
