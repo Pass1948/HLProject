@@ -49,8 +49,8 @@ public class GameManager : MonoBehaviour
     private ShopManager shopManager;
     public ShopManager ShopManager => shopManager;
 
-    private StrategyManager strategyManager;
-    public StrategyManager Strategy => strategyManager;
+    private ItemApplyManager itemApplyManager;
+    public ItemApplyManager ItemApply => itemApplyManager;
 
 
     private void Awake()
@@ -82,7 +82,7 @@ public class GameManager : MonoBehaviour
         saveLoadManager = CreateChildManager<SaveLoadManager>("SaveLoadManager");
         itemControlManger = CreateChildManager<ItemControlManger>("ItemControlManger");
         rewardManager = CreateChildManager<RewardManager>("RewardManager");
-        strategyManager = CreateChildManager<StrategyManager>("StrategyManager");
+        itemApplyManager = CreateChildManager<ItemApplyManager>("StrategyManager");
     }
     private T CreateChildManager<T>(string goName) where T : Component
     {

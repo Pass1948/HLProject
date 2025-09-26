@@ -1,9 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using DataTable;
 using UnityEngine;
 
-public class StrategyManager : MonoBehaviour
+public class ItemApplyManager : MonoBehaviour
 {
     // =====================================================================
     // 캐싱 변수들
@@ -26,6 +27,29 @@ public class StrategyManager : MonoBehaviour
     // ===== 기존 공개 필드(전역 선택 화약) =====
     public int currentPowderItemId;
     
+    // =====================================================================
+    // 효과 적용 이벤트 모음
+    // =====================================================================
+
+    private void OnEnable()
+    {
+        // 유물 이벤트 등록
+        //GameManager.Event.Subscribe(RelicApplyType. , );
+        
+        // 화약 이벤트 등록
+        //ameManager.Event.Subscribe(PowderApplyType. , );
+    }
+
+    private void OnDisable()
+    {
+        // 유물 이벤트 등록
+        //GameManager.Event.Unsubscribe(RelicApplyType. ,);
+        
+        // 화약 이벤트 등록
+        //ameManager.Event.Unsubscribe(PowderApplyType. , );
+    }
+
+
     // =====================================================================
     // 유물 아이템 스탯 효과 로직들
     // =====================================================================
@@ -71,25 +95,6 @@ public class StrategyManager : MonoBehaviour
 
         // 5) 실제 실행
         ExecutePowderAttack(powderItem, player, targets, baseDamage, ammoFlag);
-    }
-
-    // ====== [추가] 외부 1회 호출용 파사드(타깃만 전달) ======
-    // - 타깃만 바꾸고, 나머진 자동으로 가져와 실행하고 싶을 때 사용
-    public void ExecuteNow(List<BaseEnemy> overrideTargets)
-    {
-        var player = GameManager.Unit?.Player?.playerModel;
-        if (player == null) return;
-        int baseDamage = player.attack;
-
-        var ammoFlag = GameManager.TurnBased?.turnSettingValue != null
-            ? GameManager.TurnBased.turnSettingValue.fireAmmo
-            : default;
-
-        if (overrideTargets == null || overrideTargets.Count == 0) return;
-
-        var powderItem = MakePowderStub(currentPowderItemId);
-
-        ExecutePowderAttack(powderItem, player, overrideTargets, baseDamage, ammoFlag);
     }
 
     // ===== 기존 시그니처 유지 =====
