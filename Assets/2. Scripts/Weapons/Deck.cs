@@ -15,10 +15,13 @@ public class Deck : MonoBehaviour
 
     private void OnEnable()
     {
-        //덱 구성
+        GameManager.Event.Subscribe(EventType.SelectDeck, BuildInitialDeck);
         BuildInitialDeck();
-        //섞기
-        Shuffle(drawPile);
+    }
+
+    private void OnDisable()
+    {
+        GameManager.Event.Unsubscribe(EventType.SelectDeck, BuildInitialDeck);
     }
 
     //덱 상단에서 탄환 뽑기(부족하면 가진 만큼)
@@ -44,77 +47,80 @@ public class Deck : MonoBehaviour
     private void BuildInitialDeck()
     {
         drawPile.Clear();
-
         //==============================
         //기본덱
         //숫자 1~13 각 1장, 문양은 랜덤
         //==============================
-        
-        var deck = GameManager.Data.bulletDataGroup.GetBulletData(9005);
-
-        for(int r = deck.min; r <= deck.max; r++)
+        if (GameManager.TurnBased.turnSettingValue.IsBasicDeck == true)
         {
-            var s = (Suit)UnityEngine.Random.Range(0, 4);
-            drawPile.Add(new Ammo { suit = s, rank = r });
-        }
-        
+            var deck = GameManager.Data.bulletDataGroup.GetBulletData(9005);
 
+            for (int r = deck.min; r <= deck.max; r++)
+            {
+                var s = (Suit)UnityEngine.Random.Range(0, 4);
+                drawPile.Add(new Ammo { suit = s, rank = r });
+            }
+        }
         //==============================
         //다이아 덱
         //숫자 1~13 각 1장, 문양은 다이아몬드
         //==============================
-        /*
-        var deck2 = GameManager.Data.bulletDataGroup.GetBulletData(9003);
-        Suit fixedSuit = (Suit)deck2.type;
-        for (int r = deck2.min; r <= deck2.max; r++)
+        if (GameManager.TurnBased.turnSettingValue.IsDiamondDeck == true)
         {
-            drawPile.Add(new Ammo { suit = fixedSuit, rank = r });
+            var deck2 = GameManager.Data.bulletDataGroup.GetBulletData(9003);
+            Suit fixedSuit = (Suit)deck2.type;
+            for (int r = deck2.min; r <= deck2.max; r++)
+            {
+                drawPile.Add(new Ammo { suit = fixedSuit, rank = r });
+            }
         }
-        */
 
         //==============================
         //하트 덱
         //숫자 1이랑 13 2장,2~12 각 1장, 문양은 하트
         //==============================
-        /*
-        var deck3 = GameManager.Data.bulletDataGroup.GetBulletData(9002);
-        Suit fixedSuit2 = (Suit)deck3.type;
-        for (int r = deck3.min; r <= deck3.max; r++)
+        if (GameManager.TurnBased.turnSettingValue.IsHeartDeck == true)
         {
-            drawPile.Add(new Ammo { suit = fixedSuit2, rank = r });
-
-            if(r == 1 || r == 13)
+            var deck3 = GameManager.Data.bulletDataGroup.GetBulletData(9002);
+            Suit fixedSuit2 = (Suit)deck3.type;
+            for (int r = deck3.min; r <= deck3.max; r++)
             {
-                drawPile.Add(new Ammo { suit = fixedSuit2, rank = r});
+                drawPile.Add(new Ammo { suit = fixedSuit2, rank = r });
+
+                if (r == 1 || r == 13)
+                {
+                    drawPile.Add(new Ammo { suit = fixedSuit2, rank = r });
+                }
             }
         }
-        */
 
         //==============================
         //스페이드 덱
         //숫자 1~13 각 1장, 문양은 스페이드
         //==============================
-        /*
-        var deck4 = GameManager.Data.bulletDataGroup.GetBulletData(9001);
-        Suit fixedSuit3 = (Suit)deck4.type;
-        for (int r = deck4.min; r <= deck4.max; r++)
+        if (GameManager.TurnBased.turnSettingValue.IsSpadeDeck == true)
         {
-            drawPile.Add(new Ammo { suit = fixedSuit3, rank = r });
+            var deck4 = GameManager.Data.bulletDataGroup.GetBulletData(9001);
+            Suit fixedSuit3 = (Suit)deck4.type;
+            for (int r = deck4.min; r <= deck4.max; r++)
+            {
+                drawPile.Add(new Ammo { suit = fixedSuit3, rank = r });
+            }
         }
-        */
 
         //==============================
         //클로버 덱
         //숫자 1~13 각 1장, 문양은 클로버
         //==============================
-        /*
-        var deck5 = GameManager.Data.bulletDataGroup.GetBulletData(9004);
-        Suit fixedSuit4 = (Suit)deck5.type;
-        for (int r = deck5.min; r <= deck5.max; r++)
+        if (GameManager.TurnBased.turnSettingValue.IsClubDeck == true)
         {
-            drawPile.Add(new Ammo { suit = fixedSuit4, rank = r });
+            var deck5 = GameManager.Data.bulletDataGroup.GetBulletData(9004);
+            Suit fixedSuit4 = (Suit)deck5.type;
+            for (int r = deck5.min; r <= deck5.max; r++)
+            {
+                drawPile.Add(new Ammo { suit = fixedSuit4, rank = r });
+            }
         }
-        */
 
         //기존 로직인데 올 랜덤덱을 만들때 쓸수있을것같으니 밑에처럼 남겨놓음
         /*
@@ -126,6 +132,9 @@ public class Deck : MonoBehaviour
         for (int i = 0; i < take; i++)
             drawPile.Add(library52[i]);
         */
+
+        //덱만들고 섞기
+        Shuffle(drawPile);
     }
 
     //52장 라이브러리

@@ -29,7 +29,6 @@ public class SpawnController : MonoBehaviour
         SpawnObstacles(5, stage.obstaclesDict);
         // SpawnEnemys(stage.enemiesDict); 
         SpawnEnemies(stage.enemiesDict, stage.eliteCnt, stage.id);
-        
     }
     
     private void SpawnPlayer()
@@ -97,7 +96,7 @@ public class SpawnController : MonoBehaviour
     private void SpawnEnemies(Dictionary<int, int> enemies, int eliteCount, int stageId)
     {
         List<BaseEnemy> spawnedList = new List<BaseEnemy>();
-        
+
         foreach (var enemy in enemies)
         {
             for (int i = 0; i < enemy.Value; i++)
@@ -121,6 +120,7 @@ public class SpawnController : MonoBehaviour
                     
                     FindObjectOfType<AttackRangeDisplay>().enemies.Add(baseEnemy);
                     spawnedList.Add(baseEnemy);
+
                     // break;
                 }
             }
