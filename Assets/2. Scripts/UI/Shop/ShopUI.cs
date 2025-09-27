@@ -1,13 +1,18 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI; 
 
 public class ShopUI : BaseUI
 {
     [Header("참조(인스펙터에서 할당)")]
-    private ShopManager shop;
-    [SerializeField] private Transform gridRoot;
+    private ShopManager shop = GameManager.Shop;
+    [SerializeField] private Transform bulletRoot;
+    [SerializeField] private Transform relicRoot;
+    // [SerializeField] private Transform powderRoot;
+    [SerializeField] private Transform healthRoot;
+    [SerializeField] private Transform removeRoot;
     [SerializeField] private GameObject cardPrefab; // ShopCardUI 컴포넌트 포함 프리팹
     [SerializeField] private TextMeshProUGUI rerollCostText;
 
@@ -15,8 +20,9 @@ public class ShopUI : BaseUI
 
     private void Awake()
     {
+        shop = GameManager.Shop;
         if (!shop) Debug.LogWarning("[ShopUI] ShopManager 참조가 비었습니다. 인스펙터에서 할당하세요.");
-        if (!gridRoot) Debug.LogWarning("[ShopUI] gridRoot 참조가 비었습니다.");
+        if (!bulletRoot) Debug.LogWarning("[ShopUI] gridRoot 참조가 비었습니다.");
         if (!cardPrefab) Debug.LogWarning("[ShopUI] cardPrefab 참조가 비었습니다.");
         
     }
@@ -76,44 +82,49 @@ public class ShopUI : BaseUI
     private void Rebuild(List<ShopManager.ShopItem> offers)
     {
         // 기존 카드 정리
-        for (int i = spawned.Count - 1; i >= 0; i--)
-            Destroy(spawned[i]);
+        ClearSection(bulletRoot);
+        ClearSection(relicRoot);
+        // ClearSection(powderRoot);
         spawned.Clear();
-
-        if (offers == null || gridRoot == null) return;
+        
+        if (offers == null) return;
 
         // 카드 생성 offers 기준으로
         for (int i = 0; i < offers.Count; i++)
         {
-            int idx = i;
             var data = offers[i];
+            int idx = i;
+            Transform parent;
+            switch (data.type)
+            {
+                case ShopItemType.Bullet:
+                    parent = bulletRoot; break;
+                case ShopItemType.SpecialTotem:
+                    parent = relicRoot; break;
+                // case ShopItemType.PowderBundle:
+                //     parent = powderRoot; break;
+                default:
+                    parent = healthRoot; break;
+            }
 
-            // 1) UIManager 팩토리 사용
             ShopCardUI card = null;
-            if (GameManager.UI != null)
-            {
-                card = GameManager.UI.CreateSlotUI<ShopCardUI>(gridRoot);
-            }
-            else
-            {
-                // 2) 직접 프리팹 인스턴스 (UIManager 미사용 프로젝트 호환)
-                var go = Instantiate(cardPrefab, gridRoot);
-                card = go.GetComponent<ShopCardUI>();
-            }
-
+            card = GameManager.UI.CreateSlotUI<ShopCardUI>(parent);
             card.Bind(data);
             card.buyButton.onClick.RemoveAllListeners();
             card.buyButton.onClick.AddListener(() =>
             {
                 shop.TryBuy(idx);
-                // TryBuy 안에서 Event가 발행되더라도, 즉시 라벨 보수 갱신
                 UpdateRerollLabel();
             });
-
             spawned.Add(card.gameObject);
         }
-
         UpdateRerollLabel();
+    }
+
+    private void ClearSection(Transform root)
+    {
+        for (int i = root.childCount - 1; i >= 0; i--)
+            Destroy(root.GetChild(i).gameObject);
     }
 
     private void UpdateRerollLabel()

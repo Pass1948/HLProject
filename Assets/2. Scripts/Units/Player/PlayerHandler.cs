@@ -8,6 +8,8 @@ public class PlayerHandler : MonoBehaviour
     public int playerMonney;
     
     public List<Ammo> bullets = new();
+    public List<Ammo> GetBullet() { return bullets;}
+    
     public List<int> ownedRelics = new();
     
     private void Awake()
