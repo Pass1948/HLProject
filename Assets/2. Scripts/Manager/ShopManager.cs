@@ -74,37 +74,32 @@ public class ShopManager : MonoBehaviour
         player = GameManager.Unit.Player.playerHandler;
         // 1) 탄환
         GenerateCardOffers(player.bullets);
-
         // 2) 유물
         GenerateRelicOffers(player.ownedRelics);
 
-        // 3) 화약 꾸러미 (남은 개수만 표시)
-        for (int i = 0; i < powderBundleLeft; i++)
-            offers.Add(new ShopItem(ShopItemType.PowderBundle, "화약 꾸러미", 4));
-
-        // 4) 응급 처치
-        offers.Add(new ShopItem(ShopItemType.Heal, "응급 처치", 1));
-
-        // 5) 탄환 제거 (입장당 1회)
-        if (canRemoveBullet)
-            offers.Add(new ShopItem(ShopItemType.RemoveBullet, "탄환 제거", 3));
-
-        // 6) 리롤 (현재 비용 표시)
-        offers.Add(new ShopItem(ShopItemType.Reroll, "리롤", rerollCost));
+        // 탄환 제거 (입장당 1회)
+        // if (canRemoveBullet)
+        //     offers.Add(new ShopItem(ShopItemType.RemoveBullet, "탄환 제거", 3));
+        
         GameManager.Event.Publish(EventType.ShopOffersChanged, offers);
-        Debug.Log("상점 상품 재구성 완료");
     }
+
 
     // 탄환 오퍼 
     private void GenerateCardOffers(List<Ammo> playerOwned)
     {
-        Debug.Log($"{playerOwned}");
-        Debug.Log($"{deck}");
-        var snapshot = deck.GetDrawSnapshot(); // 덱에서 카드 스냅샷
-        
+        var snapshot = deck != null ? deck.GetDrawSnapshot() : null;
+        if (snapshot == null)
+        {
+            Debug.LogError("[ShopManager] Snapshot이 null입니다. Deck이 초기화되지 않았습니다.");
+            return;
+        }
+
+        Debug.Log($"[ShopManager] Snapshot count={snapshot.Count}, playerOwned={playerOwned.Count}");
+
         Shuffle(snapshot);
 
-        int want = GetBulletOfferCount();    // 기본 3~5, 유물로 +2 같은 버프가 있다면 여기서 반영
+        int want = GetBulletOfferCount();
         int added = 0;
 
         foreach (var card in snapshot)
@@ -116,13 +111,8 @@ public class ShopManager : MonoBehaviour
 
             // 새로운 탄환 후보 생성
             var offerAmmo = new Ammo { suit = card.suit, rank = card.rank, powder = null };
-
-            // 확률적으로 화약 부착
-            if (powderPool != null && powderPool.Count > 0 && Random.value < attachPowderChance)
-            {
-                var pickedPowder = PickPowderByWeightedRarity();
-                offerAmmo.powder = pickedPowder;
-            }
+            
+            
             // 가격 = 기본3 + (화약 레어도 추가 비용)
             int price = 3;
             if (offerAmmo.powder != null)
@@ -231,12 +221,17 @@ public class ShopManager : MonoBehaviour
             offers.RemoveAt(index);
     }
     // 돈내고 오퍼 전체 재생성
-    private void TryReroll()
+    public void TryReroll()
     {
         if (!player.SpendGold(rerollCost)) return;
-
         rerollCost++;
         GenerateOffers();
+    }
+    public void TryHeal()
+    {
+        int healCost = 1;
+        if(!player.SpendGold(healCost)) return;
+        player.Heal(1); // 추후에 변수로 변경 예정
     }
 
     // 화약 꾸러미 

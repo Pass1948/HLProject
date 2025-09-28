@@ -11,10 +11,15 @@ public class ShopUI : BaseUI
     [SerializeField] private Transform bulletRoot;
     [SerializeField] private Transform relicRoot;
     // [SerializeField] private Transform powderRoot;
-    [SerializeField] private Transform healthRoot;
     [SerializeField] private Transform removeRoot;
     [SerializeField] private GameObject cardPrefab; // ShopCardUI 컴포넌트 포함 프리팹
+    
+    
     [SerializeField] private TextMeshProUGUI rerollCostText;
+    [SerializeField] private TextMeshProUGUI healCost;
+    
+    public Button rerollButton;
+    public Button healButton;
 
     private readonly List<GameObject> spawned = new();
 
@@ -33,7 +38,9 @@ public class ShopUI : BaseUI
         GameManager.Event.Subscribe<List<ShopManager.ShopItem>>(EventType.ShopOffersChanged, OnOffersChanged);
         GameManager.Event.Subscribe<(List<Ammo>, List<PowderData>)>(EventType.ShopPowderBundlePrompt, OnPowderBundlePrompt);
         GameManager.Event.Subscribe<List<Ammo>>(EventType.ShopRemoveBulletPrompt, OnRemoveBulletPrompt);
-
+        
+        healButton.onClick.AddListener(()=> shop.TryHeal());
+        rerollButton.onClick.AddListener(()=> shop.TryReroll());
         if (shop != null) Rebuild(shop.offers);
     }
 
@@ -85,7 +92,7 @@ public class ShopUI : BaseUI
         ClearSection(bulletRoot);
         ClearSection(relicRoot);
         // ClearSection(powderRoot);
-        spawned.Clear();
+        // spawned.Clear();
         
         if (offers == null) return;
 
@@ -94,6 +101,7 @@ public class ShopUI : BaseUI
         {
             var data = offers[i];
             int idx = i;
+            
             Transform parent;
             switch (data.type)
             {
@@ -101,12 +109,11 @@ public class ShopUI : BaseUI
                     parent = bulletRoot; break;
                 case ShopItemType.SpecialTotem:
                     parent = relicRoot; break;
-                // case ShopItemType.PowderBundle:
-                //     parent = powderRoot; break;
                 default:
-                    parent = healthRoot; break;
+                    parent = null; break;
             }
-
+            if(parent == null) continue;
+            
             ShopCardUI card = null;
             card = GameManager.UI.CreateSlotUI<ShopCardUI>(parent);
             card.Bind(data);
