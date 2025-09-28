@@ -18,7 +18,7 @@ public class TurnEndDamageEffect : MonoBehaviour, ITurnEndEffect
     
     private void OnEnable()
     {
-        GameManager.Map.RegisterTurnEndEffect(this);
+        
     }
     
     private void OnDisable()
@@ -36,5 +36,10 @@ public class TurnEndDamageEffect : MonoBehaviour, ITurnEndEffect
             Vector3Int myCellPos = GameManager.Map.tilemap.WorldToCell(transform.position);
             _damageAction.ApplyDamage(myCellPos, damageAmount);
         }
+    }
+    
+    public void SetupEffect()
+    {
+        GameManager.Map.RegisterTurnEndEffect(this);
     }
 }

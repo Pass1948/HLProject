@@ -6,10 +6,14 @@ using DataTable;
 
 public class SpawnController : MonoBehaviour
 {
-    private BasicObstaclePool obstaclePool;
+    //private BasicObstaclePool obstaclePool;
     private Dictionary<string, BasicObstaclePool> obstaclePools = new Dictionary<string, BasicObstaclePool>();
-    private readonly string[] allPrefabNames = { "Obstacle_Pillar", "Obstacle_Blizzard", "Obstacle_Vortex", "Obstacle_Wall" }; 
-   
+    private readonly string[] allPrefabNames = { 
+        "Obstacle_Pillar", 
+        "Obstacle_Blizzard" 
+        //
+    };
+    
     private GameObject enemyPrefab;
     
     // MapManager의 Start에서 호출
@@ -22,7 +26,7 @@ public class SpawnController : MonoBehaviour
             {
                 BasicObstaclePool pool = gameObject.AddComponent<BasicObstaclePool>();
                 pool.prefab = prefab;
-                pool.InitializePool(5); // 풀마다  5개씩
+                pool.InitializePool(10); // 풀마다 5개씩
                 obstaclePools.Add(name, pool);
             }
         }
@@ -33,7 +37,7 @@ public class SpawnController : MonoBehaviour
     {
         enemyPrefab = GameManager.Resource.Load<GameObject>(Path.Enemy + "NormalEnemy");
         
-        obstaclePool.InitializePool(20);
+        //obstaclePool.InitializePool(20);
         
         SpawnPlayer();
         // SpawnEnemys(stage.enemiesDict); 
@@ -75,7 +79,6 @@ public class SpawnController : MonoBehaviour
 
     }
     
-    // TODO: 장애물 구현하신거에 맞게 구현 해주세용
     // 장애물 스폰
     public void SpawnObstacles(Dictionary<int, int> obstacles)
 {
@@ -90,7 +93,6 @@ public class SpawnController : MonoBehaviour
 
         if (obstacleData == null)
         {
-            Debug.LogError($"Obstacle ID {obstacleId}를 찾을 수 없습니다");
             continue;
         }
 
@@ -98,17 +100,15 @@ public class SpawnController : MonoBehaviour
         
         if (string.IsNullOrEmpty(prefabName))
         {
-            Debug.LogError($"Obstacle Type {obstacleData.type}에 맞는 프리팹 이름이 정의되지 않았습니다");
             continue;
         }
         
         // 현재 장애물 타입에 맞는 풀을 찾음
         if (!obstaclePools.TryGetValue(prefabName, out BasicObstaclePool pool))
         {
-            Debug.LogError($"풀이 초기화되지 않았습니다 {prefabName}");
             continue;
         }
-
+        
         for (int i = 0; i < maxAttempts && spawnedCount < obstacleEntry.Value; i++) 
         {
             int randX = Random.Range(0, GameManager.Map.mapWidth);
@@ -121,17 +121,26 @@ public class SpawnController : MonoBehaviour
                 GameObject obj = pool.GetPooledObject();
                 
                 // 정상적으로 리턴되었는지 확인
-                if (obj == null) { continue; } 
+                if (obj == null)
+                {
+                    continue;
+                } 
                 
                 // 풀에서 가져온 오브젝트의 위치와 활성 상태를 초기화
                 obj.transform.SetParent(transform);
                 obj.SetActive(true);
-
+                
                 BaseObstacle baseObstacle = obj.GetComponent<BaseObstacle>();
-
+                
                 baseObstacle.InitObstacle(spawnPos, obstacleData); 
-                baseObstacle.SetPosition(spawnPos); 
-
+                baseObstacle.SetPosition(spawnPos);
+                
+                TurnEndDamageEffect damageEffect = obj.GetComponent<TurnEndDamageEffect>();
+                if (damageEffect != null)
+                {
+                    damageEffect.SetupEffect(); 
+                }
+                
                 // TileID 설정
                 int tileIdToSet = (int)TileID.Terrain; 
                 
@@ -141,8 +150,8 @@ public class SpawnController : MonoBehaviour
                 }
                 
                 GameManager.Map.SetObjectPosition(randX, randY, tileIdToSet);
-                
                 spawnedCount++;
+                
             }
         }
 
@@ -189,22 +198,17 @@ public class SpawnController : MonoBehaviour
     {
         switch (type)
         {
+            // 사용할 타입만
             case ObstacleType.StonePillar:
-            case ObstacleType.IcePillar:
-            case ObstacleType.FlamingPillar:
                 return "Obstacle_Pillar"; // 기둥류
-            
+
             case ObstacleType.BlizzardZone:
                 return "Obstacle_Blizzard"; // 눈보라 구역
-            
-            /*case ObstacleType.VortexZone:
-                return "Obstacle_Vortex";
-                
-            case ObstacleType.FragileIceWall:
-                return "Obstacle_Wall"; */
-            
+        
+            // 나머지 모든 타입은 default
             default:
-                return string.Empty;
+                
+                return string.Empty; 
         }
     }
     
