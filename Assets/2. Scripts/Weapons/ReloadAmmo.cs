@@ -39,6 +39,16 @@ public class ReloadAmmo : MonoBehaviour
             return;
         }
 
+        if (magazine.IsBtnSel)
+        {
+            Debug.Log("탄환 선택 풀고 재장전하시오");
+            ReloadChange?.Invoke(Remaining, maxReloads);
+            return;
+        }
+        {
+            
+        }
+
         if (!CanReload)
         {
             Debug.LogWarning("탄약없음!");
