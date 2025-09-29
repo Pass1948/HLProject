@@ -55,7 +55,9 @@ public class PlayerKickState : PlayerActionState
                 {
                     if (enemy == null || enemy.controller == null || enemy.controller.isDie) continue;
                     enemy.ChenageAttribute();
-                    GameManager.UI.GetUI<EnemyInfoPopUpUI>().SetData(enemy.enemyModel.unitName, enemy.enemyModel.attri, enemy.enemyModel.rank);
+                    GameManager.UI.GetUI<EnemyInfoPopUpUI>().SetData(enemy.enemyModel.attri, enemy.enemyModel.rank,
+                        enemy.enemyModel.attack, enemy.enemyModel.moveRange, enemy.enemyModel.currentHealth,
+                        enemy.enemyModel.maxHealth);
                 }
             }
         }
