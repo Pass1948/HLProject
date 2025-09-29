@@ -13,7 +13,11 @@ public class PlayerChooseState : BaseTurnState
         timer = turnSetVlaue.resetTime;
         didClose = false;
         GameManager.Mouse.IsAttacking=true;
-        GameManager.Mouse.OnSwitchIsClicked();
+        if (GameManager.Mouse.isMouse == false)
+        {
+            GameManager.Mouse.isMouse = true;
+        }
+        GameManager.Mouse.isShowRange = false;
     }
 
     public override void Tick(float dt)

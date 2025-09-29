@@ -9,6 +9,7 @@ public class PlayerAttackState : PlayerActionState
         base.OnEnter();
         ChangeState<A_Windup>();
         GameManager.Mouse.ToggleMovePhase();
+        GameManager.Mouse.isMouse = false;
     }
 
     // 공격 동작 나누기 : 선딜, 동작, 후딜

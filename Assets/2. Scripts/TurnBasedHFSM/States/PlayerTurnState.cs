@@ -18,7 +18,11 @@ public class PlayerTurnState : BaseTurnState
         GameManager.Mouse.ToggleMovePhase();
         if (GameManager.Mouse.isMouse == false)
         {
-            GameManager.Mouse.OnSwitchIsClicked();
+            GameManager.Mouse.isMouse = true;
+        }
+        if (GameManager.Mouse.isShowRange == false)
+        {
+            GameManager.Mouse.isShowRange = true;
         }
         Time.timeScale = 3f;    // 배속 기능
         if (turnManager.isCamera == false)
