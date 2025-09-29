@@ -4475,6 +4475,9 @@ MonoBehaviour:
   playerHpText: {fileID: 4950629171725674065}
   vehicleHp: {fileID: 2736345913908464182}
   vehicleHpText: {fileID: 7277184832269940965}
+  settingActiveBtn: {fileID: 4109881642658001301}
+  settingUI: {fileID: 7530061580899684206, guid: 2393651c4aa01354b8831247c8e51bfa,
+    type: 3}
 --- !u!114 &2122605686555309026
 MonoBehaviour:
   m_ObjectHideFlags: 0

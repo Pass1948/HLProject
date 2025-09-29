@@ -48,6 +48,11 @@ public class MainUI : BaseUI
     [SerializeField] private Image vehicleHp;
     [SerializeField] private TMP_Text vehicleHpText;
 
+    //설정버튼
+    [SerializeField] Button settingActiveBtn;
+    //설정창 UI
+    [SerializeField] private GameObject settingUI;
+
     private void Awake()
     {
         turnBtn.onClick.AddListener(OnTurnEnd);
@@ -64,6 +69,8 @@ public class MainUI : BaseUI
 
 
         settingBtn.onClick.AddListener(GameResultUITest);
+
+        settingActiveBtn.onClick.AddListener(OpenSettings);
 
         InitReloadUI();
     }
@@ -300,5 +307,10 @@ public class MainUI : BaseUI
         float t = (max > 0) ? (float)cur / max : 0f;
         if (vehicleHp) vehicleHp.fillAmount = Mathf.Clamp01(t);
         if (vehicleHpText) vehicleHpText.text = $"{cur}/{max}";
+    }
+
+    private void OpenSettings()
+    {
+        Instantiate(settingUI);
     }
 }
