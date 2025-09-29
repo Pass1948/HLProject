@@ -52,7 +52,9 @@ public class MouseManager : MonoBehaviour
     private Vector3Int selectedPlayerCell;
     private int selectedMoveRange;
     bool isPlayer = false;
-
+    bool showRange = true;
+    
+    
     //==== 공격 상태 =====
     private bool isAttacking = false;
     public bool IsAttacking { get { return isAttacking; } set { isAttacking = value; } }
@@ -70,6 +72,7 @@ public class MouseManager : MonoBehaviour
     private bool playerRangeVisible = false;
     private BaseEnemy selectedEnemy;       // 현재 팝업이 열린 적
     private bool enemyPopupVisible = false;
+    public bool isMouse = false;
 
     // --- Overlap관련 최적화 ---
     private readonly Collider[] oneHit = new Collider[1];// OverlapBoxNonAlloc 결과 담는 1칸
@@ -91,18 +94,15 @@ public class MouseManager : MonoBehaviour
 
     public void MovingMouse()   // MouseFollower클래스에 LateUpdate()안에서 호출
     {
-        // 1) 포인터 추적(셀 단위)
+        //포인터 추적(셀 단위)
         if (!UpdatePointer()) return;
-
-        // 2) 좌클릭 라우팅 (입력)
-        bool clicked =
-#if ENABLE_INPUT_SYSTEM
-            Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame;
-#else
-            Input.GetMouseButtonDown(0);
-#endif
-        if (clicked) HandleLeftClick();
+        if (isMouse == false) return;
+        OnMouseClick();
     }
+    
+    public void OnSwitchIsClicked() =>isMouse = !isMouse;
+    
+    public void OnSwitchRange() =>showRange = !showRange;
 
     //  PlayerTurnState에서 호출
     public void ToggleMovePhase() => movePhaseActive = !movePhaseActive;
@@ -152,7 +152,18 @@ public class MouseManager : MonoBehaviour
     // =====================================================================
     // 클릭 처리 (TileID 기반)
     // =====================================================================
-   
+
+    public void OnMouseClick()
+    {
+       bool isClick =
+#if ENABLE_INPUT_SYSTEM
+            Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame;
+#else
+            Input.GetMouseButtonDown(0);
+#endif
+        if (isClick) HandleLeftClick();
+    }
+    
     private void HandleLeftClick()
     {
 
@@ -252,12 +263,14 @@ public class MouseManager : MonoBehaviour
 
         if (isAttacking) return;
 
-        // 현재 범위가 떠 있고 같은 칸을 다시 눌렀다면 끄고, 아니면 켠다
-        if (playerRangeVisible && selectedPlayerCell == cell)
-            HidePlayerRange();
-        else
-            ShowPlayerRange(cell);
-
+        if (showRange == true)
+        {
+            // 현재 범위가 떠 있고 같은 칸을 다시 눌렀다면 끄고, 아니면 켠다
+            if (playerRangeVisible && selectedPlayerCell == cell)
+                HidePlayerRange();
+            else
+                ShowPlayerRange(cell);
+        }
     }
 
     // Enemy 셀 클릭 => 정보 UI

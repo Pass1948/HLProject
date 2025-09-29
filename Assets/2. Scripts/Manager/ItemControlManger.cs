@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
 
 public class ItemControlManger : MonoBehaviour
 {
@@ -42,17 +43,18 @@ public class ItemControlManger : MonoBehaviour
     // =====================================================================
     // 아이템오브젝트 연동로직
     // =====================================================================
+    
     public T GetItem<T>() where T : BaseItem
     {
-        string uiName = GetItemName<T>();
+        string itemName = GetItemName<T>();
 
-        BaseItem ui;
+        BaseItem item;
         if (IsExistItem<T>())
-            ui = itemsDictionary[uiName];
+            item = itemsDictionary[itemName];
         else
-            ui = null;
+            item = null;
 
-        return ui as T;
+        return item as T;
     }
     
     private string GetItemName<T>() where T : BaseItem 
@@ -62,7 +64,7 @@ public class ItemControlManger : MonoBehaviour
     public bool IsExistItem<T>() where T : BaseItem
     {
         string itemName = GetItemName<T>();
-        return itemsDictionary.TryGetValue(itemName, out var ui) && ui != null;
+        return itemsDictionary.TryGetValue(itemName, out var item) && item != null;
     }
     
     
@@ -314,19 +316,22 @@ public class ItemControlManger : MonoBehaviour
     // ========== 유물 슬롯과 이미지 생성 메서드 ==========
     // 해당 메서드 사용법 :
     // CreateRelicObject(GameManager.ItemControl.RelicWeightSampling(4), 여긴 layout달린 ui위치넣으셈);
-    private void CreateRelicObject(List<ItemModel> lists, Transform parent) 
+    private void CreateRelicObject(int id) 
     {
-        if (lists == null || lists.Count == 0) return;
+        if (relicItems == null || relicItems.Count == 0) return;
 
-        for (int i = 0; i < lists.Count; i++)
+        for (int i = 0; i < relicItems.Count; i++)
         {
-            if (lists[i] == null) continue;
-            
-               var go = GameManager.Resource.Create<BaseItem>(Path.UIElements+"RelicIconUI");
-               go.name = lists[i].name;
-               go.transform.SetParent(parent, false);
-               go.itemModel = lists[i];
-               go.gameObject.GetComponent<Image>().sprite = GameManager.Resource.Load<Sprite>(Path.UISprites+lists[i].imagePath);
+            if (relicItems[i] == null) continue;
+            if (relicItems[i].id == id)
+            {
+                var go = GameManager.Resource.Create<BaseItem>(Path.UIElements+"RelicIconUI");
+                go.name = relicItems[i].name;
+
+                go.transform.SetParent(relicRoot.transform, false);
+                // go에 addcomponent해야함
+                go.gameObject.GetComponent<Image>().sprite = GameManager.Resource.Load<Sprite>(Path.UISprites+relicItems[i].imagePath);
+            }
         }
     }
     // ========== 유물 슬롯과 이미지 생성 메서드 ==========
