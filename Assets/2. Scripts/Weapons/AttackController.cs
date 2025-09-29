@@ -246,5 +246,18 @@ public class AttackController : MonoBehaviour
         }
     }
 
+    public void Unselect()
+    {
+        if(selectBulletBg)
+        {
+            selectBulletBg.color = bgNormal;
+        }
+        selectedAmmoBtn = null;
+        selectBulletBg = null;
+        bullet = null;
+
+        GameManager.Map.attackRange.ClearAttackType();
+        GameManager.Mouse.IsAttacking = false;
+    }
 
 }

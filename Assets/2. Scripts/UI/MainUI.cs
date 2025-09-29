@@ -72,6 +72,16 @@ public class MainUI : BaseUI
 
         settingActiveBtn.onClick.AddListener(OpenSettings);
 
+        //탄환 선택해제
+        //오토바이 조작 안에 있는것들은 안넣어도 될것같음
+        deckBtn.onClick.AddListener(fireBtnObj.Unselect);
+        discardBtn.onClick.AddListener(fireBtnObj.Unselect);
+        RelicBtn.onClick.AddListener(fireBtnObj.Unselect);
+        turnBtn.onClick.AddListener(fireBtnObj.Unselect);
+        bikeControllBtn.onClick.AddListener(fireBtnObj.Unselect);
+        kickBtn.onClick.AddListener(fireBtnObj.Unselect);
+        settingActiveBtn.onClick.AddListener(fireBtnObj.Unselect);
+
         InitReloadUI();
     }
 
@@ -108,6 +118,10 @@ public class MainUI : BaseUI
     private void OnReload()
     {
         reloadBtnObj.Reload();
+        if (bikeControllBtnObj)
+        {
+            bikeControllBtnObj.ToggleBikeControll();
+        }
     }
 
     private void DeckToggle()
@@ -202,16 +216,29 @@ public class MainUI : BaseUI
     private void OnRiding()
     {
         GameManager.Unit.Vehicle.vehicleHandler.MountVehicle();
+        if (bikeControllBtnObj)
+        {
+            bikeControllBtnObj.ToggleBikeControll();
+        }
+        
     }
     // 내리는 로직
     private void GetOff()
     {
         GameManager.Unit.Vehicle.vehicleHandler.DismountVehicle();
+        if (bikeControllBtnObj)
+        {
+            bikeControllBtnObj.ToggleBikeControll();
+        }
     }
     // 수리 // 오토바이 버튼에 넣어주면 된다.
     private void RepairButton()
     {
         GameManager.Unit.Vehicle.vehicleHandler.RepairVehicle();
+        if (bikeControllBtnObj)
+        {
+            bikeControllBtnObj.ToggleBikeControll();
+        }
         GameManager.TurnBased.ChangeTo<PlayerTurnEndState>("Force");
     }
     private void BikeToggle()
@@ -313,4 +340,6 @@ public class MainUI : BaseUI
     {
         Instantiate(settingUI);
     }
+
+    
 }
