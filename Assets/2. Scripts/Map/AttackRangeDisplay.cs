@@ -36,6 +36,12 @@ public class AttackRangeDisplay : MonoBehaviour
         }
 
         Vector3Int direction = GetDirectionFromMouse();
+        // 포인트가 플레이어의 위치라면 업데이트 x
+        if (direction == Vector3Int.zero)
+        {
+            return;
+        }
+        
         List<Vector3Int> newRange = new List<Vector3Int>();
 
         if (isKickAttack)

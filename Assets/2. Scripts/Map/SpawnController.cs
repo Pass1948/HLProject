@@ -1,35 +1,48 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DataTable;
+
 
 public class SpawnController : MonoBehaviour
 {
-    private BasicObstaclePool obstaclePool;
+    //private BasicObstaclePool obstaclePool;
+    private Dictionary<string, BasicObstaclePool> obstaclePools = new Dictionary<string, BasicObstaclePool>();
+    private readonly string[] allPrefabNames = { 
+        "Obstacle_Pillar", 
+        "Obstacle_Blizzard" 
+        //
+    };
     
     private GameObject enemyPrefab;
-    private GameObject obstaclePrefab;
     
     // MapManager의 Start에서 호출
     public void InitializeSpawnersAndPools()
     {
-        obstaclePool = gameObject.AddComponent<BasicObstaclePool>();
+        foreach (var name in allPrefabNames)
+        {
+            GameObject prefab = GameManager.Resource.Load<GameObject>(Path.Obstacle + name);
+            if (prefab != null)
+            {
+                BasicObstaclePool pool = gameObject.AddComponent<BasicObstaclePool>();
+                pool.prefab = prefab;
+                pool.InitializePool(10); // 풀마다 5개씩
+                obstaclePools.Add(name, pool);
+            }
+        }
         
-
     }
     
     public void SpawnAllObjects(Stage stage)
     {
         enemyPrefab = GameManager.Resource.Load<GameObject>(Path.Enemy + "NormalEnemy");
-        obstaclePrefab = GameManager.Resource.Load<GameObject>(Path.Map + "Obstacle");
         
-        obstaclePool.prefab = obstaclePrefab;
-        obstaclePool.InitializePool(20);
+        //obstaclePool.InitializePool(20);
         
         SpawnPlayer();
-        SpawnObstacles(5, stage.obstaclesDict);
         // SpawnEnemys(stage.enemiesDict); 
         SpawnEnemies(stage.enemiesDict);
-        
+        SpawnObstacles(stage.obstaclesDict);
     }
     
     private void SpawnPlayer()
@@ -66,32 +79,88 @@ public class SpawnController : MonoBehaviour
 
     }
     
-    // TODO: 장애물 구현하신거에 맞게 구현 해주세용
     // 장애물 스폰
-    private void SpawnObstacles(int count, Dictionary<int, int> obstacles)
-    {
-        for (int i = 0; i < count; i++)
-        {
-            GameObject obstacle = obstaclePool.GetPooledObject();
-            
-            int maxAttempts = 100;
-            for (int j = 0; j < maxAttempts; j++)
-            {
-                int randX = Random.Range(0, GameManager.Map.mapWidth);
-                int randY = Random.Range(0, GameManager.Map.mapHeight);
+    public void SpawnObstacles(Dictionary<int, int> obstacles)
+{
+    int maxAttempts = GameManager.Map.mapWidth * GameManager.Map.mapHeight * 2; 
 
-                // 플레이어가 없는 공간
-                if (GameManager.Map.mapData[randX, randY] == TileID.Terrain)
+    foreach (var obstacleEntry in obstacles)
+    {
+        int spawnedCount = 0;
+        int obstacleId = obstacleEntry.Key;
+        
+        ObstacleData obstacleData = GameManager.Data.obstacleDataGroup.GetObstacleData(obstacleId);
+
+        if (obstacleData == null)
+        {
+            continue;
+        }
+
+        string prefabName = GetObstaclePrefabName(obstacleData.type);
+        
+        if (string.IsNullOrEmpty(prefabName))
+        {
+            continue;
+        }
+        
+        // 현재 장애물 타입에 맞는 풀을 찾음
+        if (!obstaclePools.TryGetValue(prefabName, out BasicObstaclePool pool))
+        {
+            continue;
+        }
+        
+        for (int i = 0; i < maxAttempts && spawnedCount < obstacleEntry.Value; i++) 
+        {
+            int randX = Random.Range(0, GameManager.Map.mapWidth);
+            int randY = Random.Range(0, GameManager.Map.mapHeight);
+            Vector3Int spawnPos = new Vector3Int(randX, randY, 0);
+
+            if (GameManager.Map.mapData[randX, randY] == (int)TileID.Terrain)
+            {
+                // 풀에서 오브젝트를 가져옴
+                GameObject obj = pool.GetPooledObject();
+                
+                // 정상적으로 리턴되었는지 확인
+                if (obj == null)
                 {
-                    //좌표 보정
-                    GridSnapper.SnapToCellCenter(obstacle.transform, GameManager.Map.tilemap, new Vector2Int(randX, randY));
-                    
-                    GameManager.Map.SetObjectPosition(randX, randY, TileID.Obstacle);
-                    break;
+                    continue;
+                } 
+                
+                // 풀에서 가져온 오브젝트의 위치와 활성 상태를 초기화
+                obj.transform.SetParent(transform);
+                obj.SetActive(true);
+                
+                BaseObstacle baseObstacle = obj.GetComponent<BaseObstacle>();
+                
+                baseObstacle.InitObstacle(spawnPos, obstacleData); 
+                baseObstacle.SetPosition(spawnPos);
+                
+                TurnEndDamageEffect damageEffect = obj.GetComponent<TurnEndDamageEffect>();
+                if (damageEffect != null)
+                {
+                    damageEffect.SetupEffect(); 
                 }
+                
+                // TileID 설정
+                int tileIdToSet = (int)TileID.Terrain; 
+                
+                if (obstacleData.canPlaceUnit == 0)
+                {
+                    tileIdToSet = (int)TileID.Obstacle; 
+                }
+                
+                GameManager.Map.SetObjectPosition(randX, randY, tileIdToSet);
+                spawnedCount++;
+                
             }
         }
+
+        if (spawnedCount < obstacleEntry.Value)
+        {
+            Debug.LogWarning($"{spawnedCount}개만 스폰했습니다");
+        }
     }
+}
     
     // 적 스폰
     private void SpawnEnemies(Dictionary<int, int> enemies)
@@ -124,4 +193,23 @@ public class SpawnController : MonoBehaviour
             }
         }
     }
+    
+    private string GetObstaclePrefabName(ObstacleType type)
+    {
+        switch (type)
+        {
+            // 사용할 타입만
+            case ObstacleType.StonePillar:
+                return "Obstacle_Pillar"; // 기둥류
+
+            case ObstacleType.BlizzardZone:
+                return "Obstacle_Blizzard"; // 눈보라 구역
+        
+            // 나머지 모든 타입은 default
+            default:
+                
+                return string.Empty; 
+        }
+    }
+    
 }

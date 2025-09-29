@@ -1,5 +1,13 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: f1525fee263ad8841b6ee1795783cf44
+=======
+<<<<<<<< HEAD:Assets/10.Import/HONETi/fantasy_gui_5/scenes/demo_scene_01.unity.meta
+guid: 265fba748b7e0f54b89938ff42005195
+========
+guid: f2326df4e8d225245ac99c0a7340e23c
+>>>>>>>> Develop:Assets/1. Scenes/Test/UITEST.unity.meta
+>>>>>>> Develop
 DefaultImporter:
   externalObjects: {}
   userData: 

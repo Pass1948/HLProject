@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using GoogleSheet.Core.Type;
 
 public enum SceneType
@@ -28,8 +28,20 @@ public enum EventType
     ShopTryBuyIndex,
     ShopPowderBundleConfirm,
     ShopRemoveBulletConfirm,
+    //--- 덱
+    SelectDeck,
     //---
+    
+    // =====(유물)=====
+    AddAttackPoint,
+    AddMoveRangePoint,
+    AddMulliganPoint,
+    AddBulletPoint,
+    AddHealthPoint,
+    
+    // =====(화약)=====
 }
+
 [UGS(typeof(RarityType))]
 public enum RarityType // 아이템 레어도 타입
 {
@@ -46,7 +58,6 @@ public enum ItemType   // 유물, 화약 구분
     Artifact,
     GunPowder,
 }
-
 
 public enum ShopItemType
 {
@@ -65,20 +76,6 @@ public enum Rare
     Unique,
     Legendary,
 }
-public enum StatusId    // 상태이상 관련 열거형
-{
-    Stun,      // 기절
-    Bleed,     // 출혈
-    Burn,      // 화상
-    Regen,     // 재생
-    Slow,      // 감속
-    Haste,     // 가속
-    Blind,     // 실명
-    Berserk,   // 광폭
-    Freeze,    // 빙결
-    Confuse    // 혼란
-}
-
 
 // ======= 클래스 구역 ========
 
@@ -96,6 +93,7 @@ public static class Path
     public const string Player = Prefab + "Player/";
     public const string Weapon = Prefab + "Weapons/";
     public const string Mouse = Prefab + "Mouse/";
+    public const string Obstacle = Prefab + "Obstacle/";
     public const string Data = "Data/";
     public const string Sound = "Sound/";
 }
@@ -132,6 +130,7 @@ public static class TileID
     public const int Vehicle = 3;
     public const int Obstacle = 4;
     public const int Enemy = 5;
+    public const int Obstacle_B = 6;
 }
 
 [UGS(typeof(EliteType))]

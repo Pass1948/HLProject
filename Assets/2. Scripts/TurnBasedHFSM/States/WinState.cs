@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class WinState : BaseTurnState
 {
+    ResultUI backUI = GameManager.UI.GetUI<ResultUI>();
     public WinState() { }
     public override void OnEnter()
     {
         StageClearUI();
+        turnManager.ResetCount();
     }
     public void StageClearUI()
     {
-        ResultUI backUI = GameManager.UI.GetUI<ResultUI>();
         backUI.GetResultType(ResultType.Clear);
         backUI.OpenUI();
     }

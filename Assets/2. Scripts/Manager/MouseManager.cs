@@ -155,18 +155,22 @@ public class MouseManager : MonoBehaviour
    
     private void HandleLeftClick()
     {
+
         //공통 가드
         if (blockWhenUI && EventSystem.current && EventSystem.current.IsPointerOverGameObject())
             return;
 
         var cell = GetCurrentCell();
+
         if (!IsInside(cell)) { CancelSelection(); return; }
 
         // 셀 분류 결과를 1회만 계산 (중복 호출 제거)
         bool cellIsPlayer = map.IsPlayer(cell);
         bool cellIsEnemy = map.IsEnemy(cell);
         bool cellIsTerrain = map.IsMovable(cell); // Terrain
-
+        Debug.Log($"지금 자리는 Player {cellIsPlayer}");
+        Debug.Log($"지금 자리는 Enemy {cellIsEnemy}");
+        Debug.Log($"지금 자리는 Terrain {cellIsTerrain}");
         // 공격 모드 우선
         if (isAttacking)
         {
@@ -323,7 +327,7 @@ public class MouseManager : MonoBehaviour
     }
 
     // ===== 이동 실행(한 칸씩 보간 + 맵데이터 갱신) =====
-    private IEnumerator MoveAlongPath(Transform actor, Vector3Int currentCell, List<Vector3Int> path, int tileIdForActor)
+    public IEnumerator MoveAlongPath(Transform actor, Vector3Int currentCell, List<Vector3Int> path, int tileIdForActor)
     {
         isMoving = true;
 
