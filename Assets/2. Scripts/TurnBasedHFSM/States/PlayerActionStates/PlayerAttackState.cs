@@ -8,7 +8,6 @@ public class PlayerAttackState : PlayerActionState
     {
         base.OnEnter();
         ChangeState<A_Windup>();
-        GameManager.Mouse.ToggleMovePhase();
         GameManager.Mouse.isMouse = false;
     }
 

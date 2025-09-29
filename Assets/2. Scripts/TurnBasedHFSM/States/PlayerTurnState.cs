@@ -15,7 +15,7 @@ public class PlayerTurnState : BaseTurnState
         turnManager.AddCount();
         // 턴 시작 시 커맨드 초기화후 입력 대기
         GameManager.UI.OpenUI<PaseTurnUI>();
-        GameManager.Mouse.ToggleMovePhase();
+        GameManager.Mouse.SetMovePhase(true);  
         GameManager.Mouse.isMouse = true;
         GameManager.Mouse.isShowRange = true;
         Time.timeScale = 3f;    // 배속 기능

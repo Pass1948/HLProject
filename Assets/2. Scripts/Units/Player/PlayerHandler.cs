@@ -23,7 +23,7 @@ public class PlayerHandler : MonoBehaviour
         // Testing
         deck = GameManager.Shop.deck;
         playerMonney = 500000000;
-        deck.GetPlayerBullets(bullets);
+        //deck.GetPlayerBullets(bullets);
     }
     
     public void TakeDamage(int amount)
