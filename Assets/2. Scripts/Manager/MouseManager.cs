@@ -159,7 +159,7 @@ public class MouseManager : MonoBehaviour
 #endif
         if (isClick) HandleLeftClick();
     }
-    
+
     private void HandleLeftClick()
     {
 
@@ -169,37 +169,30 @@ public class MouseManager : MonoBehaviour
 
         var cell = GetCurrentCell();
 
-        // 🔹 맵 밖 클릭 → 공격/킥/선택 모두 취소
-        if (!IsInside(cell))
-        {
-            if (isAttacking || IsKicking) CancelAttackOrKickRange();
-            isAttacking = false;
-            IsKicking = false;
-            CancelSelection();
-            return;
-        }
+        if (!IsInside(cell)) { CancelSelection(); return; }
 
-        // 한 번만 계산해서 재사용
+        // 셀 분류 결과를 1회만 계산 (중복 호출 제거)
         bool cellIsPlayer = map.IsPlayer(cell);
         bool cellIsEnemy = map.IsEnemy(cell);
-        bool cellIsTerrain = map.IsMovable(cell);
-        bool cellIsObstacle = map.IsObstacle_Breakable(cell);     // ← 장애물 체크 추가
-        bool inRange = IsCellInAttackOrKickRange(cell);
+        bool cellIsTerrain = map.IsMovable(cell); // Terrain
         Debug.Log($"지금 자리는 Player {cellIsPlayer}");
         Debug.Log($"지금 자리는 Enemy {cellIsEnemy}");
         Debug.Log($"지금 자리는 Terrain {cellIsTerrain}");
-
-        // 공격 모드 우선 처리
+        // 공격 모드 우선
         if (isAttacking)
         {
-            // 공격은 "범위 안" 이면서 "적 또는 장애물"일 때만 실행
-            if (inRange && (cellIsEnemy || cellIsObstacle))
+            if (IsCellInAttackOrKickRange(cell))
             {
-                GameManager.Event.Publish(EventType.PlayerAttack); // 공격 State에서 처리
+                GameManager.Event.Publish(EventType.PlayerAttack); // 공격 State에서 일괄 처리
+                isAttacking = false;
+
             }
-            // 그 외(범위 밖/일반 타일/플레이어 클릭 등)는 취소 + 범위 끄기
-            CancelAttackOrKickRange();
-            isAttacking = false;
+            else
+            {
+                // TODO : 범위 밖 클릭 → 실행 안 함 + 범위 끄기(기획자들과 상의후 설정)
+                //CancelAttackOrKickRange();
+                isAttacking = false;
+            }
             return;
         }
 
@@ -215,7 +208,8 @@ public class MouseManager : MonoBehaviour
             }
             else
             {
-                CancelAttackOrKickRange();
+                // TODO : 범위 밖 클릭 → 실행 안 함 + 범위 끄기 (기획자들과 상의후 설정)
+                //CancelAttackOrKickRange();
                 isKicking = false;
             }
             return;
@@ -246,6 +240,7 @@ public class MouseManager : MonoBehaviour
         isPlayer = false;
         CancelSelection();
     }
+
 
 
     // ===== 클릭 동작별 핸들러 =====

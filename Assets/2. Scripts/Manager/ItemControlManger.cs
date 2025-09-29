@@ -21,29 +21,31 @@ public class ItemControlManger : MonoBehaviour
     // ===== 모든 아이템 리스트에 필요한 값 =====
     [HideInInspector] public List<ItemModel> items = new List<ItemModel>(); // 모든 아이템 리스트
     private ItemModel[] ItemIds;
-    
+
     // ===== 유물아이템 리스트 =====
     [HideInInspector] public List<ItemModel> relicItems = new List<ItemModel>();
-    [HideInInspector] public List<ItemModel> relicStatItems = new List<ItemModel>();    // 스탯증가부
-    [HideInInspector] public List<ItemModel> relicRogicItems = new List<ItemModel>();    // 논리조건부
+    [HideInInspector] public List<ItemModel> relicStatItems = new List<ItemModel>(); // 스탯증가부
+    [HideInInspector] public List<ItemModel> relicRogicItems = new List<ItemModel>(); // 논리조건부
 
     // ===== 화약아이템 리스트 =====
     [HideInInspector] public List<ItemModel> powderItems = new List<ItemModel>();
-    [HideInInspector] public List<ItemModel> powderStatItems = new List<ItemModel>();    // 스탯증가부
-    [HideInInspector] public List<ItemModel> powderRogicItems = new List<ItemModel>();    // 논리조건부
-    
+    [HideInInspector] public List<ItemModel> powderStatItems = new List<ItemModel>(); // 스탯증가부
+    [HideInInspector] public List<ItemModel> powderRogicItems = new List<ItemModel>(); // 논리조건부
+
     // ===== 아이템 Prefab을 위한 변수들 =====
-    
+
     public GameObject itemPrefab;
-    public GameObject relicRoot;// 구매한 아이템 보관함
-    
+    public GameObject relicRoot; // 구매한 아이템 보관함
+
     private Dictionary<string, BaseItem> itemsDictionary = new Dictionary<string, BaseItem>();
-    
-    
+
+    public List<Ammo> drawPile = new();
+
+    public List<Ammo> shopPile = new();
     // =====================================================================
     // 아이템오브젝트 연동로직
     // =====================================================================
-    
+
     public T GetItem<T>(GameObject host = null, string csName = null) where T : BaseItem
     {
         // 부착 대상 결정
@@ -79,9 +81,11 @@ public class ItemControlManger : MonoBehaviour
                     {
                         if (type.Name == csName || type.FullName == csName)
                         {
-                            t = type; break;
+                            t = type;
+                            break;
                         }
                     }
+
                     if (t != null) break;
                 }
             }
@@ -106,32 +110,33 @@ public class ItemControlManger : MonoBehaviour
         // 반환 (문자열 타입으로 붙인 경우 T가 BaseItem일 것을 권장)
         return added as T ?? attachTarget.GetComponent<T>();
     }
-    
-    
+
+
     // =====================================================================
     // 아이템 데이터 관련 로직
     // =====================================================================
     public void ItemDataSet() // 아이템 리스트에 데이터 입력(데이터매니저에서 호출)
     {
         // 정리용 오브젝트
-        (relicRoot = new GameObject("RelicRoot")).transform.SetParent(transform);   
-        
+        (relicRoot = new GameObject("RelicRoot")).transform.SetParent(transform);
+
         // 데이터 리스트 생성
         var list = RelicDataGroup.GetList();
-        
+
         // 최대 ID 기준으로 배열 사이즈 결정 (희소 ID도 null로 둠)
         int maxId = list.Max(r => r.id);
         ItemIds = new ItemModel[maxId + 1];
-        
+
         items.Clear();
         for (int i = 0; i < list.Count; i++)
         {
             var m = new ItemModel();
             m.InitData(list[i]); // 스프레드시트 → 런타임 모델 매핑
             items.Add(m);
-            if (m.id >= 0 && m.id < ItemIds.Length) 
+            if (m.id >= 0 && m.id < ItemIds.Length)
                 ItemIds[m.id] = m; // 희소 ID 안전
         }
+
         DivideItems(items);
     }
 
@@ -141,6 +146,8 @@ public class ItemControlManger : MonoBehaviour
         ItemIds = null;
         relicItems.Clear();
         powderItems.Clear();
+        drawPile.Clear();
+        shopPile.Clear();
         ItemDataSet();
     }
 
@@ -149,9 +156,9 @@ public class ItemControlManger : MonoBehaviour
     {
         relicItems.Clear();
         powderItems.Clear();
-        if(items == null || items.Count == 0)
+        if (items == null || items.Count == 0)
             return;
-        
+
         for (int i = 0; i < items.Count; i++)
         {
             if (items[i].itemType == ItemType.Relic)
@@ -164,18 +171,19 @@ public class ItemControlManger : MonoBehaviour
                 powderItems.Add(items[i]);
             }
         }
+
         DivideRelicItems(relicItems);
         DividePowderItems(powderItems);
     }
-    
+
     // (전략패턴전용) 유물아이템 로직부와 스탯부 나누기
     public void DivideRelicItems(List<ItemModel> items)
     {
         relicStatItems.Clear();
         relicRogicItems.Clear();
-        if(items == null || items.Count == 0)
+        if (items == null || items.Count == 0)
             return;
-        
+
         for (int i = 0; i < items.Count; i++)
         {
             if (items[i].conditionall == 0) // 스택
@@ -183,20 +191,21 @@ public class ItemControlManger : MonoBehaviour
                 relicStatItems.Add(items[i]);
             }
 
-            if (items[i].conditionall == 1)// 로직
+            if (items[i].conditionall == 1) // 로직
             {
                 relicRogicItems.Add(items[i]);
             }
         }
     }
+
     // (전략패턴전용) 화약아이템 로직부와 스탯부 나누기
     public void DividePowderItems(List<ItemModel> items)
     {
         powderStatItems.Clear();
         powderRogicItems.Clear();
-        if(items == null || items.Count == 0)
+        if (items == null || items.Count == 0)
             return;
-        
+
         for (int i = 0; i < items.Count; i++)
         {
             if (items[i].conditionall == 0) // 스택
@@ -204,18 +213,18 @@ public class ItemControlManger : MonoBehaviour
                 powderStatItems.Add(items[i]);
             }
 
-            if (items[i].conditionall == 1)// 로직
+            if (items[i].conditionall == 1) // 로직
             {
                 powderRogicItems.Add(items[i]);
             }
         }
     }
-    
+
     // =====================================================================
     // 아이템 확률 관련 로직
     // =====================================================================
     // 불릿용 확률로직(5개 등급을 3~5개 불릿슬롯에 같은 확률(화약이 불릿에 적용될 확률)로 유지&등록)
-    public List<ItemModel> BulletWeightSampling(int slotCount)  // 해당 메서드는 불릿에 효과 적용되는 걸로 설정
+    public List<ItemModel> BulletWeightSampling(int slotCount) // 해당 메서드는 불릿에 효과 적용되는 걸로 설정
     {
         var result = new List<ItemModel>();
         var weights = new Dictionary<RarityType, float>
@@ -241,6 +250,7 @@ public class ItemControlManger : MonoBehaviour
                 result.Add(pool[UnityEngine.Random.Range(0, pool.Count)]);
             }
         }
+
         return result;
     }
 
@@ -304,7 +314,6 @@ public class ItemControlManger : MonoBehaviour
         }
 
         return result;
-
     }
 
     // 등급 선택
@@ -316,7 +325,7 @@ public class ItemControlManger : MonoBehaviour
 
         // 총합이 0f 일경우 첫키를 반환하도록 안전처리
         if (total <= 0f) return weights.Keys.First();
-        
+
         float roll = UnityEngine.Random.Range(0f, total);
         float a = 0f;
         foreach (var w in weights)
@@ -336,26 +345,26 @@ public class ItemControlManger : MonoBehaviour
         for (int i = 0; i < pool.Count; i++)
         {
             var it = pool[i];
-            if (it != null && it.rarity == rarity) 
+            if (it != null && it.rarity == rarity)
                 list.Add(it);
         }
 
         return list;
     }
-    
+
     // =====================================================================
     // 아이템 오브젝트 생성
     // =====================================================================
-    private void CreateItemObjects()    // path로 생성될수있게 리팩토링 필요함
+    private void CreateItemObjects() // path로 생성될수있게 리팩토링 필요함
     {
         //유물 생성
         //유물은 ItemManager 밑에 붙이기(게임오버 or 종료시 relicRoot만 밀기)
     }
-    
+
     // ========== 유물 슬롯과 이미지 생성 메서드 ==========
     // 해당 메서드 사용법 :
-    // CreateRelicObject(GameManager.ItemControl.RelicWeightSampling(4), 여긴 layout달린 ui위치넣으셈);
-    private void CreateRelicObject(int id) 
+    // CreateRelicObject(사는 아이템.id);
+    private void CreateRelicObject(int id)
     {
         if (relicItems == null || relicItems.Count == 0) return;
 
@@ -364,14 +373,15 @@ public class ItemControlManger : MonoBehaviour
             if (relicItems[i] == null) continue;
             if (relicItems[i].id == id)
             {
-                var go = GameManager.Resource.Create<GameObject>(Path.UIElements+"RelicIconUI");
+                var go = GameManager.Resource.Create<GameObject>(Path.UIElements + "RelicIconUI");
                 go.name = relicItems[i].name;
-                GetItem<BaseItem>(go,relicItems[i].csPath);
+                GetItem<BaseItem>(go, relicItems[i].csPath);
                 go.transform.SetParent(relicRoot.transform, false);
-                go.gameObject.GetComponent<Image>().sprite = GameManager.Resource.Load<Sprite>(Path.UISprites+relicItems[i].imagePath);
+                go.gameObject.GetComponent<Image>().sprite = GameManager.Resource.Load<Sprite>(Path.UISprites + relicItems[i].imagePath);
             }
         }
     }
+
     // ========== 유물 슬롯과 이미지 생성 메서드 ==========
     // 해당 메서드 사용법 :
     // CreateRelicObject(GameManager.ItemControl.PowderBundleWeightSampling(3), 여긴 layout달린 ui위치넣으셈);
@@ -382,12 +392,13 @@ public class ItemControlManger : MonoBehaviour
         for (int i = 0; i < lists.Count; i++)
         {
             if (lists[i] == null) continue;
-            
-            var go = GameManager.Resource.Create<BaseItem>(Path.UIElements+"RelicIconUI");
+
+            var go = GameManager.Resource.Create<BaseItem>(Path.UIElements + "RelicIconUI");
             go.name = lists[i].name;
             go.transform.SetParent(parent, false);
             go.itemModel = lists[i];
-            go.gameObject.GetComponent<Image>().sprite = GameManager.Resource.Load<Sprite>(Path.UISprites+lists[i].imagePath);
+            go.gameObject.GetComponent<Image>().sprite =
+                GameManager.Resource.Load<Sprite>(Path.UISprites + lists[i].imagePath);
         }
     }
 }

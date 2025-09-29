@@ -9,6 +9,7 @@ public enum SceneType
 
 public enum EventType
 {
+    CameraSenter,
     PlayerAction,
     PlayerAttack,
     PlayerKick,
