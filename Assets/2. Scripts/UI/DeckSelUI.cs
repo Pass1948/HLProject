@@ -87,8 +87,8 @@ public class DeckSelUI : MonoBehaviour
 
     private void IsBasic()
     {
-        GameManager.TurnBased.turnSettingValue.IsBasicDeck = true; //false면 트루
-        //다른 덱들의 불값도 false로 해줘야함
+        GameManager.TurnBased.turnSettingValue.IsBasicDeck = true;
+        //사실 다른 덱들의 불값도 false로 해줘야함(상호배제)
         //이 버튼을 눌렀을때 해당 데이터다라고 인식시켜야함
     }
 
