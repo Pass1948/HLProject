@@ -133,7 +133,6 @@ public class ItemControlManger : MonoBehaviour
                 ItemIds[m.id] = m; // 희소 ID 안전
         }
         DivideItems(items);
-
     }
 
     public void ClearData() // 아이템 리스트를 비우고 새롭게 할당할경우 사용
@@ -365,11 +364,10 @@ public class ItemControlManger : MonoBehaviour
             if (relicItems[i] == null) continue;
             if (relicItems[i].id == id)
             {
-                var go = GameManager.Resource.Create<BaseItem>(Path.UIElements+"RelicIconUI");
+                var go = GameManager.Resource.Create<GameObject>(Path.UIElements+"RelicIconUI");
                 go.name = relicItems[i].name;
-
+                GetItem<BaseItem>(go,relicItems[i].csPath);
                 go.transform.SetParent(relicRoot.transform, false);
-                // go에 addcomponent해야함
                 go.gameObject.GetComponent<Image>().sprite = GameManager.Resource.Load<Sprite>(Path.UISprites+relicItems[i].imagePath);
             }
         }

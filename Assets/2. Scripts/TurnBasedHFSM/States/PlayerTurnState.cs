@@ -16,7 +16,8 @@ public class PlayerTurnState : BaseTurnState
         // 턴 시작 시 커맨드 초기화후 입력 대기
         GameManager.UI.OpenUI<PaseTurnUI>();
         GameManager.Mouse.ToggleMovePhase();
-        GameManager.Mouse.OnSwitchIsClicked();
+        GameManager.Mouse.isMouse = true;
+        GameManager.Mouse.isShowRange = true;
         Time.timeScale = 3f;    // 배속 기능
         if (turnManager.isCamera == false)
         {
@@ -31,9 +32,9 @@ public class PlayerTurnState : BaseTurnState
         {
             return;
         }
-        
+
         timer += dt;
-        if (timer > turnSetVlaue.turnDelayTime )
+        if (timer > turnSetVlaue.turnDelayTime)
         {
             GameManager.UI.CloseUI<PaseTurnUI>();
             GameManager.UI.OpenUI<MainUI>();

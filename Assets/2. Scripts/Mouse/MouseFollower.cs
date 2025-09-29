@@ -9,7 +9,7 @@ public class MouseFollower : MonoBehaviour
         GameManager.Mouse.SetMouseVar();
     }
 
-    private void LateUpdate()
+    private void Update()
     {
         GameManager.Mouse.MovingMouse();
     }
