@@ -5242,6 +5242,8 @@ MonoBehaviour:
   settingButton: {fileID: 472323749218965589}
   exitButton: {fileID: 7076221076790591674}
   deckSelUI: {fileID: 5736314540420156187}
+  settingUI: {fileID: 7530061580899684206, guid: 2393651c4aa01354b8831247c8e51bfa,
+    type: 3}
 --- !u!1 &6973177567383952650
 GameObject:
   m_ObjectHideFlags: 0
