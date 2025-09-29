@@ -1,24 +1,35 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI; 
 
 public class ShopUI : BaseUI
 {
     [Header("참조(인스펙터에서 할당)")]
-    private ShopManager shop;
-    [SerializeField] private Transform gridRoot;
+    private ShopManager shop = GameManager.Shop;
+    [SerializeField] private Transform bulletRoot;
+    [SerializeField] private Transform relicRoot;
+    [SerializeField] private Transform playerBulletRoot;
+    // [SerializeField] private Transform powderRoot;
+    [SerializeField] private Transform removeRoot;
     [SerializeField] private GameObject cardPrefab; // ShopCardUI 컴포넌트 포함 프리팹
+    
+    
     [SerializeField] private TextMeshProUGUI rerollCostText;
+    [SerializeField] private TextMeshProUGUI healCost;
+
+    private int selectedBulletIndex = -1;
+    
+    public Button rerollButton;
+    public Button healButton;
+    public Button removeButton;
 
     private readonly List<GameObject> spawned = new();
 
     private void Awake()
     {
-        if (!shop) Debug.LogWarning("[ShopUI] ShopManager 참조가 비었습니다. 인스펙터에서 할당하세요.");
-        if (!gridRoot) Debug.LogWarning("[ShopUI] gridRoot 참조가 비었습니다.");
-        if (!cardPrefab) Debug.LogWarning("[ShopUI] cardPrefab 참조가 비었습니다.");
-        
+        shop = GameManager.Shop;
     }
 
     private void OnEnable()
@@ -27,7 +38,10 @@ public class ShopUI : BaseUI
         GameManager.Event.Subscribe<List<ShopManager.ShopItem>>(EventType.ShopOffersChanged, OnOffersChanged);
         GameManager.Event.Subscribe<(List<Ammo>, List<PowderData>)>(EventType.ShopPowderBundlePrompt, OnPowderBundlePrompt);
         GameManager.Event.Subscribe<List<Ammo>>(EventType.ShopRemoveBulletPrompt, OnRemoveBulletPrompt);
-
+        
+        healButton.onClick.AddListener(()=> shop.TryHeal());
+        rerollButton.onClick.AddListener(()=> shop.TryReroll());
+        removeButton.onClick.AddListener(OnRemoveBulletCicked);
         if (shop != null) Rebuild(shop.offers);
     }
 
@@ -76,44 +90,84 @@ public class ShopUI : BaseUI
     private void Rebuild(List<ShopManager.ShopItem> offers)
     {
         // 기존 카드 정리
-        for (int i = spawned.Count - 1; i >= 0; i--)
-            Destroy(spawned[i]);
-        spawned.Clear();
-
-        if (offers == null || gridRoot == null) return;
+        ClearSection(bulletRoot);
+        ClearSection(relicRoot);
+        // ClearSection(powderRoot);
+        // spawned.Clear();
+        
+        if (offers == null) return;
 
         // 카드 생성 offers 기준으로
         for (int i = 0; i < offers.Count; i++)
         {
-            int idx = i;
             var data = offers[i];
-
-            // 1) UIManager 팩토리 사용
+            int idx = i;
+            
+            Transform parent;
+            switch (data.type)
+            {
+                case ShopItemType.Bullet:
+                    parent = bulletRoot; break;
+                case ShopItemType.SpecialTotem:
+                    parent = relicRoot; break;
+                default:
+                    parent = null; break;
+            }
+            if(parent == null) continue;
+            
             ShopCardUI card = null;
-            if (GameManager.UI != null)
-            {
-                card = GameManager.UI.CreateSlotUI<ShopCardUI>(gridRoot);
-            }
-            else
-            {
-                // 2) 직접 프리팹 인스턴스 (UIManager 미사용 프로젝트 호환)
-                var go = Instantiate(cardPrefab, gridRoot);
-                card = go.GetComponent<ShopCardUI>();
-            }
-
+            card = GameManager.UI.CreateSlotUI<ShopCardUI>(parent);
             card.Bind(data);
             card.buyButton.onClick.RemoveAllListeners();
             card.buyButton.onClick.AddListener(() =>
             {
                 shop.TryBuy(idx);
-                // TryBuy 안에서 Event가 발행되더라도, 즉시 라벨 보수 갱신
                 UpdateRerollLabel();
             });
-
             spawned.Add(card.gameObject);
         }
-
         UpdateRerollLabel();
+    }
+
+    private void RebuildPlayerBullets()
+    {
+        int cost = 1;
+        ClearSection(playerBulletRoot);
+        var bullets = GameManager.Unit.Player.playerHandler.bullets;
+        for (int i = 0; i < bullets.Count; i++)
+        {
+            var ammo = bullets[i];
+            int idx = i;
+            
+            var card = GameManager.UI.CreateSlotUI<ShopCardUI>(playerBulletRoot);
+            card.Bind(new ShopManager.ShopItem(ShopItemType.Bullet, ammo.ToString(),cost,ammo));
+            
+            card.buyButton.onClick.RemoveAllListeners();
+            card.buyButton.onClick.AddListener(() =>
+            {
+                selectedBulletIndex = idx;
+            });
+        }
+        cost++;
+    }
+
+    private void OnRemoveBulletCicked()
+    {
+        if (selectedBulletIndex >= 0)
+        {
+            var player = GameManager.Unit.Player.playerHandler;
+            if (selectedBulletIndex < player.bullets.Count)
+            {
+                player.bullets.RemoveAt(selectedBulletIndex);
+            }
+        }
+        selectedBulletIndex = -1;
+        RebuildPlayerBullets();
+    }
+    private void ClearSection(Transform root)
+    {
+        for (int i = root.childCount - 1; i >= 0; i--)
+            Destroy(root.GetChild(i).gameObject);
     }
 
     private void UpdateRerollLabel()
