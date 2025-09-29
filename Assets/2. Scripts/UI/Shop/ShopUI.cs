@@ -147,6 +147,7 @@ public class ShopUI : BaseUI
         Debug.Log($"{bullets}");
         for (int i = 0; i < bullets.Count; i++)
         {
+            Debug.Log($"{bullets[i]}");
             var ammo = bullets[i];
             int idx = i;
             var card = GameManager.UI.CreateSlotUI<ShopCardUI>(playerBulletRoot.transform);
