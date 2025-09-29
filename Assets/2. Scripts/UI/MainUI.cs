@@ -250,7 +250,13 @@ public class MainUI : BaseUI
        if (rerollLabel)
        {
             rerollLabel.text = $"재장전 x{remain}";
-       }    
+       }
+       
+       if(remain <= 0)
+        {
+            rerollBtn.interactable = false;
+            return;
+        }
     }
 
     private void InitReloadUI()
