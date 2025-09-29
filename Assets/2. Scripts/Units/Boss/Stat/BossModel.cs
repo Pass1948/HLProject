@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BaseBoss : MonoBehaviour
+public class BossModel : UnitModel
 {
-    public BossModel model;
     
 }
