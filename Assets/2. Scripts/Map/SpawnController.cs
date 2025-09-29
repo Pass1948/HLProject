@@ -41,7 +41,7 @@ public class SpawnController : MonoBehaviour
         
         SpawnPlayer();
         // SpawnEnemys(stage.enemiesDict); 
-        SpawnEnemies(stage.enemiesDict);
+        SpawnEnemies(stage.enemiesDict, stage.eliteCnt, stage.id);
         SpawnObstacles(stage.obstaclesDict);
     }
     
@@ -163,8 +163,11 @@ public class SpawnController : MonoBehaviour
 }
     
     // 적 스폰
-    private void SpawnEnemies(Dictionary<int, int> enemies)
+    private void SpawnEnemies(Dictionary<int, int> enemies, int eliteCount, int stageId)
     {
+        Debug.Log(enemies.Count);
+        List<BaseEnemy> spawnedList = new List<BaseEnemy>();
+
         foreach (var enemy in enemies)
         {
             for (int i = 0; i < enemy.Value; i++)
@@ -187,9 +190,22 @@ public class SpawnController : MonoBehaviour
                     GameManager.Map.SetObjectPosition(randX, randY, TileID.Enemy);
                     
                     FindObjectOfType<AttackRangeDisplay>().enemies.Add(baseEnemy);
+                    spawnedList.Add(baseEnemy);
 
                     // break;
                 }
+            }
+        }
+
+        if (eliteCount > 0 && spawnedList.Count > 0)
+        {
+            for (int i = 0; i < eliteCount; i++)
+            {
+                int index = Random.Range(0, spawnedList.Count);
+                BaseEnemy elite = spawnedList[index];
+                spawnedList.RemoveAt(index);
+
+                elite.SetElite(stageId);
             }
         }
     }

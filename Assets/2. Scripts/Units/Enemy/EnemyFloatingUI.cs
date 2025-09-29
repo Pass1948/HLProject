@@ -1,0 +1,59 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class EnemyFloatingUI : MonoBehaviour
+{
+    [SerializeField] private TextMeshProUGUI rankText;
+    [SerializeField] private TextMeshProUGUI attributeText;
+    [SerializeField] private Slider hpSlider;
+    [SerializeField] private EnemyModel model;
+    
+    // Start is called before the first frame update
+    void Start()
+    {
+        hpSlider.maxValue = model.maxHealth;
+        hpSlider.value = model.currentHealth;
+        
+        string attri = null;
+        if(model.attri == EnemyAttribute.High)
+        {
+            attri = "H";
+        }
+        else if(model.attri == EnemyAttribute.Low)
+        {
+            attri = "L";
+        }
+        attributeText.text = attri;
+        
+        string rankStr;
+        switch (model.rank)
+        {
+            case 1:
+                rankStr = "A";
+                break;
+            case 11:
+                rankStr = "J";
+                break;
+            case 12:
+                rankStr = "Q";
+                break;
+            case 13:
+                rankStr = "K";
+                break;
+            default:
+                rankStr = $"{model.rank}";
+                break;
+        }
+        rankText.text = rankStr;
+    }
+
+    public void Init(EnemyModel model)
+    {
+        this.model = model;
+
+    }
+}

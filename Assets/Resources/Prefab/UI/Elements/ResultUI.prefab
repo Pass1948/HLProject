@@ -845,7 +845,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9ecb92367016f04f821f3dac2321d7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rewardPassButton: {fileID: 636138214943783250}
+  storeButton: {fileID: 636138214943783250}
   rewardPanel: {fileID: 7263553375542090827}
   slots: []
 --- !u!1 &2560637575794173930
@@ -861,7 +861,7 @@ GameObject:
   - component: {fileID: 7618530108184499144}
   - component: {fileID: 636138214943783250}
   m_Layer: 5
-  m_Name: RewardPassButton
+  m_Name: StoreButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -915,7 +915,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: ffe5329f1a04bdc45b24e3ba6d9cafce, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1452,7 +1452,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uBCF4\uC0C1 \uB118\uAE30\uAE30"
+  m_text: "\uB2E4\uC74C \uB2E8\uACC4"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b5e282670c2edc44297fcaa2d9ec1cc4, type: 2}
   m_sharedMaterial: {fileID: 1514732102080218433, guid: b5e282670c2edc44297fcaa2d9ec1cc4,
