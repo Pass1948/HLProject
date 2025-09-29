@@ -79,7 +79,7 @@ public class MainUI : BaseUI
         RelicBtn.onClick.AddListener(fireBtnObj.Unselect);
         turnBtn.onClick.AddListener(fireBtnObj.Unselect);
         bikeControllBtn.onClick.AddListener(fireBtnObj.Unselect);
-        kickBtn.onClick.AddListener(fireBtnObj.Unselect);
+        //kickBtn.onClick.AddListener(fireBtnObj.Unselect);
         settingActiveBtn.onClick.AddListener(fireBtnObj.Unselect);
 
         InitReloadUI();

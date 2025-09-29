@@ -100,7 +100,7 @@ public class MouseManager : MonoBehaviour
     }
     
     //  PlayerTurnState에서 호출
-    public void ToggleMovePhase() => movePhaseActive = !movePhaseActive;
+    public void SetMovePhase(bool active) => movePhaseActive = active;
 
     // =====================================================================
     // 포인터 추적 & 셀 스냅

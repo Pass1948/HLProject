@@ -51,8 +51,8 @@ public class SpawnController : MonoBehaviour
         for (int i = 0; i < count; i++)
         {
             // (0,0) - (3,3) 플레이어 생성 범위
-            int randX = Random.Range(0, 4);
-            int randY = Random.Range(0, 4);
+            int randX = Random.Range(1, 2);
+            int randY = Random.Range(1, 2);
 
             if (GameManager.Map.mapData[randX, randY] == TileID.Terrain)
             {
