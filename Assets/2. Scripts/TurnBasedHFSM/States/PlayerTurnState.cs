@@ -17,6 +17,7 @@ public class PlayerTurnState : BaseTurnState
         GameManager.UI.OpenUI<PaseTurnUI>();
         GameManager.Mouse.ToggleMovePhase();
         GameManager.Mouse.OnSwitchIsClicked();
+        Time.timeScale = 3f;    // 배속 기능
         if (turnManager.isCamera == false)
         {
             turnManager.SwitchIsCamera();
@@ -43,7 +44,6 @@ public class PlayerTurnState : BaseTurnState
     {
         // 혹시 못 닫았으면 안전하게 닫아 주기
         if (!didClose) GameManager.UI.CloseUI<PaseTurnUI>();
-        GameManager.Mouse.ToggleMovePhase();
-        GameManager.Mouse.OnSwitchIsClicked();
+
     }
 }
