@@ -29,8 +29,8 @@ public class MainUI : BaseUI
     [SerializeField] Button bikeControllBtn;
     [SerializeField] ToggleBtnController bikeControllBtnObj;
 
-    [SerializeField] Button atifactBtn;
-    [SerializeField] ToggleBtnController atifactBtnObj;
+    [SerializeField] Button RelicBtn;
+    [SerializeField] ToggleBtnController RelicBtnObj;
 
     [SerializeField] TMP_Text movementText;
 
@@ -60,7 +60,7 @@ public class MainUI : BaseUI
         kickBtn.onClick.AddListener(ToggleKick);
 
         bikeControllBtn.onClick.AddListener(BikeToggle);
-        atifactBtn.onClick.AddListener(AtifactToggle);
+        RelicBtn.onClick.AddListener(RelicToggle);
 
 
         settingBtn.onClick.AddListener(GameResultUITest);
@@ -212,9 +212,9 @@ public class MainUI : BaseUI
         bikeControllBtnObj.ToggleBikeControll();
     }
 
-    private void AtifactToggle()
+    private void RelicToggle()
     {
-        atifactBtnObj.ToggleArtifactList();
+        RelicBtnObj.ToggleRelicList();
 
     }
 

@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,12 +6,17 @@ public class TurnSettingValue : MonoBehaviour
 {
     [HideInInspector] public float resetTime = 0f;
 
-    [Header("ÅÏº° º¯µ¿½Ã°£")]
+    [Header("í„´ë³„ ë³€ë™ì‹œê°„")]
     public float turnDelayTime =2f;
-    public float actionWindupTime = 1.5f; // Çàµ¿ ¼±µô ½Ã°£
-    public float ActionRecoverTime = 1.5f; // Çàµ¿ ÈÄµô ½Ã°£
+    public float actionWindupTime = 1.5f; // í–‰ë™ ì„ ë”œ ì‹œê°„
+    public float ActionRecoverTime = 1.5f; // í–‰ë™ í›„ë”œ ì‹œê°„
     public Ammo fireAmmo;
 
-    // == ÇÃ·¹ÀÌ¾î Çàµ¿ ¼±ÅÃ °ü·Ã ==
-    [HideInInspector] public bool actionSelected = false;  // ÇÃ·¹ÀÌ¾î Çàµ¿ ¼±ÅÃ ¿©ºÎ
+    [HideInInspector] public bool IsBasicDeck = false;
+    [HideInInspector] public bool IsDiamondDeck = false;
+    [HideInInspector] public bool IsHeartDeck = false;
+    [HideInInspector] public bool IsSpadeDeck = false;
+    [HideInInspector] public bool IsClubDeck = false;
+    // == í”Œë ˆì´ì–´ í–‰ë™ ì„ íƒ ê´€ë ¨ ==
+    [HideInInspector] public bool actionSelected = false;  // í”Œë ˆì´ì–´ í–‰ë™ ì„ íƒ ì—¬ë¶€
 }
