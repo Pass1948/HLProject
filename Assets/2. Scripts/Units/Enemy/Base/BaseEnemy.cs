@@ -31,7 +31,7 @@ public class BaseEnemy : MonoBehaviour
         }
         else
         {
-            Debug.LogError("[Enemy] EnemyController or AnimHandler is missing on prefab!");
+            Debug.LogError("애너미 컨트롤러, 애님핸들러 없슴");
         }
     }
 
