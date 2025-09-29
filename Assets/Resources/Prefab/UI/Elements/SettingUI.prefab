@@ -6300,6 +6300,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   closeBtn: {fileID: 5058856127012601320}
+  backToMainMenuBtn: {fileID: 1991808747088476593}
 --- !u!1 &7621102804154732760
 GameObject:
   m_ObjectHideFlags: 0
