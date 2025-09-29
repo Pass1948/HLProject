@@ -46,8 +46,8 @@ public class GameManager : MonoBehaviour
     private static RewardManager rewardManager;
     public static RewardManager Reward => rewardManager;
     
-    private ShopManager shopManager;
-    public ShopManager ShopManager => shopManager;
+    private static ShopManager shopManager;
+    public static ShopManager Shop => shopManager;
 
 
     private void Awake()

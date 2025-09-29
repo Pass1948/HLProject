@@ -16,7 +16,11 @@ public class BasePlayer : MonoBehaviour
         animHandler = GetComponent<PlayerAnimHandler>();
         controller = GetComponent<MovementController>();
         playerHandler = GetComponent<PlayerHandler>();
-
         controller.isPlayer = true;
+    }
+
+    protected virtual void Start()
+    {
+
     }
 }
