@@ -120,7 +120,7 @@ public class MovementController : MonoBehaviour
     }
 
     //  마우스 클릭 처리 - 3개 메서드를 하나로 통합[작성자:이영신]
-    private void HandleMouseClick()
+    /*private void HandleMouseClick()
     {
         var mousePos = Mouse.current.position.ReadValue();
         Ray ray = Camera.main.ScreenPointToRay(mousePos);
@@ -153,6 +153,7 @@ public class MovementController : MonoBehaviour
         }
         CancelSelection();
     }
+    */
 
     // 플레이어 클릭 처리
     private void HandlePlayerClick()
@@ -187,7 +188,7 @@ public class MovementController : MonoBehaviour
         if (isPlayer != true) return;
 
         // 이동 액션 선택
-        GameManager.TurnBased.SetSelectedAction(PlayerActionType.Move);
+       // GameManager.TurnBased.SetSelectedAction(PlayerActionType.Move);
 
         // 이동 처리
         OnclickInfo(worldPoint);

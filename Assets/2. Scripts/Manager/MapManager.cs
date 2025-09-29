@@ -163,8 +163,7 @@ public class MapManager : MonoBehaviour
                     }
                     else
                     {
-                        Debug.Log($"enemies 리스트의 현재 몬스터 수: {enemies.Count}");
-
+                        
                         foreach (var enemy in enemies)
                         {
                             Vector3Int enemyCellPos = GetCellFromWorldPos(enemy.transform.position);
