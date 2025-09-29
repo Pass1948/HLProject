@@ -52,7 +52,6 @@ public class MouseManager : MonoBehaviour
     private Vector3Int selectedPlayerCell;
     private int selectedMoveRange;
     bool isPlayer = false;
-    bool showRange = true;
     
     
     //==== 공격 상태 =====
@@ -73,6 +72,7 @@ public class MouseManager : MonoBehaviour
     private BaseEnemy selectedEnemy;       // 현재 팝업이 열린 적
     private bool enemyPopupVisible = false;
     public bool isMouse = false;
+    public bool isShowRange = false;
 
     // --- Overlap관련 최적화 ---
     private readonly Collider[] oneHit = new Collider[1];// OverlapBoxNonAlloc 결과 담는 1칸
@@ -100,10 +100,6 @@ public class MouseManager : MonoBehaviour
         OnMouseClick();
     }
     
-    public void OnSwitchIsClicked() =>isMouse = !isMouse;
-    
-    public void OnSwitchRange() =>showRange = !showRange;
-
     //  PlayerTurnState에서 호출
     public void ToggleMovePhase() => movePhaseActive = !movePhaseActive;
 
@@ -163,7 +159,7 @@ public class MouseManager : MonoBehaviour
 #endif
         if (isClick) HandleLeftClick();
     }
-    
+
     private void HandleLeftClick()
     {
 
@@ -189,7 +185,7 @@ public class MouseManager : MonoBehaviour
             {
                 GameManager.Event.Publish(EventType.PlayerAttack); // 공격 State에서 일괄 처리
                 isAttacking = false;
-            
+
             }
             else
             {
@@ -246,14 +242,25 @@ public class MouseManager : MonoBehaviour
     }
 
 
+
     // ===== 클릭 동작별 핸들러 =====
 
     // Player 셀 클릭 => 선택 + 이동범위 표시
     private void OnClickPlayer(Vector3Int cell)
     {
+        // 공격/킥 모드면: 범위만 끄고 취소
+        if (isAttacking || IsKicking)
+        {
+            CancelAttackOrKickRange();
+            isAttacking = false;
+            IsKicking = false;
+            // 플레이어 범위는 의도대로 "끄기만" 하고 리턴
+            HidePlayerRange();
+            return;
+        }
+
         // 적 팝업은 닫아둠
         HideEnemyPopup();
-
         if (isMoving) return;
 
         // 선택/범위 기초값 세팅은 기존 그대로 유지
@@ -261,16 +268,12 @@ public class MouseManager : MonoBehaviour
         selectedPlayerCell = cell;
         selectedMoveRange = GameManager.Unit.Player.playerModel.moveRange;
 
-        if (isAttacking) return;
-
-        if (showRange == true)
-        {
+        if (isShowRange == false) return;
             // 현재 범위가 떠 있고 같은 칸을 다시 눌렀다면 끄고, 아니면 켠다
             if (playerRangeVisible && selectedPlayerCell == cell)
                 HidePlayerRange();
             else
                 ShowPlayerRange(cell);
-        }
     }
 
     // Enemy 셀 클릭 => 정보 UI

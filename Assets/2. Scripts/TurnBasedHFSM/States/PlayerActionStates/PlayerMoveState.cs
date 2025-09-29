@@ -8,6 +8,8 @@ public class PlayerMoveState : PlayerActionState
     {
         base.OnEnter();
         ChangeState<M_Windup>();
+        GameManager.Mouse.ToggleMovePhase();
+        GameManager.Mouse.isMouse = false;
     }
 
     //이동 동작 나누기 : 선딜, 동작, 후딜

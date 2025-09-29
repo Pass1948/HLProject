@@ -44,27 +44,67 @@ public class ItemControlManger : MonoBehaviour
     // 아이템오브젝트 연동로직
     // =====================================================================
     
-    public T GetItem<T>() where T : BaseItem
+    public T GetItem<T>(GameObject host = null, string csName = null) where T : BaseItem
     {
-        string itemName = GetItemName<T>();
+        // 부착 대상 결정
+        var attachTarget = host != null ? host : this.gameObject;
 
-        BaseItem item;
-        if (IsExistItem<T>())
-            item = itemsDictionary[itemName];
-        else
-            item = null;
+        // 딕셔너리 키(문자열 타입명이 있으면 그걸 사용)
+        string key = string.IsNullOrEmpty(csName) ? typeof(T).Name : csName;
 
-        return item as T;
-    }
-    
-    private string GetItemName<T>() where T : BaseItem 
-    {
-        return typeof(T).Name;
-    }
-    public bool IsExistItem<T>() where T : BaseItem
-    {
-        string itemName = GetItemName<T>();
-        return itemsDictionary.TryGetValue(itemName, out var item) && item != null;
+        //이미 등록되어 있으면 반환
+        if (itemsDictionary.TryGetValue(key, out var existing) && existing != null)
+            return existing as T ?? attachTarget.GetComponent<T>();
+
+        BaseItem added = null;
+
+        // 문자열 타입명이 넘어온 경우: 우선 그 타입으로 붙이기 시도
+        if (!string.IsNullOrEmpty(csName))
+        {
+            System.Type t =
+                // 풀네임 우선
+                System.Type.GetType(csName) ??
+                // 풀네임이 아니면 모든 어셈블리에서 클래스명으로 탐색
+                System.Array.Find(
+                    System.AppDomain.CurrentDomain.GetAssemblies(),
+                    asm => asm.GetType(csName) != null
+                )?.GetType(csName);
+
+            if (t == null)
+            {
+                // 위 탐색이 실패했을 수 있으니 클래스명만으로 다시 한 번 전수 검사
+                foreach (var asm in System.AppDomain.CurrentDomain.GetAssemblies())
+                {
+                    foreach (var type in asm.GetTypes())
+                    {
+                        if (type.Name == csName || type.FullName == csName)
+                        {
+                            t = type; break;
+                        }
+                    }
+                    if (t != null) break;
+                }
+            }
+
+            if (t != null && typeof(BaseItem).IsAssignableFrom(t))
+            {
+                // 동일 타입 컴포넌트가 이미 붙어 있으면 재사용, 없으면 Add
+                added = (BaseItem)(attachTarget.GetComponent(t) ?? attachTarget.AddComponent(t));
+            }
+        }
+
+        // 문자열 타입으로 못 붙였거나 csName이 없으면 제네릭 T로 처리
+        if (added == null)
+        {
+            added = attachTarget.GetComponent<T>();
+            if (added == null) added = attachTarget.AddComponent<T>();
+        }
+
+        // 딕셔너리에 등록
+        itemsDictionary[key] = added;
+
+        // 반환 (문자열 타입으로 붙인 경우 T가 BaseItem일 것을 권장)
+        return added as T ?? attachTarget.GetComponent<T>();
     }
     
     
@@ -93,7 +133,6 @@ public class ItemControlManger : MonoBehaviour
                 ItemIds[m.id] = m; // 희소 ID 안전
         }
         DivideItems(items);
-
     }
 
     public void ClearData() // 아이템 리스트를 비우고 새롭게 할당할경우 사용
@@ -325,11 +364,10 @@ public class ItemControlManger : MonoBehaviour
             if (relicItems[i] == null) continue;
             if (relicItems[i].id == id)
             {
-                var go = GameManager.Resource.Create<BaseItem>(Path.UIElements+"RelicIconUI");
+                var go = GameManager.Resource.Create<GameObject>(Path.UIElements+"RelicIconUI");
                 go.name = relicItems[i].name;
-
+                GetItem<BaseItem>(go,relicItems[i].csPath);
                 go.transform.SetParent(relicRoot.transform, false);
-                // go에 addcomponent해야함
                 go.gameObject.GetComponent<Image>().sprite = GameManager.Resource.Load<Sprite>(Path.UISprites+relicItems[i].imagePath);
             }
         }
