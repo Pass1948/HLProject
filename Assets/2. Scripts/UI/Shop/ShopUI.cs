@@ -46,6 +46,7 @@ public class ShopUI : BaseUI
         GameManager.Event.Subscribe<List<ShopManager.ShopItem>>(EventType.ShopOffersChanged, OnOffersChanged);
         GameManager.Event.Subscribe<(List<Ammo>, List<PowderData>)>(EventType.ShopPowderBundlePrompt, OnPowderBundlePrompt);
         GameManager.Event.Subscribe<List<Ammo>>(EventType.ShopRemoveBulletPrompt, OnRemoveBulletPrompt);
+        GameManager.Event.Subscribe(EventType.ShopPlayerCardsConfim,RebuildPlayerBullets);
         
         healButton.onClick.AddListener(()=> shop.TryHeal());
         rerollButton.onClick.AddListener(()=> shop.TryReroll());
@@ -59,6 +60,7 @@ public class ShopUI : BaseUI
         GameManager.Event.Unsubscribe<List<ShopManager.ShopItem>>(EventType.ShopOffersChanged, OnOffersChanged);
         GameManager.Event.Unsubscribe<(List<Ammo>, List<PowderData>)>(EventType.ShopPowderBundlePrompt, OnPowderBundlePrompt);
         GameManager.Event.Unsubscribe<List<Ammo>>(EventType.ShopRemoveBulletPrompt, OnRemoveBulletPrompt);
+        GameManager.Event.Unsubscribe(EventType.ShopPlayerCardsConfim, RebuildPlayerBullets);
     }
 
     // ===== 이벤트 핸들러 =====

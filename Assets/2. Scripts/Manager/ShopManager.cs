@@ -65,6 +65,7 @@ public class ShopManager : MonoBehaviour
         canRemoveBullet = true;
         powderBundleLeft = 2;
         GenerateOffers();
+        GameManager.Event.Publish(EventType.ShopPlayerCardsConfim);
         //확인을 위한 
     }
     
@@ -84,19 +85,10 @@ public class ShopManager : MonoBehaviour
         
         GameManager.Event.Publish(EventType.ShopOffersChanged, offers);
     }
-
-
     // 탄환 오퍼 
     private void GenerateCardOffers(List<Ammo> playerOwned)
     {
         var snapshot = deck.GetDrawSnapshot();
-        if (snapshot == null)
-        {
-            Debug.LogError("[ShopManager] Snapshot이 null입니다. Deck이 초기화되지 않았습니다.");
-            return;
-        }
-
-        Debug.Log($"[ShopManager] Snapshot count={snapshot.Count}, playerOwned={playerOwned.Count}");
 
         Shuffle(snapshot);
 

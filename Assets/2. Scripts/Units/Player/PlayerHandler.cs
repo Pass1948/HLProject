@@ -26,7 +26,6 @@ public class PlayerHandler : MonoBehaviour
         deck.GetPlayerBullets(bullets);
     }
     
-    
     public void TakeDamage(int amount)
     {
         var player = GameManager.Unit.Player.playerModel;
