@@ -62,8 +62,6 @@ public class TurnBasedManager : MonoBehaviour
         turnHFSM.FixedTick(Time.fixedDeltaTime);
     }
     
-    
-    
     public void StartTotalTurn() => isStarted = !isStarted;
 
 

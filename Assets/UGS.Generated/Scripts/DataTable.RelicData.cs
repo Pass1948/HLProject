@@ -73,7 +73,8 @@ namespace DataTable
 		public System.Int32 addBikeHealth;
 		public System.Int32 bikeAdditinal;
 		public System.Int32 conditionall;
-		public System.String path;
+		public System.String imagePath;
+		public System.String csPath;
   
 
 #region fuctions

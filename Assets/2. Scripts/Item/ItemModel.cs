@@ -43,8 +43,8 @@ public class ItemModel // 데이터 바인딩용
         addBikeHealth = data.addBikeHealth;
         bikeAddMoveRange = data.bikeAdditinal;
         conditionall = data.conditionall;
-        /*imagePath  =  data.;
-        csPath = */
+        imagePath =  data.imagePath;
+        csPath = data.csPath;
     }
 }
 
