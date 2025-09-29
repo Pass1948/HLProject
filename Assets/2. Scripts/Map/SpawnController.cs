@@ -165,6 +165,7 @@ public class SpawnController : MonoBehaviour
     // 적 스폰
     private void SpawnEnemies(Dictionary<int, int> enemies, int eliteCount, int stageId)
     {
+        Debug.Log(enemies.Count);
         List<BaseEnemy> spawnedList = new List<BaseEnemy>();
 
         foreach (var enemy in enemies)
