@@ -22,6 +22,7 @@ public class TestScene : BaseScene
 
         GameManager.TurnBased.ChangeStartTurn();
         // GameManager.ItemControl.ItemDataSet();  // 아이템데이터 리스트 초기 세팅
+        GameManager.Shop.ShopInit();
     }
 
     public override void SceneExit()

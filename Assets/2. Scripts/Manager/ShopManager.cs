@@ -65,6 +65,7 @@ public class ShopManager : MonoBehaviour
         canRemoveBullet = true;
         powderBundleLeft = 2;
         GenerateOffers();
+        //확인을 위한 
     }
     
     //상품 구성만 다시 생성(리롤 시 이거만 호출)
@@ -217,8 +218,18 @@ public class ShopManager : MonoBehaviour
 
     private void RemoveOfferAt(int index)
     {
-        if (index >= 0 && index < offers.Count)
-            offers.RemoveAt(index);
+        if (index <= 0 && index >= offers.Count)
+        {
+            return;
+        }
+        offers.RemoveAt(index);
+    }
+
+    public void TryBuyitem(ShopItem item)
+    {
+        int index = offers.IndexOf(item);
+        if(index == -1) return;
+        TryBuy(index);
     }
     // 돈내고 오퍼 전체 재생성
     public void TryReroll()
@@ -234,7 +245,7 @@ public class ShopManager : MonoBehaviour
         player.Heal(1); // 추후에 변수로 변경 예정
     }
 
-    // 화약 꾸러미 
+    // 화약 꾸러미 * 사용중지
     private void StartPowderBundle(List<Ammo> playerOwned)
     {
         var candidates = new List<Ammo>(playerOwned);
@@ -256,7 +267,7 @@ public class ShopManager : MonoBehaviour
         ApplyPowder(target, powder);
     }
 
-    public void ApplyPowder(Ammo target, PowderData powder)
+    public void ApplyPowder(Ammo target, PowderData powder) 
     {
         target.powder = powder;
     }

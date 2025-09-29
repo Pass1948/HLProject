@@ -21,6 +21,6 @@ public class BasePlayer : MonoBehaviour
 
     protected virtual void Start()
     {
-        GameManager.Shop.ShopInit();
+
     }
 }

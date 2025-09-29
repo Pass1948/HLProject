@@ -10,6 +10,7 @@ public class ShopUI : BaseUI
     private ShopManager shop = GameManager.Shop;
     [SerializeField] private Transform bulletRoot;
     [SerializeField] private Transform relicRoot;
+    [SerializeField] private Transform playerBulletRoot;
     // [SerializeField] private Transform powderRoot;
     [SerializeField] private Transform removeRoot;
     [SerializeField] private GameObject cardPrefab; // ShopCardUI 컴포넌트 포함 프리팹
@@ -17,19 +18,18 @@ public class ShopUI : BaseUI
     
     [SerializeField] private TextMeshProUGUI rerollCostText;
     [SerializeField] private TextMeshProUGUI healCost;
+
+    private int selectedBulletIndex = -1;
     
     public Button rerollButton;
     public Button healButton;
+    public Button removeButton;
 
     private readonly List<GameObject> spawned = new();
 
     private void Awake()
     {
         shop = GameManager.Shop;
-        if (!shop) Debug.LogWarning("[ShopUI] ShopManager 참조가 비었습니다. 인스펙터에서 할당하세요.");
-        if (!bulletRoot) Debug.LogWarning("[ShopUI] gridRoot 참조가 비었습니다.");
-        if (!cardPrefab) Debug.LogWarning("[ShopUI] cardPrefab 참조가 비었습니다.");
-        
     }
 
     private void OnEnable()
@@ -41,6 +41,7 @@ public class ShopUI : BaseUI
         
         healButton.onClick.AddListener(()=> shop.TryHeal());
         rerollButton.onClick.AddListener(()=> shop.TryReroll());
+        removeButton.onClick.AddListener(OnRemoveBulletCicked);
         if (shop != null) Rebuild(shop.offers);
     }
 
@@ -128,6 +129,41 @@ public class ShopUI : BaseUI
         UpdateRerollLabel();
     }
 
+    private void RebuildPlayerBullets()
+    {
+        int cost = 1;
+        ClearSection(playerBulletRoot);
+        var bullets = GameManager.Unit.Player.playerHandler.bullets;
+        for (int i = 0; i < bullets.Count; i++)
+        {
+            var ammo = bullets[i];
+            int idx = i;
+            
+            var card = GameManager.UI.CreateSlotUI<ShopCardUI>(playerBulletRoot);
+            card.Bind(new ShopManager.ShopItem(ShopItemType.Bullet, ammo.ToString(),cost,ammo));
+            
+            card.buyButton.onClick.RemoveAllListeners();
+            card.buyButton.onClick.AddListener(() =>
+            {
+                selectedBulletIndex = idx;
+            });
+        }
+        cost++;
+    }
+
+    private void OnRemoveBulletCicked()
+    {
+        if (selectedBulletIndex >= 0)
+        {
+            var player = GameManager.Unit.Player.playerHandler;
+            if (selectedBulletIndex < player.bullets.Count)
+            {
+                player.bullets.RemoveAt(selectedBulletIndex);
+            }
+        }
+        selectedBulletIndex = -1;
+        RebuildPlayerBullets();
+    }
     private void ClearSection(Transform root)
     {
         for (int i = root.childCount - 1; i >= 0; i--)
