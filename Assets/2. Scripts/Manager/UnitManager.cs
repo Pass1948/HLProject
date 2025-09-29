@@ -9,6 +9,7 @@ public enum UnitType
     Player,
     Enemy,
     Vehicle,
+    Obstacle,
     Boss,
     Unknown
 }
