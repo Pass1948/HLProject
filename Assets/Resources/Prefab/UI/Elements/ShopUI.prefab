@@ -2124,7 +2124,7 @@ MonoBehaviour:
   rerollButton: {fileID: 5993510869965724936}
   healButton: {fileID: 5593640996723055498}
   removeButton: {fileID: 6194961219527852985}
-  nextStageButton: {fileID: 0}
+  nextStageButton: {fileID: 272589498631654892}
 --- !u!1 &4951638504018899634
 GameObject:
   m_ObjectHideFlags: 0
