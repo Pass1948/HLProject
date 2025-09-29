@@ -95,7 +95,7 @@ public class MouseManager : MonoBehaviour
     {
         //포인터 추적(셀 단위)
         if (!UpdatePointer()) return;
-        //if (isMouse == false) return;
+        if (isMouse == false) return;
         OnMouseClick();
     }
     
