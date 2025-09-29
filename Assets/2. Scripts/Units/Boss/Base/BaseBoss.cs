@@ -1,13 +1,34 @@
 using System.Collections;
 using System.Collections.Generic;
+using DataTable;
 using UnityEngine;
 
-public class BaseBoss : BaseEnemy
+public class BaseBoss : MonoBehaviour
 {
-    public int phase { get; protected set; } = 1;
+    public BossModel model;
+    public BossController controller;
+    public EnemyAnimHandler animHandler;
     
-    protected virtual void InitBossPattern(){}
-    public virtual void ExecutePattern(){}
-    protected void ChangePhase(){}
-    protected virtual void OnPhaseChanged(){}
+    protected virtual void Start() {}
+
+    public void InitBoss(EntityData data)
+    {
+        model = new BossModel();
+        model.InitData(data);
+        animHandler = GetComponent<EnemyAnimHandler>();
+        controller = GetComponent<BossController>();
+        if (controller != null && animHandler != null)
+        {
+            controller.model = model;
+            controller.animHandler = animHandler;
+            controller.InitController(this);
+        }
+        else
+        {
+            Debug.LogError("보스 컨트롤러, 애님핸들러 없슴");
+        }
+        
+        
+
+    }
 }
