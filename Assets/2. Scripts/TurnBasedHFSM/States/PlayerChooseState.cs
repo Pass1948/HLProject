@@ -14,7 +14,6 @@ public class PlayerChooseState : BaseTurnState
         didClose = false;
         GameManager.Mouse.IsAttacking=true;
         GameManager.Mouse.OnSwitchIsClicked();
-        GameManager.Mouse.OnSwitchRange();  
     }
 
     public override void Tick(float dt)
@@ -31,7 +30,5 @@ public class PlayerChooseState : BaseTurnState
     {
         // 혹시 못 닫았으면 안전하게 닫아 주기
         if (!didClose) GameManager.UI.CloseUI<PaseTurnUI>();
-        GameManager.Mouse.OnSwitchIsClicked();
-        GameManager.Mouse.OnSwitchRange();  
     }
 }

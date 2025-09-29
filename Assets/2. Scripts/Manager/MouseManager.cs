@@ -52,7 +52,6 @@ public class MouseManager : MonoBehaviour
     private Vector3Int selectedPlayerCell;
     private int selectedMoveRange;
     bool isPlayer = false;
-    bool showRange = true;
     
     
     //==== 공격 상태 =====
@@ -96,13 +95,12 @@ public class MouseManager : MonoBehaviour
     {
         //포인터 추적(셀 단위)
         if (!UpdatePointer()) return;
-        if (isMouse == false) return;
+        //if (isMouse == false) return;
         OnMouseClick();
     }
     
     public void OnSwitchIsClicked() =>isMouse = !isMouse;
     
-    public void OnSwitchRange() =>showRange = !showRange;
 
     //  PlayerTurnState에서 호출
     public void ToggleMovePhase() => movePhaseActive = !movePhaseActive;
@@ -263,14 +261,11 @@ public class MouseManager : MonoBehaviour
 
         if (isAttacking) return;
 
-        if (showRange == true)
-        {
             // 현재 범위가 떠 있고 같은 칸을 다시 눌렀다면 끄고, 아니면 켠다
             if (playerRangeVisible && selectedPlayerCell == cell)
                 HidePlayerRange();
             else
                 ShowPlayerRange(cell);
-        }
     }
 
     // Enemy 셀 클릭 => 정보 UI
