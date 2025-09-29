@@ -12,7 +12,6 @@ public class PlayerChooseState : BaseTurnState
     {
         timer = turnSetVlaue.resetTime;
         didClose = false;
-        GameManager.Mouse.IsAttacking=true;
         GameManager.Mouse.isMouse = true;
         GameManager.Mouse.isShowRange = false;
     }
