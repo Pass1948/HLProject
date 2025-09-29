@@ -143,7 +143,8 @@ public class ShopUI : BaseUI
         int cost = 1;
         ClearSection(playerBulletRoot);
         Debug.Log($"{playerBulletRoot}");
-        var bullets = GameManager.Unit.Player.playerHandler.bullets;
+        var bullets = GameManager.Unit.Player.playerHandler.bullets; 
+        Debug.Log($"{bullets}");
         for (int i = 0; i < bullets.Count; i++)
         {
             var ammo = bullets[i];

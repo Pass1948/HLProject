@@ -60,11 +60,7 @@ public class Deck : MonoBehaviour
     //외부 UI용
     public List<Ammo> GetDrawSnapshot() => new List<Ammo>(drawPile);
 
-    /*
-     * 어디에 넣어주지
-     * 플레이어에 넣어주면 되나
-     * 
-     */
+    
     public void GetPlayerBullets(List<Ammo> pile)
     {
         for (int i = 0; i < drawPile.Count; i++)

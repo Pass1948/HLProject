@@ -107,11 +107,11 @@ public class ShopManager : MonoBehaviour
         {
             // 보유 중이면 제외(중복 구매 방지)
             // List<T>.Exists(Predicate<T>) = 리스트 안에 조건을 만족하는 원소가 하나라도 있으면 true반환
-            bool owned = playerOwned.Exists(p => p.suit == card.suit && p.rank == card.rank);
-            if (owned) continue;
+            // bool owned = playerOwned.Exists(p => p.suit == card.suit && p.rank == card.rank);
+            // if (owned) continue;
 
             // 새로운 탄환 후보 생성
-            var offerAmmo = new Ammo { suit = card.suit, rank = card.rank, powder = null };
+            var offerAmmo = new Ammo { suit = card.suit, rank = card.rank, powder = null};
             
             
             // 가격 = 기본3 + (화약 레어도 추가 비용)
@@ -218,7 +218,7 @@ public class ShopManager : MonoBehaviour
 
     private void RemoveOfferAt(int index)
     {
-        if (index <= 0 && index >= offers.Count)
+        if (index < 0 && index >= offers.Count)
         {
             return;
         }
