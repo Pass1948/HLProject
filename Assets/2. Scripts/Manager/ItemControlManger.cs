@@ -40,6 +40,34 @@ public class ItemControlManger : MonoBehaviour
     
     
     // =====================================================================
+    // 아이템오브젝트 연동로직
+    // =====================================================================
+    
+    public T GetItem<T>() where T : BaseItem
+    {
+        string uiName = GetItemName<T>();
+
+        BaseItem ui;
+        if (IsExistItem<T>())
+            ui = itemsDictionary[uiName];
+        else
+            ui = null;
+
+        return ui as T;
+    }
+    
+    private string GetItemName<T>() where T : BaseItem 
+    {
+        return typeof(T).Name;
+    }
+    public bool IsExistItem<T>() where T : BaseItem
+    {
+        string itemName = GetItemName<T>();
+        return itemsDictionary.TryGetValue(itemName, out var ui) && ui != null;
+    }
+    
+    
+    // =====================================================================
     // 아이템 데이터 관련 로직
     // =====================================================================
     public void ItemDataSet() // 아이템 리스트에 데이터 입력(데이터매니저에서 호출)
@@ -320,10 +348,4 @@ public class ItemControlManger : MonoBehaviour
             go.gameObject.GetComponent<Image>().sprite = GameManager.Resource.Load<Sprite>(Path.UISprites+lists[i].path);
         }
     }
-
-    // =====================================================================
-    // 아이템 데이터 관련 로직
-    // =====================================================================
-    
-    
 }
