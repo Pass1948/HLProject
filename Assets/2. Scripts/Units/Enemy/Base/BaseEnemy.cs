@@ -9,6 +9,8 @@ public class BaseEnemy : MonoBehaviour
     public EnemyModel enemyModel;
     public EnemyController controller;
     public EnemyAnimHandler animHandler;
+    public EnemyFloatingUI enemyUI;
+    
     protected virtual void Start()
     {
         
@@ -23,11 +25,13 @@ public class BaseEnemy : MonoBehaviour
         enemyModel.InitData(data, enemyType);
         animHandler = GetComponent<EnemyAnimHandler>();
         controller = GetComponent<EnemyController>();
+        enemyUI = GetComponent<EnemyFloatingUI>();
         if (controller != null && animHandler != null)
         {
             controller.model = enemyModel;
             controller.animHandler = animHandler;
             controller.InitController(this);
+            enemyUI.Init(enemyModel);
         }
         else
         {
