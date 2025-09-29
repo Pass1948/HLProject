@@ -12,6 +12,10 @@ public class EnemyTurnState : BaseTurnState
         timer = turnSetVlaue.resetTime;
         didClose= false;
         GameManager.UI.OpenUI<PaseTurnUI>();
+        if (turnManager.isCamera == true)
+        {
+            turnManager.SwitchIsCamera();
+        }
     }
     public override void Tick(float dt)
     {

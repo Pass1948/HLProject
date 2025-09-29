@@ -6,7 +6,6 @@ public abstract class BaseTurnState : ITurnState
 {
     protected TurnBasedManager turnManager => GameManager.TurnBased;
     protected  TurnStateMachine turnHFSM => GameManager.TurnBased.turnHFSM;
-
     protected TurnSettingValue turnSetVlaue=> GameManager.TurnBased.turnSettingValue;
 
     protected bool locked;
