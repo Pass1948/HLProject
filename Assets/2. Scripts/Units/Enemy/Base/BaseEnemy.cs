@@ -9,6 +9,8 @@ public class BaseEnemy : MonoBehaviour
     public EnemyModel enemyModel;
     public EnemyController controller;
     public EnemyAnimHandler animHandler;
+    public EnemyFloatingUI enemyUI;
+    
     protected virtual void Start()
     {
         
@@ -18,27 +20,26 @@ public class BaseEnemy : MonoBehaviour
     {
         if (!GameManager.Unit.enemies.Contains(this))
             GameManager.Unit.enemies.Add(this);
-        // ������ �ε� �� null ����
-
+        
         enemyModel = new EnemyModel();
         enemyModel.InitData(data, enemyType);
         animHandler = GetComponent<EnemyAnimHandler>();
         controller = GetComponent<EnemyController>();
-        // �� & �ִϸ��̼� �ڵ鷯�� �غ�� �Ŀ��� �ʱ�ȭ
+        enemyUI = GetComponent<EnemyFloatingUI>();
         if (controller != null && animHandler != null)
         {
             controller.model = enemyModel;
             controller.animHandler = animHandler;
             controller.InitController(this);
+            enemyUI.Init(enemyModel);
         }
         else
         {
-            Debug.LogError("[Enemy] EnemyController or AnimHandler is missing on prefab!");
+            Debug.LogError("애너미 컨트롤러, 애님핸들러 없슴");
         }
     }
 
-
-    public void ChenageAttribute()  // ������(�Ӽ�����)
+    public void ChenageAttribute()
     {
         if(enemyModel.attri == EnemyAttribute.High)
         {
@@ -47,6 +48,18 @@ public class BaseEnemy : MonoBehaviour
         else
         {
             enemyModel.attri = EnemyAttribute.High;
+        }
+    }
+
+    public void SetElite(int stageId)
+    {
+        if (stageId >= 7001 && stageId <= 7008)
+        {
+            EliteData data = GameManager.Data.eliteDataGroup.GetEliteData(Random.Range(5001, 5004));
+            // data.eliteName
+            //     data.descript
+            //         data.
+            
         }
     }
 }

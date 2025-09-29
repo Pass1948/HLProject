@@ -476,7 +476,7 @@ public class MouseManager : MonoBehaviour
         selectedEnemy = enemy;
         enemyPopupVisible = true;
         GameManager.UI.GetUI<EnemyInfoPopUpUI>()
-            .SetData(enemy.enemyModel.unitName, enemy.enemyModel.attri, enemy.enemyModel.rank);
+            .SetData(enemy.enemyModel.attri, enemy.enemyModel.rank, enemy.enemyModel.attack, enemy.enemyModel.moveRange, enemy.enemyModel.currentHealth, enemy.enemyModel.maxHealth);
         GameManager.UI.OpenUI<EnemyInfoPopUpUI>();
     }
     private void HideEnemyPopup()
