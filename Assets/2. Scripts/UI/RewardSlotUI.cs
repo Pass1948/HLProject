@@ -18,11 +18,10 @@ public class RewardSlotUI : BaseUI
 
         GetRewardInfo();
     }
-
+    
     protected override void OnClose()
     {
         base.OnClose();
-
         selectButton.onClick.RemoveAllListeners();
     }
 
@@ -31,11 +30,17 @@ public class RewardSlotUI : BaseUI
         // 리워드(유물, 재화 등) 의 정보 받아서 UI반영
         // rewardIcon =
         // rewardText.text =
-
+        
+        
     }
 
     private void SelectReward()
     {
         // 보상을 얻어서 적용 시키는 로직 적용
+        
+        
+        
     }
+    
+    
 }
