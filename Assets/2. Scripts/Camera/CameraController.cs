@@ -18,8 +18,16 @@ public class CameraController : MonoBehaviour
     
     private Camera cam;
     private bool recentering = false;
- 
-    
+
+    private void OnEnable()
+    {
+        GameManager.Event.Subscribe(EventType.CameraSenter, OnSenter);
+    }
+    private void OnDisable()
+    {
+        GameManager.Event.Unsubscribe(EventType.CameraSenter, OnSenter);
+    }
+
     public void InitCamera()
     {
         cam = Camera.main;
@@ -97,5 +105,18 @@ public class CameraController : MonoBehaviour
                     new Vector3(player.x, 0, player.z)) < 0.1f)
                 recentering = false;
         }
+    }
+
+    private void OnSenter()
+    {
+        Vector3 targetPos = player;
+        targetPos.y = cam.transform.position.y;
+
+        cam.transform.position = Vector3.Lerp(
+            cam.transform.position,
+            targetPos,
+            Time.deltaTime * recentSpeed);
+
+        if (Vector3.Distance(new Vector3(cam.transform.position.x, 0, cam.transform.position.z), new Vector3(player.x, 0, player.z)) < 0.1f) ;
     }
 }
