@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class ShopCardUI : BaseUI
 {
     [SerializeField] private TextMeshProUGUI titleText;
-    [SerializeField] private Text priceText;
+    [SerializeField] private TextMeshProUGUI priceText;
     [SerializeField] private Image icon;
     public Button buyButton;
 
