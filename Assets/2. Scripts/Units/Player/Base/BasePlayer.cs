@@ -14,13 +14,13 @@ public class BasePlayer : MonoBehaviour
         GameManager.Unit.Player = this;
         playerModel = new PlayerModel();
         animHandler = GetComponent<PlayerAnimHandler>();
-        controller = GetComponent<MovementController>();
+        // controller = GetComponent<MovementController>();
         playerHandler = GetComponent<PlayerHandler>();
-        controller.isPlayer = true;
+        // controller.isPlayer = true;
     }
 
     protected virtual void Start()
     {
-
+        GameManager.Shop.ShopInit();
     }
 }
