@@ -10,7 +10,9 @@ public class ShopUI : BaseUI
     private ShopManager shop = GameManager.Shop;
     [SerializeField] private Transform bulletRoot;
     [SerializeField] private Transform relicRoot;
+
     [SerializeField] private Transform playerBulletRoot;
+
     // [SerializeField] private Transform powderRoot;
     [SerializeField] private Transform removeRoot;
     [SerializeField] private GameObject cardPrefab; // ShopCardUI 컴포넌트 포함 프리팹
@@ -24,6 +26,7 @@ public class ShopUI : BaseUI
     public Button rerollButton;
     public Button healButton;
     public Button removeButton;
+    public Button nextStageButton;
 
     private readonly List<GameObject> spawned = new();
 
@@ -32,8 +35,13 @@ public class ShopUI : BaseUI
         shop = GameManager.Shop;
     }
 
+    private void Start()
+    {
+        RebuildPlayerBullets();
+    }
     private void OnEnable()
     {
+        
         // EventBus 구독
         GameManager.Event.Subscribe<List<ShopManager.ShopItem>>(EventType.ShopOffersChanged, OnOffersChanged);
         GameManager.Event.Subscribe<(List<Ammo>, List<PowderData>)>(EventType.ShopPowderBundlePrompt, OnPowderBundlePrompt);
@@ -42,6 +50,7 @@ public class ShopUI : BaseUI
         healButton.onClick.AddListener(()=> shop.TryHeal());
         rerollButton.onClick.AddListener(()=> shop.TryReroll());
         removeButton.onClick.AddListener(OnRemoveBulletCicked);
+        nextStageButton.onClick.AddListener(NextStage);
         if (shop != null) Rebuild(shop.offers);
     }
 
@@ -133,13 +142,13 @@ public class ShopUI : BaseUI
     {
         int cost = 1;
         ClearSection(playerBulletRoot);
+        Debug.Log($"{playerBulletRoot}");
         var bullets = GameManager.Unit.Player.playerHandler.bullets;
         for (int i = 0; i < bullets.Count; i++)
         {
             var ammo = bullets[i];
             int idx = i;
-            
-            var card = GameManager.UI.CreateSlotUI<ShopCardUI>(playerBulletRoot);
+            var card = GameManager.UI.CreateSlotUI<ShopCardUI>(playerBulletRoot.transform);
             card.Bind(new ShopManager.ShopItem(ShopItemType.Bullet, ammo.ToString(),cost,ammo));
             
             card.buyButton.onClick.RemoveAllListeners();
@@ -158,11 +167,12 @@ public class ShopUI : BaseUI
             var player = GameManager.Unit.Player.playerHandler;
             if (selectedBulletIndex < player.bullets.Count)
             {
+                
                 player.bullets.RemoveAt(selectedBulletIndex);
             }
         }
         selectedBulletIndex = -1;
-        RebuildPlayerBullets();
+
     }
     private void ClearSection(Transform root)
     {
@@ -174,5 +184,11 @@ public class ShopUI : BaseUI
     {
         if (rerollCostText != null && shop != null)
             rerollCostText.text = $"리롤 {shop.rerollCost}";
+    }
+
+    
+    private void NextStage()
+    {
+        // TODO: 여기에 추가해 주시면 됩니당.(JBS)    
     }
 }

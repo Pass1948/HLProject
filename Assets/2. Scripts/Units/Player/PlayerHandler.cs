@@ -11,16 +11,21 @@ public class PlayerHandler : MonoBehaviour
     public List<Ammo> GetBullet() { return bullets;}
     
     public List<int> ownedRelics = new(); // 유물 리스트
+
+    private Deck deck;
     
     private void Awake()
     {
-        playerMonney = 500000000;
     }
 
     private void Start()
     {
-        
+        // Testing
+        deck = GameManager.Shop.deck;
+        playerMonney = 500000000;
+        deck.GetPlayerBullets(bullets);
     }
+    
     
     public void TakeDamage(int amount)
     {

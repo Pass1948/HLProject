@@ -28,6 +28,12 @@ public enum EventType
     ShopTryBuyIndex,
     ShopPowderBundleConfirm,
     ShopRemoveBulletConfirm,
+    //---
+    
+    //--- 
+    PlayerBulletChanged,
+    //---
+    
     //--- 덱
     SelectDeck,
     //---
