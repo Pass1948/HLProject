@@ -314,20 +314,23 @@ public class ItemControlManger : MonoBehaviour
     
     // ========== 유물 슬롯과 이미지 생성 메서드 ==========
     // 해당 메서드 사용법 :
-    // CreateRelicObject(GameManager.ItemControl.RelicWeightSampling(4), 여긴 layout달린 ui위치넣으셈);
-    private void CreateRelicObject(List<ItemModel> lists, Transform parent) 
+    // CreateRelicObject(list[i].id);
+    private void CreateRelicObject(int id) 
     {
-        if (lists == null || lists.Count == 0) return;
+        if (relicItems == null || relicItems.Count == 0) return;
 
-        for (int i = 0; i < lists.Count; i++)
+        for (int i = 0; i < relicItems.Count; i++)
         {
-            if (lists[i] == null) continue;
-            
-               var go = GameManager.Resource.Create<BaseItem>(Path.UIElements+"RelicIconUI");
-               go.name = lists[i].name;
-               go.transform.SetParent(parent, false);
-               go.itemModel = lists[i];
-               go.gameObject.GetComponent<Image>().sprite = GameManager.Resource.Load<Sprite>(Path.UISprites+lists[i].path);
+            if (relicItems[i] == null) continue;
+
+            if (relicItems[i].id == id)
+            {
+                var go = GameManager.Resource.Create<BaseItem>(Path.UIElements+"RelicIconUI");
+                go.name = relicItems[i].name;
+                go.transform.SetParent(relicRoot.transform, false);
+                //go.gameObject.GetComponent<Image>().sprite = GameManager.Resource.Load<Sprite>(Path.UISprites+relicItems[i].path);
+           
+            }
         }
     }
     // ========== 유물 슬롯과 이미지 생성 메서드 ==========
@@ -345,7 +348,7 @@ public class ItemControlManger : MonoBehaviour
             go.name = lists[i].name;
             go.transform.SetParent(parent, false);
             go.itemModel = lists[i];
-            go.gameObject.GetComponent<Image>().sprite = GameManager.Resource.Load<Sprite>(Path.UISprites+lists[i].path);
+            //go.gameObject.GetComponent<Image>().sprite = GameManager.Resource.Load<Sprite>(Path.UISprites+lists[i].path);
         }
     }
 }

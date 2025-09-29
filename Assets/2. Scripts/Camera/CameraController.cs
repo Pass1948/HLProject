@@ -18,6 +18,7 @@ public class CameraController : MonoBehaviour
     
     private Camera cam;
     private bool recentering = false;
+ 
     
     public void InitCamera()
     {
@@ -30,6 +31,7 @@ public class CameraController : MonoBehaviour
 
     void Update()
     {
+        if(!GameManager.TurnBased.isCamera) return;
         HandleZoom();
         if (!recentering) HandleEdgeScroll();
         HandleRecenter();

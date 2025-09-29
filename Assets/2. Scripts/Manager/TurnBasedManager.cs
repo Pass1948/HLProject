@@ -17,7 +17,9 @@ public class TurnBasedManager : MonoBehaviour
 
     // 현재 진행 중인 몬스터(없으면 null)
     private BaseEnemy currentEnemy;
-
+    
+    public bool isCamera=true;
+    
     // 적 턴 진행 여부 플래그
     private bool enemyPhaseActive;
 
@@ -60,14 +62,15 @@ public class TurnBasedManager : MonoBehaviour
         turnHFSM.FixedTick(Time.fixedDeltaTime);
     }
     
+    
+    
     public void StartTotalTurn() => isStarted = !isStarted;
 
 
     public void AddCount() => count++;
     public void ResetCount() => count = 0; // TODO : 턴카운터 초기화
     
-    
-
+    public void SwitchIsCamera() => isCamera = !isCamera;
     public void ChangeStartTurn()    // TODO:스테이지 시작과 종료 시점에 호출해주기 바람
     {
         StartTotalTurn();

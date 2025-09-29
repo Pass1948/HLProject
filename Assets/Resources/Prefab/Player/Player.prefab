@@ -795,6 +795,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5a7efeacf394b748acb2dfe1a20d5e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerMonney: 0
+  bullets: []
+  ownedRelics: 
 --- !u!114 &7181109901846145806
 MonoBehaviour:
   m_ObjectHideFlags: 0
