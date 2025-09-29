@@ -89,7 +89,7 @@ public class ShopManager : MonoBehaviour
     // 탄환 오퍼 
     private void GenerateCardOffers(List<Ammo> playerOwned)
     {
-        var snapshot = deck != null ? deck.GetDrawSnapshot() : null;
+        var snapshot = deck.GetDrawSnapshot();
         if (snapshot == null)
         {
             Debug.LogError("[ShopManager] Snapshot이 null입니다. Deck이 초기화되지 않았습니다.");
