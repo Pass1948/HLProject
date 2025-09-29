@@ -42,7 +42,6 @@ public class ItemControlManger : MonoBehaviour
     // =====================================================================
     // 아이템오브젝트 연동로직
     // =====================================================================
-    
     public T GetItem<T>() where T : BaseItem
     {
         string uiName = GetItemName<T>();
@@ -327,7 +326,7 @@ public class ItemControlManger : MonoBehaviour
                go.name = lists[i].name;
                go.transform.SetParent(parent, false);
                go.itemModel = lists[i];
-               go.gameObject.GetComponent<Image>().sprite = GameManager.Resource.Load<Sprite>(Path.UISprites+lists[i].path);
+               go.gameObject.GetComponent<Image>().sprite = GameManager.Resource.Load<Sprite>(Path.UISprites+lists[i].imagePath);
         }
     }
     // ========== 유물 슬롯과 이미지 생성 메서드 ==========
@@ -345,7 +344,7 @@ public class ItemControlManger : MonoBehaviour
             go.name = lists[i].name;
             go.transform.SetParent(parent, false);
             go.itemModel = lists[i];
-            go.gameObject.GetComponent<Image>().sprite = GameManager.Resource.Load<Sprite>(Path.UISprites+lists[i].path);
+            go.gameObject.GetComponent<Image>().sprite = GameManager.Resource.Load<Sprite>(Path.UISprites+lists[i].imagePath);
         }
     }
 }
