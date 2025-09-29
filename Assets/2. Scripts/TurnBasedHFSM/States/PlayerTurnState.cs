@@ -16,14 +16,8 @@ public class PlayerTurnState : BaseTurnState
         // 턴 시작 시 커맨드 초기화후 입력 대기
         GameManager.UI.OpenUI<PaseTurnUI>();
         GameManager.Mouse.ToggleMovePhase();
-        if (GameManager.Mouse.isMouse == false)
-        {
-            GameManager.Mouse.isMouse = true;
-        }
-        if (GameManager.Mouse.isShowRange == false)
-        {
-            GameManager.Mouse.isShowRange = true;
-        }
+        GameManager.Mouse.isMouse = true;
+        GameManager.Mouse.isShowRange = true;
         Time.timeScale = 3f;    // 배속 기능
         if (turnManager.isCamera == false)
         {
@@ -38,9 +32,9 @@ public class PlayerTurnState : BaseTurnState
         {
             return;
         }
-        
+
         timer += dt;
-        if (timer > turnSetVlaue.turnDelayTime )
+        if (timer > turnSetVlaue.turnDelayTime)
         {
             GameManager.UI.CloseUI<PaseTurnUI>();
             GameManager.UI.OpenUI<MainUI>();
@@ -51,6 +45,6 @@ public class PlayerTurnState : BaseTurnState
     {
         // 혹시 못 닫았으면 안전하게 닫아 주기
         if (!didClose) GameManager.UI.CloseUI<PaseTurnUI>();
-  
+
     }
 }

@@ -169,30 +169,37 @@ public class MouseManager : MonoBehaviour
 
         var cell = GetCurrentCell();
 
-        if (!IsInside(cell)) { CancelSelection(); return; }
+        // 🔹 맵 밖 클릭 → 공격/킥/선택 모두 취소
+        if (!IsInside(cell))
+        {
+            if (isAttacking || IsKicking) CancelAttackOrKickRange();
+            isAttacking = false;
+            IsKicking = false;
+            CancelSelection();
+            return;
+        }
 
-        // 셀 분류 결과를 1회만 계산 (중복 호출 제거)
+        // 한 번만 계산해서 재사용
         bool cellIsPlayer = map.IsPlayer(cell);
         bool cellIsEnemy = map.IsEnemy(cell);
-        bool cellIsTerrain = map.IsMovable(cell); // Terrain
+        bool cellIsTerrain = map.IsMovable(cell);
+        bool cellIsObstacle = map.IsObstacle_Breakable(cell);     // ← 장애물 체크 추가
+        bool inRange = IsCellInAttackOrKickRange(cell);
         Debug.Log($"지금 자리는 Player {cellIsPlayer}");
         Debug.Log($"지금 자리는 Enemy {cellIsEnemy}");
         Debug.Log($"지금 자리는 Terrain {cellIsTerrain}");
-        // 공격 모드 우선
+
+        // 공격 모드 우선 처리
         if (isAttacking)
         {
-            if (IsCellInAttackOrKickRange(cell))
+            // 공격은 "범위 안" 이면서 "적 또는 장애물"일 때만 실행
+            if (inRange && (cellIsEnemy || cellIsObstacle))
             {
-                GameManager.Event.Publish(EventType.PlayerAttack); // 공격 State에서 일괄 처리
-                isAttacking = false;
-            
+                GameManager.Event.Publish(EventType.PlayerAttack); // 공격 State에서 처리
             }
-            else
-            {
-                // TODO : 범위 밖 클릭 → 실행 안 함 + 범위 끄기(기획자들과 상의후 설정)
-                //CancelAttackOrKickRange();
-                isAttacking = false;
-            }
+            // 그 외(범위 밖/일반 타일/플레이어 클릭 등)는 취소 + 범위 끄기
+            CancelAttackOrKickRange();
+            isAttacking = false;
             return;
         }
 
@@ -208,8 +215,7 @@ public class MouseManager : MonoBehaviour
             }
             else
             {
-                // TODO : 범위 밖 클릭 → 실행 안 함 + 범위 끄기 (기획자들과 상의후 설정)
-                //CancelAttackOrKickRange();
+                CancelAttackOrKickRange();
                 isKicking = false;
             }
             return;
@@ -247,9 +253,19 @@ public class MouseManager : MonoBehaviour
     // Player 셀 클릭 => 선택 + 이동범위 표시
     private void OnClickPlayer(Vector3Int cell)
     {
+        // 공격/킥 모드면: 범위만 끄고 취소
+        if (isAttacking || IsKicking)
+        {
+            CancelAttackOrKickRange();
+            isAttacking = false;
+            IsKicking = false;
+            // 플레이어 범위는 의도대로 "끄기만" 하고 리턴
+            HidePlayerRange();
+            return;
+        }
+
         // 적 팝업은 닫아둠
         HideEnemyPopup();
-
         if (isMoving) return;
 
         // 선택/범위 기초값 세팅은 기존 그대로 유지
@@ -257,7 +273,6 @@ public class MouseManager : MonoBehaviour
         selectedPlayerCell = cell;
         selectedMoveRange = GameManager.Unit.Player.playerModel.moveRange;
 
-        if (isAttacking) return;
         if (isShowRange == false) return;
             // 현재 범위가 떠 있고 같은 칸을 다시 눌렀다면 끄고, 아니면 켠다
             if (playerRangeVisible && selectedPlayerCell == cell)
