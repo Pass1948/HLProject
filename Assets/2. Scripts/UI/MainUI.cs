@@ -53,6 +53,8 @@ public class MainUI : BaseUI
     //설정창 UI
     [SerializeField] private GameObject settingUI;
 
+    [SerializeField] private TextMeshProUGUI stageInfoText;
+    
     private void Awake()
     {
         turnBtn.onClick.AddListener(OnTurnEnd);
@@ -309,7 +311,7 @@ public class MainUI : BaseUI
         {
             move = GameManager.Map.moveRange;
         }
-        movementText.text = ($"Movement: {move}");
+        movementText.text = ($"{move}");
     }
 
     private void RefreshPlayerHP()

@@ -18,9 +18,4 @@ public class BasePlayer : MonoBehaviour
         playerHandler = GetComponent<PlayerHandler>();
         // controller.isPlayer = true;
     }
-
-    protected virtual void Start()
-    {
-        GameManager.Shop.ShopInit();
-    }
 }

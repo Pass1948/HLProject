@@ -340,7 +340,15 @@ public class MouseManager : MonoBehaviour
             center, halfExtents, oneHit, Quaternion.identity, unitDetectMask, QueryTriggerInteraction.Ignore);
 
         if (hitCount <= 0) return null;
-        var col = oneHit[0];
+        Collider col = null;
+        foreach (var v in oneHit)
+        {
+            if (v.GetComponent<BasePlayer>() == true)
+            {
+                col = v;
+            }
+        }
+         Debug.Log($"이것은 수류탄이요?{col}");    
         if (!col) return null;
 
         if (col.TryGetComponent<T>(out var direct)) return direct;
