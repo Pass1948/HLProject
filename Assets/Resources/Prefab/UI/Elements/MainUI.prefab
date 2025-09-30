@@ -2899,6 +2899,7 @@ MonoBehaviour:
   settingActiveBtn: {fileID: 8322020061383319587}
   settingUI: {fileID: 7530061580899684206, guid: 2393651c4aa01354b8831247c8e51bfa,
     type: 3}
+  stageInfoText: {fileID: 0}
 --- !u!114 &356632293649240770
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6207,7 +6208,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 9234dbe75aa49954687055bee9c9ed12, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a3773fbbddbf29e42a6cfeeba3fa0aee, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
