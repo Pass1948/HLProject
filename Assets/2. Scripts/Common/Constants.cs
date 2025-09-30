@@ -24,6 +24,7 @@ public enum EventType
     OnGoldChanged,
     //--- 상점
     ShopOffersChanged,
+    ShopPlayerCardsConfim,
     ShopPowderBundlePrompt,
     ShopRemoveBulletPrompt,
     ShopTryBuyIndex,
