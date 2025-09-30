@@ -91,12 +91,15 @@ public class MapManager : MonoBehaviour
         
         mapData = new int[stage.mapSize, stage.mapSize];
         mapCreator.GenerateMap(mapData, tilemap, groundTile, wallTile);
-        
-        attackRange.Initialize(attackRangeTilemap, redAttackTile, mainCamera, grid);
+        if (attackRange != null)
+        {
+            attackRange.Initialize(attackRangeTilemap, redAttackTile, grid);
+        }
 
         pathfinding = new Pathfinding(tilemap);
 
         spawnController.SpawnAllObjects(stage);
+        DumpMapData();
     }
     
     public void CreateMovePoint()
@@ -140,6 +143,7 @@ public class MapManager : MonoBehaviour
         {
             mapData[oldX.x, oldY.y] = TileID.Terrain;
         }
+        DumpMapData();
     }
 
     public void UpdateAttackTargets(List<Vector3Int> attackCells, List<BaseEnemy> enemies)
@@ -272,6 +276,35 @@ public class MapManager : MonoBehaviour
     public bool IsEnemy(Vector3Int cell)
     {
         return mapData[cell.x, cell.y] == TileID.Enemy;
+    }
+   
+    // 맵 데이터 확인///////////
+    public void DumpMapData()
+    {
+
+        if (mapData == null)
+        {
+            Debug.LogError("mapData가 null");
+            return;
+        }
+
+        System.Text.StringBuilder sb = new System.Text.StringBuilder();
+        sb.AppendLine("---------------------------------------");
+
+        for (int y = mapHeight - 1; y >= 0; y--)
+        {
+            sb.Append($"== ");
+            for (int x = 0; x < mapWidth; x++)
+            {
+                sb.Append($"{mapData[x, y]:D1} ");
+            }
+
+            sb.AppendLine();
+        }
+
+        sb.AppendLine("-----------------------------------------");
+
+        Debug.Log(sb.ToString());
     }
 
 }
