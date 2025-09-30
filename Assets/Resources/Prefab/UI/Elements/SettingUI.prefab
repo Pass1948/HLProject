@@ -6299,8 +6299,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9c1e78f898960e4bbf2906a1dfb65cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  windowPanel: {fileID: 402623412764868607}
+  windowPrevBtn: {fileID: 2948022770133023430}
+  windowNextBtn: {fileID: 7957453578274948958}
   closeBtn: {fileID: 5058856127012601320}
   backToMainMenuBtn: {fileID: 1991808747088476593}
+  speedPanel: {fileID: 1791527487219993392}
+  speedPrevBtn: {fileID: 103367240832139699}
+  speedNextBtn: {fileID: 5244041542374406180}
 --- !u!1 &7621102804154732760
 GameObject:
   m_ObjectHideFlags: 0
