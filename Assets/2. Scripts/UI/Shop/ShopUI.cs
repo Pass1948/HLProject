@@ -37,7 +37,6 @@ public class ShopUI : BaseUI
 
     private void Start()
     {
-        RebuildPlayerBullets();
     }
     private void OnEnable()
     {

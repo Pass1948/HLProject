@@ -27,7 +27,7 @@ public class ClearUI : BaseUI
     
     private void OpenStore()
     {
-        GameManager.UI.OpenUI<ShopUI>();
+        GameManager.UI.GetUI<ShopUI>();
     }
 
 }
