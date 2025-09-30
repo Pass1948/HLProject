@@ -8,12 +8,15 @@ using UnityEngine.Tilemaps;
 public class TestScene : BaseScene
 {
     private Stage _stage;
+    public Stage Stage
+    {
+        get => _stage;
+    }
 
     public override void SceneEnter()
     {
-        Debug.Log("스테이지 씬 시작");
         _stage = new Stage();
-        _stage.InitStage();
+        _stage.InitStage(GameManager.SaveLoad.nextSceneIndex);
         GameManager.Map.CreateMap(_stage);
         var cam = GameManager.Resource.Create<GameObject>(Path.Camera + "MainCamera");
         CameraController cc = cam.GetComponent<CameraController>();
@@ -23,12 +26,13 @@ public class TestScene : BaseScene
 
         GameManager.TurnBased.ChangeStartTurn();
         // GameManager.ItemControl.ItemDataSet();  // 아이템데이터 리스트 초기 세팅
-        GameManager.Shop.ShopInit();
+        GameManager.Shop.ShopInit(_stage);
     }
 
     public override void SceneExit()
     {
-        
+        GameManager.Unit.enemies.Clear();
+        GameManager.TurnBased.ChangeStartTurn();
     }
 
     public override void SceneLoading()

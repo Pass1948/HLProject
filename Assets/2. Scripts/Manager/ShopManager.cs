@@ -37,6 +37,8 @@ public class ShopManager : MonoBehaviour
     public float weightRare = 5f;
     public float weightElite = 3f;
     public float weightLegendary = 1f;
+
+    public Stage stage;
     
     private void Start()
     {
@@ -49,8 +51,9 @@ public class ShopManager : MonoBehaviour
             powderPool = new List<PowderData>();
     }
 
-    public void ShopInit()
+    public void ShopInit(Stage stage)
     {
+        this.stage = stage;
         deck = GameManager.Resource.Create<Deck>(Path.UI + "Deck");
         EnterShop();
     }
