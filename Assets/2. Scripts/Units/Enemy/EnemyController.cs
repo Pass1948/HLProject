@@ -80,16 +80,9 @@ public class EnemyController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.A))
         {
-            Debug.Log(TargetPos);
-
-            StartTurn();
-            //stateMachine.ChangeState(stateMachine.EvaluateState);
-            //StartTurn(GameManager.Map.playerPos);
-        }
-
-        if(Input.GetKeyDown(KeyCode.S))
-        {
-            OnHitState();
+            isDie = true;
+            stateMachine.ChangeState(stateMachine.DieState);
+            GameManager.TurnBased.EnemyDieCheck();
         }
     }
 

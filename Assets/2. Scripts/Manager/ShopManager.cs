@@ -41,7 +41,7 @@ public class ShopManager : MonoBehaviour
     private void Start()
     {
         // 아직 바로 실행 중입니다.
-        deck = GameManager.Resource.Create<Deck>(Path.UI + "Deck");
+ 
         if (relicPool == null || relicPool.Count == 0)
             relicPool = DataTable.RelicData.GetList();
         
@@ -51,6 +51,7 @@ public class ShopManager : MonoBehaviour
 
     public void ShopInit()
     {
+        deck = GameManager.Resource.Create<Deck>(Path.UI + "Deck");
         EnterShop();
     }
 
@@ -76,7 +77,7 @@ public class ShopManager : MonoBehaviour
         // 1) 탄환
         GenerateCardOffers(player.bullets);
         // 2) 유물
-        GenerateRelicOffers(player.ownedRelics);
+        GenerateRelicOffers(player.ownedRelics, GameManager.ItemControl.buyItems);
 
         // 탄환 제거 (입장당 1회)
         // if (canRemoveBullet)
@@ -126,20 +127,21 @@ public class ShopManager : MonoBehaviour
 
 
     // ────────────── 유물 오퍼 ──────────────
-    private void GenerateRelicOffers(List<int> ownedRelics)
+    private void GenerateRelicOffers(List<int> ownedRelics, List<ItemModel> it)
     {
         var usedIds = new HashSet<int>();
-        var relicCandidates = new List<RelicData>(relicPool);
+        var relicCandidates = GameManager.ItemControl.RelicWeightSampling(GameManager.ItemControl.relicItems.Count);
         Shuffle(relicCandidates);
 
         foreach (var relic in relicCandidates)
         {
             if (ownedRelics.Contains(relic.id)) continue; // 이미 보유한 유물
+            if (it.Contains(relic)) continue;   // 구매한 가방리스트에 저장
             if (usedIds.Contains(relic.id)) continue;     // 이번 상점 내 중복 유물
 
             usedIds.Add(relic.id);
 
-            int price = GetRelicPrice(relic.rarityType);
+            int price = GetRelicPrice(relic.rarity);
             offers.Add(new ShopItem(ShopItemType.SpecialTotem, relic.name, price, null, relic));
 
             if (usedIds.Count >= 4) break; // 최대 4개
@@ -161,7 +163,7 @@ public class ShopManager : MonoBehaviour
         switch (item.type)
         {
             case ShopItemType.Bullet:
-                player.AddBullet(item.ammo);
+                GameManager.ItemControl.drawPile.Add(item.ammo);
                 RemoveOfferAt(index);
                 changed =  true;
                 break;
@@ -169,7 +171,8 @@ public class ShopManager : MonoBehaviour
             case ShopItemType.SpecialTotem:
                 if (item.relic != null)
                 {
-                    player.AddRelic(item.relic.id);
+                    GameManager.ItemControl.CreateRelicObject(item.relic.id, item.relic);
+                    
                     RemoveOfferAt(index);
                     changed = true;
                 }
@@ -354,9 +357,9 @@ public class ShopManager : MonoBehaviour
         public string name;
         public int price;
         public Ammo ammo;
-        public RelicData relic; // BaseItem 제거, 바로 RelicData
+        public ItemModel relic; // BaseItem 제거, 바로 RelicData
 
-        public ShopItem(ShopItemType type, string name, int price, Ammo ammo = null, RelicData relic = null)
+        public ShopItem(ShopItemType type, string name, int price, Ammo ammo = null, ItemModel relic = null)
         {
             this.type = type;
             this.name = name;
