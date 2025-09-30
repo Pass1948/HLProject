@@ -46,6 +46,7 @@ public class ShopUI : BaseUI
         GameManager.Event.Subscribe<List<ShopManager.ShopItem>>(EventType.ShopOffersChanged, OnOffersChanged);
         GameManager.Event.Subscribe<(List<Ammo>, List<PowderData>)>(EventType.ShopPowderBundlePrompt, OnPowderBundlePrompt);
         GameManager.Event.Subscribe<List<Ammo>>(EventType.ShopRemoveBulletPrompt, OnRemoveBulletPrompt);
+        GameManager.Event.Subscribe(EventType.ShopPlayerCardsConfim,RebuildPlayerBullets);
         
         healButton.onClick.AddListener(()=> shop.TryHeal());
         rerollButton.onClick.AddListener(()=> shop.TryReroll());
@@ -59,6 +60,7 @@ public class ShopUI : BaseUI
         GameManager.Event.Unsubscribe<List<ShopManager.ShopItem>>(EventType.ShopOffersChanged, OnOffersChanged);
         GameManager.Event.Unsubscribe<(List<Ammo>, List<PowderData>)>(EventType.ShopPowderBundlePrompt, OnPowderBundlePrompt);
         GameManager.Event.Unsubscribe<List<Ammo>>(EventType.ShopRemoveBulletPrompt, OnRemoveBulletPrompt);
+        GameManager.Event.Unsubscribe(EventType.ShopPlayerCardsConfim, RebuildPlayerBullets);
     }
 
     // ===== 이벤트 핸들러 =====
@@ -143,9 +145,11 @@ public class ShopUI : BaseUI
         int cost = 1;
         ClearSection(playerBulletRoot);
         Debug.Log($"{playerBulletRoot}");
-        var bullets = GameManager.Unit.Player.playerHandler.bullets;
+        var bullets = GameManager.Unit.Player.playerHandler.bullets; 
+        Debug.Log($"{bullets}");
         for (int i = 0; i < bullets.Count; i++)
         {
+            Debug.Log($"{bullets[i]}");
             var ammo = bullets[i];
             int idx = i;
             var card = GameManager.UI.CreateSlotUI<ShopCardUI>(playerBulletRoot.transform);

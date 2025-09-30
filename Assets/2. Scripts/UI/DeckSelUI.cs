@@ -49,7 +49,11 @@ public class DeckSelUI : MonoBehaviour
         GameManager.TurnBased.turnSettingValue.IsClubDeck ? "Club" :
         "None"));
         */
-
+        if(!ISSelectDeck())
+        {
+            Debug.Log("Select Your Deck!");
+            return;
+        }
         GameManager.Event.Publish(EventType.SelectDeck);
         GameManager.SceneLoad.LoadScene(SceneType.Test);
     }
@@ -110,6 +114,12 @@ public class DeckSelUI : MonoBehaviour
     private void IsClub()
     {
         GameManager.TurnBased.turnSettingValue.IsClubDeck = true;
+    }
+
+    private bool ISSelectDeck()
+    {
+        var IsSelected = GameManager.TurnBased.turnSettingValue;
+        return IsSelected.IsBasicDeck || IsSelected.IsDiamondDeck || IsSelected.IsHeartDeck || IsSelected.IsSpadeDeck || IsSelected.IsClubDeck;
     }
 
     private void AutoRegisterPanels()

@@ -65,6 +65,7 @@ public class ShopManager : MonoBehaviour
         canRemoveBullet = true;
         powderBundleLeft = 2;
         GenerateOffers();
+        GameManager.Event.Publish(EventType.ShopPlayerCardsConfim);
         //확인을 위한 
     }
     
@@ -84,19 +85,10 @@ public class ShopManager : MonoBehaviour
         
         GameManager.Event.Publish(EventType.ShopOffersChanged, offers);
     }
-
-
     // 탄환 오퍼 
     private void GenerateCardOffers(List<Ammo> playerOwned)
     {
-        var snapshot = deck != null ? deck.GetDrawSnapshot() : null;
-        if (snapshot == null)
-        {
-            Debug.LogError("[ShopManager] Snapshot이 null입니다. Deck이 초기화되지 않았습니다.");
-            return;
-        }
-
-        Debug.Log($"[ShopManager] Snapshot count={snapshot.Count}, playerOwned={playerOwned.Count}");
+        var snapshot = deck.GetDrawSnapshot();
 
         Shuffle(snapshot);
 
@@ -107,11 +99,11 @@ public class ShopManager : MonoBehaviour
         {
             // 보유 중이면 제외(중복 구매 방지)
             // List<T>.Exists(Predicate<T>) = 리스트 안에 조건을 만족하는 원소가 하나라도 있으면 true반환
-            bool owned = playerOwned.Exists(p => p.suit == card.suit && p.rank == card.rank);
-            if (owned) continue;
+            // bool owned = playerOwned.Exists(p => p.suit == card.suit && p.rank == card.rank);
+            // if (owned) continue;
 
             // 새로운 탄환 후보 생성
-            var offerAmmo = new Ammo { suit = card.suit, rank = card.rank, powder = null };
+            var offerAmmo = new Ammo { suit = card.suit, rank = card.rank, powder = null};
             
             
             // 가격 = 기본3 + (화약 레어도 추가 비용)
@@ -218,7 +210,7 @@ public class ShopManager : MonoBehaviour
 
     private void RemoveOfferAt(int index)
     {
-        if (index <= 0 && index >= offers.Count)
+        if (index < 0 && index >= offers.Count)
         {
             return;
         }

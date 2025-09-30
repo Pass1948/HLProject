@@ -7,23 +7,6 @@ public class Deck : MonoBehaviour
     //시작 덱 장수
     //현재 사용안함
     //[SerializeField] private int initialDeckSize = 13;
-    //TODO: 바꿘거 아니라메요ㅜㅜ 카드가 상점에 안나와서 10시간을 버렸어요ㅠㅠ(JBS)
-    //TODO: 바꿘거 아니라메요ㅜㅜ 카드가 상점에 안나와서 10시간을 버렸어요ㅠㅠ(JBS)
-    //TODO: 바꿘거 아니라메요ㅜㅜ 카드가 상점에 안나와서 10시간을 버렸어요ㅠㅠ(JBS)
-    //TODO: 바꿘거 아니라메요ㅜㅜ 카드가 상점에 안나와서 10시간을 버렸어요ㅠㅠ(JBS)
-    //TODO: 바꿘거 아니라메요ㅜㅜ 카드가 상점에 안나와서 10시간을 버렸어요ㅠㅠ(JBS)
-    //TODO: 바꿘거 아니라메요ㅜㅜ 카드가 상점에 안나와서 10시간을 버렸어요ㅠㅠ(JBS)
-    //TODO: 바꿘거 아니라메요ㅜㅜ 카드가 상점에 안나와서 10시간을 버렸어요ㅠㅠ(JBS)
-    //TODO: 바꿘거 아니라메요ㅜㅜ 카드가 상점에 안나와서 10시간을 버렸어요ㅠㅠ(JBS)
-    //TODO: 바꿘거 아니라메요ㅜㅜ 카드가 상점에 안나와서 10시간을 버렸어요ㅠㅠ(JBS)
-    //TODO: 바꿘거 아니라메요ㅜㅜ 카드가 상점에 안나와서 10시간을 버렸어요ㅠㅠ(JBS)
-    //TODO: 바꿘거 아니라메요ㅜㅜ 카드가 상점에 안나와서 10시간을 버렸어요ㅠㅠ(JBS)
-    //TODO: 바꿘거 아니라메요ㅜㅜ 카드가 상점에 안나와서 10시간을 버렸어요ㅠㅠ(JBS)
-    //TODO: 바꿘거 아니라메요ㅜㅜ 카드가 상점에 안나와서 10시간을 버렸어요ㅠㅠ(JBS)
-    //TODO: 바꿘거 아니라메요ㅜㅜ 카드가 상점에 안나와서 10시간을 버렸어요ㅠㅠ(JBS)
-    //TODO: 바꿘거 아니라메요ㅜㅜ 카드가 상점에 안나와서 10시간을 버렸어요ㅠㅠ(JBS)
-    //TODO: 바꿘거 아니라메요ㅜㅜ 카드가 상점에 안나와서 10시간을 버렸어요ㅠㅠ(JBS)
-    //TODO: 바꿘거 아니라메요ㅜㅜ 카드가 상점에 안나와서 10시간을 버렸어요ㅠㅠ(JBS)
 
     //현재 덱
     [SerializeField] 
@@ -60,11 +43,7 @@ public class Deck : MonoBehaviour
     //외부 UI용
     public List<Ammo> GetDrawSnapshot() => new List<Ammo>(GameManager.ItemControl.drawPile);
 
-    /*
-     * 어디에 넣어주지
-     * 플레이어에 넣어주면 되나
-     * 
-     */
+    
     public void GetPlayerBullets(List<Ammo> pile)
     {
         for (int i = 0; i < GameManager.ItemControl.drawPile.Count; i++)
@@ -81,7 +60,7 @@ public class Deck : MonoBehaviour
         //기본덱
         //숫자 1~13 각 1장, 문양은 랜덤
         //==============================
-
+        
             var deck = GameManager.Data.bulletDataGroup.GetBulletData(9005);
 
             for(int i = 0; i <= deck.max; i++)
@@ -99,7 +78,7 @@ public class Deck : MonoBehaviour
         {
             var deck2 = GameManager.Data.bulletDataGroup.GetBulletData(9003);
             Suit fixedSuit = (Suit)deck2.type;
-            for (int r = deck2.min; r <= deck2.max; r++)
+            for (int r = 0; r <= deck2.max; r++)
             {
                 GameManager.ItemControl.drawPile.Add(new Ammo { suit = fixedSuit, rank = r });
             }
@@ -113,7 +92,7 @@ public class Deck : MonoBehaviour
         {
             var deck3 = GameManager.Data.bulletDataGroup.GetBulletData(9002);
             Suit fixedSuit2 = (Suit)deck3.type;
-            for (int r = deck3.min; r <= deck3.max; r++)
+            for (int r = 0; r <= deck3.max; r++)
             {
                 GameManager.ItemControl.drawPile.Add(new Ammo { suit = fixedSuit2, rank = r });
 
@@ -132,7 +111,7 @@ public class Deck : MonoBehaviour
         {
             var deck4 = GameManager.Data.bulletDataGroup.GetBulletData(9001);
             Suit fixedSuit3 = (Suit)deck4.type;
-            for (int r = deck4.min; r <= deck4.max; r++)
+            for (int r = 0; r <= deck4.max; r++)
             {
                 GameManager.ItemControl.drawPile.Add(new Ammo { suit = fixedSuit3, rank = r });
             }
@@ -146,7 +125,7 @@ public class Deck : MonoBehaviour
         {
             var deck5 = GameManager.Data.bulletDataGroup.GetBulletData(9004);
             Suit fixedSuit4 = (Suit)deck5.type;
-            for (int r = deck5.min; r <= deck5.max; r++)
+            for (int r = 0; r <= deck5.max; r++)
             {
                 GameManager.ItemControl.drawPile.Add(new Ammo { suit = fixedSuit4, rank = r });
             }
