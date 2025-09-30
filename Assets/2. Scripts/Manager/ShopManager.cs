@@ -39,7 +39,6 @@ public class ShopManager : MonoBehaviour
     public float weightLegendary = 1f;
 
     public Stage stage;
-    
     private void Start()
     {
         // 아직 바로 실행 중입니다.
