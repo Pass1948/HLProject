@@ -25,6 +25,11 @@ public class DieEnemyState : BaseEnemyState
 
     public override void Exit()
     {
+        GameManager.Map.SetObjectPosition(
+            controller.GridPos.x, 
+            controller.GridPos.y, 
+            TileID.Terrain
+        );
         GameManager.Unit.enemies.Remove(controller.baseEnemy);
         controller.baseEnemy.gameObject.SetActive(false);
         //controller.baseEnemy.gameObject.Destroy();

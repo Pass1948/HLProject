@@ -199,6 +199,9 @@ public class ShopUI : BaseUI
     
     private void NextStage()
     {
-        // TODO: 여기에 추가해 주시면 됩니당.(JBS)    
+        // TODO: 여기에 추가해 주시면 됩니당.(JBS)
+        int nextStageIndex = GameManager.Shop.stage.GetCurrentStageIndex() + 1;
+        GameManager.SaveLoad.nextSceneIndex = nextStageIndex;
+        GameManager.SceneLoad.RestartScene();
     }
 }

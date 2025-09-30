@@ -99,7 +99,7 @@ public class ReloadAmmo : MonoBehaviour
     // 프리팹 생성
     private void SpawnDeckItem(RectTransform parent, Ammo ammo)
     {
-        GameObject go = GameManager.Resource.Create<GameObject>(Path.Weapon + "Bullet", parent);
+        GameObject go = GameManager.Resource.Create<GameObject>(Path.UI + "Bullet", parent);
         var view = go.GetComponent<BulletView>();
         if (view)
         {

@@ -39,7 +39,6 @@ public class AttackController : MonoBehaviour
         {
             return;
         }
-
         
         //이미 사용된 슬롯 클릭 방지
         if (!btn.interactable)
@@ -105,6 +104,8 @@ public class AttackController : MonoBehaviour
         {
             selectBulletBg.color = bgSel;
         }
+
+        GameManager.Mouse.HidePlayerRange();
     }
 
     public void Fire()
@@ -227,7 +228,7 @@ public class AttackController : MonoBehaviour
             return;
         }
 
-        GameObject go = GameManager.Resource.Create<GameObject>(Path.Weapon + "Bullet", slotContainer);
+        GameObject go = GameManager.Resource.Create<GameObject>(Path.UI + "Bullet", slotContainer);
         go.transform.localScale = Vector3.one;
 
         var view = go.GetComponent<BulletView>();

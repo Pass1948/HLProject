@@ -37,7 +37,8 @@ public class ShopManager : MonoBehaviour
     public float weightRare = 5f;
     public float weightElite = 3f;
     public float weightLegendary = 1f;
-    
+
+    public Stage stage;
     private void Start()
     {
         // 아직 바로 실행 중입니다.
@@ -48,10 +49,9 @@ public class ShopManager : MonoBehaviour
         if(powderPool == null)
             powderPool = new List<PowderData>();
     }
-
-    /// 상점 입장 > 상품 생성
-    public void ShopInit()
+    public void ShopInit(Stage stage)
     {
+        this.stage = stage;
         deck = GameManager.Resource.Create<Deck>(Path.UI + "Deck");
         rerollCost = 2;
         canRemoveBullet = true;

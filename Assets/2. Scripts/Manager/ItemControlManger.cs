@@ -4,10 +4,12 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class ItemControlManger : MonoBehaviour
 {
     // ===== 가중치값 =====
+    [Header("등급별 확률(백분율)")]
     [SerializeField] private float common = 70f; // 70%
     [SerializeField] private float normal = 20f; // 20%, 65%
     [SerializeField] private float rare = 5f; // 5%, 24%
@@ -26,21 +28,23 @@ public class ItemControlManger : MonoBehaviour
     [HideInInspector] public List<ItemModel> relicItems = new List<ItemModel>();
     [HideInInspector] public List<ItemModel> relicStatItems = new List<ItemModel>(); // 스탯증가부
     [HideInInspector] public List<ItemModel> relicRogicItems = new List<ItemModel>(); // 논리조건부
-
+    [HideInInspector] public List<ItemModel> buyItems = new List<ItemModel>(); // 구매한 아이템 리스트
     // ===== 화약아이템 리스트 =====
     [HideInInspector] public List<ItemModel> powderItems = new List<ItemModel>();
     [HideInInspector] public List<ItemModel> powderStatItems = new List<ItemModel>(); // 스탯증가부
     [HideInInspector] public List<ItemModel> powderRogicItems = new List<ItemModel>(); // 논리조건부
 
-    public List<ItemModel> buyItems = new List<ItemModel>(); // 구매한 아이템 리스트
+    
     // ===== 아이템 Prefab을 위한 변수들 =====
 
-    public GameObject itemPrefab;
-    public GameObject relicRoot; // 구매한 아이템 보관함
+    [HideInInspector]  public GameObject itemPrefab;
+    [HideInInspector]   public GameObject relicRoot; // 구매한 아이템 보관함
 
     private Dictionary<string, BaseItem> itemsDictionary = new Dictionary<string, BaseItem>();
 
-    public List<Ammo> drawPile = new();
+    [HideInInspector] public List<Ammo> drawPile = new(); // 구매한 총알 리스트
+    [HideInInspector] public List<Ammo> discardPile = new();
+    [HideInInspector] public List<Ammo> shopBullet = new();
     // =====================================================================
     // 아이템오브젝트 연동로직
     // =====================================================================
@@ -222,33 +226,15 @@ public class ItemControlManger : MonoBehaviour
     // 아이템 확률 관련 로직
     // =====================================================================
     // 불릿용 확률로직(5개 등급을 3~5개 불릿슬롯에 같은 확률(화약이 불릿에 적용될 확률)로 유지&등록)
-    public List<ItemModel> BulletWeightSampling(int slotCount) // 해당 메서드는 불릿에 효과 적용되는 걸로 설정
+    public List<Ammo> BulletWeightSampling(int slotCount) // 해당 메서드는 불릿에 효과 적용되는 걸로 설정
     {
-        var result = new List<ItemModel>();
-        var weights = new Dictionary<RarityType, float>
+        var result = new List<Ammo>();
+        for (int r = 1; r <= slotCount; r++)
         {
-            { RarityType.Common, Mathf.Max(1f, common) },
-            { RarityType.Normal, Mathf.Max(1f, normal) },
-            { RarityType.Rare, Mathf.Max(1f, rare) },
-            { RarityType.Elite, Mathf.Max(1f, elite) },
-            { RarityType.Legendary, Mathf.Max(1f, legendary) },
-        };
-
-        for (int i = 0; i < slotCount; i++)
-        {
-            var pickedRarity = PickRarity(weights);
-            var pool = FilterByRarity(powderItems, pickedRarity);
-            if (pool.Count == 0) // 해당 등급이 비었으면 폴백
-            {
-                if (powderItems.Count == 0) break;
-                result.Add(powderItems[UnityEngine.Random.Range(0, powderItems.Count)]);
-            }
-            else
-            {
-                result.Add(pool[UnityEngine.Random.Range(0, pool.Count)]);
-            }
+            Suit fixedSuit = (Suit)UnityEngine.Random.Range(0, 4);
+            int rank = UnityEngine.Random.Range(1, 14);
+            result.Add(new Ammo { suit = fixedSuit, rank = rank });
         }
-
         return result;
     }
 
