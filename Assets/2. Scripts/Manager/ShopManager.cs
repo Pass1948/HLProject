@@ -65,7 +65,6 @@ public class ShopManager : MonoBehaviour
         canRemoveBullet = true;
         powderBundleLeft = 2;
         GenerateOffers();
-        GameManager.Event.Publish(EventType.ShopPlayerCardsConfim);
         //확인을 위한 
     }
     
@@ -84,6 +83,7 @@ public class ShopManager : MonoBehaviour
         //     offers.Add(new ShopItem(ShopItemType.RemoveBullet, "탄환 제거", 3));
         
         GameManager.Event.Publish(EventType.ShopOffersChanged, offers);
+        GameManager.Event.Publish(EventType.ShopPlayerCardsConfim);
     }
     // 탄환 오퍼 
     private void GenerateCardOffers(List<Ammo> playerOwned)

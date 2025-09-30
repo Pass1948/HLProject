@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI; 
 
 public class ShopUI : BaseUI
@@ -10,43 +9,37 @@ public class ShopUI : BaseUI
     private ShopManager shop = GameManager.Shop;
     [SerializeField] private Transform bulletRoot;
     [SerializeField] private Transform relicRoot;
-
     [SerializeField] private Transform playerBulletRoot;
-
-    // [SerializeField] private Transform powderRoot;
     [SerializeField] private Transform removeRoot;
-    [SerializeField] private GameObject cardPrefab; // ShopCardUI 컴포넌트 포함 프리팹
-    
+    [SerializeField] private Image hpBar;
     
     [SerializeField] private TextMeshProUGUI rerollCostText;
     [SerializeField] private TextMeshProUGUI healCost;
 
     private int selectedBulletIndex = -1;
+    private int maxHp;
+    private int currentHp;
+    private int PlayerMoney;
     
     public Button rerollButton;
     public Button healButton;
     public Button removeButton;
     public Button nextStageButton;
-
+    
     private readonly List<GameObject> spawned = new();
 
     private void Awake()
     {
         shop = GameManager.Shop;
     }
-
-    private void Start()
-    {
-        RebuildPlayerBullets();
-    }
     private void OnEnable()
     {
-        
         // EventBus 구독
         GameManager.Event.Subscribe<List<ShopManager.ShopItem>>(EventType.ShopOffersChanged, OnOffersChanged);
         GameManager.Event.Subscribe<(List<Ammo>, List<PowderData>)>(EventType.ShopPowderBundlePrompt, OnPowderBundlePrompt);
         GameManager.Event.Subscribe<List<Ammo>>(EventType.ShopRemoveBulletPrompt, OnRemoveBulletPrompt);
-        GameManager.Event.Subscribe(EventType.ShopPlayerCardsConfim,RebuildPlayerBullets);
+        GameManager.Event.Subscribe(EventType.ShopPlayerCardsConfim,RebuildPlayerBullets); // 소지 카드 체크
+        GameManager.Event.Subscribe(EventType.ShopPlayerCardsConfim,PlayerHPCheck);       // 체력 체크
         
         healButton.onClick.AddListener(()=> shop.TryHeal());
         rerollButton.onClick.AddListener(()=> shop.TryReroll());
@@ -55,12 +48,14 @@ public class ShopUI : BaseUI
         if (shop != null) Rebuild(shop.offers);
     }
 
+
     private void OnDisable()
     {
         GameManager.Event.Unsubscribe<List<ShopManager.ShopItem>>(EventType.ShopOffersChanged, OnOffersChanged);
         GameManager.Event.Unsubscribe<(List<Ammo>, List<PowderData>)>(EventType.ShopPowderBundlePrompt, OnPowderBundlePrompt);
         GameManager.Event.Unsubscribe<List<Ammo>>(EventType.ShopRemoveBulletPrompt, OnRemoveBulletPrompt);
         GameManager.Event.Unsubscribe(EventType.ShopPlayerCardsConfim, RebuildPlayerBullets);
+        GameManager.Event.Unsubscribe(EventType.ShopPlayerCardsConfim, PlayerHPCheck);
     }
 
     // ===== 이벤트 핸들러 =====
@@ -152,7 +147,7 @@ public class ShopUI : BaseUI
             Debug.Log($"{bullets[i]}");
             var ammo = bullets[i];
             int idx = i;
-            var card = GameManager.UI.CreateSlotUI<ShopCardUI>(playerBulletRoot.transform);
+            var card = GameManager.UI.CreateSlotUI<ShopCardUI>(playerBulletRoot);
             card.Bind(new ShopManager.ShopItem(ShopItemType.Bullet, ammo.ToString(),cost,ammo));
             
             card.buyButton.onClick.RemoveAllListeners();
@@ -162,6 +157,18 @@ public class ShopUI : BaseUI
             });
         }
         cost++;
+    }
+
+    private void PlayerHPCheck()
+    {
+        currentHp = GameManager.Unit.Player.playerModel.health;
+        maxHp = GameManager.Unit.Player.playerModel.maxHealth;
+    }
+
+    private void PlayerHPBar()
+    {
+        float fill = currentHp / maxHp;
+        hpBar.fillAmount = (int)fill;
     }
 
     private void OnRemoveBulletCicked()

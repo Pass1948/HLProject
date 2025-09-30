@@ -14,13 +14,11 @@ public class PlayerModel : UnitModel
     public ViecleBording viecleBording;
     public int attack;
     public int attackRange;
-    public int baseMoveRange = 1;
     public int moveRange = 1;
     public int mulligan;
     public int reload;
-    public int baseHealth;
     public int health;
-    public int monney = 10;
+    public int money = 10;
     public bool die => health <= 0; //0���ϸ� Ʈ��
     public void InitData(EntityData data)
     {
