@@ -160,18 +160,6 @@ public class SpawnController : MonoBehaviour
                     spawnedCount++;
 
                 }
-                
-                // TileID 설정
-                int tileIdToSet = (int)TileID.Terrain; 
-                
-                if (obstacleData.canPlaceUnit == 0)
-                {
-                    tileIdToSet = (int)TileID.Obstacle; 
-                }
-                
-                GameManager.Map.SetObjectPosition(randX, randY, tileIdToSet);
-                spawnedCount++;
-                
             }
      
             if (spawnedCount < obstacleEntry.Value)
@@ -179,13 +167,9 @@ public class SpawnController : MonoBehaviour
                 Debug.LogWarning($"{spawnedCount}개 스폰");
             }
         }
-
-        if (spawnedCount < obstacleEntry.Value)
-        {
-            Debug.LogWarning($"{spawnedCount}개만 스폰했습니다");
-        }
+        
     }
-}
+
     
     // 적 스폰
     private void SpawnEnemies(Dictionary<int, int> enemies, int eliteCount, int stageId)
