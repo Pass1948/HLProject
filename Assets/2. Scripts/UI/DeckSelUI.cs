@@ -54,8 +54,8 @@ public class DeckSelUI : MonoBehaviour
             Debug.Log("Select Your Deck!");
             return;
         }
-        GameManager.Event.Publish(EventType.SelectDeck);
         GameManager.SceneLoad.LoadScene(SceneType.Test);
+        GameManager.Event.Publish(EventType.SelectDeck);
     }
     private void PrevDeck()
     {
