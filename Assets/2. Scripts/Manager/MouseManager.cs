@@ -66,7 +66,7 @@ public class MouseManager : MonoBehaviour
     private Vector3Int _hoverCell;
     private bool _hasHover;
 
-    private readonly Collider[] oneHit = new Collider[8];
+    private readonly Collider[] oneHit = new Collider[24];
 
     public void CreateMouse()
     {
