@@ -144,7 +144,7 @@ public class ShopUI : BaseUI
         int cost = 1;
         ClearSection(playerBulletRoot);
         Debug.Log($"{playerBulletRoot}");
-        var bullets = GameManager.Unit.Player.playerHandler.bullets; 
+        var bullets = GameManager.ItemControl.drawPile; 
         Debug.Log($"{bullets}");
         for (int i = 0; i < bullets.Count; i++)
         {
@@ -153,7 +153,7 @@ public class ShopUI : BaseUI
             int idx = i;
             var card = GameManager.UI.CreateSlotUI<ShopCardUI>(playerBulletRoot.transform);
             card.Bind(new ShopManager.ShopItem(ShopItemType.Bullet, ammo.ToString(),cost,ammo));
-            
+            card.OpenUI();
             card.buyButton.onClick.RemoveAllListeners();
             card.buyButton.onClick.AddListener(() =>
             {

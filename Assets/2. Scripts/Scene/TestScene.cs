@@ -8,31 +8,26 @@ using UnityEngine.Tilemaps;
 public class TestScene : BaseScene
 {
     private Stage _stage;
-    public Stage Stage
-    {
-        get => _stage;
-    }
 
     public override void SceneEnter()
     {
+        Debug.Log("스테이지 씬 시작");
         _stage = new Stage();
-        _stage.InitStage(GameManager.SaveLoad.nextSceneIndex);
+        _stage.InitStage();
         GameManager.Map.CreateMap(_stage);
         var cam = GameManager.Resource.Create<GameObject>(Path.Camera + "MainCamera");
         CameraController cc = cam.GetComponent<CameraController>();
         cc.InitCamera();
-        GameManager.Mouse.CreateMouse();
         GameManager.Unit.Vehicle.vehicleHandler.MountVehicle();
-
         GameManager.TurnBased.ChangeStartTurn();
-        // GameManager.ItemControl.ItemDataSet();  // 아이템데이터 리스트 초기 세팅
-        GameManager.Shop.ShopInit(_stage);
+        GameManager.ItemControl.ItemDataSet();  // 아이템데이터 리스트 초기 세팅
+        GameManager.Mouse.CreateMouse();
+        GameManager.Shop.ShopInit();
     }
 
     public override void SceneExit()
     {
-        GameManager.Unit.enemies.Clear();
-        GameManager.TurnBased.ChangeStartTurn();
+        
     }
 
     public override void SceneLoading()

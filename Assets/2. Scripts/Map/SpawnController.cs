@@ -41,7 +41,9 @@ public class SpawnController : MonoBehaviour
         
         SpawnPlayer();
         // SpawnEnemys(stage.enemiesDict); 
+
         SpawnEnemies(stage.enemiesDict, stage.eliteCnt, stage.id);
+
         SpawnObstacles(stage.obstaclesDict);
     }
     
@@ -50,7 +52,7 @@ public class SpawnController : MonoBehaviour
         int count = 100;
         for (int i = 0; i < count; i++)
         {
-            // (0,0) - (3,3) 플레이어 생성 범위
+            // (1,1) - (2,2) 플레이어 생성 범위
             int randX = Random.Range(1, 2);
             int randY = Random.Range(1, 2);
 
@@ -81,86 +83,93 @@ public class SpawnController : MonoBehaviour
     
     // 장애물 스폰
     public void SpawnObstacles(Dictionary<int, int> obstacles)
-{
-    int maxAttempts = GameManager.Map.mapWidth * GameManager.Map.mapHeight * 2; 
-
-    foreach (var obstacleEntry in obstacles)
     {
-        int spawnedCount = 0;
-        int obstacleId = obstacleEntry.Key;
-        
-        ObstacleData obstacleData = GameManager.Data.obstacleDataGroup.GetObstacleData(obstacleId);
-
-        if (obstacleData == null)
+        int maxAttempts = GameManager.Map.mapWidth * GameManager.Map.mapHeight * 2; 
+        foreach (var obstacleEntry in obstacles)
         {
-            continue;
-        }
-
-        string prefabName = GetObstaclePrefabName(obstacleData.type);
-        
-        if (string.IsNullOrEmpty(prefabName))
-        {
-            continue;
-        }
-        
-        // 현재 장애물 타입에 맞는 풀을 찾음
-        if (!obstaclePools.TryGetValue(prefabName, out BasicObstaclePool pool))
-        {
-            continue;
-        }
-        
-        for (int i = 0; i < maxAttempts && spawnedCount < obstacleEntry.Value; i++) 
-        {
-            int randX = Random.Range(0, GameManager.Map.mapWidth);
-            int randY = Random.Range(0, GameManager.Map.mapHeight);
-            Vector3Int spawnPos = new Vector3Int(randX, randY, 0);
-
-            if (GameManager.Map.mapData[randX, randY] == (int)TileID.Terrain)
+            int spawnedCount = 0;
+            int obstacleId = obstacleEntry.Key;
+      
+            ObstacleData obstacleData = GameManager.Data.obstacleDataGroup.GetObstacleData(obstacleId);
+            if (obstacleData == null)
             {
-                // 풀에서 오브젝트를 가져옴
-                GameObject obj = pool.GetPooledObject();
-                
-                // 정상적으로 리턴되었는지 확인
-                if (obj == null)
+                continue;
+            }
+            
+            string prefabName = GetObstaclePrefabName(obstacleData.type);
+            
+            if (string.IsNullOrEmpty(prefabName))
+            {
+                continue;
+            }
+            
+            // 현재 장애물 타입에 맞는 풀을 찾음
+            if (!obstaclePools.TryGetValue(prefabName, out BasicObstaclePool pool))
+            {
+                continue;
+            }
+            
+            for (int i = 0; i < maxAttempts && spawnedCount < obstacleEntry.Value; i++) 
+            {
+                int randX = Random.Range(0, GameManager.Map.mapWidth);
+                int randY = Random.Range(0, GameManager.Map.mapHeight);
+                Vector3Int spawnPos = new Vector3Int(randX, randY, 0);
+      
+                if (GameManager.Map.mapData[randX, randY] == (int)TileID.Terrain)
                 {
-                    continue;
-                } 
+                    if (CheckAdjacentObstacle(randX, randY))
+                    {
+                        // 주변에 장애물이 이미 있으면 다시 찾기
+                        continue; 
+                    }
+                    
+                    // 풀에서 오브젝트를 가져옴
+                    GameObject obj = pool.GetPooledObject();
+               
+                    // 정상적으로 리턴되었는지 확인
+                    if (obj == null)
+                    {
+                        continue;
+                    } 
+              
+                    // 풀에서 가져온 오브젝트의 위치와 활성 상태를 초기화
+                    obj.transform.SetParent(transform);
+                    obj.SetActive(true);
+              
+                    BaseObstacle baseObstacle = obj.GetComponent<BaseObstacle>();
+             
+                    baseObstacle.InitObstacle(spawnPos, obstacleData); 
+                    baseObstacle.SetPosition(spawnPos);
+                    
+                    TurnEndDamageEffect damageEffect = obj.GetComponent<TurnEndDamageEffect>();
+                    
+                    if (damageEffect != null)
+                    {
+                        damageEffect.SetupEffect(); 
+                    }
                 
-                // 풀에서 가져온 오브젝트의 위치와 활성 상태를 초기화
-                obj.transform.SetParent(transform);
-                obj.SetActive(true);
-                
-                BaseObstacle baseObstacle = obj.GetComponent<BaseObstacle>();
-                
-                baseObstacle.InitObstacle(spawnPos, obstacleData); 
-                baseObstacle.SetPosition(spawnPos);
-                
-                TurnEndDamageEffect damageEffect = obj.GetComponent<TurnEndDamageEffect>();
-                if (damageEffect != null)
-                {
-                    damageEffect.SetupEffect(); 
+               
+                    // TileID 설정
+                    int tileIdToSet = (int)TileID.Terrain; 
+                    if (obstacleData.canPlaceUnit == 0)
+                    {
+                        tileIdToSet = (int)TileID.Obstacle; 
+                    }
+                    
+                    GameManager.Map.SetObjectPosition(randX, randY, tileIdToSet);
+                    spawnedCount++;
+
                 }
-                
-                // TileID 설정
-                int tileIdToSet = (int)TileID.Terrain; 
-                
-                if (obstacleData.canPlaceUnit == 0)
-                {
-                    tileIdToSet = (int)TileID.Obstacle; 
-                }
-                
-                GameManager.Map.SetObjectPosition(randX, randY, tileIdToSet);
-                spawnedCount++;
-                
+            }
+     
+            if (spawnedCount < obstacleEntry.Value)
+            {
+                Debug.LogWarning($"{spawnedCount}개 스폰");
             }
         }
-
-        if (spawnedCount < obstacleEntry.Value)
-        {
-            Debug.LogWarning($"{spawnedCount}개만 스폰했습니다");
-        }
+        
     }
-}
+
     
     // 적 스폰
     private void SpawnEnemies(Dictionary<int, int> enemies, int eliteCount, int stageId)
@@ -226,6 +235,34 @@ public class SpawnController : MonoBehaviour
                 
                 return string.Empty; 
         }
+    }
+    
+    private bool CheckAdjacentObstacle(int x, int y)
+    {
+        // 주변 8방향
+        int[] dx = { -1, 0, 1, -1, 1, -1, 0, 1 };
+        int[] dy = { -1, -1, -1, 0, 0, 1, 1, 1 };
+
+        for (int i = 0; i < 8; i++)
+        {
+            int checkX = x + dx[i];
+            int checkY = y + dy[i];
+
+            // 맵 경계 체크
+            if (checkX < 0 || checkX >= GameManager.Map.mapWidth || 
+                checkY < 0 || checkY >= GameManager.Map.mapHeight)
+            {
+                continue;
+            }
+
+            // 주변 타일 장애물 인지
+            if (GameManager.Map.mapData[checkX, checkY] == TileID.Obstacle)
+            {
+                return true; //
+            }
+        }
+        // 배치 가능
+        return false;
     }
     
 }
