@@ -4582,6 +4582,7 @@ MonoBehaviour:
   settingActiveBtn: {fileID: 4109881642658001301}
   settingUI: {fileID: 7530061580899684206, guid: 2393651c4aa01354b8831247c8e51bfa,
     type: 3}
+  stageInfoText: {fileID: 4425042768419672372}
 --- !u!114 &2122605686555309026
 MonoBehaviour:
   m_ObjectHideFlags: 0
