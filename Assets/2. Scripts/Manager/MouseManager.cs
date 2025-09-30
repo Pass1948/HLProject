@@ -325,6 +325,7 @@ public class MouseManager : MonoBehaviour
         GameManager.UI.CloseUI<EnemyInfoPopUpUI>();
     }
 
+    // player 찾기
     public T FindAtCell<T>(Vector3Int cell) where T : Component
     {
         if (!useOverlapLookup || tilemap == null) return null;
@@ -340,21 +341,34 @@ public class MouseManager : MonoBehaviour
             center, halfExtents, oneHit, Quaternion.identity, unitDetectMask, QueryTriggerInteraction.Ignore);
 
         if (hitCount <= 0) return null;
-        Collider col = null;
-        foreach (var v in oneHit)
+        Collider playerCol = null;
+        Collider enemyCol = null;
+        for (int i = 0; i < hitCount; i++)
         {
-            if (v.GetComponent<BasePlayer>() == true)
+            var v = oneHit[i];
+            if (!v) continue;
+
+            // 플레이어를 최우선으로 확정
+            if (v.TryGetComponent<BasePlayer>(out _))   //(out _) 변수값을 만들지 않고 컴포넌트의 유/무만 알고싶을때 사용
             {
-                col = v;
+                playerCol = v;
+                break;
+            }
+
+            // 플레이어가 아니라면 적 후보로 1개 보관(여러 개면 첫 번째만)
+            if (v.TryGetComponent<EnemyController>(out _))
+            {
+                enemyCol = v;
             }
         }
-         Debug.Log($"이것은 수류탄이요?{col}");    
-        if (!col) return null;
 
+        var col = playerCol != null ? playerCol : enemyCol;
+        Debug.Log($"이것은 수류탄이요?{col}");
+        if (!col) return null;
         if (col.TryGetComponent<T>(out var direct)) return direct;
         return col.GetComponentInParent<T>(true);
     }
-
+    
     private void ShowPlayerRange(Vector3Int cell)
     {
         playerRangeVisible = true;
