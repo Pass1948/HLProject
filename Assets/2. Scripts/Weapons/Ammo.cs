@@ -12,7 +12,7 @@ public class Ammo
     //1~13까지 범위지정
     [Range(1, 13)]
     //1=A, 11=J, 12=Q, 13=K
-    public int rank; 
+    public int rank;
     
     public override string ToString()
     {

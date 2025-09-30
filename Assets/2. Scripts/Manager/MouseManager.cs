@@ -52,7 +52,8 @@ public class MouseManager : MonoBehaviour
     private Vector3Int selectedPlayerCell;
     private int selectedMoveRange;
     bool isPlayer = false;
-
+    
+    
     //==== 공격 상태 =====
     private bool isAttacking = false;
     public bool IsAttacking { get { return isAttacking; } set { isAttacking = value; } }
@@ -70,10 +71,11 @@ public class MouseManager : MonoBehaviour
     private bool playerRangeVisible = false;
     private BaseEnemy selectedEnemy;       // 현재 팝업이 열린 적
     private bool enemyPopupVisible = false;
+    public bool isMouse = false;
+    public bool isShowRange = false;
 
     // --- Overlap관련 최적화 ---
     private readonly Collider[] oneHit = new Collider[1];// OverlapBoxNonAlloc 결과 담는 1칸
-    
 
     public void CreateMouse() // Scene넘어갔을때 실행
     {
@@ -91,21 +93,14 @@ public class MouseManager : MonoBehaviour
 
     public void MovingMouse()   // MouseFollower클래스에 LateUpdate()안에서 호출
     {
-        // 1) 포인터 추적(셀 단위)
+        //포인터 추적(셀 단위)
         if (!UpdatePointer()) return;
-
-        // 2) 좌클릭 라우팅 (입력)
-        bool clicked =
-#if ENABLE_INPUT_SYSTEM
-            Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame;
-#else
-            Input.GetMouseButtonDown(0);
-#endif
-        if (clicked) HandleLeftClick();
+        if (isMouse == false) return;
+        OnMouseClick();
     }
-
+    
     //  PlayerTurnState에서 호출
-    public void ToggleMovePhase() => movePhaseActive = !movePhaseActive;
+    public void SetMovePhase(bool active) => movePhaseActive = active;
 
     // =====================================================================
     // 포인터 추적 & 셀 스냅
@@ -152,7 +147,18 @@ public class MouseManager : MonoBehaviour
     // =====================================================================
     // 클릭 처리 (TileID 기반)
     // =====================================================================
-   
+
+    public void OnMouseClick()
+    {
+       bool isClick =
+#if ENABLE_INPUT_SYSTEM
+            Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame;
+#else
+            Input.GetMouseButtonDown(0);
+#endif
+        if (isClick) HandleLeftClick();
+    }
+
     private void HandleLeftClick()
     {
 
@@ -160,7 +166,7 @@ public class MouseManager : MonoBehaviour
         if (blockWhenUI && EventSystem.current && EventSystem.current.IsPointerOverGameObject())
             return;
 
-        var cell = GetCurrentCell();
+        var cell = PointerCell;
 
         if (!IsInside(cell)) { CancelSelection(); return; }
 
@@ -178,7 +184,7 @@ public class MouseManager : MonoBehaviour
             {
                 GameManager.Event.Publish(EventType.PlayerAttack); // 공격 State에서 일괄 처리
                 isAttacking = false;
-            
+
             }
             else
             {
@@ -235,14 +241,25 @@ public class MouseManager : MonoBehaviour
     }
 
 
+
     // ===== 클릭 동작별 핸들러 =====
 
     // Player 셀 클릭 => 선택 + 이동범위 표시
     private void OnClickPlayer(Vector3Int cell)
     {
+        // 공격/킥 모드면: 범위만 끄고 취소
+        if (isAttacking || IsKicking)
+        {
+            CancelAttackOrKickRange();
+            isAttacking = false;
+            IsKicking = false;
+            // 플레이어 범위는 의도대로 "끄기만" 하고 리턴
+            HidePlayerRange();
+            return;
+        }
+
         // 적 팝업은 닫아둠
         HideEnemyPopup();
-
         if (isMoving) return;
 
         // 선택/범위 기초값 세팅은 기존 그대로 유지
@@ -250,14 +267,12 @@ public class MouseManager : MonoBehaviour
         selectedPlayerCell = cell;
         selectedMoveRange = GameManager.Unit.Player.playerModel.moveRange;
 
-        if (isAttacking) return;
-
-        // 현재 범위가 떠 있고 같은 칸을 다시 눌렀다면 끄고, 아니면 켠다
-        if (playerRangeVisible && selectedPlayerCell == cell)
-            HidePlayerRange();
-        else
-            ShowPlayerRange(cell);
-
+        if (isShowRange == false) return;
+            // 현재 범위가 떠 있고 같은 칸을 다시 눌렀다면 끄고, 아니면 켠다
+            if (playerRangeVisible && selectedPlayerCell == cell)
+                HidePlayerRange();
+            else
+                ShowPlayerRange(cell);
     }
 
     // Enemy 셀 클릭 => 정보 UI
@@ -461,7 +476,7 @@ public class MouseManager : MonoBehaviour
         selectedEnemy = enemy;
         enemyPopupVisible = true;
         GameManager.UI.GetUI<EnemyInfoPopUpUI>()
-            .SetData(enemy.enemyModel.unitName, enemy.enemyModel.attri, enemy.enemyModel.rank);
+            .SetData(enemy.enemyModel.attri, enemy.enemyModel.rank, enemy.enemyModel.attack, enemy.enemyModel.moveRange, enemy.enemyModel.currentHealth, enemy.enemyModel.maxHealth);
         GameManager.UI.OpenUI<EnemyInfoPopUpUI>();
     }
     private void HideEnemyPopup()

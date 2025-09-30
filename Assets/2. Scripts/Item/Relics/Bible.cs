@@ -7,7 +7,7 @@ public class Bible : HealthItem
 {
     protected override void OnEnable()
     {
-        base.OnEnable();    
+        base.OnEnable();   
         AddHealth(relicItems, 3006);
     }
 

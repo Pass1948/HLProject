@@ -5,14 +5,14 @@ using UnityEngine.UI;
 
 public class ClearUI : BaseUI
 {
-    [SerializeField] Button rewardPassButton;
+    [SerializeField] Button storeButton;
     [SerializeField] Transform rewardPanel;
     [SerializeField] RewardSlotUI[] slots;
 
     protected override void OnOpen()
     {
         base.OnOpen();
-
+        storeButton.onClick.AddListener(OpenStore);
     }
 
     protected override void OnClose()
@@ -23,6 +23,11 @@ public class ClearUI : BaseUI
     private void CreateSlots()
     {
 
+    }
+    
+    private void OpenStore()
+    {
+        GameManager.UI.GetUI<ShopUI>();
     }
 
 }

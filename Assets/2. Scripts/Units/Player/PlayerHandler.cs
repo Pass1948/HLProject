@@ -8,11 +8,22 @@ public class PlayerHandler : MonoBehaviour
     public int playerMonney;
     
     public List<Ammo> bullets = new();
-    public List<int> ownedRelics = new();
+    public List<Ammo> GetBullet() { return bullets;}
+    
+    public List<int> ownedRelics = new(); // 유물 리스트
+
+    private Deck deck;
     
     private void Awake()
     {
-        playerMonney = 0;
+    }
+
+    private void Start()
+    {
+        // Testing
+        deck = GameManager.Shop.deck;
+        playerMonney = 500000000;
+        //deck.GetPlayerBullets(bullets);
     }
     
     public void TakeDamage(int amount)
@@ -53,7 +64,6 @@ public class PlayerHandler : MonoBehaviour
         playerMonney += amount;
         // 골드 추가시 여기에
         GameManager.Event.Publish(EventType.OnGoldChanged, playerMonney);
-        
     }
 
     public bool SpendGold(int amount)

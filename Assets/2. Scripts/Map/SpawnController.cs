@@ -41,7 +41,9 @@ public class SpawnController : MonoBehaviour
         
         SpawnPlayer();
         // SpawnEnemys(stage.enemiesDict); 
-        SpawnEnemies(stage.enemiesDict);
+
+        SpawnEnemies(stage.enemiesDict, stage.eliteCnt, stage.id);
+
         SpawnObstacles(stage.obstaclesDict);
     }
     
@@ -156,7 +158,20 @@ public class SpawnController : MonoBehaviour
                     
                     GameManager.Map.SetObjectPosition(randX, randY, tileIdToSet);
                     spawnedCount++;
+
                 }
+                
+                // TileID 설정
+                int tileIdToSet = (int)TileID.Terrain; 
+                
+                if (obstacleData.canPlaceUnit == 0)
+                {
+                    tileIdToSet = (int)TileID.Obstacle; 
+                }
+                
+                GameManager.Map.SetObjectPosition(randX, randY, tileIdToSet);
+                spawnedCount++;
+                
             }
      
             if (spawnedCount < obstacleEntry.Value)
@@ -164,11 +179,20 @@ public class SpawnController : MonoBehaviour
                 Debug.LogWarning($"{spawnedCount}개 스폰");
             }
         }
+
+        if (spawnedCount < obstacleEntry.Value)
+        {
+            Debug.LogWarning($"{spawnedCount}개만 스폰했습니다");
+        }
     }
+}
     
     // 적 스폰
-    private void SpawnEnemies(Dictionary<int, int> enemies)
+    private void SpawnEnemies(Dictionary<int, int> enemies, int eliteCount, int stageId)
     {
+        Debug.Log(enemies.Count);
+        List<BaseEnemy> spawnedList = new List<BaseEnemy>();
+
         foreach (var enemy in enemies)
         {
             for (int i = 0; i < enemy.Value; i++)
@@ -191,9 +215,22 @@ public class SpawnController : MonoBehaviour
                     GameManager.Map.SetObjectPosition(randX, randY, TileID.Enemy);
                     
                     FindObjectOfType<AttackRangeDisplay>().enemies.Add(baseEnemy);
+                    spawnedList.Add(baseEnemy);
 
                     // break;
                 }
+            }
+        }
+
+        if (eliteCount > 0 && spawnedList.Count > 0)
+        {
+            for (int i = 0; i < eliteCount; i++)
+            {
+                int index = Random.Range(0, spawnedList.Count);
+                BaseEnemy elite = spawnedList[index];
+                spawnedList.RemoveAt(index);
+
+                elite.SetElite(stageId);
             }
         }
     }
@@ -243,6 +280,5 @@ public class SpawnController : MonoBehaviour
         // 배치 가능
         return false;
     }
-    
     
 }

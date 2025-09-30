@@ -11,6 +11,7 @@ public class TestScene : BaseScene
 
     public override void SceneEnter()
     {
+        Debug.Log("스테이지 씬 시작");
         _stage = new Stage();
         _stage.InitStage();
         GameManager.Map.CreateMap(_stage);
@@ -21,7 +22,8 @@ public class TestScene : BaseScene
         GameManager.Unit.Vehicle.vehicleHandler.MountVehicle();
 
         GameManager.TurnBased.ChangeStartTurn();
-        // GameManager.ItemControl.ItemDataSet();  // 아이템데이터 리스트 초기 세팅
+        GameManager.ItemControl.ItemDataSet();  // 아이템데이터 리스트 초기 세팅
+        GameManager.Shop.ShopInit();
     }
 
     public override void SceneExit()

@@ -49,7 +49,11 @@ public class DeckSelUI : MonoBehaviour
         GameManager.TurnBased.turnSettingValue.IsClubDeck ? "Club" :
         "None"));
         */
-
+        if(!ISSelectDeck())
+        {
+            Debug.Log("Select Your Deck!");
+            return;
+        }
         GameManager.Event.Publish(EventType.SelectDeck);
         GameManager.SceneLoad.LoadScene(SceneType.Test);
     }
@@ -87,8 +91,8 @@ public class DeckSelUI : MonoBehaviour
 
     private void IsBasic()
     {
-        GameManager.TurnBased.turnSettingValue.IsBasicDeck = true; //false면 트루
-        //다른 덱들의 불값도 false로 해줘야함
+        GameManager.TurnBased.turnSettingValue.IsBasicDeck = true;
+        //사실 다른 덱들의 불값도 false로 해줘야함(상호배제)
         //이 버튼을 눌렀을때 해당 데이터다라고 인식시켜야함
     }
 
@@ -110,6 +114,12 @@ public class DeckSelUI : MonoBehaviour
     private void IsClub()
     {
         GameManager.TurnBased.turnSettingValue.IsClubDeck = true;
+    }
+
+    private bool ISSelectDeck()
+    {
+        var IsSelected = GameManager.TurnBased.turnSettingValue;
+        return IsSelected.IsBasicDeck || IsSelected.IsDiamondDeck || IsSelected.IsHeartDeck || IsSelected.IsSpadeDeck || IsSelected.IsClubDeck;
     }
 
     private void AutoRegisterPanels()

@@ -52,6 +52,7 @@ public class PlayerMoveState : PlayerActionState
         public override void OnEnter()
         {
             timer = turnSetVlaue.resetTime;
+            GameManager.Mouse.SetMovePhase(false);  
         }
         public override void Tick(float dt)
         {

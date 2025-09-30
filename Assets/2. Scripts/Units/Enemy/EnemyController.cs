@@ -11,6 +11,8 @@ public class EnemyController : MonoBehaviour
     public EnemyAnimHandler animHandler;
     private EnemyStateMachine stateMachine;
     
+    public IAbility ability;
+    
     public Vector3Int GridPos { get; set; }
     public Vector3Int TargetPos { get; set; }
 
@@ -33,7 +35,7 @@ public class EnemyController : MonoBehaviour
         GameManager.Event.Unsubscribe(EventType.EnemyTurnStart, StartTurn);
     }
 
-    public void InitController(BaseEnemy enemy)
+    public void InitController(BaseEnemy enemy, IAbility abilityParam = null)
     {
         Vector2Int player = GameManager.Map.GetPlayerPosition();
         // 상태머신 할당, Init 초기 상태 Idle로
@@ -42,11 +44,13 @@ public class EnemyController : MonoBehaviour
         minAttackRange = model.minAttackRange;
         maxAttackRange = model.maxAttackRange;
         isDie = model.isDie;
+        ability = abilityParam;
+        if (ability != null) ability.Apply(this);
 
-        RunStateMaching();
+        RunStateMachine();
     }
 
-    public void RunStateMaching()
+    public void RunStateMachine()
     {
         stateMachine = new EnemyStateMachine(animHandler, this);
         if (stateMachine == null) Debug.Log("상태머신 없슴");
@@ -76,16 +80,9 @@ public class EnemyController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.A))
         {
-            Debug.Log(TargetPos);
-
-            StartTurn();
-            //stateMachine.ChangeState(stateMachine.EvaluateState);
-            //StartTurn(GameManager.Map.playerPos);
-        }
-
-        if(Input.GetKeyDown(KeyCode.S))
-        {
-            OnHitState();
+            isDie = true;
+            stateMachine.ChangeState(stateMachine.DieState);
+            GameManager.TurnBased.EnemyDieCheck();
         }
     }
 

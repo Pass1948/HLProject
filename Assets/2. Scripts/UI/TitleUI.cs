@@ -11,10 +11,12 @@ public class TitleUI : BaseUI
     [SerializeField] private Button settingButton;
     [SerializeField] private Button exitButton;
     [SerializeField] private GameObject deckSelUI;
+    [SerializeField] private GameObject settingUI;
 
     private void OnEnable()
     {
         startButton.onClick.AddListener(StartGame);
+        settingButton.onClick.AddListener(OpenSetting);
     }
 
     private void StartGame()
@@ -23,5 +25,10 @@ public class TitleUI : BaseUI
         //게임 씬 로드하는건 DeckSelUI에 옮겨놓고 DeckSelUI를 키게 작업해놓겠습니다
         //deckSelUI.SetActive(true);
         deckSelUI.SetActive(true);
+    }
+
+    private void OpenSetting()
+    {
+        Instantiate(settingUI);
     }
 }

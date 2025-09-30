@@ -7,70 +7,29 @@ using Random = UnityEngine.Random;
 
 public class ShopManager : MonoBehaviour
 {
-    // 상점 시스템에 필요한 부분들 정리
-    /*
-     * 1. 상점에 입장.
-     *  - 리롤 2로 초기화, 탄환제거 가능
-     *  - 탄환 3~5개, 특수 유물 4개 화약 꾸러미 2회
-     *  - (모든 탄환과 유물은 겹치지 않아야 한다.)
-     *
-     * 2. 탄환 구매
-     *  - 가격 = (3 + 화약의 레어도에 따라 추가)
-     *  - 달란트 차감 > 탄환집에 추가 > 해당 슬롯 제거
-     *
-     * 3. 특수 유물 구매
-     *  - 레어도에 따라 가격 (5/7/9/11) > 인벤토리에 추가 > 슬롯 제거
-     *  - 이미 가지고 있다면 처음에 거름
-     *
-     * 4. 화약 꾸러미 구매
-     *  - 달란트 지불 > 잔여 횟수 감소,
-     *  - UI 에서 보유탄환 6 + 화약유물 3 후보 > 1:1 적용?
-     *  - 강화 재적용 시 덮어쓰기(기존 강화 제거 후 새 강화 적용)
-     *
-     * 5. 리롤
-     *  - 현재 리롤비 지불 > 리롤비는 +1 씩 증가 > 모든 오퍼 재생성 > 이전 상태로 복구 불가
-     *
-     * 6. 응급 처치
-     *  - 1달란트 지불 > 체력 + 1
-     * 
-     * 7. 탄환 제거
-     *  - 3달란트 지불 > 입장당 1회 소모
-     *  - 보유 중인 6개 중 1개 선택 제거(건너뛰기 쌉가능하나 비용/권 회수 없음)
-     *
-     * 슈발 이게 뭐야.
-     * 다시다시 
-     * 카드-------------
-     * 지금 그럼 해야 하는 방식이 일단, 카드를 셔플을 통해 섞어놓고,
-     * 플레이어가 가지고 있는 카드를 빼고, 나머지 중에 최대 5개만큼만 보여준다.
-     * ----------------
-     *
-     * 화약-------------
-     * 화약은 화약 자체가 리스트.
-     * 화약을 선택했을 때, 랜덤한 카드 6장을 보여줘야 한다.
-     * 보여줄 때도 셔플, 그리고 가지고 있는 카드를 가지고 와야한다.
-     * 카드를 가지고 올 때 강화된 것도 가지고 온다.
-     * 3개의 화약중에 하나를 카드에 삽입 할 수 있다.
-     * 이미 강화된 상태라면, 전에 있던 것을 빼고 새로운 것을 넣어준다.
-     * -----------------
-     * 
-     *
-     * 
-     * 세개가 있는 화약은 
-     */
+    // EnterShop: 상점 상태 초기화 + 오퍼 생성
+    //
+    // GenerateOffers: 탄환/유물/화약 꾸러미/응급처치/탄환 제거/리롤 → offers 채움
+    //
+    // TryBuy: 아이템 종류에 따라 구매 처리
+    //
+    // StartPowderBundle / StartRemoveBullet: 모달 UI 이벤트 발행
+    //
+    // UI는 GameManager.Event를 구독해서 오퍼가 갱신되면 카드 재생성, 모달 열기 등을 한다.
      [Header("참조")]
-    public Deck deck;                   // 덱
-    public PlayerHandler player;        // 플레이어
-    public List<RelicData> relicPool;   // 유물 풀 (JSON 로드된 리스트)
-    public List<PowderData> powderPool; // 화약 풀 (JSON 로드된 리스트)
-    private List<Ammo> bundleAmmoCache; 
+    public Deck deck;                    // 전체 탄환 덱
+    public PlayerHandler player;         // 플레이어
+    private List<RelicData> relicPool;   // 모든 유물 풀 
+    public List<PowderData> powderPool;  // 모든 화약 풀 
+    private List<Ammo> bundleAmmoCache;  // 
     private List<PowderData> bundlePowderCache; 
     private List<Ammo> removeCandidates;
 
     [Header("상점 상태")]
-    public List<ShopItem> offers = new();
-    public int rerollCost;
-    public bool canRemoveBullet;
-    public int powderBundleLeft;
+    public List<ShopItem> offers = new(); // 상점에 등장한 아이템 목록
+    public int rerollCost;                // 현재 리롤 비용
+    public bool canRemoveBullet;          // 탄환 제거 사용 가능 여부
+    public int powderBundleLeft;          // 화역 꾸러미 남은 개수
 
     public float attachPowderChance = 0.5f; // 탄환에 화약이 붙을 확률
 
@@ -78,9 +37,21 @@ public class ShopManager : MonoBehaviour
     public float weightRare = 5f;
     public float weightElite = 3f;
     public float weightLegendary = 1f;
-
+    
     private void Start()
     {
+        // 아직 바로 실행 중입니다.
+ 
+        if (relicPool == null || relicPool.Count == 0)
+            relicPool = DataTable.RelicData.GetList();
+        
+        if(powderPool == null)
+            powderPool = new List<PowderData>();
+    }
+
+    public void ShopInit()
+    {
+        deck = GameManager.Resource.Create<Deck>(Path.UI + "Deck");
         EnterShop();
     }
 
@@ -95,61 +66,48 @@ public class ShopManager : MonoBehaviour
         canRemoveBullet = true;
         powderBundleLeft = 2;
         GenerateOffers();
+        GameManager.Event.Publish(EventType.ShopPlayerCardsConfim);
+        //확인을 위한 
     }
-
+    
     //상품 구성만 다시 생성(리롤 시 이거만 호출)
     private void GenerateOffers()
     {
         offers.Clear();
-
+        player = GameManager.Unit.Player.playerHandler;
         // 1) 탄환
         GenerateCardOffers(player.bullets);
-
         // 2) 유물
-        GenerateRelicOffers(player.ownedRelics);
+        GenerateRelicOffers(player.ownedRelics, GameManager.ItemControl.buyItems);
 
-        // 3) 화약 꾸러미 (남은 개수만 표시)
-        for (int i = 0; i < powderBundleLeft; i++)
-            offers.Add(new ShopItem(ShopItemType.PowderBundle, "화약 꾸러미", 4));
-
-        // 4) 응급 처치
-        offers.Add(new ShopItem(ShopItemType.Heal, "응급 처치", 1));
-
-        // 5) 탄환 제거 (입장당 1회)
-        if (canRemoveBullet)
-            offers.Add(new ShopItem(ShopItemType.RemoveBullet, "탄환 제거", 3));
-
-        // 6) 리롤 (현재 비용 표시)
-        offers.Add(new ShopItem(ShopItemType.Reroll, "리롤", rerollCost));
+        // 탄환 제거 (입장당 1회)
+        // if (canRemoveBullet)
+        //     offers.Add(new ShopItem(ShopItemType.RemoveBullet, "탄환 제거", 3));
+        
         GameManager.Event.Publish(EventType.ShopOffersChanged, offers);
-        Debug.Log("상점 상품 재구성 완료");
     }
-
-    // ────────────── 탄환 오퍼 ──────────────
+    // 탄환 오퍼 
     private void GenerateCardOffers(List<Ammo> playerOwned)
     {
         var snapshot = deck.GetDrawSnapshot();
+
         Shuffle(snapshot);
 
-        int want = GetBulletOfferCount();    // 기본 3~5, 유물로 +2 같은 버프가 있다면 여기서 반영
+        int want = GetBulletOfferCount();
         int added = 0;
 
         foreach (var card in snapshot)
         {
             // 보유 중이면 제외(중복 구매 방지)
-            bool owned = playerOwned.Exists(p => p.suit == card.suit && p.rank == card.rank);
-            if (owned) continue;
+            // List<T>.Exists(Predicate<T>) = 리스트 안에 조건을 만족하는 원소가 하나라도 있으면 true반환
+            // bool owned = playerOwned.Exists(p => p.suit == card.suit && p.rank == card.rank);
+            // if (owned) continue;
 
-            // 카드 복제(스냅샷 원본 변조 방지)
-            var offerAmmo = new Ammo { suit = card.suit, rank = card.rank, powder = null };
-
-            // 확률적으로 화약 부착
-            if (powderPool != null && powderPool.Count > 0 && Random.value < attachPowderChance)
-            {
-                var pickedPowder = PickPowderByWeightedRarity();
-                offerAmmo.powder = pickedPowder;
-            }
-
+            // 새로운 탄환 후보 생성
+            var offerAmmo = new Ammo { suit = card.suit, rank = card.rank, powder = null};
+            
+            
+            // 가격 = 기본3 + (화약 레어도 추가 비용)
             int price = 3;
             if (offerAmmo.powder != null)
                 price += GetPowderPrice(offerAmmo.powder.rarity);
@@ -169,20 +127,21 @@ public class ShopManager : MonoBehaviour
 
 
     // ────────────── 유물 오퍼 ──────────────
-    private void GenerateRelicOffers(List<int> ownedRelics)
+    private void GenerateRelicOffers(List<int> ownedRelics, List<ItemModel> it)
     {
         var usedIds = new HashSet<int>();
-        var relicCandidates = new List<RelicData>(relicPool);
+        var relicCandidates = GameManager.ItemControl.RelicWeightSampling(GameManager.ItemControl.relicItems.Count);
         Shuffle(relicCandidates);
 
         foreach (var relic in relicCandidates)
         {
-            if (ownedRelics.Contains(relic.id)) continue; // 이미 보유
-            if (usedIds.Contains(relic.id)) continue;     // 이번 상점 내 중복
+            if (ownedRelics.Contains(relic.id)) continue; // 이미 보유한 유물
+            if (it.Contains(relic)) continue;   // 구매한 가방리스트에 저장
+            if (usedIds.Contains(relic.id)) continue;     // 이번 상점 내 중복 유물
 
             usedIds.Add(relic.id);
 
-            int price = GetRelicPrice(relic.rarityType);
+            int price = GetRelicPrice(relic.rarity);
             offers.Add(new ShopItem(ShopItemType.SpecialTotem, relic.name, price, null, relic));
 
             if (usedIds.Count >= 4) break; // 최대 4개
@@ -190,10 +149,10 @@ public class ShopManager : MonoBehaviour
     }
 
 
-    // ────────────── 구매 처리 ──────────────
+    // 때껄룩 
     public void TryBuy(int index)
     {
-        if (index < 0 || index >= offers.Count) return;
+        if (index < 0 || index >= offers.Count) return; //돈없으면 끄지라
         var item = offers[index];
 
         if (!player.SpendGold(item.price))
@@ -204,7 +163,7 @@ public class ShopManager : MonoBehaviour
         switch (item.type)
         {
             case ShopItemType.Bullet:
-                player.AddBullet(item.ammo);
+                GameManager.ItemControl.drawPile.Add(item.ammo);
                 RemoveOfferAt(index);
                 changed =  true;
                 break;
@@ -212,7 +171,8 @@ public class ShopManager : MonoBehaviour
             case ShopItemType.SpecialTotem:
                 if (item.relic != null)
                 {
-                    player.AddRelic(item.relic.id);
+                    GameManager.ItemControl.CreateRelicObject(item.relic.id, item.relic);
+                    
                     RemoveOfferAt(index);
                     changed = true;
                 }
@@ -222,7 +182,7 @@ public class ShopManager : MonoBehaviour
                 if (powderBundleLeft > 0)
                 {
                     powderBundleLeft--;
-                    StartPowderBundle(player.bullets);
+                    StartPowderBundle(player.bullets); // 모달 UI 열기 (파우더 번들 사기)TODO: 지금은 아직 미정
                     RemoveOfferAt(index);
                     changed = true;
                 }
@@ -253,27 +213,41 @@ public class ShopManager : MonoBehaviour
 
     private void RemoveOfferAt(int index)
     {
-        if (index >= 0 && index < offers.Count)
-            offers.RemoveAt(index);
+        if (index < 0 && index >= offers.Count)
+        {
+            return;
+        }
+        offers.RemoveAt(index);
     }
-    private void TryReroll()
+
+    public void TryBuyitem(ShopItem item)
+    {
+        int index = offers.IndexOf(item);
+        if(index == -1) return;
+        TryBuy(index);
+    }
+    // 돈내고 오퍼 전체 재생성
+    public void TryReroll()
     {
         if (!player.SpendGold(rerollCost)) return;
-
         rerollCost++;
         GenerateOffers();
     }
+    public void TryHeal()
+    {
+        int healCost = 1;
+        if(!player.SpendGold(healCost)) return;
+        player.Heal(1); // 추후에 변수로 변경 예정
+    }
 
-    // ────────────── 화약 꾸러미 ──────────────
+    // 화약 꾸러미 * 사용중지
     private void StartPowderBundle(List<Ammo> playerOwned)
     {
         var candidates = new List<Ammo>(playerOwned);
         Shuffle(candidates);
         
-        if (candidates.Count > 6)
-            candidates = candidates.GetRange(0, 6);
-
-       
+        if (candidates.Count > 6) candidates = candidates.GetRange(0, 6);
+        
         var powderCandidates = BuildPowderCandidates(3);
 
         bundleAmmoCache = candidates;
@@ -288,11 +262,12 @@ public class ShopManager : MonoBehaviour
         ApplyPowder(target, powder);
     }
 
-    public void ApplyPowder(Ammo target, PowderData powder)
+    public void ApplyPowder(Ammo target, PowderData powder) 
     {
         target.powder = powder;
     }
 
+    //UI에서 탄환 제거 모달 열기
     private void StartRemoveBullet(List<Ammo> playerOwned)
     {
         var candidates = new List<Ammo>(playerOwned);
@@ -382,9 +357,9 @@ public class ShopManager : MonoBehaviour
         public string name;
         public int price;
         public Ammo ammo;
-        public RelicData relic; // BaseItem 제거, 바로 RelicData
+        public ItemModel relic; // BaseItem 제거, 바로 RelicData
 
-        public ShopItem(ShopItemType type, string name, int price, Ammo ammo = null, RelicData relic = null)
+        public ShopItem(ShopItemType type, string name, int price, Ammo ammo = null, ItemModel relic = null)
         {
             this.type = type;
             this.name = name;
