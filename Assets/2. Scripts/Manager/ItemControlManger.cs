@@ -41,8 +41,6 @@ public class ItemControlManger : MonoBehaviour
     private Dictionary<string, BaseItem> itemsDictionary = new Dictionary<string, BaseItem>();
 
     public List<Ammo> drawPile = new();
-
-    public List<Ammo> shopPile = new();
     // =====================================================================
     // 아이템오브젝트 연동로직
     // =====================================================================
@@ -148,7 +146,6 @@ public class ItemControlManger : MonoBehaviour
         relicItems.Clear();
         powderItems.Clear();
         drawPile.Clear();
-        shopPile.Clear();
         ItemDataSet();
     }
 

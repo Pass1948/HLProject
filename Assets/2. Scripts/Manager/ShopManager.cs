@@ -163,7 +163,7 @@ public class ShopManager : MonoBehaviour
         switch (item.type)
         {
             case ShopItemType.Bullet:
-                player.AddBullet(item.ammo);
+                GameManager.ItemControl.drawPile.Add(item.ammo);
                 RemoveOfferAt(index);
                 changed =  true;
                 break;
