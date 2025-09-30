@@ -730,7 +730,6 @@ GameObject:
   - component: {fileID: 5924809414660045425}
   - component: {fileID: 2745894007068241230}
   - component: {fileID: 700642621865749940}
-  - component: {fileID: 7181109901846145806}
   - component: {fileID: 1528413966898938324}
   - component: {fileID: 2922439317234410360}
   m_Layer: 0
@@ -798,37 +797,6 @@ MonoBehaviour:
   playerMonney: 0
   bullets: []
   ownedRelics: 
---- !u!114 &7181109901846145806
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3720717254693977143}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: c55fff75163a19043981b2efa672ff41,
-    type: 3}
-  m_NotificationBehavior: 0
-  m_UIInputModule: {fileID: 0}
-  m_DeviceLostEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_DeviceRegainedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ControlsChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ActionEvents: []
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
-  m_DefaultActionMap: TestPlayer
-  m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
 --- !u!136 &1528413966898938324
 CapsuleCollider:
   m_ObjectHideFlags: 0
