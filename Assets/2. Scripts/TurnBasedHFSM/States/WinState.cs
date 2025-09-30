@@ -10,6 +10,7 @@ public class WinState : BaseTurnState
     {
         StageClearUI();
         turnManager.ResetCount();
+        
     }
     public void StageClearUI()
     {

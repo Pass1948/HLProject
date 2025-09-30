@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6719607730658813358}
   - component: {fileID: 3592809549260401852}
+  - component: {fileID: 398014831419735550}
+  - component: {fileID: 8820395613007214759}
   m_Layer: 5
   m_Name: Mask
   m_TagString: Untagged
@@ -34,7 +36,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -0.000015258789}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &3592809549260401852
@@ -50,6 +52,44 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShowMaskGraphic: 1
+--- !u!222 &398014831419735550
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 299020951190444923}
+  m_CullTransparentMesh: 1
+--- !u!114 &8820395613007214759
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 299020951190444923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.1764706, g: 0.1764706, b: 0.1764706, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &312517653815177530
 GameObject:
   m_ObjectHideFlags: 0
@@ -3271,7 +3311,7 @@ MonoBehaviour:
   relicRoot: {fileID: 6152060099282032780}
   playerBulletRoot: {fileID: 8394531809833428427}
   removeRoot: {fileID: 7728921809300985102}
-  cardPrefab: {fileID: 0}
+  hpBar: {fileID: 0}
   rerollCostText: {fileID: 7091258531656970014}
   healCost: {fileID: 5754170471309917358}
   rerollButton: {fileID: 905674847175289248}
@@ -4426,6 +4466,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8394531809833428427}
   - component: {fileID: 2180196253239456131}
+  - component: {fileID: 7534647119107823313}
   m_Layer: 5
   m_Name: PlayerBulletInfo
   m_TagString: Untagged
@@ -4447,11 +4488,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 6719607730658813358}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_SizeDelta: {x: 149, y: 0}
+  m_Pivot: {x: 0, y: 1}
 --- !u!114 &2180196253239456131
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4476,6 +4517,20 @@ MonoBehaviour:
   m_Spacing: {x: 25, y: 6}
   m_Constraint: 0
   m_ConstraintCount: 2
+--- !u!114 &7534647119107823313
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4245226402032033357}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 0
+  m_VerticalFit: 2
 --- !u!1 &4275626001220042224
 GameObject:
   m_ObjectHideFlags: 0

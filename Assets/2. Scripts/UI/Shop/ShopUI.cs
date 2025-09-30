@@ -46,6 +46,8 @@ public class ShopUI : BaseUI
         removeButton.onClick.AddListener(OnRemoveBulletCicked);
         nextStageButton.onClick.AddListener(NextStage);
         if (shop != null) Rebuild(shop.offers);
+        
+        RebuildPlayerBullets();
     }
 
 
@@ -139,12 +141,9 @@ public class ShopUI : BaseUI
     {
         int cost = 1;
         ClearSection(playerBulletRoot);
-        Debug.Log($"{playerBulletRoot}");
         var bullets = GameManager.ItemControl.drawPile; 
-        Debug.Log($"{bullets}");
         for (int i = 0; i < bullets.Count; i++)
         {
-            Debug.Log($"{bullets[i]}");
             var ammo = bullets[i];
             int idx = i;
             var card = GameManager.UI.CreateSlotUI<ShopCardUI>(playerBulletRoot);
