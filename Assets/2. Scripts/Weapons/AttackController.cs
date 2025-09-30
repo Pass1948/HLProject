@@ -228,7 +228,7 @@ public class AttackController : MonoBehaviour
             return;
         }
 
-        GameObject go = GameManager.Resource.Create<GameObject>(Path.Weapon + "Bullet", slotContainer);
+        GameObject go = GameManager.Resource.Create<GameObject>(Path.UI + "Bullet", slotContainer);
         go.transform.localScale = Vector3.one;
 
         var view = go.GetComponent<BulletView>();
