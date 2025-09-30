@@ -309,7 +309,7 @@ public class MainUI : BaseUI
         {
             move = GameManager.Map.moveRange;
         }
-        movementText.text = ($"Movement: {move}");
+        movementText.text = ($"{move}");
     }
 
     private void RefreshPlayerHP()
