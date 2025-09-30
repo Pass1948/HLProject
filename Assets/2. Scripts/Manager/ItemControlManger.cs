@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class ItemControlManger : MonoBehaviour
 {
     // ===== 가중치값 =====
+    [Header("등급별 확률(백분율)")]
     [SerializeField] private float common = 70f; // 70%
     [SerializeField] private float normal = 20f; // 20%, 65%
     [SerializeField] private float rare = 5f; // 5%, 24%
@@ -26,21 +27,21 @@ public class ItemControlManger : MonoBehaviour
     [HideInInspector] public List<ItemModel> relicItems = new List<ItemModel>();
     [HideInInspector] public List<ItemModel> relicStatItems = new List<ItemModel>(); // 스탯증가부
     [HideInInspector] public List<ItemModel> relicRogicItems = new List<ItemModel>(); // 논리조건부
-
+    [HideInInspector] public List<ItemModel> buyItems = new List<ItemModel>(); // 구매한 아이템 리스트
     // ===== 화약아이템 리스트 =====
     [HideInInspector] public List<ItemModel> powderItems = new List<ItemModel>();
     [HideInInspector] public List<ItemModel> powderStatItems = new List<ItemModel>(); // 스탯증가부
     [HideInInspector] public List<ItemModel> powderRogicItems = new List<ItemModel>(); // 논리조건부
 
-    public List<ItemModel> buyItems = new List<ItemModel>(); // 구매한 아이템 리스트
+    
     // ===== 아이템 Prefab을 위한 변수들 =====
 
-    public GameObject itemPrefab;
-    public GameObject relicRoot; // 구매한 아이템 보관함
+    [HideInInspector]  public GameObject itemPrefab;
+    [HideInInspector]   public GameObject relicRoot; // 구매한 아이템 보관함
 
     private Dictionary<string, BaseItem> itemsDictionary = new Dictionary<string, BaseItem>();
 
-    public List<Ammo> drawPile = new();
+    [HideInInspector]   public List<Ammo> drawPile = new(); // 구매한 총알 리스트
     // =====================================================================
     // 아이템오브젝트 연동로직
     // =====================================================================
