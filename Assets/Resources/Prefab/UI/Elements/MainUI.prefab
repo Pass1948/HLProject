@@ -5095,12 +5095,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d52b6cbb506d3346bb79263b13d8cbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nameText: {fileID: 3766547932881762485}
+  attackText: {fileID: 0}
+  moveRangeText: {fileID: 0}
   attributeText: {fileID: 8716887701135321200}
   rankText: {fileID: 6040640371637525889}
-  enemyName: 
-  attribute: 0
-  rank: 0
+  hpBar: {fileID: 0}
 --- !u!1 &6712452792715733129
 GameObject:
   m_ObjectHideFlags: 0
