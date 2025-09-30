@@ -166,7 +166,7 @@ public class MouseManager : MonoBehaviour
         if (blockWhenUI && EventSystem.current && EventSystem.current.IsPointerOverGameObject())
             return;
 
-        var cell = GetCurrentCell();
+        var cell = PointerCell;
 
         if (!IsInside(cell)) { CancelSelection(); return; }
 
