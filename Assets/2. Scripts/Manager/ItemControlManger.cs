@@ -41,7 +41,8 @@ public class ItemControlManger : MonoBehaviour
 
     private Dictionary<string, BaseItem> itemsDictionary = new Dictionary<string, BaseItem>();
 
-    [HideInInspector]   public List<Ammo> drawPile = new(); // 구매한 총알 리스트
+    [HideInInspector] public List<Ammo> drawPile = new(); // 구매한 총알 리스트
+    [HideInInspector] public List<Ammo> discardPile = new();
     // =====================================================================
     // 아이템오브젝트 연동로직
     // =====================================================================

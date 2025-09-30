@@ -243,15 +243,14 @@ public class MouseManager : MonoBehaviour
         GameManager.UI.CloseUI<EnemyInfoPopUpUI>();
 
         // 이동이 안 되는 대부분의 원인: 아래 가드 2개
-        if (!isPlayer)            { Debug.Log("[Mouse] 이동 불가: 마지막 클릭 대상이 Player가 아님"); return; }
-        if (!movePhaseActive)     { Debug.Log("[Mouse] 이동 불가: movePhaseActive=false (PlayerMove 페이즈 아님)"); return; }
-        if (selectedPlayer == null){ Debug.Log("[Mouse] 이동 불가: selectedPlayer=null"); return; }
+        if (!isPlayer)return;
+        if (!movePhaseActive) return; 
+        if (selectedPlayer == null)return;
         if (destCell == selectedPlayerCell) return;
 
         var path = map.FindPath(selectedPlayerCell, destCell);
         if (path == null || path.Count > selectedMoveRange)
         {
-            Debug.Log("[Mouse] 이동 불가: 경로가 없거나 이동 범위를 초과");
             CancelSelection();
             return;
         }
