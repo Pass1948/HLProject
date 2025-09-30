@@ -1024,8 +1024,8 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 70, y: 210}
-  m_Spacing: {x: 5, y: 5}
+  m_CellSize: {x: 60, y: 181.58}
+  m_Spacing: {x: 20, y: 5}
   m_Constraint: 1
   m_ConstraintCount: 4
 --- !u!114 &2128740639025482334
@@ -1416,7 +1416,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Content: {fileID: 4384892616157771830}
-  m_Horizontal: 1
+  m_Horizontal: 0
   m_Vertical: 1
   m_MovementType: 1
   m_Elasticity: 0.1
@@ -2097,8 +2097,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 260.34436, y: 34.03131}
-  m_SizeDelta: {x: 407.8788, y: 181.5849}
+  m_AnchoredPosition: {x: 239.7578, y: 34.03131}
+  m_SizeDelta: {x: 388.3471, y: 181.5849}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &6485130355161692703
 MonoBehaviour:
@@ -2899,7 +2899,7 @@ MonoBehaviour:
   settingActiveBtn: {fileID: 8322020061383319587}
   settingUI: {fileID: 7530061580899684206, guid: 2393651c4aa01354b8831247c8e51bfa,
     type: 3}
-  stageInfoText: {fileID: 0}
+  stageInfoText: {fileID: 5543912301608520536}
 --- !u!114 &356632293649240770
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3067,7 +3067,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Content: {fileID: 2005959842983668779}
-  m_Horizontal: 1
+  m_Horizontal: 0
   m_Vertical: 1
   m_MovementType: 1
   m_Elasticity: 0.1
@@ -6296,7 +6296,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uD0C4\n\uD53C\n\uD68C\n\uC218\n\uAE30"
+  m_text: "\uBC84\n\uB9B0\n\uD0C4\n\uD658\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b5e282670c2edc44297fcaa2d9ec1cc4, type: 2}
   m_sharedMaterial: {fileID: 1514732102080218433, guid: b5e282670c2edc44297fcaa2d9ec1cc4,
@@ -6706,7 +6706,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: -0.000045776367, y: 0.00018310547}
-  m_SizeDelta: {x: 330, y: 10}
+  m_SizeDelta: {x: 300, y: 10}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &5812709443846346306
 CanvasRenderer:
@@ -6736,8 +6736,8 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 70, y: 210}
-  m_Spacing: {x: 5, y: 5}
+  m_CellSize: {x: 60, y: 181.58}
+  m_Spacing: {x: 20, y: 5}
   m_Constraint: 1
   m_ConstraintCount: 4
 --- !u!114 &1038438163654768267

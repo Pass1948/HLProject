@@ -90,6 +90,7 @@ public class MainUI : BaseUI
     private void OnEnable()
     {
         reloadBtnObj.ReloadChange += OnReloadChanged;
+        stageInfoText.text = $"Stage {(GameManager.SaveLoad.nextSceneIndex+1).ToString()}";
     }
     private void OnDisable()
     {
