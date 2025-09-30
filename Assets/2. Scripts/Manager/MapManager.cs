@@ -91,8 +91,10 @@ public class MapManager : MonoBehaviour
         
         mapData = new int[stage.mapSize, stage.mapSize];
         mapCreator.GenerateMap(mapData, tilemap, groundTile, wallTile);
-        
-        attackRange.Initialize(attackRangeTilemap, redAttackTile, mainCamera, grid);
+        if (attackRange != null)
+        {
+            attackRange.Initialize(attackRangeTilemap, redAttackTile, grid);
+        }
 
         pathfinding = new Pathfinding(tilemap);
 
