@@ -7,7 +7,7 @@
             "actions": [
                 {
                     "name": "MovementClick",
-                    "type": "Value",
+                    "type": "Button",
                     "id": "001f7ed5-a3f1-4b41-8f92-684447d49b1f",
                     "expectedControlType": "Button",
                     "processors": "",

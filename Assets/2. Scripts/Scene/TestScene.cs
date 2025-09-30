@@ -18,11 +18,10 @@ public class TestScene : BaseScene
         var cam = GameManager.Resource.Create<GameObject>(Path.Camera + "MainCamera");
         CameraController cc = cam.GetComponent<CameraController>();
         cc.InitCamera();
-        GameManager.Mouse.CreateMouse();
         GameManager.Unit.Vehicle.vehicleHandler.MountVehicle();
-
         GameManager.TurnBased.ChangeStartTurn();
         GameManager.ItemControl.ItemDataSet();  // 아이템데이터 리스트 초기 세팅
+        GameManager.Mouse.CreateMouse();
         GameManager.Shop.ShopInit();
     }
 

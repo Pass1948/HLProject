@@ -10,7 +10,12 @@ public class PlayerTurnState : BaseTurnState
     public PlayerTurnState() { }
     public override void OnEnter()
     {
-        AllSet();
+        timer = turnSetVlaue.resetTime;
+        didClose = false;
+        turnManager.AddCount();
+        Time.timeScale = 3f;    // 배속 기능
+        // 턴 시작 시 커맨드 초기화후 입력 대기
+        GameManager.UI.OpenUI<PaseTurnUI>();
         if (turnManager.isCamera == false)
         {
             turnManager.SwitchIsCamera();
@@ -30,6 +35,7 @@ public class PlayerTurnState : BaseTurnState
         {
             GameManager.UI.CloseUI<PaseTurnUI>();
             GameManager.UI.OpenUI<MainUI>();
+            MouseSet();
             didClose = true;// 한 번만 처리하게 설정
         }
     }
@@ -40,16 +46,11 @@ public class PlayerTurnState : BaseTurnState
 
     }
 
-    private void AllSet()
+    private void MouseSet()
     {
-        timer = turnSetVlaue.resetTime;
-        didClose = false;
-        turnManager.AddCount();
-        // 턴 시작 시 커맨드 초기화후 입력 대기
-        GameManager.UI.OpenUI<PaseTurnUI>();
         GameManager.Mouse.movePhaseActive = true;
         GameManager.Mouse.isMouse = true;
         GameManager.Mouse.isShowRange = true;
-        Time.timeScale = 3f;    // 배속 기능
+
     }
 }
