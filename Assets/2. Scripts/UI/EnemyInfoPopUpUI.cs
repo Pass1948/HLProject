@@ -75,7 +75,5 @@ public class EnemyInfoPopUpUI : BaseUI
         attackText.text = attack.ToString();
         moveRangeText.text = moveRange.ToString();
         hpBar.fillAmount = currentHealth / (float)maxHealth;
-
     }
-
 }

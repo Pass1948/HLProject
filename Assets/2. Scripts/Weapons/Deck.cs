@@ -67,11 +67,12 @@ public class Deck : MonoBehaviour
         {
             var deck = GameManager.Data.bulletDataGroup.GetBulletData(9005);
 
-            for (int i = 0; i <= deck.max; i++)
+       
+            
+            for (int r = 1; r <= deck.max; r++)
             {
-                var s = (Suit)UnityEngine.Random.Range(0, 4);
-                int r = UnityEngine.Random.Range(1, 14);
-                GameManager.ItemControl.drawPile.Add(new Ammo { suit = s, rank = r });
+                Suit fixedSuit = (Suit)UnityEngine.Random.Range(0, 4);
+                GameManager.ItemControl.drawPile.Add(new Ammo { suit = fixedSuit, rank = r });
             }
         }
         
