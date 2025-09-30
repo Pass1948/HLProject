@@ -39,7 +39,6 @@ public class AttackController : MonoBehaviour
         {
             return;
         }
-
         
         //이미 사용된 슬롯 클릭 방지
         if (!btn.interactable)
@@ -105,6 +104,8 @@ public class AttackController : MonoBehaviour
         {
             selectBulletBg.color = bgSel;
         }
+
+        GameManager.Mouse.HidePlayerRange();
     }
 
     public void Fire()
