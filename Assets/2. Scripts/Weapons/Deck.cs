@@ -7,23 +7,6 @@ public class Deck : MonoBehaviour
     //시작 덱 장수
     //현재 사용안함
     //[SerializeField] private int initialDeckSize = 13;
-    //TODO: 바꿘거 아니라메요ㅜㅜ 카드가 상점에 안나와서 10시간을 버렸어요ㅠㅠ(JBS)
-    //TODO: 바꿘거 아니라메요ㅜㅜ 카드가 상점에 안나와서 10시간을 버렸어요ㅠㅠ(JBS)
-    //TODO: 바꿘거 아니라메요ㅜㅜ 카드가 상점에 안나와서 10시간을 버렸어요ㅠㅠ(JBS)
-    //TODO: 바꿘거 아니라메요ㅜㅜ 카드가 상점에 안나와서 10시간을 버렸어요ㅠㅠ(JBS)
-    //TODO: 바꿘거 아니라메요ㅜㅜ 카드가 상점에 안나와서 10시간을 버렸어요ㅠㅠ(JBS)
-    //TODO: 바꿘거 아니라메요ㅜㅜ 카드가 상점에 안나와서 10시간을 버렸어요ㅠㅠ(JBS)
-    //TODO: 바꿘거 아니라메요ㅜㅜ 카드가 상점에 안나와서 10시간을 버렸어요ㅠㅠ(JBS)
-    //TODO: 바꿘거 아니라메요ㅜㅜ 카드가 상점에 안나와서 10시간을 버렸어요ㅠㅠ(JBS)
-    //TODO: 바꿘거 아니라메요ㅜㅜ 카드가 상점에 안나와서 10시간을 버렸어요ㅠㅠ(JBS)
-    //TODO: 바꿘거 아니라메요ㅜㅜ 카드가 상점에 안나와서 10시간을 버렸어요ㅠㅠ(JBS)
-    //TODO: 바꿘거 아니라메요ㅜㅜ 카드가 상점에 안나와서 10시간을 버렸어요ㅠㅠ(JBS)
-    //TODO: 바꿘거 아니라메요ㅜㅜ 카드가 상점에 안나와서 10시간을 버렸어요ㅠㅠ(JBS)
-    //TODO: 바꿘거 아니라메요ㅜㅜ 카드가 상점에 안나와서 10시간을 버렸어요ㅠㅠ(JBS)
-    //TODO: 바꿘거 아니라메요ㅜㅜ 카드가 상점에 안나와서 10시간을 버렸어요ㅠㅠ(JBS)
-    //TODO: 바꿘거 아니라메요ㅜㅜ 카드가 상점에 안나와서 10시간을 버렸어요ㅠㅠ(JBS)
-    //TODO: 바꿘거 아니라메요ㅜㅜ 카드가 상점에 안나와서 10시간을 버렸어요ㅠㅠ(JBS)
-    //TODO: 바꿘거 아니라메요ㅜㅜ 카드가 상점에 안나와서 10시간을 버렸어요ㅠㅠ(JBS)
 
     //현재 덱
     [SerializeField] 
@@ -60,11 +43,7 @@ public class Deck : MonoBehaviour
     //외부 UI용
     public List<Ammo> GetDrawSnapshot() => new List<Ammo>(GameManager.ItemControl.drawPile);
 
-    /*
-     * 어디에 넣어주지
-     * 플레이어에 넣어주면 되나
-     * 
-     */
+    
     public void GetPlayerBullets(List<Ammo> pile)
     {
         for (int i = 0; i < GameManager.ItemControl.drawPile.Count; i++)
