@@ -76,7 +76,6 @@ public class MouseManager : MonoBehaviour
 
     // --- Overlap관련 최적화 ---
     private readonly Collider[] oneHit = new Collider[1];// OverlapBoxNonAlloc 결과 담는 1칸
-    
 
     public void CreateMouse() // Scene넘어갔을때 실행
     {
@@ -101,7 +100,7 @@ public class MouseManager : MonoBehaviour
     }
     
     //  PlayerTurnState에서 호출
-    public void ToggleMovePhase() => movePhaseActive = !movePhaseActive;
+    public void SetMovePhase(bool active) => movePhaseActive = active;
 
     // =====================================================================
     // 포인터 추적 & 셀 스냅

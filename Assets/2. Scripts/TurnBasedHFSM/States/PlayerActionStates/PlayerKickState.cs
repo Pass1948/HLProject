@@ -8,7 +8,6 @@ public class PlayerKickState : PlayerActionState
     {
         base.OnEnter();
         ChangeState<K_Windup>();
-        GameManager.Mouse.ToggleMovePhase();
         GameManager.Mouse.isMouse = false;
     }
 
