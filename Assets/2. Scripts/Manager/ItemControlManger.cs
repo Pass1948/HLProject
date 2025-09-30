@@ -32,6 +32,7 @@ public class ItemControlManger : MonoBehaviour
     [HideInInspector] public List<ItemModel> powderStatItems = new List<ItemModel>(); // 스탯증가부
     [HideInInspector] public List<ItemModel> powderRogicItems = new List<ItemModel>(); // 논리조건부
 
+    public List<ItemModel> buyItems = new List<ItemModel>(); // 구매한 아이템 리스트
     // ===== 아이템 Prefab을 위한 변수들 =====
 
     public GameObject itemPrefab;
@@ -229,11 +230,11 @@ public class ItemControlManger : MonoBehaviour
         var result = new List<ItemModel>();
         var weights = new Dictionary<RarityType, float>
         {
-            { RarityType.Common, Mathf.Max(0f, common) },
-            { RarityType.Normal, Mathf.Max(0f, normal) },
-            { RarityType.Rare, Mathf.Max(0f, rare) },
-            { RarityType.Elite, Mathf.Max(0f, elite) },
-            { RarityType.Legendary, Mathf.Max(0f, legendary) },
+            { RarityType.Common, Mathf.Max(1f, common) },
+            { RarityType.Normal, Mathf.Max(1f, normal) },
+            { RarityType.Rare, Mathf.Max(1f, rare) },
+            { RarityType.Elite, Mathf.Max(1f, elite) },
+            { RarityType.Legendary, Mathf.Max(1f, legendary) },
         };
 
         for (int i = 0; i < slotCount; i++)
@@ -262,10 +263,10 @@ public class ItemControlManger : MonoBehaviour
             return result;
         var weights = new Dictionary<RarityType, float>
         {
-            { RarityType.Normal, Mathf.Max(0f, normal) },
-            { RarityType.Rare, Mathf.Max(0f, rare) },
-            { RarityType.Elite, Mathf.Max(0f, elite) },
-            { RarityType.Legendary, Mathf.Max(0f, legendary) },
+            { RarityType.Normal, Mathf.Max(1f, normal) },
+            { RarityType.Rare, Mathf.Max(1f, rare) },
+            { RarityType.Elite, Mathf.Max(1f, elite) },
+            { RarityType.Legendary, Mathf.Max(1f, legendary) },
         };
         for (int i = 0; i < slotCount; i++)
         {
@@ -364,7 +365,7 @@ public class ItemControlManger : MonoBehaviour
     // ========== 유물 슬롯과 이미지 생성 메서드 ==========
     // 해당 메서드 사용법 :
     // CreateRelicObject(사는 아이템.id);
-    private void CreateRelicObject(int id)
+    public void CreateRelicObject(int id, ItemModel item)
     {
         if (relicItems == null || relicItems.Count == 0) return;
 
@@ -373,11 +374,12 @@ public class ItemControlManger : MonoBehaviour
             if (relicItems[i] == null) continue;
             if (relicItems[i].id == id)
             {
-                var go = GameManager.Resource.Create<GameObject>(Path.UIElements + "RelicIconUI");
+                var go = GameManager.Resource.Create<GameObject>(Path.ItemRelic + "RelicItem");
                 go.name = relicItems[i].name;
                 GetItem<BaseItem>(go, relicItems[i].csPath);
                 go.transform.SetParent(relicRoot.transform, false);
-                go.gameObject.GetComponent<Image>().sprite = GameManager.Resource.Load<Sprite>(Path.UISprites + relicItems[i].imagePath);
+                buyItems.Add(item);
+                //go.gameObject.GetComponent<Image>().sprite = GameManager.Resource.Load<Sprite>(Path.UISprites + relicItems[i].imagePath);
             }
         }
     }

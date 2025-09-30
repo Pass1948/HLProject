@@ -96,6 +96,7 @@ public static class Path
     public const string Character = Prefab + "Character/";
     public const string Enemy = Prefab + "Enemy/";
     public const string Item = Prefab + "Item/";
+    public const string ItemRelic = Prefab + "Item/Relic/";
     public const string Map = Prefab + "Map/";
     public const string Camera = Prefab + "Camera/";
     public const string Player = Prefab + "Player/";
