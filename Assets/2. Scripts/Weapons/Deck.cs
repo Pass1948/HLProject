@@ -60,15 +60,22 @@ public class Deck : MonoBehaviour
         //기본덱
         //숫자 1~13 각 1장, 문양은 랜덤
         //==============================
+        //나중에 테스트 끝나면 안에 넣기
+
         
+        if(GameManager.TurnBased.turnSettingValue.IsBasicDeck == true)
+        {
             var deck = GameManager.Data.bulletDataGroup.GetBulletData(9005);
 
-            for(int i = 0; i <= deck.max; i++)
+            for (int i = 0; i <= deck.max; i++)
             {
                 var s = (Suit)UnityEngine.Random.Range(0, 4);
                 int r = UnityEngine.Random.Range(1, 14);
                 GameManager.ItemControl.drawPile.Add(new Ammo { suit = s, rank = r });
             }
+        }
+        
+            
 
         //==============================
         //다이아 덱

@@ -5,17 +5,19 @@ using TMPro;
 public class BulletView : MonoBehaviour
 {
     public Image bulletBg;//선택 표시용 배경
-    [SerializeField] private TMP_Text label;//D2/C6/H5등등 표기
+    [SerializeField] private TMP_Text suitText;//D2/C6/H5등등 표기
+    [SerializeField] private TMP_Text numText;
 
     public Ammo ammo;
 
     public void RefreshLabel()
     {
-        if (!label)
+        if (!suitText && !numText)
         {
             return;
         }
-        label.text = ammo != null ? SuitLetter(ammo.suit) + ammo.rank : string.Empty;
+        suitText.text = SuitLetter(ammo.suit);
+        numText.text = RankLabel(ammo.rank);
     }
 
     public void SetBgColor(Color c)
@@ -30,11 +32,23 @@ public class BulletView : MonoBehaviour
     {
         switch (s)
         {
-            case Suit.Spade: return "S";
-            case Suit.Heart: return "H";
-            case Suit.Diamond: return "D";
-            case Suit.Club: return "C";
+            case Suit.Spade: return "♠";
+            case Suit.Heart: return "♥";
+            case Suit.Diamond: return "♦";
+            case Suit.Club: return "♣";
             default: return "?";
+        }
+    }
+
+    private static string RankLabel(int rank)
+    {
+        switch (rank)
+        {
+            case 1: return "A";
+            case 11: return "J";
+            case 12: return "Q";
+            case 13: return "K";
+            default: return rank.ToString();
         }
     }
 }
