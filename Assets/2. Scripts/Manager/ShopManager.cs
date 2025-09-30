@@ -41,7 +41,7 @@ public class ShopManager : MonoBehaviour
     private void Start()
     {
         // 아직 바로 실행 중입니다.
-        deck = GameManager.Resource.Create<Deck>(Path.UI + "Deck");
+ 
         if (relicPool == null || relicPool.Count == 0)
             relicPool = DataTable.RelicData.GetList();
         
@@ -51,6 +51,7 @@ public class ShopManager : MonoBehaviour
 
     public void ShopInit()
     {
+        deck = GameManager.Resource.Create<Deck>(Path.UI + "Deck");
         EnterShop();
     }
 
