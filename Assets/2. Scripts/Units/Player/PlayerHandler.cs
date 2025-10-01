@@ -11,8 +11,6 @@ public class PlayerHandler : MonoBehaviour
     public List<Ammo> GetBullet() { return bullets;}
     
     public List<int> ownedRelics = new(); // 유물 리스트
-
-    private Deck deck;
     
     private void Awake()
     {
@@ -20,10 +18,7 @@ public class PlayerHandler : MonoBehaviour
 
     private void Start()
     {
-        // Testing
-        deck = GameManager.Shop.deck;
         playerMonney = 500000000;
-        //deck.GetPlayerBullets(bullets);
     }
     
     public void TakeDamage(int amount)
@@ -37,9 +32,11 @@ public class PlayerHandler : MonoBehaviour
         }
         else
         {
-            player.health -= amount;
+            if (player == null) return;
 
-            if (player.health <= 0)
+            player.currentHealth = Mathf.Max(0, player.currentHealth - amount);
+
+            if (player.currentHealth <= 0)
             {
                 this.gameObject.SetActive(false);
             }
@@ -49,7 +46,7 @@ public class PlayerHandler : MonoBehaviour
     public void Heal(int amount)
     {
         var player = GameManager.Unit.Player.playerModel;
-        player.health += amount;
+        player.currentHealth += amount;
         Debug.Log($"체력 회복: {amount}, 현재 체력: {player.health}");
     }
     

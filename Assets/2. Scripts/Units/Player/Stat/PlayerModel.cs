@@ -14,14 +14,15 @@ public class PlayerModel : UnitModel
     public ViecleBording viecleBording;
     public int attack;
     public int attackRange;
-    public int baseMoveRange = 1;
-    public int moveRange = 1;
+    public int baseMoveRange;
+    public int moveRange;
     public int mulligan;
     public int reload;
     public int baseHealth;
     public int health;
     public int monney = 10;
-    public bool die => health <= 0; //0���ϸ� Ʈ��
+    public bool die => currentHealth <= 0;
+
     public void InitData(EntityData data)
     {
         unitType = data.type;
@@ -32,8 +33,10 @@ public class PlayerModel : UnitModel
         attackRange = Random.Range(data.minAttackRange, data.maxAttackRange);
         moveRange = data.moveRange;
         maxHealth = data.health;
-        currentHealth = maxHealth;
+        health= maxHealth;
+        currentHealth = health;
         mulligan = data.mulligan;
         reload = data.reload;
     }
+
 }

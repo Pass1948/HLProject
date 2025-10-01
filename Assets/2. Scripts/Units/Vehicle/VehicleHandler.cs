@@ -20,8 +20,8 @@ public class VehicleHandler : MonoBehaviour
         GameManager.Unit.Player.playerModel.viecleBording = ViecleBording.On;
         
         MountVehicle();
-        currentPlayerMoveRange = GameManager.Unit.Player.playerModel.moveRange;
-        currentPlayerHP = GameManager.Unit.Player.playerModel.health;
+        currentPlayerMoveRange = 1;
+        currentPlayerHP = GameManager.Unit.Player.playerModel.currentHealth;
     }
     private void Start()
     {
@@ -51,9 +51,9 @@ public class VehicleHandler : MonoBehaviour
     // 데미지 받는 로직
     public void DamageVehicle(int amount )
     {
-        GameManager.Unit.Vehicle.vehicleModel.health -= amount;
+        GameManager.Unit.Vehicle.vehicleModel.currentHealth = Mathf.Max(0, GameManager.Unit.Vehicle.vehicleModel.currentHealth - amount);
         vehicleDestruction.transform.position = transform.position;
-        if(GameManager.Unit.Vehicle.vehicleModel.health <= 0)
+        if(GameManager.Unit.Vehicle.vehicleModel.currentHealth <= 0)
         {
             GameManager.Unit.Vehicle.vehicleModel.condition = VehicleCondition.Destruction;
             GameManager.Unit.Player.playerModel.viecleBording = ViecleBording.off;
@@ -61,7 +61,7 @@ public class VehicleHandler : MonoBehaviour
             vehicleDestruction.SetActive(true); 
             GameManager.Map.mapData[(int)transform.position.x, (int)transform.position.y] = TileID.Vehicle;
             GameManager.Unit.Player.playerModel.moveRange = currentPlayerMoveRange;
-            GameManager.Unit.Player.playerModel.health -= GameManager.Unit.Vehicle.vehicleModel.health;
+           // GameManager.Unit.Player.playerModel.health -= GameManager.Unit.Vehicle.vehicleModel.health;
         }
         else
         {
@@ -72,8 +72,8 @@ public class VehicleHandler : MonoBehaviour
     // 오토바이 고치는 로직
     public void RepairVehicle()
     {
-        GameManager.Unit.Vehicle.vehicleModel.health += repairAmount;
-        if(GameManager.Unit.Vehicle.vehicleModel.health > 0)
+        GameManager.Unit.Vehicle.vehicleModel.currentHealth += repairAmount;
+        if(GameManager.Unit.Vehicle.vehicleModel.currentHealth > 0)
         {
             GameManager.Unit.Vehicle.vehicleModel.condition = VehicleCondition.Riding;
             MountVehicle();
@@ -89,7 +89,7 @@ public class VehicleHandler : MonoBehaviour
         transform.SetParent(GameManager.Unit.Player.transform);
         GameManager.Unit.Vehicle.transform.localPosition = Vector3.zero;
         GameManager.Unit.Player.playerModel.moveRange += GameManager.Unit.Vehicle.vehicleModel.moveRange;
-        GameManager.Unit.Player.playerModel.health += GameManager.Unit.Vehicle.vehicleModel.health;
+        //GameManager.Unit.Player.playerModel.health += GameManager.Unit.Vehicle.vehicleModel.health;
         GameManager.Map.mapData[(int)transform.position.x, (int)transform.position.y] = 0;
     }
     // 내리는 버튼
@@ -99,7 +99,7 @@ public class VehicleHandler : MonoBehaviour
         GameManager.Unit.Player.playerModel.viecleBording = ViecleBording.off;
         GameManager.Unit.Vehicle.transform.SetParent(null);
         GameManager.Unit.Player.playerModel.moveRange = currentPlayerMoveRange;
-        GameManager.Unit.Player.playerModel.health -= GameManager.Unit.Vehicle.vehicleModel.health;
+       // GameManager.Unit.Player.playerModel.health -= GameManager.Unit.Vehicle.vehicleModel.health;
         GameManager.Map.mapData[(int)transform.position.x, (int)transform.position.y] = TileID.Vehicle;
     }
     

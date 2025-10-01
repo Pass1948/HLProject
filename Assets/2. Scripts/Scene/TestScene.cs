@@ -23,10 +23,18 @@ public class TestScene : BaseScene
         GameManager.ItemControl.ItemDataSet();  // 아이템데이터 리스트 초기 세팅
         GameManager.Mouse.CreateMouse();
         GameManager.Shop.ShopInit(_stage);
+        if (GameManager.Unit.isInit == true)
+        {
+            GameManager.Unit.SetCurrentStat();
+        }
     }
 
     public override void SceneExit()
     {
+        _stage = null;
+        
+        GameManager.Unit.AllClearEnemies();
+        GameManager.Unit.enemies.Clear();
         GameManager.Mouse.ClearMouse();
     }
 

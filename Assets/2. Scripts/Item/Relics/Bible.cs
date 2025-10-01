@@ -15,4 +15,9 @@ public class Bible : HealthItem
     {
         RemoveHealth(relicItems, 3006);
     }
+    private void OnDestroy()
+    {
+        RemoveHealth(relicItems, 3006);
+    }
+
 }

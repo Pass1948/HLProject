@@ -42,10 +42,7 @@ public class GameManager : MonoBehaviour
     public static SaveLoadManager SaveLoad => saveLoadManager;
     private static ItemControlManger itemControlManger;
     public static ItemControlManger ItemControl => itemControlManger;
-    
-    private static RewardManager rewardManager;
-    public static RewardManager Reward => rewardManager;
-    
+
     private static ShopManager shopManager;
     public static ShopManager Shop => shopManager;
 
@@ -78,7 +75,6 @@ public class GameManager : MonoBehaviour
         mouseManager = CreateChildManager<MouseManager>("MouseManager");
         saveLoadManager = CreateChildManager<SaveLoadManager>("SaveLoadManager");
         itemControlManger = CreateChildManager<ItemControlManger>("ItemControlManger");
-        rewardManager = CreateChildManager<RewardManager>("RewardManager");
         shopManager = CreateChildManager<ShopManager>("ShopManager");
     }
     private T CreateChildManager<T>(string goName) where T : Component
