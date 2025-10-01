@@ -14,4 +14,8 @@ public class MossSandals : RangeItem
    {
       RemoveMoveRange(relicItems, 3002);
    }
+    private void OnDestroy()
+    {
+        RemoveMoveRange(relicItems, 3006);
+    }
 }

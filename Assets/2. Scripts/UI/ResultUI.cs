@@ -10,7 +10,6 @@ public enum ResultType
 
 public class ResultUI : BaseUI
 {
-
     [SerializeField] ClearUI clearUI;
     [SerializeField] OverUI overUI;
 

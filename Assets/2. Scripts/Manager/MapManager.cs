@@ -91,6 +91,13 @@ public class MapManager : MonoBehaviour
         if (spawnController != null)
         {
             spawnController.ReturnAllObstaclesToPool(); 
+            
+            foreach (var pool in spawnController.obstaclePools.Values)
+            {
+                pool.ResetPool();
+                
+                pool.InitializePool(10);
+            }
         }
         
         mapData = new int[stage.mapSize, stage.mapSize];
