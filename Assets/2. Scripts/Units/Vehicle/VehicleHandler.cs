@@ -51,7 +51,7 @@ public class VehicleHandler : MonoBehaviour
     // 데미지 받는 로직
     public void DamageVehicle(int amount )
     {
-        GameManager.Unit.Vehicle.vehicleModel.health -= amount;
+        GameManager.Unit.Vehicle.vehicleModel.health = Mathf.Max(0, GameManager.Unit.Vehicle.vehicleModel.health - amount);
         vehicleDestruction.transform.position = transform.position;
         if(GameManager.Unit.Vehicle.vehicleModel.health <= 0)
         {

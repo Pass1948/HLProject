@@ -37,7 +37,9 @@ public class PlayerHandler : MonoBehaviour
         }
         else
         {
-            player.health -= amount;
+            if (player == null) return;
+
+            player.health = Mathf.Max(0, player.health - amount);
 
             if (player.health <= 0)
             {
