@@ -210,10 +210,10 @@ public class MouseManager : MonoBehaviour
         HideEnemyPopup();
         if (isMoving) return;
 
-        selectedPlayer     = useOverlapLookup ? FindAtCell<BasePlayer>(cell) : null;
+        selectedPlayer = useOverlapLookup ? FindAtCell<BasePlayer>(cell) : null;
         selectedPlayerCell = cell;
-        selectedMoveRange  = GameManager.Unit.Player.playerModel.moveRange;
-
+        selectedMoveRange = GameManager.Unit.Player.playerModel.moveRange;
+        Debug.Log($"지금 이동력 : {GameManager.Unit.Player.playerModel.moveRange}");
         // 디버그: 선택 확인
         Debug.Log($"[Mouse] Player Selected? {(selectedPlayer!=null)} / cell {cell}");
         if (selectedPlayer == null)

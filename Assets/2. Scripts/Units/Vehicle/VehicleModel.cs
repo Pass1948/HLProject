@@ -38,4 +38,5 @@ public class VehicleModel : UnitModel
         currentHealth = maxHealth;
         maxBullet = data.maxBullet;
     }
+
 }
