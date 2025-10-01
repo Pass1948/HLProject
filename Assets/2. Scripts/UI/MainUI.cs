@@ -319,7 +319,7 @@ public class MainUI : BaseUI
     {
         var m = GameManager.Unit.Player.playerModel;
 
-        int cur = m.health;
+        int cur = m.currentHealth;
         int max = m.maxHealth;
 
         float t = (max > 0) ? (float)cur / max : 0f;
@@ -331,7 +331,7 @@ public class MainUI : BaseUI
     {
         var m = GameManager.Unit.Vehicle.vehicleModel;
 
-        int cur = m.health;
+        int cur = m.currentHealth;
         int max = m.maxHealth;
 
         float t = (max > 0) ? (float)cur / max : 0f;

@@ -10,7 +10,7 @@ public class HealthItem : BaseItem
         {
             if (items[i].id == id)
             {
-                playerModel.health +=items[i].addMaxHealth;
+                playerModel.currentHealth += items[i].addMaxHealth;
             }
         }
         
@@ -21,7 +21,7 @@ public class HealthItem : BaseItem
         {
             if (items[i].id == id)
             {
-                playerModel.health -=items[i].addMaxHealth;
+                playerModel.currentHealth -= items[i].addMaxHealth;
             }
         }
     }
