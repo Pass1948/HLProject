@@ -1,6 +1,7 @@
+using GoogleSheet.Core.Type;
 using System.Collections;
 using System.Collections.Generic;
-using GoogleSheet.Core.Type;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [UGS(typeof(UnitType))]
@@ -26,6 +27,19 @@ public class UnitManager : MonoBehaviour
 
     public BaseBoss boss = null;
 
+   public bool isInit = false;
+
+    // =====[현재 게임 저장용 스탯]=====
+    public int curAttack;
+    public int curAttackRange;
+    public int curMoveRange;
+    public int curMulligan;
+    public int curHealth;
+
+    // =====[현재 게임 저장용 스탯]=====
+    public int curVMoveRange;
+    public int curVHealth;
+
     public void ChangeHealth(UnitModel unit, int damage, Ammo ammo = null)
     {
         if (unit.unitType == UnitType.Player)
@@ -44,12 +58,12 @@ public class UnitManager : MonoBehaviour
                         unit.currentHealth -= damage;
                     }
                     else if (enemy.rank < ammo.rank)
-                    {                        
+                    {
                         unit.currentHealth -= damage;
                     }
                     break;
                 case EnemyAttribute.Low:
-                    if(enemy.rank == 1 && ammo.rank == 13)
+                    if (enemy.rank == 1 && ammo.rank == 13)
                     {
                         unit.currentHealth -= damage;
                     }
@@ -61,5 +75,29 @@ public class UnitManager : MonoBehaviour
             }
         }
     }
+
+    public void CurrentStatReset()
+    {
+        curAttack = Player.playerModel.attack;
+      //curAttackRange = Player.playerModel.attackRange;
+        curMoveRange = Player.playerModel.moveRange;
+        curMulligan = Player.playerModel.mulligan;
+        curHealth = Player.playerModel.currentHealth;
+        curVHealth = Vehicle.vehicleModel.currentHealth;
+        isInit = true;
+
+    }
+
+    public void SetCurrentStat()
+    {
+        Player.playerModel.attack =curAttack;
+       // Player.playerModel.attackRange = curAttackRange;
+        Player.playerModel.moveRange = curMoveRange;
+        Player.playerModel.mulligan = curMulligan;
+        Player.playerModel.currentHealth = curHealth;
+        Vehicle.vehicleModel.currentHealth = curVHealth;
+        isInit  = false;
+    }
+
 
 }

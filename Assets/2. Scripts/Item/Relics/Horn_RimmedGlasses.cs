@@ -15,4 +15,8 @@ public class Horn_RimmedGlasses : RangeItem
     {
         RemoveAttackRange(relicItems, 3005);
     }
+    private void OnDestroy()
+    {
+        RemoveAttackRange(relicItems, 3006);
+    }
 }

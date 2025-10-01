@@ -15,4 +15,8 @@ public class HolySaw : AttackItem
     {
         RemoveAttack(relicItems, 3001);
     }
+    private void OnDestroy()
+    {
+        RemoveAttack(relicItems, 3006);
+    }
 }

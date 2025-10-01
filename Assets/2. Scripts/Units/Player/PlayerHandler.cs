@@ -32,9 +32,11 @@ public class PlayerHandler : MonoBehaviour
         }
         else
         {
-            player.health -= amount;
+            if (player == null) return;
 
-            if (player.health <= 0)
+            player.currentHealth = Mathf.Max(0, player.currentHealth - amount);
+
+            if (player.currentHealth <= 0)
             {
                 this.gameObject.SetActive(false);
             }
@@ -44,7 +46,7 @@ public class PlayerHandler : MonoBehaviour
     public void Heal(int amount)
     {
         var player = GameManager.Unit.Player.playerModel;
-        player.health += amount;
+        player.currentHealth += amount;
         Debug.Log($"체력 회복: {amount}, 현재 체력: {player.health}");
     }
     

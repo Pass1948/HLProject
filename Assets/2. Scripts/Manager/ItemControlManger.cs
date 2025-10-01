@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
+using VHierarchy.Libs;
 
 public class ItemControlManger : MonoBehaviour
 {
@@ -150,6 +151,8 @@ public class ItemControlManger : MonoBehaviour
         relicItems.Clear();
         powderItems.Clear();
         drawPile.Clear();
+        buyItems.Clear();
+        relicRoot.gameObject.Destroy();
         ItemDataSet();
     }
 

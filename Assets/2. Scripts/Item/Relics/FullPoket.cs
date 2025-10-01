@@ -14,4 +14,8 @@ public class FullPoket : MulliganItem
     {
         RemoveMulligan(relicItems, 3003);
     }
+    private void OnDestroy()
+    {
+        RemoveMulligan(relicItems, 3006);
+    }
 }
