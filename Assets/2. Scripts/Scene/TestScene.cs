@@ -27,6 +27,8 @@ public class TestScene : BaseScene
 
     public override void SceneExit()
     {
+        _stage = null;
+        GameManager.Unit.enemies.Clear();
         
     }
 

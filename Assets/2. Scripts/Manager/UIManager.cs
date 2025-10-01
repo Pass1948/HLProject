@@ -26,9 +26,6 @@ public class UIManager : MonoBehaviour
         SceneManager.sceneUnloaded -= OnSceneUnloaded;
     }
 
-    // ================================
-    // UI 관리
-    // ================================
     public void OpenUI<T>() where T : BaseUI
     {
         var ui = GetUI<T>();
@@ -73,7 +70,6 @@ public class UIManager : MonoBehaviour
         CheckCanvas();
         CheckEventSystem();
 
-        // 1. 프리팹 로드 & 생성
         string path = GetPath<T>();
         GameObject prefab = GameManager.Resource.CreateUI<GameObject>(path, _uiRoot);
         if (prefab == null)
@@ -82,7 +78,6 @@ public class UIManager : MonoBehaviour
             return null;
         }
 
-        // 2. 컴포넌트 획득
         T ui = prefab.GetComponent<T>();
         if (ui == null)
         {
@@ -91,7 +86,7 @@ public class UIManager : MonoBehaviour
             return null;
         }
 
-        // 3. Dictionary 등록
+        // 3. Dictionary 占쏙옙占�
         _uiDictionary[uiName] = ui;
 
         return ui;
@@ -118,12 +113,7 @@ public class UIManager : MonoBehaviour
         string uiName = GetUIName<T>();
         return _uiDictionary.TryGetValue(uiName, out var ui) && ui != null;
     }
-
-
-
-    // ================================
-    // path 헬퍼
-    // ================================
+    
     private string GetPath<T>() where T : BaseUI
     {
         return UIPrefabPath + GetUIName<T>();
@@ -133,12 +123,7 @@ public class UIManager : MonoBehaviour
     {
         return typeof(T).Name;
     }
-
-
-    // ================================
-    // UI 필수 컴포넌트 체크
-    // 기존 씬에 있는 오브젝트가 있다면 처리를 해주는 코드가 필요할지도?
-    // ================================
+    
     private void CheckCanvas()
     {
         if (_uiRoot != null)
@@ -156,11 +141,7 @@ public class UIManager : MonoBehaviour
         string prefKey = Path.UI + UICommonPath + Prefab.EventSystem;
         _eventSystem = GameManager.Resource.Create<EventSystem>(prefKey);
     }
-
-
-    // ================================
-    // 리소스 정리
-    // ================================
+    
     private void OnSceneUnloaded(Scene scene)
     {
         CleanAllUIs();
@@ -177,7 +158,6 @@ public class UIManager : MonoBehaviour
             foreach (var ui in _uiDictionary.Values)
             {
                 if (ui == null) continue;
-                // Close 프로세스 추가 가능
                 Destroy(ui.gameObject);
             }
             _uiDictionary.Clear();
@@ -187,9 +167,7 @@ public class UIManager : MonoBehaviour
             _isCleaning = false;
         }
     }
-
-
-    // UI 뿐만 아니라 전체 오브젝트 관리 시스템측면에서도 있으면 좋음
+    
     private IEnumerator CoUnloadUnusedAssets()
     {
         yield return Resources.UnloadUnusedAssets();

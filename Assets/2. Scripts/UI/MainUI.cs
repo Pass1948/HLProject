@@ -38,7 +38,6 @@ public class MainUI : BaseUI
     [SerializeField] Button repairBtn;
     [SerializeField] Button mountBtn;
     [SerializeField] Button getOffBtn;
-    [SerializeField] Button settingBtn;
 
     //플레이어 HP
     [SerializeField] private Image playerHp;
@@ -69,9 +68,6 @@ public class MainUI : BaseUI
         bikeControllBtn.onClick.AddListener(BikeToggle);
         RelicBtn.onClick.AddListener(RelicToggle);
 
-
-        settingBtn.onClick.AddListener(GameResultUITest);
-
         settingActiveBtn.onClick.AddListener(OpenSettings);
 
         //탄환 선택해제
@@ -95,13 +91,6 @@ public class MainUI : BaseUI
     private void OnDisable()
     {
         reloadBtnObj.ReloadChange -= OnReloadChanged;
-    }
-
-    private void GameResultUITest()
-    {
-        ResultUI backUI = GameManager.UI.GetUI<ResultUI>();
-        //backUI.resulttype = ResultType.Over;
-        backUI.GetResultType(ResultType.Over);
     }
 
     private void Update()
