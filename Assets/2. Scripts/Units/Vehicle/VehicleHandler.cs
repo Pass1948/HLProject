@@ -61,7 +61,7 @@ public class VehicleHandler : MonoBehaviour
             vehicleDestruction.SetActive(true); 
             GameManager.Map.mapData[(int)transform.position.x, (int)transform.position.y] = TileID.Vehicle;
             GameManager.Unit.Player.playerModel.moveRange = currentPlayerMoveRange;
-            GameManager.Unit.Player.playerModel.health -= GameManager.Unit.Vehicle.vehicleModel.health;
+           // GameManager.Unit.Player.playerModel.health -= GameManager.Unit.Vehicle.vehicleModel.health;
         }
         else
         {
@@ -89,7 +89,7 @@ public class VehicleHandler : MonoBehaviour
         transform.SetParent(GameManager.Unit.Player.transform);
         GameManager.Unit.Vehicle.transform.localPosition = Vector3.zero;
         GameManager.Unit.Player.playerModel.moveRange += GameManager.Unit.Vehicle.vehicleModel.moveRange;
-        GameManager.Unit.Player.playerModel.health += GameManager.Unit.Vehicle.vehicleModel.health;
+        //GameManager.Unit.Player.playerModel.health += GameManager.Unit.Vehicle.vehicleModel.health;
         GameManager.Map.mapData[(int)transform.position.x, (int)transform.position.y] = 0;
     }
     // 내리는 버튼
@@ -99,7 +99,7 @@ public class VehicleHandler : MonoBehaviour
         GameManager.Unit.Player.playerModel.viecleBording = ViecleBording.off;
         GameManager.Unit.Vehicle.transform.SetParent(null);
         GameManager.Unit.Player.playerModel.moveRange = currentPlayerMoveRange;
-        GameManager.Unit.Player.playerModel.health -= GameManager.Unit.Vehicle.vehicleModel.health;
+       // GameManager.Unit.Player.playerModel.health -= GameManager.Unit.Vehicle.vehicleModel.health;
         GameManager.Map.mapData[(int)transform.position.x, (int)transform.position.y] = TileID.Vehicle;
     }
     
