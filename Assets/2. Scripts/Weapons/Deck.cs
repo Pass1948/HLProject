@@ -85,7 +85,6 @@ public class Deck : MonoBehaviour
                 GameManager.ItemControl.drawPile.Add(new Ammo { suit = fixedSuit, rank = r });
                 
             }
-            Debug.Log($"지금 덱에는 이이ㅣㅣㅣ만큼있어 시바라{GameManager.ItemControl.drawPile.Count}");
         }
         
             
