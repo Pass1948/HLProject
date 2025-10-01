@@ -85,7 +85,7 @@ public class UnitManager : MonoBehaviour
         curHealth = Player.playerModel.currentHealth;
         curVHealth = Vehicle.vehicleModel.currentHealth;
         isInit = true;
-
+        Debug.Log($"플레이어 체력{curHealth}<= {Player.playerModel.currentHealth}");
     }
 
     public void SetCurrentStat()
@@ -97,6 +97,7 @@ public class UnitManager : MonoBehaviour
         Player.playerModel.currentHealth = curHealth;
         Vehicle.vehicleModel.currentHealth = curVHealth;
         isInit  = false;
+        Debug.Log($"플레이어 체력{Player.playerModel.currentHealth}<= {curHealth}");
     }
 
     public void AllClearEnemies()
