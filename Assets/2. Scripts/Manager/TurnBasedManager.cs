@@ -55,8 +55,8 @@ public class TurnBasedManager : MonoBehaviour
     private void Update()
     {
         turnHFSM.Tick(Time.deltaTime);
-        // [참고] 폴링 방식이 필요 없다면 이곳에서 UpdateMonster를 호출하지 않아도 됩니다.
     }
+
     private void FixedUpdate()
     {
         turnHFSM.FixedTick(Time.fixedDeltaTime);

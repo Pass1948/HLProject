@@ -11,8 +11,19 @@ public class EnemyFloatingUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI attributeText;
     [SerializeField] private Slider hpSlider;
     [SerializeField] private EnemyModel model;
-    
     // Start is called before the first frame update
+
+    private void OnEnable()
+    {
+        GameManager.Event.Subscribe(EventType.EnemyUIUpdate, SetData);  
+    }
+
+    private void OnDisable()
+    {
+        GameManager.Event.Unsubscribe(EventType.EnemyUIUpdate, SetData);
+    }
+
+
     void Start()
     {
         hpSlider.maxValue = model.maxHealth;
@@ -54,6 +65,21 @@ public class EnemyFloatingUI : MonoBehaviour
     public void Init(EnemyModel model)
     {
         this.model = model;
+    }
 
+    public void SetData()
+    {
+        string attri = null;
+        if (model.attri == EnemyAttribute.High)
+        {
+            attri = "H";
+        }
+        else if (model.attri == EnemyAttribute.Low)
+        {
+            attri = "L";
+        }
+        attributeText.text = attri;
+        Debug.Log($"Áö±Ý ·©Å©{attri}");
+        hpSlider.value = model.currentHealth;
     }
 }
