@@ -49,27 +49,14 @@ public class ShopManager : MonoBehaviour
         if(powderPool == null)
             powderPool = new List<PowderData>();
     }
-
     public void ShopInit(Stage stage)
     {
         this.stage = stage;
         deck = GameManager.Resource.Create<Deck>(Path.UI + "Deck");
-        EnterShop();
-    }
-
-    private void OnEnable()
-    {   
-    }
-
-    /// 상점 입장 > 상품 생성
-    public void EnterShop()
-    {
         rerollCost = 2;
         canRemoveBullet = true;
         powderBundleLeft = 2;
         GenerateOffers();
-        GameManager.Event.Publish(EventType.ShopPlayerCardsConfim);
-        //확인을 위한 
     }
     
     //상품 구성만 다시 생성(리롤 시 이거만 호출)
@@ -88,6 +75,7 @@ public class ShopManager : MonoBehaviour
         
         GameManager.Event.Publish(EventType.ShopOffersChanged, offers);
     }
+    
     // 탄환 오퍼 
     private void GenerateCardOffers(List<Ammo> playerOwned)
     {
@@ -108,7 +96,6 @@ public class ShopManager : MonoBehaviour
             // 새로운 탄환 후보 생성
             var offerAmmo = new Ammo { suit = card.suit, rank = card.rank, powder = null};
             
-            
             // 가격 = 기본3 + (화약 레어도 추가 비용)
             int price = 3;
             if (offerAmmo.powder != null)
@@ -119,10 +106,11 @@ public class ShopManager : MonoBehaviour
             if (added >= want) break;
         }
     }
+    
     private int GetBulletOfferCount()
     {
         //TODO: 유물,버프에 의해 슬롯이 증가되면 여기서 계산.
-        int baseCount = 3;
+        int baseCount = 5;
         int bonusCount = 0;
         return baseCount + bonusCount;
     }
@@ -167,6 +155,7 @@ public class ShopManager : MonoBehaviour
             case ShopItemType.Bullet:
                 GameManager.ItemControl.drawPile.Add(item.ammo);
                 RemoveOfferAt(index);
+                GameManager.Event.Publish(EventType.ShopPlayerCardsConfim);
                 changed =  true;
                 break;
 
@@ -174,7 +163,6 @@ public class ShopManager : MonoBehaviour
                 if (item.relic != null)
                 {
                     GameManager.ItemControl.CreateRelicObject(item.relic.id, item.relic);
-                    
                     RemoveOfferAt(index);
                     changed = true;
                 }
@@ -221,13 +209,7 @@ public class ShopManager : MonoBehaviour
         }
         offers.RemoveAt(index);
     }
-
-    public void TryBuyitem(ShopItem item)
-    {
-        int index = offers.IndexOf(item);
-        if(index == -1) return;
-        TryBuy(index);
-    }
+    
     // 돈내고 오퍼 전체 재생성
     public void TryReroll()
     {

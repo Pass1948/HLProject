@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,37 +8,61 @@ public class RewardSlotUI : BaseUI
     [SerializeField] Button selectButton;
     [SerializeField] Image rewardIcon;
     [SerializeField] TextMeshProUGUI rewardText;
+    
+    private object rewardItem;
 
+    private void Start()
+    {
+        // TODO: 지금은 테스트 용 나중에 성한님께 물어볼 것
+        selectButton.onClick.AddListener(SelectReward);
+    }
+    public void SetReward(object reward)
+    {
+        gameObject.SetActive(true);
+        rewardItem = reward;
+        if (rewardItem is int gold)
+        {
+            rewardText.text = $"달란트 : {gold.ToString()}";
+        }
+        else if(reward is Ammo ammo)
+        {
+            rewardText.text = $"{ammo.suit}{ammo.rank}";
+        }
+        else if (reward is ItemModel relic)
+        {
+            rewardText.text = relic.name;
+            
+            // TODO: 추가 해야함. 사진(JBS)
+            rewardIcon.sprite = GameManager.Resource.Load<Sprite>(Path.UISprites);
+        }
+    }
     protected override void OnOpen()
     {
         base.OnOpen();
-
-        selectButton.onClick.AddListener(SelectReward);
-
-        GetRewardInfo();
+        // selectButton.onClick.AddListener(SelectReward);
     }
-    
     protected override void OnClose()
     {
         base.OnClose();
-        selectButton.onClick.RemoveAllListeners();
+        // selectButton.onClick.RemoveAllListeners();
     }
-
-    private void GetRewardInfo()
-    {
-        // 리워드(유물, 재화 등) 의 정보 받아서 UI반영
-        // rewardIcon =
-        // rewardText.text =
-        
-        
-    }
-
     private void SelectReward()
     {
-        // 보상을 얻어서 적용 시키는 로직 적용
-        
-        
-        
+        Debug.Log("카드 선택했어");
+        if (rewardItem is int gold)
+        {
+            GameManager.Unit.Player.playerHandler.AddGold(gold);
+        }
+        else if (rewardItem is Ammo ammo)
+        {
+            GameManager.ItemControl.drawPile.Add(ammo);
+        }
+        else if (rewardItem is ItemModel relic)
+        {
+            GameManager.ItemControl.buyItems.Add(relic);
+            GameManager.ItemControl.CreateRelicObject(relic.id, relic);
+        }
+        gameObject.SetActive(false);
     }
     
     
