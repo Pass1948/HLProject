@@ -29,14 +29,14 @@ public class UnitManager : MonoBehaviour
 
    public bool isInit = false;
 
-    // =====[ÇöÀç °ÔÀÓ ÀúÀå¿ë ½ºÅÈ]=====
+    // =====[ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½]=====
     public int curAttack;
     public int curAttackRange;
     public int curMoveRange;
     public int curMulligan;
     public int curHealth;
 
-    // =====[ÇöÀç °ÔÀÓ ÀúÀå¿ë ½ºÅÈ]=====
+    // =====[ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½]=====
     public int curVMoveRange;
     public int curVHealth;
 
@@ -99,5 +99,12 @@ public class UnitManager : MonoBehaviour
         isInit  = false;
     }
 
+    public void AllClearEnemies()
+    {
+        foreach (var enemy in enemies)
+        {
+            Destroy(enemy.gameObject);
+        }
+    }
 
 }
