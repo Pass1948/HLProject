@@ -63,10 +63,10 @@ public class MouseManager : MonoBehaviour
     public bool isShowRange = true;  // ← 이동범위 보일 의도면 true로 두세요 (기본 false면 안 보입니다)
 
     // hover
-    private Vector3Int _hoverCell;
-    private bool _hasHover;
+    private Vector3Int hoverCell;
+    private bool hasHover;
 
-    private readonly Collider[] oneHit = new Collider[8];
+    private readonly Collider[] Hits = new Collider[24];
 
     public void CreateMouse()
     {
@@ -88,17 +88,17 @@ public class MouseManager : MonoBehaviour
         if (pointer == null || tilemap == null || map == null || cam == null) return;
 
         if (blockWhenUI && EventSystem.current && EventSystem.current.IsPointerOverGameObject())
-        { _hasHover = false; return; }
+        { hasHover = false; return; }
 
         if (!TryGetMouseWorld(screen, out var world))
-        { _hasHover = false; return; }
+        { hasHover = false; return; }
 
         var cell = tilemap.WorldToCell(world);
 
         bool inside = IsInside(cell);
         if (!inside)
         {
-            if (freezeWhenOutside) { _hasHover = false; return; }
+            if (freezeWhenOutside) { hasHover = false; return; }
             if (clampToBounds) { cell = ClampCell(cell); inside = true; }
         }
 
@@ -116,17 +116,17 @@ public class MouseManager : MonoBehaviour
             lastValidCell = cell;
         }
 
-        _hoverCell = cell;
-        _hasHover  = allowed && inside;
+        hoverCell = cell;
+        hasHover  = allowed && inside;
     }
 
     public void ClickCurrentHover()
     {
-        if (!_hasHover) return;
+        if (!hasHover) return;
         if (blockWhenUI && EventSystem.current && EventSystem.current.IsPointerOverGameObject())
             return;
 
-        HandleLeftClick(_hoverCell);
+        HandleLeftClick(hoverCell);
     }
 
     // ========== 클릭 처리 ==========
@@ -242,16 +242,12 @@ public class MouseManager : MonoBehaviour
     {
         GameManager.UI.CloseUI<EnemyInfoPopUpUI>();
 
-        // 이동이 안 되는 대부분의 원인: 아래 가드 2개
-        if (!isPlayer)            { Debug.Log("[Mouse] 이동 불가: 마지막 클릭 대상이 Player가 아님"); return; }
-        if (!movePhaseActive)     { Debug.Log("[Mouse] 이동 불가: movePhaseActive=false (PlayerMove 페이즈 아님)"); return; }
-        if (selectedPlayer == null){ Debug.Log("[Mouse] 이동 불가: selectedPlayer=null"); return; }
-        if (destCell == selectedPlayerCell) return;
+        bool canMove = movePhaseActive && !isMoving && (selectedPlayer != null) && (destCell != selectedPlayerCell);
+        if (!canMove) return;
 
         var path = map.FindPath(selectedPlayerCell, destCell);
         if (path == null || path.Count > selectedMoveRange)
         {
-            Debug.Log("[Mouse] 이동 불가: 경로가 없거나 이동 범위를 초과");
             CancelSelection();
             return;
         }
@@ -338,35 +334,20 @@ public class MouseManager : MonoBehaviour
         );
 
         int hitCount = Physics.OverlapBoxNonAlloc(
-            center, halfExtents, oneHit, Quaternion.identity, unitDetectMask, QueryTriggerInteraction.Ignore);
-
+            center, halfExtents, Hits, Quaternion.identity, unitDetectMask, QueryTriggerInteraction.Ignore);
         if (hitCount <= 0) return null;
-        Collider playerCol = null;
-        Collider enemyCol = null;
+
         for (int i = 0; i < hitCount; i++)
-        {
-            var v = oneHit[i];
-            if (!v) continue;
+            if (Hits[i] && Hits[i].TryGetComponent<BasePlayer>(out _))
+                return Hits[i].GetComponentInParent<T>(true);
 
-            // 플레이어를 최우선으로 확정
-            if (v.TryGetComponent<BasePlayer>(out _))   //(out _) 변수값을 만들지 않고 컴포넌트의 유/무만 알고싶을때 사용
-            {
-                playerCol = v;
-                break;
-            }
+        // 2순위: Enemy
+        for (int i = 0; i < hitCount; i++)
+            if (Hits[i] && Hits[i].TryGetComponent<BaseEnemy>(out _))
+                return Hits[i].GetComponentInParent<T>(true);
 
-            // 플레이어가 아니라면 적 후보로 1개 보관(여러 개면 첫 번째만)
-            if (v.TryGetComponent<EnemyController>(out _))
-            {
-                enemyCol = v;
-            }
-        }
-
-        var col = playerCol != null ? playerCol : enemyCol;
-        Debug.Log($"이것은 수류탄이요?{col}");
-        if (!col) return null;
-        if (col.TryGetComponent<T>(out var direct)) return direct;
-        return col.GetComponentInParent<T>(true);
+        Debug.Log($"이것은 수류탄이요?");
+        return null;
     }
     
     private void ShowPlayerRange(Vector3Int cell)

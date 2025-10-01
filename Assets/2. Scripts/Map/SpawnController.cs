@@ -265,4 +265,33 @@ public class SpawnController : MonoBehaviour
         return false;
     }
     
+    public void ReturnAllObstaclesToPool()
+    {
+        int returnedCount = 0;
+        
+        foreach (var poolEntry in obstaclePools)
+        {
+            BasicObstaclePool pool = poolEntry.Value;
+            
+            List<GameObject> objectsToReturn = new List<GameObject>();
+            
+            for (int i = 0; i < pool.transform.childCount; i++)
+            {
+                GameObject child = pool.transform.GetChild(i).gameObject;
+                
+                if (child.activeSelf)
+                {
+                    objectsToReturn.Add(child);
+                }
+            }
+            
+            foreach (GameObject obj in objectsToReturn)
+            {
+                pool.ReturnObjectToPool(obj);
+                returnedCount++;
+            }
+        }
+    }
+    
+    
 }

@@ -13,10 +13,15 @@ public class Deck : MonoBehaviour
     //덱 잔량만 유지
     public int Count => GameManager.ItemControl.drawPile.Count;
 
+    private bool isDeck = false;
     private void OnEnable()
     {
         GameManager.Event.Subscribe(EventType.SelectDeck, BuildInitialDeck);
-        BuildInitialDeck();
+        if (!isDeck)
+        {
+            BuildInitialDeck();
+            isDeck = true;
+        }
     }
 
     private void OnDisable()
@@ -28,15 +33,22 @@ public class Deck : MonoBehaviour
     public List<Ammo> DrawAmmos(int amount)
     {
         var res = new List<Ammo>();
-        if (amount <= 0 || GameManager.ItemControl.drawPile.Count == 0) return res;
+        var draw = GameManager.ItemControl.drawPile;
 
-        int take = Mathf.Min(amount, GameManager.ItemControl.drawPile.Count);
+        // 요청이 0 이하이거나 덱이 없거나 비어 있으면 그대로 종료
+        if (amount <= 0 || draw == null || draw.Count == 0) 
+            return res;
+
+        // 남은 장 수 만큼만 뽑는다(마지막 1장도 정상 소비)
+        int take = Mathf.Min(amount, draw.Count);
         for (int i = 0; i < take; i++)
         {
-            int last = GameManager.ItemControl.drawPile.Count - 1;
-            res.Add(GameManager.ItemControl.drawPile[last]);
-            GameManager.ItemControl.drawPile.RemoveAt(last);
+            int last = draw.Count - 1;
+            res.Add(draw[last]);
+            draw.RemoveAt(last);
         }
+
+        // 여기서 어떤 '리필'도 하지 않는다. (덱이 0이 되면 그대로 빈 상태 유지)
         return res;
     }
 
@@ -67,12 +79,11 @@ public class Deck : MonoBehaviour
         {
             var deck = GameManager.Data.bulletDataGroup.GetBulletData(9005);
 
-       
-            
             for (int r = 1; r <= deck.max; r++)
             {
                 Suit fixedSuit = (Suit)UnityEngine.Random.Range(0, 4);
                 GameManager.ItemControl.drawPile.Add(new Ammo { suit = fixedSuit, rank = r });
+                
             }
         }
         
