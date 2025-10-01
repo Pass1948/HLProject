@@ -382,8 +382,7 @@ public class ItemControlManger : MonoBehaviour
             go.name = lists[i].name;
             go.transform.SetParent(parent, false);
             go.itemModel = lists[i];
-            go.gameObject.GetComponent<Image>().sprite =
-                GameManager.Resource.Load<Sprite>(Path.UISprites + lists[i].imagePath);
+           
         }
     }
 }
