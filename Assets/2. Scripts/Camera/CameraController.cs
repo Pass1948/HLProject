@@ -109,14 +109,6 @@ public class CameraController : MonoBehaviour
 
     private void OnSenter()
     {
-        Vector3 targetPos = player;
-        targetPos.y = cam.transform.position.y;
-
-        cam.transform.position = Vector3.Lerp(
-            cam.transform.position,
-            targetPos,
-            Time.deltaTime * recentSpeed);
-
-        if (Vector3.Distance(new Vector3(cam.transform.position.x, 0, cam.transform.position.z), new Vector3(player.x, 0, player.z)) < 0.1f) ;
+        recentering = true;
     }
 }
