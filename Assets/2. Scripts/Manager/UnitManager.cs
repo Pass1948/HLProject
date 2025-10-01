@@ -62,4 +62,12 @@ public class UnitManager : MonoBehaviour
         }
     }
 
+    public void AllClearEnemies()
+    {
+        foreach (var enemy in enemies)
+        {
+            Destroy(enemy.gameObject);
+        }
+    }
+
 }

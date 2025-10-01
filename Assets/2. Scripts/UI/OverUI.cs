@@ -7,6 +7,7 @@ public class OverUI : BaseUI
 {
     [SerializeField] Button mainmenuButton;
 
+    private TestScene testScene;
     protected override void OnOpen()
     {
         base.OnOpen();
@@ -22,7 +23,6 @@ public class OverUI : BaseUI
     private void MainmenuScene()
     {
         // 메인메뉴 (인트로?) 씬으로 
-
         Debug.Log("메인메뉴로~");
         GameManager.SceneLoad.LoadScene(SceneType.Title);
     }
