@@ -27,7 +27,7 @@ public class TestScene : BaseScene
 
     public override void SceneExit()
     {
-        
+        GameManager.Mouse.ClearMouse();
     }
 
     public override void SceneLoading()

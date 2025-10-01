@@ -82,6 +82,12 @@ public class MouseManager : MonoBehaviour
         cam = Camera.main;
     }
 
+    public void ClearMouse()
+    {
+        if (pointer != null) Destroy(pointer.gameObject);
+        pointer = null;
+    }
+
     // ========== InputSystem → MouseFollower에서 호출 ==========
     public void UpdatePointerFromScreen(Vector2 screen)
     {
