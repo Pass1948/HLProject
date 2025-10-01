@@ -13,12 +13,18 @@ public class RewardSlotUI : BaseUI
 
     private void Start()
     {
+        // TODO: 지금은 테스트 용 나중에 성한님께 물어볼 것
+        selectButton.onClick.AddListener(SelectReward);
     }
     public void SetReward(object reward)
     {
         gameObject.SetActive(true);
         rewardItem = reward;
-        if(reward is Ammo ammo)
+        if (rewardItem is int gold)
+        {
+            rewardText.text = $"달란트 : {gold.ToString()}";
+        }
+        else if(reward is Ammo ammo)
         {
             rewardText.text = $"{ammo.suit}{ammo.rank}";
         }
@@ -33,20 +39,23 @@ public class RewardSlotUI : BaseUI
     protected override void OnOpen()
     {
         base.OnOpen();
-        selectButton.onClick.AddListener(SelectReward);
+        // selectButton.onClick.AddListener(SelectReward);
     }
-    
     protected override void OnClose()
     {
         base.OnClose();
-        selectButton.onClick.RemoveAllListeners();
+        // selectButton.onClick.RemoveAllListeners();
     }
     private void SelectReward()
     {
-        if (rewardItem is Ammo ammo)
+        Debug.Log("카드 선택했어");
+        if (rewardItem is int gold)
+        {
+            GameManager.Unit.Player.playerHandler.AddGold(gold);
+        }
+        else if (rewardItem is Ammo ammo)
         {
             GameManager.ItemControl.drawPile.Add(ammo);
-            Debug.Log(ammo.suit);
         }
         else if (rewardItem is ItemModel relic)
         {

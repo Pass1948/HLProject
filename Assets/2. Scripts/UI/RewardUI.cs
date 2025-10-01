@@ -10,11 +10,11 @@ public class RewardUI : MonoBehaviour
         for (int i = 0; i < slots.Length; i++)
         {
             slots[i].GetComponentInChildren<RewardSlotUI>();
-            slots[i].gameObject.SetActive(false);
         }
+        // 디버깅 용 나중에 맵 스테이지 만들어지면 그때 제대로
         Show(1);
     }
-    // 스테이지 인트
+    // 스테이지 인트 예시
     private Dictionary<int,int> stageRewards = new()
     {
         {1, 10},
@@ -26,19 +26,22 @@ public class RewardUI : MonoBehaviour
 
     public void Show(int stageId)
     {
-        Debug.Log("Show Stage " + stageId);
-        gameObject.SetActive(true);
-        
-        GiveReward(stageId);
+        int slotIndex = 0;
+
+        if (stageRewards.TryGetValue(stageId, out int gold))
+        {
+            slots[slotIndex].gameObject.SetActive(true);
+            slots[slotIndex].SetReward(gold);
+            slotIndex++;
+        }
         
         // 탄환 보상
-        var bullets = GameManager.ItemControl.BulletWeightSampling(4);
-        Debug.Log("불릿 개수 " + bullets.Count);
-        Debug.Log("불릿 개수 " + slots.Length);
-        int slotIndex = 0;
+        var bullets = GameManager.ItemControl.BulletWeightSampling(1);
         
         if(UnityEngine.Random.value < 0.1f)
             bullets.AddRange(GameManager.ItemControl.BulletWeightSampling(1));
+        
+        slots[0].gameObject.SetActive(true);
         
         foreach (var bullet in bullets)
         {
@@ -68,12 +71,12 @@ public class RewardUI : MonoBehaviour
     {
         return (stageId % 4 == 0);
     }
+    
     private void GiveReward(int stageId)
     {
         if (stageRewards.TryGetValue(stageId, out int gold))
         {
             GameManager.Unit.Player.playerHandler.AddGold(gold);
-            
         }
     }
 }
