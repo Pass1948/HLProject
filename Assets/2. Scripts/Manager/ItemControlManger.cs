@@ -373,19 +373,20 @@ public class ItemControlManger : MonoBehaviour
     // ========== 유물 슬롯과 이미지 생성 메서드 ==========
     // 해당 메서드 사용법 :
     // CreateRelicObject(GameManager.ItemControl.PowderBundleWeightSampling(3), 여긴 layout달린 ui위치넣으셈);
-    private void CreatePowderObject(List<ItemModel> lists, Transform parent) // 유물 슬롯과 이미지 생성
-    {
-        if (lists == null || lists.Count == 0) return;
-
-        for (int i = 0; i < lists.Count; i++)
-        {
-            if (lists[i] == null) continue;
-
-            var go = GameManager.Resource.Create<BaseItem>(Path.UIElements + "RelicIconUI");
-            go.name = lists[i].name;
-            go.transform.SetParent(parent, false);
-            go.itemModel = lists[i];
-           
-        }
-    }
+    // private void CreatePowderObject(List<ItemModel> lists, Transform parent) // 유물 슬롯과 이미지 생성
+    // {
+    //     if (lists == null || lists.Count == 0) return;
+    //
+    //     for (int i = 0; i < lists.Count; i++)
+    //     {
+    //         if (lists[i] == null) continue;
+    //
+    //         var go = GameManager.Resource.Create<BaseItem>(Path.UIElements + "RelicIconUI");
+    //         go.name = lists[i].name;
+    //         go.transform.SetParent(parent, false);
+    //         go.itemModel = lists[i];
+    //         go.gameObject.GetComponent<Image>().sprite =
+    //             GameManager.Resource.Load<Sprite>(Path.UISprites + lists[i].imagePath);
+    //     }
+    // }
 }

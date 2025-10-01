@@ -6,11 +6,12 @@ using DataTable;
 
 public class SpawnController : MonoBehaviour
 {
-    //private BasicObstaclePool obstaclePool;
-    private Dictionary<string, BasicObstaclePool> obstaclePools = new Dictionary<string, BasicObstaclePool>();
-    private readonly string[] allPrefabNames = { 
-        "Obstacle_Pillar", 
-        "Obstacle_Blizzard" 
+    public Dictionary<string, BasicObstaclePool> obstaclePools = new Dictionary<string, BasicObstaclePool>();
+
+    private readonly string[] allPrefabNames =
+    {
+        "Obstacle_Pillar",
+        //"Obstacle_Blizzard" 
         //
     };
     

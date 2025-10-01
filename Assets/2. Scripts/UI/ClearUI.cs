@@ -22,7 +22,13 @@ public class ClearUI : BaseUI
 
     private void CreateSlots()
     {
-
+        slots = new RewardSlotUI[rewardPanel.childCount];
+        //슬롯 생성 차일드 카운트를 for문으로
+        for (int i = 0; i < slots.Length; i++)
+        {
+            slots[i].gameObject.SetActive(true);
+            
+        }
     }
     
     private void OpenStore()

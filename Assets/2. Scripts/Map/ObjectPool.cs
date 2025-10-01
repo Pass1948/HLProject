@@ -38,4 +38,21 @@ public class ObjectPool<T> : MonoBehaviour
         obj.SetActive(false);
         pool.Enqueue(obj);
     }
+    
+    public void ResetPool()
+    {
+        while (pool.Count > 0)
+        {
+            GameObject obj = pool.Dequeue();
+            Destroy(obj);
+        }
+        
+        for (int i = transform.childCount - 1; i >= 0; i--)
+        {
+            Destroy(transform.GetChild(i).gameObject);
+        }
+    
+        pool.Clear();
+    }
+    
 }
