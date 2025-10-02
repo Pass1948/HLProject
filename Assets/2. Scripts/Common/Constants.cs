@@ -31,7 +31,7 @@ public enum EventType
     ShopPowderBundleConfirm,
     ShopRemoveBulletConfirm,
     //---
-    
+    EnemyUIUpdate,
     //--- 
     PlayerBulletChanged,
     //---

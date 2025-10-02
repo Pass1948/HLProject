@@ -238,7 +238,7 @@ public class AttackController : MonoBehaviour
             view.SetBgColor(bgNormal);
             view.RefreshLabel();
         }
-        
+      
 
         var btn = go.GetComponentInChildren<Button>(true);
         if(btn)

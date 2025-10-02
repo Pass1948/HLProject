@@ -9,10 +9,10 @@ public class EnemyTurnState : BaseTurnState
     public EnemyTurnState() { }
     public override void OnEnter()
     {
-        GameManager.Event.Publish(EventType.CameraSenter);
         timer = turnSetVlaue.resetTime;
         didClose= false;
         GameManager.UI.OpenUI<PaseTurnUI>();
+        GameManager.Event.Publish(EventType.CameraSenter);
     }
     public override void Tick(float dt)
     {
@@ -20,6 +20,7 @@ public class EnemyTurnState : BaseTurnState
         timer += dt;
         if (timer > turnSetVlaue.turnDelayTime)
         {
+
             if (turnManager.isCamera == true)
             {
                 turnManager.SwitchIsCamera();
