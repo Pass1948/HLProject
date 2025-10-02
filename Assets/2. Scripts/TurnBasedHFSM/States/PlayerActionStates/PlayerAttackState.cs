@@ -36,6 +36,7 @@ public class PlayerAttackState : PlayerActionState
         {
             timer = turnSetVlaue.resetTime;
             AttackEnemy();
+            GameManager.Event.Publish(EventType.EnemyUIUpdate);
         }
         public override void Tick(float dt)
         {
