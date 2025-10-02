@@ -9,7 +9,7 @@ public class AttackRangeDisplay : MonoBehaviour
     private Tilemap attackRangeTilemap;
     private TileBase rangeTile;
     private Camera mainCamera;
-    private bool isInitialized = false;
+    public bool isInitialized = false;
 
     public Grid grid;
 
@@ -24,11 +24,8 @@ public class AttackRangeDisplay : MonoBehaviour
 
     public List<BaseEnemy> enemies = new List<BaseEnemy>();
 
-    
-    private void Awake()
-    {
-        isInitialized = false; 
-    }
+
+
     void Update()
     {
         if (!isInitialized || (currentRank == 0 && !isKickAttack))
@@ -79,6 +76,7 @@ public class AttackRangeDisplay : MonoBehaviour
     {
         if (currentSuit == suit && currentRank == rank)
         {
+            Debug.Log("이거 발동되면 안디야");
             ClearAttackType();
         }
         else
@@ -107,12 +105,11 @@ public class AttackRangeDisplay : MonoBehaviour
     public void Initialize(Tilemap attackTilemap, TileBase rangeTileBase, Grid gridObj)
     {
         if (isInitialized) return;
-        
+        Debug.Log("넌 태어나면 안대");
         this.attackRangeTilemap = attackTilemap;
         this.rangeTile = rangeTileBase;
         this.grid = gridObj;
-        
-        attackRangeTilemap.transform.SetParent(grid.transform);
+
         attackRangeTilemap.transform.localPosition = Vector3.zero;
 
         isInitialized = true;
