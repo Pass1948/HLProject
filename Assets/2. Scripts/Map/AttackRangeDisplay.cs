@@ -76,7 +76,6 @@ public class AttackRangeDisplay : MonoBehaviour
     {
         if (currentSuit == suit && currentRank == rank)
         {
-            Debug.Log("이거 발동되면 안디야");
             ClearAttackType();
         }
         else
@@ -105,7 +104,6 @@ public class AttackRangeDisplay : MonoBehaviour
     public void Initialize(Tilemap attackTilemap, TileBase rangeTileBase, Grid gridObj)
     {
         if (isInitialized) return;
-        Debug.Log("넌 태어나면 안대");
         this.attackRangeTilemap = attackTilemap;
         this.rangeTile = rangeTileBase;
         this.grid = gridObj;
