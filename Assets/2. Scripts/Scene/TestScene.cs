@@ -11,7 +11,6 @@ public class TestScene : BaseScene
 
     public override void SceneEnter()
     {
-        Debug.Log("스테이지 씬 시작");
         _stage = new Stage();
         _stage.InitStage(GameManager.SaveLoad.nextSceneIndex);
         GameManager.Map.CreateMap(_stage);
@@ -32,7 +31,6 @@ public class TestScene : BaseScene
     public override void SceneExit()
     {
         _stage = null;
-        
         GameManager.Unit.AllClearEnemies();
         GameManager.Unit.enemies.Clear();
         GameManager.Mouse.ClearMouse();

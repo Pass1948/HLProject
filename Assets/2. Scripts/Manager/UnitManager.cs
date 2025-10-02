@@ -79,25 +79,23 @@ public class UnitManager : MonoBehaviour
     public void CurrentStatReset()
     {
         curAttack = Player.playerModel.attack;
-      //curAttackRange = Player.playerModel.attackRange;
+      curAttackRange = Player.playerModel.attackRange;
         curMoveRange = Player.playerModel.moveRange;
         curMulligan = Player.playerModel.mulligan;
         curHealth = Player.playerModel.currentHealth;
         curVHealth = Vehicle.vehicleModel.currentHealth;
         isInit = true;
-        Debug.Log($"플레이어 체력{curHealth}<= {Player.playerModel.currentHealth}");
     }
 
     public void SetCurrentStat()
     {
         Player.playerModel.attack =curAttack;
-       // Player.playerModel.attackRange = curAttackRange;
+        Player.playerModel.attackRange = curAttackRange;
         Player.playerModel.moveRange = curMoveRange;
         Player.playerModel.mulligan = curMulligan;
         Player.playerModel.currentHealth = curHealth;
         Vehicle.vehicleModel.currentHealth = curVHealth;
         isInit  = false;
-        Debug.Log($"플레이어 체력{Player.playerModel.currentHealth}<= {curHealth}");
     }
 
     public void AllClearEnemies()
