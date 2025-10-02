@@ -87,7 +87,8 @@ public class MapManager : MonoBehaviour
         
         var attacktile = GameManager.Resource.Create<GameObject>(Path.Map + "AttackRangeTilemap");
         attackRangeTilemap = attacktile.GetComponent<Tilemap>();
-        
+        attackRangeTilemap.transform.SetParent(grid.transform);
+
         if (spawnController != null)
         {
             spawnController.ReturnAllObstaclesToPool(); 
@@ -105,6 +106,7 @@ public class MapManager : MonoBehaviour
         
         if (attackRange != null)
         {
+            attackRange.isInitialized = false;
             attackRange.Initialize(attackRangeTilemap, redAttackTile, grid);
         }
 

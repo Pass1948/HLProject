@@ -85,19 +85,17 @@ public class UnitManager : MonoBehaviour
         curHealth = Player.playerModel.currentHealth;
         curVHealth = Vehicle.vehicleModel.currentHealth;
         isInit = true;
-        Debug.Log($"플레이어 범위{curAttackRange}<= {Player.playerModel.attackRange}");
     }
 
     public void SetCurrentStat()
     {
         Player.playerModel.attack =curAttack;
-       Player.playerModel.attackRange = curAttackRange;
+        Player.playerModel.attackRange = curAttackRange;
         Player.playerModel.moveRange = curMoveRange;
         Player.playerModel.mulligan = curMulligan;
         Player.playerModel.currentHealth = curHealth;
         Vehicle.vehicleModel.currentHealth = curVHealth;
         isInit  = false;
-        Debug.Log($"플레이어 범위{Player.playerModel.attackRange}<= {curAttackRange}");
     }
 
     public void AllClearEnemies()

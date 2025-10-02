@@ -20,7 +20,6 @@ public class ClearCheckState : BaseTurnState
         {
             if (turnManager.IsPlayerDead())
             {
-                Debug.Log("플레이어 사망");
                 ChangeState<LoseState>();
             }
             else
