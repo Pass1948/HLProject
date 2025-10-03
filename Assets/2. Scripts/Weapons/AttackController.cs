@@ -95,7 +95,6 @@ public class AttackController : MonoBehaviour
         {
             Suit suit = bulletView.ammo.suit;
             int rank = bulletView.ammo.rank;
-    
             GameManager.Map.attackRange.SetAttackRange(suit, rank);
             GameManager.Mouse.IsAttacking = true;
         }
@@ -104,8 +103,6 @@ public class AttackController : MonoBehaviour
         {
             selectBulletBg.color = bgSel;
         }
-
-        GameManager.Mouse.HidePlayerRange();
     }
 
     public void Fire()

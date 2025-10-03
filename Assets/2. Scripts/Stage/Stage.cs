@@ -34,7 +34,6 @@ public class Stage
         
         stageId = gate.stageList[stageIndex];
         stage = GameManager.Data.stageDataGroup.GetStageData(stageId); 
-        Debug.Log(gate.stageList[stageIndex]);
         mapSize = stage.size;
         for (int i = 0; i < stage.enemyList.Count; i++)
         {

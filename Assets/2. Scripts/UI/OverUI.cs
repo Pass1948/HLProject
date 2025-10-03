@@ -23,7 +23,6 @@ public class OverUI : BaseUI
     private void MainmenuScene()
     {
         // 메인메뉴 (인트로?) 씬으로 
-        Debug.Log("메인메뉴로~");
         GameManager.ItemControl.ClearData();
         GameManager.SceneLoad.LoadScene(SceneType.Title);
     }
