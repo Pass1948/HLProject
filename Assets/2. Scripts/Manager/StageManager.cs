@@ -14,7 +14,6 @@ public class StageManager : MonoBehaviour
         currentGate = GameManager.Data.gateDataGroup.GetGateData(gateId);
         if (currentGate == null)
         {
-            Debug.Log("게이트 엄슴");
             return;
         }
     }
@@ -31,7 +30,6 @@ public class StageManager : MonoBehaviour
     {
         if (!stageDB.ContainsKey(stageId))
         {
-            Debug.Log("스테이지 없슴");
             return;
         }
     }

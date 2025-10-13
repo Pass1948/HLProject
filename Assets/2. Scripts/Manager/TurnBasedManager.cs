@@ -164,7 +164,7 @@ public class TurnBasedManager : MonoBehaviour
         if (!enemyPhaseActive) return;
         if (currentEnemy != null && currentEnemy.controller != null)
         {
-            // [중요] 완료 후 플래그 초기화
+            // 완료 후 초기화
             currentEnemy.controller.startTurn = false;
             currentEnemy.controller.isDone = false;
             currentEnemy = null;
@@ -205,7 +205,7 @@ public class TurnBasedManager : MonoBehaviour
     public bool EnemyDieCheck()
     {
         var monsters = (GameManager.Unit != null) ? GameManager.Unit.enemies : null;
-        // 적 리스트가 없거나 비어 있으면 '모두 처치됨'으로 간주 (원하시면 false로 바꾸세요)
+        // 적 리스트가 없거나 비어 있으면 '모두 처치됨'으로 간주
         if (monsters == null || monsters.Count == 0)
             return true;
 
