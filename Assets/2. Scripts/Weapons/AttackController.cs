@@ -96,6 +96,7 @@ public class AttackController : MonoBehaviour
             Suit suit = bulletView.ammo.suit;
             int rank = bulletView.ammo.rank;
             GameManager.Map.attackRange.SetAttackRange(suit, rank);
+            GameManager.Mouse.HidePlayerRange();
             GameManager.Mouse.IsAttacking = true;
         }
 
