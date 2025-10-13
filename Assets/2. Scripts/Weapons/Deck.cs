@@ -86,8 +86,6 @@ public class Deck : MonoBehaviour
                 
             }
         }
-        
-            
 
         //==============================
         //다이아 덱

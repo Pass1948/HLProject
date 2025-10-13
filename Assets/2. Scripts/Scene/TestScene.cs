@@ -33,7 +33,7 @@ public class TestScene : BaseScene
     {
         _stage = null;
         
-        GameManager.Unit.AllClearEnemies();
+        // GameManager.Unit.AllClearEnemies();
         GameManager.Unit.enemies.Clear();
         GameManager.Mouse.ClearMouse();
     }

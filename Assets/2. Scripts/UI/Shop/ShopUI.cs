@@ -10,7 +10,6 @@ public class ShopUI : BaseUI
     [SerializeField] private Transform bulletRoot;
     [SerializeField] private Transform relicRoot;
     [SerializeField] private Transform playerBulletRoot;
-    [SerializeField] private Transform removeRoot;
     [SerializeField] private Image hpBar;
     
     [SerializeField] private TextMeshProUGUI rerollCostText;
@@ -195,7 +194,6 @@ public class ShopUI : BaseUI
         if (rerollCostText != null && shop != null)
             rerollCostText.text = $"리롤 {shop.rerollCost}";
     }
-
     
     private void NextStage()
     {
