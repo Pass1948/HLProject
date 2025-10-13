@@ -40,10 +40,8 @@ public class CameraController : MonoBehaviour
 
     void Update()
     {
-        if (followTarget == null && GameManager.Mouse.pointer != null)
-        {
+        if (followTarget == null && GameManager.Mouse != null && GameManager.Mouse.pointer != null)
             followTarget = GameManager.Mouse.pointer;
-        }
         if (!GameManager.TurnBased.isCamera) return;
         HandleZoom();
         if (!recentering) HandleEdgeScroll();
@@ -71,11 +69,11 @@ public class CameraController : MonoBehaviour
         float edge = edgeSize;
 
 
-        if (mousePos.x <= edgeSize) moveDir.x = -1;
-        else if (mousePos.x >= Screen.width - edgeSize) moveDir.x = 1;
+        if (mousePos.x <= edge) moveDir.x = -1;
+        else if (mousePos.x >= Screen.width - edge) moveDir.x = 1;
 
-        if (mousePos.y <= edgeSize) moveDir.z = -1;
-        else if (mousePos.y >= Screen.height - edgeSize) moveDir.z = 1;
+        if (mousePos.y <= edge) moveDir.z = -1;
+        else if (mousePos.y >= Screen.height - edge) moveDir.z = 1;
         if (moveDir == Vector3.zero) return;
 
         Vector3 forward = cam.transform.forward;
@@ -90,8 +88,6 @@ public class CameraController : MonoBehaviour
 
         Vector3 cur = cam.transform.position;
         Vector3 cand = cur + desiredMove * moveSpeed * Time.deltaTime;
-
-        Vector3 newPos = cam.transform.position;
         if (followTarget != null)
         {
             Vector3 t = followTarget.position;
@@ -102,11 +98,13 @@ public class CameraController : MonoBehaviour
 
             if (cur.x < minX)
             {
-                if (cand.x < cur.x) cand.x = cur.x;
+                if (cand.x < cur.x) 
+                    cand.x = cur.x;
             }
             else if (cur.x > maxX)
             {
-                if (cand.x > cur.x) cand.x = cur.x;
+                if (cand.x > cur.x)
+                    cand.x = cur.x;
             }
             else
             {
@@ -115,11 +113,13 @@ public class CameraController : MonoBehaviour
 
             if (cur.z < minZ)
             {
-                if (cand.z < cur.z) cand.z = cur.z;
+                if (cand.z < cur.z) 
+                    cand.z = cur.z;
             }
             else if (cur.z > maxZ)
             {
-                if (cand.z > cur.z) cand.z = cur.z;
+                if (cand.z > cur.z) 
+                    cand.z = cur.z;
             }
             else
             {
