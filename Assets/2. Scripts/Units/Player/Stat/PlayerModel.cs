@@ -34,7 +34,7 @@ public class PlayerModel : UnitModel
         moveRange = data.moveRange;
         maxHealth = data.health;
         health= maxHealth;
-        currentHealth = maxHealth;
+        currentHealth = health;
         mulligan = data.mulligan;
         reload = data.reload;
     }

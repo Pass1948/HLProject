@@ -188,6 +188,7 @@ public class MainUI : BaseUI
 
     void ToggleKick()
     {
+        GameManager.Mouse.HidePlayerRange();
         kickBtnObj.ToggleKick();
     }
 

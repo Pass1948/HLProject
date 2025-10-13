@@ -29,14 +29,14 @@ public class UnitManager : MonoBehaviour
 
    public bool isInit = false;
 
-    // =====[ÇöÀç °ÔÀÓ ÀúÀå¿ë ½ºÅÈ]=====
+    // =====[ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½]=====
     public int curAttack;
     public int curAttackRange;
     public int curMoveRange;
     public int curMulligan;
     public int curHealth;
 
-    // =====[ÇöÀç °ÔÀÓ ÀúÀå¿ë ½ºÅÈ]=====
+    // =====[ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½]=====
     public int curVMoveRange;
     public int curVHealth;
 
@@ -79,19 +79,18 @@ public class UnitManager : MonoBehaviour
     public void CurrentStatReset()
     {
         curAttack = Player.playerModel.attack;
-      //curAttackRange = Player.playerModel.attackRange;
+      curAttackRange = Player.playerModel.attackRange;
         curMoveRange = Player.playerModel.moveRange;
         curMulligan = Player.playerModel.mulligan;
         curHealth = Player.playerModel.currentHealth;
         curVHealth = Vehicle.vehicleModel.currentHealth;
         isInit = true;
-
     }
 
     public void SetCurrentStat()
     {
         Player.playerModel.attack =curAttack;
-       // Player.playerModel.attackRange = curAttackRange;
+        Player.playerModel.attackRange = curAttackRange;
         Player.playerModel.moveRange = curMoveRange;
         Player.playerModel.mulligan = curMulligan;
         Player.playerModel.currentHealth = curHealth;
@@ -99,5 +98,12 @@ public class UnitManager : MonoBehaviour
         isInit  = false;
     }
 
+    public void AllClearEnemies()
+    {
+        foreach (var enemy in enemies)
+        {
+            Destroy(enemy.gameObject);
+        }
+    }
 
 }

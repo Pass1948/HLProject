@@ -95,8 +95,8 @@ public class AttackController : MonoBehaviour
         {
             Suit suit = bulletView.ammo.suit;
             int rank = bulletView.ammo.rank;
-    
             GameManager.Map.attackRange.SetAttackRange(suit, rank);
+            GameManager.Mouse.HidePlayerRange();
             GameManager.Mouse.IsAttacking = true;
         }
 
@@ -104,8 +104,6 @@ public class AttackController : MonoBehaviour
         {
             selectBulletBg.color = bgSel;
         }
-
-        GameManager.Mouse.HidePlayerRange();
     }
 
     public void Fire()
@@ -238,7 +236,7 @@ public class AttackController : MonoBehaviour
             view.SetBgColor(bgNormal);
             view.RefreshLabel();
         }
-        
+      
 
         var btn = go.GetComponentInChildren<Button>(true);
         if(btn)

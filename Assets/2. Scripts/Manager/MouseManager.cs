@@ -123,7 +123,7 @@ public class MouseManager : MonoBehaviour
         }
 
         hoverCell = cell;
-        hasHover  = allowed && inside;
+        hasHover = allowed && inside;
     }
 
     public void ClickCurrentHover()
@@ -140,8 +140,8 @@ public class MouseManager : MonoBehaviour
     {
         if (!IsInside(cell)) { CancelSelection(); return; }
 
-        bool cellIsPlayer  = map.IsPlayer(cell);
-        bool cellIsEnemy   = map.IsEnemy(cell);
+        bool cellIsPlayer = map.IsPlayer(cell);
+        bool cellIsEnemy = map.IsEnemy(cell);
         bool cellIsTerrain = map.IsMovable(cell);
 
         // 공격
@@ -213,9 +213,8 @@ public class MouseManager : MonoBehaviour
         selectedPlayer = useOverlapLookup ? FindAtCell<BasePlayer>(cell) : null;
         selectedPlayerCell = cell;
         selectedMoveRange = GameManager.Unit.Player.playerModel.moveRange;
-        Debug.Log($"지금 이동력 : {GameManager.Unit.Player.playerModel.moveRange}");
         // 디버그: 선택 확인
-        Debug.Log($"[Mouse] Player Selected? {(selectedPlayer!=null)} / cell {cell}");
+        Debug.Log($"[Mouse] Player Selected? {(selectedPlayer != null)} / cell {cell}");
         if (selectedPlayer == null)
         {
             Debug.LogWarning("[Mouse] 선택한 칸에서 플레이어 콜라이더를 찾지 못했습니다. unitDetectMask / OverlapBox 범위를 확인하세요.");
@@ -271,7 +270,7 @@ public class MouseManager : MonoBehaviour
         foreach (var nextCell in path)
         {
             Vector3 start = actor.position;
-            Vector3 end   = tilemap.GetCellCenterWorld(nextCell);
+            Vector3 end = tilemap.GetCellCenterWorld(nextCell);
 
             float t = 0f;
             float dur = Mathf.Max(0.0001f, stepMoveTime);
@@ -352,10 +351,9 @@ public class MouseManager : MonoBehaviour
             if (Hits[i] && Hits[i].TryGetComponent<BaseEnemy>(out _))
                 return Hits[i].GetComponentInParent<T>(true);
 
-        Debug.Log($"이것은 수류탄이요?");
         return null;
     }
-    
+
     private void ShowPlayerRange(Vector3Int cell)
     {
         playerRangeVisible = true;

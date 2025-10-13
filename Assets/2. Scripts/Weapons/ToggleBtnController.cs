@@ -5,7 +5,8 @@ public class ToggleBtnController : MonoBehaviour
     [SerializeField] private RectTransform deckui;
     [SerializeField] private RectTransform discardui;
     [SerializeField] private RectTransform bikeControllUI;
-    [SerializeField] private RectTransform RelicListUI;
+    [SerializeField] private RectTransform relicListUI;
+    [SerializeField] private RectTransform panel;
 
     //덱 토글
     public void ToggleDeck()
@@ -49,16 +50,17 @@ public class ToggleBtnController : MonoBehaviour
         {
             return;
         }
+        panel.gameObject.SetActive(!panel.gameObject.activeSelf);
         bikeControllUI.gameObject.SetActive(!bikeControllUI.gameObject.activeSelf);
     }
 
     public void ToggleRelicList()
     {
-        if(!RelicListUI)
+        if(!relicListUI)
         {
             return;
         }
-        RelicListUI.gameObject.SetActive(!RelicListUI.gameObject.activeSelf);
+        relicListUI.gameObject.SetActive(!relicListUI.gameObject.activeSelf);
     }
 
     public void ToggleKick()
