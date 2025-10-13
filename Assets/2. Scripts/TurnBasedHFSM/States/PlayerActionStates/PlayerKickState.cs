@@ -8,6 +8,7 @@ public class PlayerKickState : PlayerActionState
     {
         base.OnEnter();
         ChangeState<K_Windup>();
+        GameManager.Mouse.isMouse = false;
     }
 
     // Å± µ¿ÀÛ ³ª´©±â : ¼±µô, µ¿ÀÛ, ÈÄµô
@@ -35,6 +36,7 @@ public class PlayerKickState : PlayerActionState
         {
             timer = turnSetVlaue.resetTime;
             ChangeAttirEnemy();
+            GameManager.Event.Publish(EventType.EnemyUIUpdate);
         }
         public override void Tick(float dt)
         {
@@ -53,7 +55,9 @@ public class PlayerKickState : PlayerActionState
                 {
                     if (enemy == null || enemy.controller == null || enemy.controller.isDie) continue;
                     enemy.ChenageAttribute();
-                    GameManager.UI.GetUI<EnemyInfoPopUpUI>().SetData(enemy.enemyModel.unitName, enemy.enemyModel.attri, enemy.enemyModel.rank);
+                    GameManager.UI.GetUI<EnemyInfoPopUpUI>().SetData(enemy.enemyModel.attri, enemy.enemyModel.rank,
+                        enemy.enemyModel.attack, enemy.enemyModel.moveRange, enemy.enemyModel.currentHealth,
+                        enemy.enemyModel.maxHealth);
                 }
             }
         }

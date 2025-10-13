@@ -120,7 +120,7 @@ public class MovementController : MonoBehaviour
     }
 
     //  마우스 클릭 처리 - 3개 메서드를 하나로 통합[작성자:이영신]
-    private void HandleMouseClick()
+    /*private void HandleMouseClick()
     {
         var mousePos = Mouse.current.position.ReadValue();
         Ray ray = Camera.main.ScreenPointToRay(mousePos);
@@ -153,6 +153,7 @@ public class MovementController : MonoBehaviour
         }
         CancelSelection();
     }
+    */
 
     // 플레이어 클릭 처리
     private void HandlePlayerClick()
@@ -168,7 +169,9 @@ public class MovementController : MonoBehaviour
     {
         // 적 클릭시 정보창
         var enemy = hit.collider.GetComponentInParent<BaseEnemy>();
-        GameManager.UI.GetUI<EnemyInfoPopUpUI>().SetData(enemy.enemyModel.unitName, enemy.enemyModel.attri, enemy.enemyModel.rank);
+        GameManager.UI.GetUI<EnemyInfoPopUpUI>().SetData(enemy.enemyModel.attri, enemy.enemyModel.rank,
+            enemy.enemyModel.attack, enemy.enemyModel.moveRange, enemy.enemyModel.currentHealth,
+            enemy.enemyModel.maxHealth);
         GameManager.UI.OpenUI<EnemyInfoPopUpUI>();
 
         // 적 클릭시 인덱스 확인 하는 코드
@@ -187,7 +190,7 @@ public class MovementController : MonoBehaviour
         if (isPlayer != true) return;
 
         // 이동 액션 선택
-        GameManager.TurnBased.SetSelectedAction(PlayerActionType.Move);
+       // GameManager.TurnBased.SetSelectedAction(PlayerActionType.Move);
 
         // 이동 처리
         OnclickInfo(worldPoint);

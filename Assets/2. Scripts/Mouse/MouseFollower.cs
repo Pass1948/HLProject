@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class MouseFollower : MonoBehaviour
 {
@@ -8,10 +9,14 @@ public class MouseFollower : MonoBehaviour
     {
         GameManager.Mouse.SetMouseVar();
     }
-
-    private void LateUpdate()
+    private void OnMousePoint(InputValue value)
     {
-        GameManager.Mouse.MovingMouse();
+        Vector2 screen = value.Get<Vector2>();
+        GameManager.Mouse.UpdatePointerFromScreen(screen);
+    }
+    private void OnMovementClick(InputValue value)
+    {
+       GameManager.Mouse.ClickCurrentHover();
     }
 
 

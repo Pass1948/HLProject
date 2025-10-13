@@ -10,18 +10,30 @@ public class Stage
 
     private int stageId;
     private StageData stage;
+
+    private int currentStageIndex;
+    public int GetCurrentStageIndex() => currentStageIndex;
     
-    public int id;                                   // 스테이지 앙이디
-    public int mapSize;                              // 맵 사이즈 
+    public int id;                                           // 스테이지 앙이디
+    public int mapSize;                                      // 맵 사이즈 
     public Dictionary<int, int> obstaclesDict = new();       // 구조물 <아이디, 갯수> 
     public Dictionary<int, int> enemiesDict = new();         // 적 <아이디, 갯수>
-    public int eliteCnt;                             // 부여될 엘리트 수
+    public int eliteCnt;                                     // 부여될 엘리트 수
 
-    public void InitStage()
+    public void InitStage(int stageIndex)
     {
         gate = GameManager.Data.gateDataGroup.GetGateData(gateId);
-        stageId = gate.stageList[0];
-        stage = GameManager.Data.stageDataGroup.GetStageData(stageId);
+
+        LoadStage(stageIndex);
+        
+    }
+
+    public void LoadStage(int stageIndex)
+    {
+        ClearAllData();
+        
+        stageId = gate.stageList[stageIndex];
+        stage = GameManager.Data.stageDataGroup.GetStageData(stageId); 
         mapSize = stage.size;
         for (int i = 0; i < stage.enemyList.Count; i++)
         {
@@ -33,11 +45,17 @@ public class Stage
         }
         eliteCnt = stage.eliteId;
     }
-
+    
+    public void NextStage()
+    {
+        currentStageIndex++;
+    }
+    
     public void ClearAllData()
     {
         obstaclesDict.Clear();
         enemiesDict.Clear();
     }
+
 }
  

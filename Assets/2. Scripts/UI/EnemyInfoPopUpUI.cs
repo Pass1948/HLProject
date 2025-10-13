@@ -2,35 +2,43 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyInfoPopUpUI : BaseUI
 {
-    [SerializeField] TextMeshProUGUI nameText;
+    [SerializeField] TextMeshProUGUI attackText;
+    [SerializeField] TextMeshProUGUI moveRangeText;
     [SerializeField] TextMeshProUGUI attributeText;
     [SerializeField] TextMeshProUGUI rankText;
-
-    public string enemyName;
-    public EnemyAttribute attribute;
-    public int rank;
-
+    [SerializeField] Image hpBar;
+    
+    private EnemyAttribute attribute;
+    private int rank;
+    private int attack;
+    private int moveRange;
+    private int maxHealth;
+    private int currentHealth;
+    
     protected override void OnOpen()
     {
         base.OnOpen();
         UpdateUI();        // UI가 열려있으면 즉시 갱신
     }
 
-    public void SetData(string name, EnemyAttribute attr, int rank)
+    public void SetData(EnemyAttribute attr, int rank, int attack, int moveRange, int currentHp, int maxHp)
     {
-        this.enemyName = name;
-        this.attribute = attr;
+        attribute = attr;
         this.rank = rank;
+        this.attack = attack;
+        this.moveRange = moveRange;
+        maxHealth = maxHp;
+        currentHealth = currentHp;
+        
         UpdateUI();
     }
 
     public void UpdateUI()
     {
-        nameText.text = enemyName;
-
         string attri = null;
         if(attribute == EnemyAttribute.High)
         {
@@ -64,6 +72,8 @@ public class EnemyInfoPopUpUI : BaseUI
         }
 
         rankText.text = rankStr;
+        attackText.text = attack.ToString();
+        moveRangeText.text = moveRange.ToString();
+        hpBar.fillAmount = currentHealth / (float)maxHealth;
     }
-
 }

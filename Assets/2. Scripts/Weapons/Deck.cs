@@ -9,14 +9,19 @@ public class Deck : MonoBehaviour
     //[SerializeField] private int initialDeckSize = 13;
 
     //현재 덱
-    [SerializeField] private List<Ammo> drawPile = new();
+    [SerializeField] 
     //덱 잔량만 유지
-    public int Count => drawPile.Count;
+    public int Count => GameManager.ItemControl.drawPile.Count;
 
+    private bool isDeck = false;
     private void OnEnable()
     {
         GameManager.Event.Subscribe(EventType.SelectDeck, BuildInitialDeck);
-        BuildInitialDeck();
+        if (!isDeck)
+        {
+            BuildInitialDeck();
+            isDeck = true;
+        }
     }
 
     private void OnDisable()
@@ -28,39 +33,62 @@ public class Deck : MonoBehaviour
     public List<Ammo> DrawAmmos(int amount)
     {
         var res = new List<Ammo>();
-        if (amount <= 0 || drawPile.Count == 0) return res;
+        var draw = GameManager.ItemControl.drawPile;
 
-        int take = Mathf.Min(amount, drawPile.Count);
+        // 요청이 0 이하이거나 덱이 없거나 비어 있으면 그대로 종료
+        if (amount <= 0 || draw == null || draw.Count == 0) 
+            return res;
+
+        // 남은 장 수 만큼만 뽑는다(마지막 1장도 정상 소비)
+        int take = Mathf.Min(amount, draw.Count);
         for (int i = 0; i < take; i++)
         {
-            int last = drawPile.Count - 1;
-            res.Add(drawPile[last]);
-            drawPile.RemoveAt(last);
+            int last = draw.Count - 1;
+            res.Add(draw[last]);
+            draw.RemoveAt(last);
         }
+
+        // 여기서 어떤 '리필'도 하지 않는다. (덱이 0이 되면 그대로 빈 상태 유지)
         return res;
     }
 
     //외부 UI용
-    public List<Ammo> GetDrawSnapshot() => new List<Ammo>(drawPile);
+    public List<Ammo> GetDrawSnapshot() => new List<Ammo>(GameManager.ItemControl.drawPile);
+
+    
+    public void GetPlayerBullets(List<Ammo> pile)
+    {
+        for (int i = 0; i < GameManager.ItemControl.drawPile.Count; i++)
+        {
+            pile.Add(GameManager.ItemControl.drawPile[i]);
+        }
+    }
 
     //초기 덱 구성/셔플
     private void BuildInitialDeck()
     {
-        drawPile.Clear();
+        GameManager.ItemControl.drawPile.Clear();
         //==============================
         //기본덱
         //숫자 1~13 각 1장, 문양은 랜덤
         //==============================
-        if (GameManager.TurnBased.turnSettingValue.IsBasicDeck == true)
+        //나중에 테스트 끝나면 안에 넣기
+
+        
+        if(GameManager.TurnBased.turnSettingValue.IsBasicDeck == true)
         {
             var deck = GameManager.Data.bulletDataGroup.GetBulletData(9005);
 
-            for (int r = deck.min; r <= deck.max; r++)
+            for (int r = 1; r <= deck.max; r++)
             {
-                var s = (Suit)UnityEngine.Random.Range(0, 4);
-                drawPile.Add(new Ammo { suit = s, rank = r });
+                Suit fixedSuit = (Suit)UnityEngine.Random.Range(0, 4);
+                GameManager.ItemControl.drawPile.Add(new Ammo { suit = fixedSuit, rank = r });
+                
             }
         }
+        
+            
+
         //==============================
         //다이아 덱
         //숫자 1~13 각 1장, 문양은 다이아몬드
@@ -69,9 +97,9 @@ public class Deck : MonoBehaviour
         {
             var deck2 = GameManager.Data.bulletDataGroup.GetBulletData(9003);
             Suit fixedSuit = (Suit)deck2.type;
-            for (int r = deck2.min; r <= deck2.max; r++)
+            for (int r = 1; r <= deck2.max; r++)
             {
-                drawPile.Add(new Ammo { suit = fixedSuit, rank = r });
+                GameManager.ItemControl.drawPile.Add(new Ammo { suit = fixedSuit, rank = r });
             }
         }
 
@@ -83,13 +111,13 @@ public class Deck : MonoBehaviour
         {
             var deck3 = GameManager.Data.bulletDataGroup.GetBulletData(9002);
             Suit fixedSuit2 = (Suit)deck3.type;
-            for (int r = deck3.min; r <= deck3.max; r++)
+            for (int r = 1; r <= deck3.max; r++)
             {
-                drawPile.Add(new Ammo { suit = fixedSuit2, rank = r });
+                GameManager.ItemControl.drawPile.Add(new Ammo { suit = fixedSuit2, rank = r });
 
                 if (r == 1 || r == 13)
                 {
-                    drawPile.Add(new Ammo { suit = fixedSuit2, rank = r });
+                    GameManager.ItemControl.drawPile.Add(new Ammo { suit = fixedSuit2, rank = r });
                 }
             }
         }
@@ -102,9 +130,9 @@ public class Deck : MonoBehaviour
         {
             var deck4 = GameManager.Data.bulletDataGroup.GetBulletData(9001);
             Suit fixedSuit3 = (Suit)deck4.type;
-            for (int r = deck4.min; r <= deck4.max; r++)
+            for (int r = 1; r <= deck4.max; r++)
             {
-                drawPile.Add(new Ammo { suit = fixedSuit3, rank = r });
+                GameManager.ItemControl.drawPile.Add(new Ammo { suit = fixedSuit3, rank = r });
             }
         }
 
@@ -116,9 +144,9 @@ public class Deck : MonoBehaviour
         {
             var deck5 = GameManager.Data.bulletDataGroup.GetBulletData(9004);
             Suit fixedSuit4 = (Suit)deck5.type;
-            for (int r = deck5.min; r <= deck5.max; r++)
+            for (int r = 1; r <= deck5.max; r++)
             {
-                drawPile.Add(new Ammo { suit = fixedSuit4, rank = r });
+                GameManager.ItemControl.drawPile.Add(new Ammo { suit = fixedSuit4, rank = r });
             }
         }
 
@@ -134,7 +162,7 @@ public class Deck : MonoBehaviour
         */
 
         //덱만들고 섞기
-        Shuffle(drawPile);
+        Shuffle(GameManager.ItemControl.drawPile);
     }
 
     //52장 라이브러리

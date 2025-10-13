@@ -9,13 +9,11 @@ public class AttackRangeDisplay : MonoBehaviour
     private Tilemap attackRangeTilemap;
     private TileBase rangeTile;
     private Camera mainCamera;
-    private bool isInitialized = false;
+    public bool isInitialized = false;
 
     public Grid grid;
 
     public int range_plus = 0;
-
-    public MovementController playerMovementController;
     
     private List<Vector3Int> currentAttackTiles = new List<Vector3Int>();
 
@@ -25,6 +23,8 @@ public class AttackRangeDisplay : MonoBehaviour
     private bool isKickAttack = false;
 
     public List<BaseEnemy> enemies = new List<BaseEnemy>();
+
+
 
     void Update()
     {
@@ -101,16 +101,13 @@ public class AttackRangeDisplay : MonoBehaviour
         GameManager.Map.ClearAttackTargets();
     }
 
-    public void Initialize(Tilemap attackTilemap, TileBase rangeTileBase, Camera cam, Grid gridObj)
+    public void Initialize(Tilemap attackTilemap, TileBase rangeTileBase, Grid gridObj)
     {
         if (isInitialized) return;
+        this.attackRangeTilemap = attackTilemap;
+        this.rangeTile = rangeTileBase;
+        this.grid = gridObj;
 
-        grid = gridObj;
-        mainCamera = cam;
-        rangeTile = rangeTileBase;
-
-        attackRangeTilemap = attackTilemap;
-        attackRangeTilemap.transform.SetParent(grid.transform);
         attackRangeTilemap.transform.localPosition = Vector3.zero;
 
         isInitialized = true;
@@ -142,17 +139,6 @@ public class AttackRangeDisplay : MonoBehaviour
     {
         Vector2Int playerPos2D = GameManager.Map.GetPlayerPosition();
         return new Vector3Int(playerPos2D.x, playerPos2D.y, 0);
-    }
-    
-    private Vector3 GetPlayerWorldPosition()
-    {
-        if (playerMovementController != null)
-        {
-            Vector3 playerPos = playerMovementController.transform.position;
-            return playerMovementController.transform.position;
-        }
-        
-        return Vector3.zero;
     }
 
     private Vector3Int GetDirectionFromMouse()

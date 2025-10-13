@@ -38,7 +38,6 @@ public class MainUI : BaseUI
     [SerializeField] Button repairBtn;
     [SerializeField] Button mountBtn;
     [SerializeField] Button getOffBtn;
-    [SerializeField] Button settingBtn;
 
     //플레이어 HP
     [SerializeField] private Image playerHp;
@@ -48,6 +47,13 @@ public class MainUI : BaseUI
     [SerializeField] private Image vehicleHp;
     [SerializeField] private TMP_Text vehicleHpText;
 
+    //설정버튼
+    [SerializeField] Button settingActiveBtn;
+    //설정창 UI
+    [SerializeField] private GameObject settingUI;
+
+    [SerializeField] private TextMeshProUGUI stageInfoText;
+    
     private void Awake()
     {
         turnBtn.onClick.AddListener(OnTurnEnd);
@@ -62,8 +68,17 @@ public class MainUI : BaseUI
         bikeControllBtn.onClick.AddListener(BikeToggle);
         RelicBtn.onClick.AddListener(RelicToggle);
 
+        settingActiveBtn.onClick.AddListener(OpenSettings);
 
-        settingBtn.onClick.AddListener(GameResultUITest);
+        //탄환 선택해제
+        //오토바이 조작 안에 있는것들은 안넣어도 될것같음
+        deckBtn.onClick.AddListener(fireBtnObj.Unselect);
+        discardBtn.onClick.AddListener(fireBtnObj.Unselect);
+        RelicBtn.onClick.AddListener(fireBtnObj.Unselect);
+        turnBtn.onClick.AddListener(fireBtnObj.Unselect);
+        bikeControllBtn.onClick.AddListener(fireBtnObj.Unselect);
+        //kickBtn.onClick.AddListener(fireBtnObj.Unselect); //TODO: 진영님 나중에 이거 확인하세요(이영신)
+        settingActiveBtn.onClick.AddListener(fireBtnObj.Unselect);
 
         InitReloadUI();
     }
@@ -71,17 +86,11 @@ public class MainUI : BaseUI
     private void OnEnable()
     {
         reloadBtnObj.ReloadChange += OnReloadChanged;
+        stageInfoText.text = $"Stage {(GameManager.SaveLoad.nextSceneIndex+1).ToString()}";
     }
     private void OnDisable()
     {
         reloadBtnObj.ReloadChange -= OnReloadChanged;
-    }
-
-    private void GameResultUITest()
-    {
-        ResultUI backUI = GameManager.UI.GetUI<ResultUI>();
-        //backUI.resulttype = ResultType.Over;
-        backUI.GetResultType(ResultType.Over);
     }
 
     private void Update()
@@ -101,6 +110,10 @@ public class MainUI : BaseUI
     private void OnReload()
     {
         reloadBtnObj.Reload();
+        if (bikeControllBtnObj)
+        {
+            bikeControllBtnObj.ToggleBikeControll();
+        }
     }
 
     private void DeckToggle()
@@ -175,6 +188,7 @@ public class MainUI : BaseUI
 
     void ToggleKick()
     {
+        GameManager.Mouse.HidePlayerRange();
         kickBtnObj.ToggleKick();
     }
 
@@ -195,16 +209,29 @@ public class MainUI : BaseUI
     private void OnRiding()
     {
         GameManager.Unit.Vehicle.vehicleHandler.MountVehicle();
+        if (bikeControllBtnObj)
+        {
+            bikeControllBtnObj.ToggleBikeControll();
+        }
+        
     }
     // 내리는 로직
     private void GetOff()
     {
         GameManager.Unit.Vehicle.vehicleHandler.DismountVehicle();
+        if (bikeControllBtnObj)
+        {
+            bikeControllBtnObj.ToggleBikeControll();
+        }
     }
     // 수리 // 오토바이 버튼에 넣어주면 된다.
     private void RepairButton()
     {
         GameManager.Unit.Vehicle.vehicleHandler.RepairVehicle();
+        if (bikeControllBtnObj)
+        {
+            bikeControllBtnObj.ToggleBikeControll();
+        }
         GameManager.TurnBased.ChangeTo<PlayerTurnEndState>("Force");
     }
     private void BikeToggle()
@@ -250,7 +277,13 @@ public class MainUI : BaseUI
        if (rerollLabel)
        {
             rerollLabel.text = $"재장전 x{remain}";
-       }    
+       }
+       
+       if(remain <= 0)
+        {
+            rerollBtn.interactable = false;
+            return;
+        }
     }
 
     private void InitReloadUI()
@@ -269,14 +302,14 @@ public class MainUI : BaseUI
         {
             move = GameManager.Map.moveRange;
         }
-        movementText.text = ($"Movement: {move}");
+        movementText.text = ($"{move}");
     }
 
     private void RefreshPlayerHP()
     {
         var m = GameManager.Unit.Player.playerModel;
 
-        int cur = m.health;
+        int cur = m.currentHealth;
         int max = m.maxHealth;
 
         float t = (max > 0) ? (float)cur / max : 0f;
@@ -288,11 +321,18 @@ public class MainUI : BaseUI
     {
         var m = GameManager.Unit.Vehicle.vehicleModel;
 
-        int cur = m.health;
+        int cur = m.currentHealth;
         int max = m.maxHealth;
 
         float t = (max > 0) ? (float)cur / max : 0f;
         if (vehicleHp) vehicleHp.fillAmount = Mathf.Clamp01(t);
         if (vehicleHpText) vehicleHpText.text = $"{cur}/{max}";
     }
+
+    private void OpenSettings()
+    {
+        Instantiate(settingUI);
+    }
+
+    
 }

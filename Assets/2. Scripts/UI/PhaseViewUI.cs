@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using TMPro;
+using System;
 
 public class PhaseViewUI : MonoBehaviour
 {
@@ -35,10 +36,20 @@ public class PhaseViewUI : MonoBehaviour
 
         string current = (turn != null) ? turn.GetState() : "None";
 
-        if(force || current != nowPhase)
+        if (!string.IsNullOrEmpty(current))
         {
-            phaseViewText.text = ($"{current}");
-            nowPhase = current;
+            //플레이어 턴
+            if (current.IndexOf("Player", System.StringComparison.OrdinalIgnoreCase) >= 0)
+            {
+                phaseViewText.text = "PlayTurn";
+            }
+            //적 턴
+            else if (current.IndexOf("Enemy", System.StringComparison.OrdinalIgnoreCase) >= 0)
+            {
+                phaseViewText.text = "EnemyTurn";
+            }
         }
+
+        nowPhase = current;
     }
 }

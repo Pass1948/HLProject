@@ -39,7 +39,6 @@ public class AttackController : MonoBehaviour
         {
             return;
         }
-
         
         //이미 사용된 슬롯 클릭 방지
         if (!btn.interactable)
@@ -96,8 +95,8 @@ public class AttackController : MonoBehaviour
         {
             Suit suit = bulletView.ammo.suit;
             int rank = bulletView.ammo.rank;
-    
             GameManager.Map.attackRange.SetAttackRange(suit, rank);
+            GameManager.Mouse.HidePlayerRange();
             GameManager.Mouse.IsAttacking = true;
         }
 
@@ -227,7 +226,7 @@ public class AttackController : MonoBehaviour
             return;
         }
 
-        GameObject go = GameManager.Resource.Create<GameObject>(Path.Weapon + "Bullet", slotContainer);
+        GameObject go = GameManager.Resource.Create<GameObject>(Path.UI + "Bullet", slotContainer);
         go.transform.localScale = Vector3.one;
 
         var view = go.GetComponent<BulletView>();
@@ -237,7 +236,7 @@ public class AttackController : MonoBehaviour
             view.SetBgColor(bgNormal);
             view.RefreshLabel();
         }
-        
+      
 
         var btn = go.GetComponentInChildren<Button>(true);
         if(btn)
@@ -246,5 +245,18 @@ public class AttackController : MonoBehaviour
         }
     }
 
+    public void Unselect()
+    {
+        if(selectBulletBg)
+        {
+            selectBulletBg.color = bgNormal;
+        }
+        selectedAmmoBtn = null;
+        selectBulletBg = null;
+        bullet = null;
+
+        GameManager.Map.attackRange.ClearAttackType();
+        GameManager.Mouse.IsAttacking = false;
+    }
 
 }

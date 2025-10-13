@@ -17,13 +17,15 @@ public class TurnBasedManager : MonoBehaviour
 
     // 현재 진행 중인 몬스터(없으면 null)
     private BaseEnemy currentEnemy;
-
+    
+    public bool isCamera=true;
+    
     // 적 턴 진행 여부 플래그
     private bool enemyPhaseActive;
 
     public bool isStarted = false;
 
-    private readonly Dictionary<Type, ITurnState> _stateCache = new Dictionary<Type, ITurnState>();
+    private readonly Dictionary<Type, ITurnState> stateCache = new Dictionary<Type, ITurnState>();
     private void Awake()
     {
         turnHFSM = new TurnStateMachine();
@@ -53,8 +55,8 @@ public class TurnBasedManager : MonoBehaviour
     private void Update()
     {
         turnHFSM.Tick(Time.deltaTime);
-        // [참고] 폴링 방식이 필요 없다면 이곳에서 UpdateMonster를 호출하지 않아도 됩니다.
     }
+
     private void FixedUpdate()
     {
         turnHFSM.FixedTick(Time.fixedDeltaTime);
@@ -66,11 +68,10 @@ public class TurnBasedManager : MonoBehaviour
     public void AddCount() => count++;
     public void ResetCount() => count = 0; // TODO : 턴카운터 초기화
     
-    
-
+    public void SwitchIsCamera() => isCamera = !isCamera;
     public void ChangeStartTurn()    // TODO:스테이지 시작과 종료 시점에 호출해주기 바람
     {
-        StartTotalTurn();
+        if(isStarted == false)  StartTotalTurn();
         ChangeTo<IdleState>("Force");
     }
     
@@ -91,18 +92,18 @@ public class TurnBasedManager : MonoBehaviour
     public T GetState<T>() where T : ITurnState, new()
     {
         var key = typeof(T);
-        if (_stateCache.TryGetValue(key, out var s)) return (T)s;
+        if (stateCache.TryGetValue(key, out var s)) return (T)s;
 
         // 파라미터 없는 생성자로 생성
         var inst = new T();
-        _stateCache[key] = inst;
+        stateCache[key] = inst;
         return inst;
     }
 
     // 필요 시 외부에서 초기화 리셋
     public void ResetAll()
     {
-        _stateCache.Clear();
+        stateCache.Clear();
     }
 
     public string GetState()
@@ -163,7 +164,7 @@ public class TurnBasedManager : MonoBehaviour
         if (!enemyPhaseActive) return;
         if (currentEnemy != null && currentEnemy.controller != null)
         {
-            // [중요] 완료 후 플래그 초기화
+            // 완료 후 초기화
             currentEnemy.controller.startTurn = false;
             currentEnemy.controller.isDone = false;
             currentEnemy = null;
@@ -198,13 +199,13 @@ public class TurnBasedManager : MonoBehaviour
             
             GameManager.Event.Publish(EventType.EnemyTurnEnd);
             
-            ChangeTo<ClearCheckState>("Enemy phase finished");
+            ChangeTo<ClearCheckState>();    // 적 상태종료
         }
     }
     public bool EnemyDieCheck()
     {
         var monsters = (GameManager.Unit != null) ? GameManager.Unit.enemies : null;
-        // 적 리스트가 없거나 비어 있으면 '모두 처치됨'으로 간주 (원하시면 false로 바꾸세요)
+        // 적 리스트가 없거나 비어 있으면 '모두 처치됨'으로 간주
         if (monsters == null || monsters.Count == 0)
             return true;
 

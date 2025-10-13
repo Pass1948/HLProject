@@ -75,7 +75,6 @@ public class MapManager : MonoBehaviour
         moveInfoTile = GameManager.Resource.Load<TileBase>(Path.Map + "Green");
         redAttackTile = GameManager.Resource.Load<TileBase>(Path.Map + "RedAttackTile");
         
-        Camera mainCamera = Camera.main;
         grid = GameManager.Resource.Create<Grid>(Path.Map + "Grid");
 
         var temp = GameManager.Resource.Create<GameObject>(Path.Map + "Tilemap");
@@ -88,15 +87,33 @@ public class MapManager : MonoBehaviour
         
         var attacktile = GameManager.Resource.Create<GameObject>(Path.Map + "AttackRangeTilemap");
         attackRangeTilemap = attacktile.GetComponent<Tilemap>();
+        attackRangeTilemap.transform.SetParent(grid.transform);
+
+        if (spawnController != null)
+        {
+            spawnController.ReturnAllObstaclesToPool(); 
+            
+            foreach (var pool in spawnController.obstaclePools.Values)
+            {
+                pool.ResetPool();
+                
+                pool.InitializePool(10);
+            }
+        }
         
         mapData = new int[stage.mapSize, stage.mapSize];
         mapCreator.GenerateMap(mapData, tilemap, groundTile, wallTile);
         
-        attackRange.Initialize(attackRangeTilemap, redAttackTile, mainCamera, grid);
+        if (attackRange != null)
+        {
+            attackRange.isInitialized = false;
+            attackRange.Initialize(attackRangeTilemap, redAttackTile, grid);
+        }
 
         pathfinding = new Pathfinding(tilemap);
 
         spawnController.SpawnAllObjects(stage);
+        DumpMapData();
     }
     
     public void CreateMovePoint()
@@ -140,6 +157,7 @@ public class MapManager : MonoBehaviour
         {
             mapData[oldX.x, oldY.y] = TileID.Terrain;
         }
+        DumpMapData();
     }
 
     public void UpdateAttackTargets(List<Vector3Int> attackCells, List<BaseEnemy> enemies)
@@ -163,8 +181,7 @@ public class MapManager : MonoBehaviour
                     }
                     else
                     {
-                        Debug.Log($"enemies 리스트의 현재 몬스터 수: {enemies.Count}");
-
+                        
                         foreach (var enemy in enemies)
                         {
                             Vector3Int enemyCellPos = GetCellFromWorldPos(enemy.transform.position);
@@ -229,13 +246,6 @@ public class MapManager : MonoBehaviour
 
     public Vector2Int GetPlayerPosition()
     {
-        // if (mapData == null)
-        // {
-        //     Debug.Log("맵 데이터 없슴");
-        //     
-        //     return new Vector2Int(-1, -1);
-        // }
-
         for(int x = 0; x < mapWidth; x++)
         {
             for(int y = 0; y < mapHeight; y++)
@@ -244,7 +254,6 @@ public class MapManager : MonoBehaviour
                     return new Vector2Int(x, y);
             }
         }
-
         return new Vector2Int(-1, -1);
     }
 
@@ -273,6 +282,34 @@ public class MapManager : MonoBehaviour
     public bool IsEnemy(Vector3Int cell)
     {
         return mapData[cell.x, cell.y] == TileID.Enemy;
+    }
+   
+    // 맵 데이터 확인///////////
+    public void DumpMapData()
+    {
+        if (mapData == null)
+        {
+            Debug.LogError("mapData가 null");
+            return;
+        }
+
+        System.Text.StringBuilder sb = new System.Text.StringBuilder();
+        sb.AppendLine("---------------------------------------");
+
+        for (int y = mapHeight - 1; y >= 0; y--)
+        {
+            sb.Append($"== ");
+            for (int x = 0; x < mapWidth; x++)
+            {
+                sb.Append($"{mapData[x, y]:D1} ");
+            }
+
+            sb.AppendLine();
+        }
+
+        sb.AppendLine("-----------------------------------------");
+
+        Debug.Log(sb.ToString());
     }
 
 }

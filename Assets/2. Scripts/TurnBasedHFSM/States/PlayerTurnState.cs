@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerTurnState : BaseTurnState
 {
-    float timer;
+    float timer;    // 턴에서 지속되어야할 딜레이타임
     private bool didClose;   // 한 번만 처리하게 하는 게이트
     public PlayerTurnState() { }
     public override void OnEnter()
@@ -13,20 +13,26 @@ public class PlayerTurnState : BaseTurnState
         timer = turnSetVlaue.resetTime;
         didClose = false;
         turnManager.AddCount();
+        Time.timeScale = 3f;    // 배속 기능
         // 턴 시작 시 커맨드 초기화후 입력 대기
         GameManager.UI.OpenUI<PaseTurnUI>();
-        GameManager.Mouse.ToggleMovePhase();
+        if (turnManager.isCamera == false)
+        {
+            turnManager.SwitchIsCamera();
+        }
     }
 
     public override void Tick(float dt)
     {
         // 이미 처리했다면 더 이상 검사하지 않음
         if (didClose) return;
+        
         timer += dt;
-        if (timer > turnSetVlaue.turnDelayTime )
+        if (timer > turnSetVlaue.turnDelayTime)
         {
             GameManager.UI.CloseUI<PaseTurnUI>();
             GameManager.UI.OpenUI<MainUI>();
+            MouseSet();
             didClose = true;// 한 번만 처리하게 설정
         }
     }
@@ -34,6 +40,12 @@ public class PlayerTurnState : BaseTurnState
     {
         // 혹시 못 닫았으면 안전하게 닫아 주기
         if (!didClose) GameManager.UI.CloseUI<PaseTurnUI>();
-        GameManager.Mouse.ToggleMovePhase();
+    }
+
+    private void MouseSet()
+    {
+        GameManager.Mouse.movePhaseActive = true;
+        GameManager.Mouse.isMouse = true;
+        GameManager.Mouse.isShowRange = true;
     }
 }

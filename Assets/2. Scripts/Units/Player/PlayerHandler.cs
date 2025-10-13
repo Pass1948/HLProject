@@ -8,11 +8,17 @@ public class PlayerHandler : MonoBehaviour
     public int playerMonney;
     
     public List<Ammo> bullets = new();
-    public List<int> ownedRelics = new();
+    public List<Ammo> GetBullet() { return bullets;}
+    
+    public List<int> ownedRelics = new(); // 유물 리스트
     
     private void Awake()
     {
-        playerMonney = 0;
+    }
+
+    private void Start()
+    {
+        playerMonney = 500000000;
     }
     
     public void TakeDamage(int amount)
@@ -26,9 +32,11 @@ public class PlayerHandler : MonoBehaviour
         }
         else
         {
-            player.health -= amount;
+            if (player == null) return;
 
-            if (player.health <= 0)
+            player.currentHealth = Mathf.Max(0, player.currentHealth - amount);
+
+            if (player.currentHealth <= 0)
             {
                 this.gameObject.SetActive(false);
             }
@@ -38,7 +46,7 @@ public class PlayerHandler : MonoBehaviour
     public void Heal(int amount)
     {
         var player = GameManager.Unit.Player.playerModel;
-        player.health += amount;
+        player.currentHealth += amount;
         Debug.Log($"체력 회복: {amount}, 현재 체력: {player.health}");
     }
     
@@ -53,7 +61,6 @@ public class PlayerHandler : MonoBehaviour
         playerMonney += amount;
         // 골드 추가시 여기에
         GameManager.Event.Publish(EventType.OnGoldChanged, playerMonney);
-        
     }
 
     public bool SpendGold(int amount)
