@@ -351,7 +351,6 @@ public class MouseManager : MonoBehaviour
             if (Hits[i] && Hits[i].TryGetComponent<BaseEnemy>(out _))
                 return Hits[i].GetComponentInParent<T>(true);
 
-        Debug.Log($"이것은 수류탄이요?");
         return null;
     }
 

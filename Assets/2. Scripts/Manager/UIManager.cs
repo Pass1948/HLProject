@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
-
     public const string UICommonPath = "Common/";
     public const string UIPrefabPath = "Elements/";
 
