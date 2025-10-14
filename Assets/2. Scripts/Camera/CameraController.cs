@@ -34,7 +34,7 @@ public class CameraController : MonoBehaviour
     {
         cam = Camera.main;
         cam.transform.rotation = Quaternion.Euler(60f, 45f, 0f);
-        Vector3 playerPos = new Vector3(GameManager.Map.GetPlayerPosition().x, GameManager.Map.GetPlayerPosition().y, 0);
+        Vector3 playerPos = new Vector3(GameManager.Map.GetPlayer2Position().x, GameManager.Map.GetPlayer2Position().y, 0);
         player = playerPos;
     }
 

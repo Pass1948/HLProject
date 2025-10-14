@@ -38,7 +38,7 @@ public class MouseManager : MonoBehaviour
 
     [Header("Movement")]
     public float stepMoveTime = 0.2f;
-    private bool isMoving = false;
+    public bool isMoving = false;
     public bool movePhaseActive = false;   // 이 값이 false면 이동 안 됨
     private BasePlayer selectedPlayer;
     private Vector3Int selectedPlayerCell;
@@ -175,7 +175,7 @@ public class MouseManager : MonoBehaviour
         if (cellIsPlayer)
         {
             isPlayer = true;
-            OnClickPlayer(cell);
+            OnClickPlayer(GameManager.Map.GetPlayer3Position());
             return;
         }
         if (cellIsEnemy)
@@ -220,13 +220,13 @@ public class MouseManager : MonoBehaviour
 
         if (!isShowRange) return;
 
-        if (movePhaseActive)
+       /* if (movePhaseActive)
         {
             if (playerRangeVisible && selectedPlayerCell == cell)
                 HidePlayerRange();
             else
                 ShowPlayerRange(cell);
-        }
+        }*/
     }
 
     private void OnClickEnemy(Vector3Int cell)
@@ -332,6 +332,7 @@ public void InputCance()
         isAttacking = false;
         isKicking = false;
         isPlayer = false;
+        isMoving = isMoving ? false : true;
         HidePlayerRange();
         HideEnemyPopup();
         map.ClearPlayerRange();
@@ -367,7 +368,7 @@ public void InputCance()
         return null;
     }
 
-    private void ShowPlayerRange(Vector3Int cell)
+    public void ShowPlayerRange(Vector3Int cell)
     {
         playerRangeVisible = true;
         map.ClearPlayerRange();

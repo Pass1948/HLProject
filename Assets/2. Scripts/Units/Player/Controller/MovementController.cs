@@ -263,7 +263,7 @@ public class MovementController : MonoBehaviour
         _cellPosition = targetCell;
 
         //GameManager.Map.UpdateObjectPosition(start, start.y, (int)_cellPosition.x, (int)_cellPosition.y, TileID.Player);
-        Debug.Log($"이건 못참지 {GameManager.Map.GetPlayerPosition()}");
+        Debug.Log($"이건 못참지 {GameManager.Map.GetPlayer2Position()}");
 
         _isMoving = false;
     }

@@ -77,4 +77,18 @@ public class ToggleBtnController : MonoBehaviour
             GameManager.Mouse.IsKicking = true;
         }
     }
+
+    public void ToggleMove()
+    {
+        if (GameManager.Mouse.isMoving && GameManager.Mouse.isShowRange)
+        {
+            GameManager.Mouse.ShowPlayerRange(GameManager.Map.GetPlayer3Position());
+            GameManager.Mouse.isMoving = false;
+        }
+        else
+        {
+            GameManager.Mouse.HidePlayerRange();
+            GameManager.Mouse.isMoving = true;
+        }
+    }
 }
