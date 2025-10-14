@@ -152,6 +152,7 @@ public class ShopUI : BaseUI
             card.buyButton.onClick.AddListener(() =>
             {
                 selectedBulletIndex = idx;
+                removeButton.interactable = true;
             });
         }
         cost++;
@@ -165,22 +166,25 @@ public class ShopUI : BaseUI
 
     private void PlayerHPBar()
     {
-        float fill = currentHp / maxHp;
-        hpBar.fillAmount = (int)fill;
+        float fill = (float)currentHp / (float)maxHp;
+        hpBar.fillAmount = fill;
     }
 
     private void OnRemoveBulletCicked()
     {
         if (selectedBulletIndex >= 0)
         {
-            var player = GameManager.Unit.Player.playerHandler;
-            if (selectedBulletIndex < player.bullets.Count)
+            var drowPile = GameManager.ItemControl.drawPile;
+            if (selectedBulletIndex < drowPile.Count)
             {
                 
-                player.bullets.RemoveAt(selectedBulletIndex);
+                drowPile.RemoveAt(selectedBulletIndex);
+                GameManager.Event.Publish(EventType.ShopPlayerCardsConfim);
+                RebuildPlayerBullets();
             }
         }
         selectedBulletIndex = -1;
+        removeButton.interactable = false; // 선택 초기화 시 비활성
 
     }
     private void ClearSection(Transform root)

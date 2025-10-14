@@ -70,8 +70,8 @@ public class ShopManager : MonoBehaviour
         GenerateRelicOffers(player.ownedRelics, GameManager.ItemControl.buyItems);
 
         // 탄환 제거 (입장당 1회)
-        // if (canRemoveBullet)
-        //     offers.Add(new ShopItem(ShopItemType.RemoveBullet, "탄환 제거", 3));
+        if (canRemoveBullet)
+            offers.Add(new ShopItem(ShopItemType.RemoveBullet, "탄환 제거", 3));
         
         GameManager.Event.Publish(EventType.ShopOffersChanged, offers);
     }
@@ -219,9 +219,9 @@ public class ShopManager : MonoBehaviour
     }
     public void TryHeal()
     {
-        int healCost = 1;
+        int healCost = 4;
         if(!player.SpendGold(healCost)) return;
-        player.Heal(1); // 추후에 변수로 변경 예정
+        player.Heal(healCost/2); // 추후에 변수로 변경 예정
     }
 
     // 화약 꾸러미 * 사용중지
