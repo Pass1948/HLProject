@@ -17,6 +17,9 @@ public class MainUI : BaseUI
     [SerializeField] Button kickBtn;
     [SerializeField] ToggleBtnController kickBtnObj;
 
+    [SerializeField] Button moveBtn;
+    [SerializeField] ToggleBtnController moveBtnObj;
+
     //재장전 텍스트
     TMP_Text rerollLabel;
 
@@ -64,7 +67,7 @@ public class MainUI : BaseUI
         mountBtn.onClick.AddListener(OnRiding);
         getOffBtn.onClick.AddListener(GetOff);
         kickBtn.onClick.AddListener(ToggleKick);
-
+        moveBtn.onClick.AddListener(ToggleMove);
         bikeControllBtn.onClick.AddListener(BikeToggle);
         RelicBtn.onClick.AddListener(RelicToggle);
 
@@ -190,6 +193,11 @@ public class MainUI : BaseUI
     {
         GameManager.Mouse.HidePlayerRange();
         kickBtnObj.ToggleKick();
+    }
+
+    void ToggleMove()
+    {
+        moveBtnObj.ToggleMove();
     }
 
     private bool IsNearVehicle()

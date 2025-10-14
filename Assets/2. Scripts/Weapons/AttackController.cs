@@ -23,12 +23,21 @@ public class AttackController : MonoBehaviour
     private void OnEnable()
     {
         GameManager.Event.Subscribe(EventType.PlayerAttack, Fire);
+        GameManager.Event.Subscribe(EventType.CancelAmmo, CancelAmmo);
     }
     private void OnDisable()
     {
         GameManager.Event.Unsubscribe(EventType.PlayerAttack, Fire);
+        GameManager.Event.Unsubscribe(EventType.CancelAmmo, CancelAmmo);
     }
 
+    public void CancelAmmo()
+    {
+        if (selectBulletBg) selectBulletBg.color = bgNormal;
+        selectedAmmoBtn = null;
+        selectBulletBg = null;
+        bullet = null;
+    }
 
 
     //탄환버튼 OnClick

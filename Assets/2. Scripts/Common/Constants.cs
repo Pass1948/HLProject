@@ -39,7 +39,7 @@ public enum EventType
     //--- 덱
     SelectDeck,
     //---
-    
+    CancelAmmo,
     // =====(유물)=====
     AddAttackPoint,
     AddMoveRangePoint,

@@ -38,7 +38,7 @@ public class MouseManager : MonoBehaviour
 
     [Header("Movement")]
     public float stepMoveTime = 0.2f;
-    private bool isMoving = false;
+    public bool isMoving = false;
     public bool movePhaseActive = false;   // 이 값이 false면 이동 안 됨
     private BasePlayer selectedPlayer;
     private Vector3Int selectedPlayerCell;
@@ -175,7 +175,7 @@ public class MouseManager : MonoBehaviour
         if (cellIsPlayer)
         {
             isPlayer = true;
-            OnClickPlayer(cell);
+            OnClickPlayer(GameManager.Map.GetPlayer3Position());
             return;
         }
         if (cellIsEnemy)
@@ -189,8 +189,6 @@ public class MouseManager : MonoBehaviour
             OnClickTerrain(cell);
             return;
         }
-
-        isPlayer = false;
         CancelSelection();
     }
 
@@ -222,13 +220,13 @@ public class MouseManager : MonoBehaviour
 
         if (!isShowRange) return;
 
-        if (movePhaseActive)
+       /* if (movePhaseActive)
         {
             if (playerRangeVisible && selectedPlayerCell == cell)
                 HidePlayerRange();
             else
                 ShowPlayerRange(cell);
-        }
+        }*/
     }
 
     private void OnClickEnemy(Vector3Int cell)
@@ -291,6 +289,15 @@ public class MouseManager : MonoBehaviour
         isMoving = false;
     }
 
+
+    // 취소키
+public void InputCance()
+    {
+        CancelSelection();
+    }
+
+
+
     // ===== 유틸 =====
     private bool TryGetMouseWorld(Vector2 screen, out Vector3 world)
     {
@@ -322,8 +329,15 @@ public class MouseManager : MonoBehaviour
     private void CancelSelection()
     {
         selectedPlayer = null;
+        isAttacking = false;
+        isKicking = false;
+        isPlayer = false;
+        isMoving = isMoving ? false : true;
+        HidePlayerRange();
+        HideEnemyPopup();
         map.ClearPlayerRange();
-        GameManager.UI.CloseUI<EnemyInfoPopUpUI>();
+        GameManager.Map.attackRange.ClearAttackType();
+        GameManager.Event.Publish(EventType.CancelAmmo);
     }
 
     // player 찾기
@@ -354,7 +368,7 @@ public class MouseManager : MonoBehaviour
         return null;
     }
 
-    private void ShowPlayerRange(Vector3Int cell)
+    public void ShowPlayerRange(Vector3Int cell)
     {
         playerRangeVisible = true;
         map.ClearPlayerRange();
