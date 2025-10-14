@@ -189,8 +189,6 @@ public class MouseManager : MonoBehaviour
             OnClickTerrain(cell);
             return;
         }
-
-        isPlayer = false;
         CancelSelection();
     }
 
@@ -291,6 +289,15 @@ public class MouseManager : MonoBehaviour
         isMoving = false;
     }
 
+
+    // 취소키
+public void InputCance()
+    {
+        CancelSelection();
+    }
+
+
+
     // ===== 유틸 =====
     private bool TryGetMouseWorld(Vector2 screen, out Vector3 world)
     {
@@ -322,8 +329,14 @@ public class MouseManager : MonoBehaviour
     private void CancelSelection()
     {
         selectedPlayer = null;
+        isAttacking = false;
+        isKicking = false;
+        isPlayer = false;
+        HidePlayerRange();
+        HideEnemyPopup();
         map.ClearPlayerRange();
-        GameManager.UI.CloseUI<EnemyInfoPopUpUI>();
+        GameManager.Map.attackRange.ClearAttackType();
+        GameManager.Event.Publish(EventType.CancelAmmo);
     }
 
     // player 찾기
