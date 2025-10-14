@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class MouseFollower : MonoBehaviour
+public class MouseControl : MonoBehaviour
 {
     private void OnEnable()
     {
@@ -17,6 +17,12 @@ public class MouseFollower : MonoBehaviour
     private void OnMovementClick(InputValue value)
     {
        GameManager.Mouse.ClickCurrentHover();
+    }
+    
+    private void OnCancel(InputValue value)
+    {
+        GameManager.Mouse.InputCance();
+
     }
 
 

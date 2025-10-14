@@ -118,8 +118,7 @@ public class CameraController : MonoBehaviour
             }
             else if (cur.z > maxZ)
             {
-                if (cand.z > cur.z) 
-                    cand.z = cur.z;
+                if (cand.z > cur.z) cand.z = cur.z;
             }
             else
             {
