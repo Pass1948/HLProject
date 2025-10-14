@@ -220,13 +220,13 @@ public class MouseManager : MonoBehaviour
 
         if (!isShowRange) return;
 
-        if (movePhaseActive)
+       /* if (movePhaseActive)
         {
             if (playerRangeVisible && selectedPlayerCell == cell)
                 HidePlayerRange();
             else
                 ShowPlayerRange(cell);
-        }
+        }*/
     }
 
     private void OnClickEnemy(Vector3Int cell)
@@ -332,6 +332,7 @@ public void InputCance()
         isAttacking = false;
         isKicking = false;
         isPlayer = false;
+        isMoving = isMoving ? false : true;
         HidePlayerRange();
         HideEnemyPopup();
         map.ClearPlayerRange();

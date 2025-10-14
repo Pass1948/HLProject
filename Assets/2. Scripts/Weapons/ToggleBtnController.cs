@@ -87,7 +87,6 @@ public class ToggleBtnController : MonoBehaviour
         }
         else
         {
-            //현재 꺼져 있으면 켠다
             GameManager.Mouse.HidePlayerRange();
             GameManager.Mouse.isMoving = true;
         }
