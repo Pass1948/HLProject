@@ -52,12 +52,11 @@ public class Pathfinding
         }
     }
 
-    /// <summary>
-    /// A * 알고리즘으로 start -> goal 까지의 경로를 구함
-    /// </summary>
-    /// <param name="start"></param>
-    /// <param name="goal"></param>
-    /// <returns></returns>
+
+    // A * 알고리즘으로 start -> goal 까지의 경로를 구함
+
+    // start
+    // goal
     public List<Vector3Int> FindPath(Vector3Int start, Vector3Int goal)
     {
         int[,] mapdata = GameManager.Map.mapData;
@@ -102,12 +101,8 @@ public class Pathfinding
             openSet.Remove(currentNode);
             // 노드 위치를 닫힌 집합에 추가응
             closedSet.Add(currentNode.Position);
-
             // 목표 지점에 착창, 도착 했으면 경로 반환
-            if (currentNode.Position == goal)
-            {
-                return RetracePath(currentNode);
-            }
+            if (currentNode.Position == goal){ return RetracePath(currentNode);}
 
             // 이웃 노드 탐색 (4방형 : 상ㅡ하ㅡ좌ㅡ우)
             foreach (var neighbourPos in GetNeighbours(currentNode.Position))
@@ -141,11 +136,10 @@ public class Pathfinding
         }
         return new List<Vector3Int>(); // 경로 없음
     }
-    /// <summary>
-    /// 목표 노드에서 부모를 따라가며 경로 역추적
-    /// </summary>
-    /// <param name="endNode"></param>
-    /// <returns></returns>
+
+    // 목표 노드에서 부모를 따라가며 경로 역추적
+
+    // endNode
     private List<Vector3Int> RetracePath(Node endNode)
     {
         List<Vector3Int> path = new List<Vector3Int>();
@@ -159,35 +153,24 @@ public class Pathfinding
         path.RemoveAt(0); // 첫 칸(시작 지점)은 빼도 됨
         return path;
     }
-    /// <summary>
-    /// 휴리스틱 (맨해튼 거리 사용)
-    /// </summary>
-    /// <param name="a"></param>
-    /// <param name="b"></param>
-    /// <returns></returns>
+
+    // 휴리스틱 (맨해튼 거리 사용)
+    //a
+    //b
     private int GetHeurustic(Vector3Int a, Vector3Int b)
     {
         return Mathf.Abs(a.x - b.x) + Mathf.Abs(a.y - b.y);// 맨해튼 거리
     }
-    /// <summary>
-    /// 현재 좌표에서 4방향 이웃 좌표 반환
-    /// </summary>
-    /// <param name="nodePos"></param>
-    /// <returns></returns>
+    // 안녕 하세요 저는 장보석 이라고 합니다
+
+    //현재 좌표에서 4방향 이웃 좌표 반환
+    //nodePos
     private IEnumerable<Vector3Int> GetNeighbours(Vector3Int nodePos)
     {
         yield return new Vector3Int(nodePos.x + 1, nodePos.y, nodePos.z);
         yield return new Vector3Int(nodePos.x - 1, nodePos.y, nodePos.z);
         yield return new Vector3Int(nodePos.x, nodePos.y + 1, nodePos.z);
         yield return new Vector3Int(nodePos.x, nodePos.y - 1, nodePos.z);
-
-        // 대각선 이동 추가하려면 여기에 추가
-
-        /*
-        yield return new Vector3Int(nodePos.x + 1, nodePos.y + 1, nodePos.z);
-        yield return new Vector3Int(nodePos.x - 1, nodePos.y - 1, nodePos.z);
-        yield return new Vector3Int(nodePos.x - 1, nodePos.y + 1, nodePos.z);
-        yield return new Vector3Int(nodePos.x + 1, nodePos.y - 1, nodePos.z);
-        */
+        
     }
 }

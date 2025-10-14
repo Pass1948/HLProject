@@ -10,7 +10,6 @@ public class ShopUI : BaseUI
     [SerializeField] private Transform bulletRoot;
     [SerializeField] private Transform relicRoot;
     [SerializeField] private Transform playerBulletRoot;
-    [SerializeField] private Transform removeRoot;
     [SerializeField] private Image hpBar;
     
     [SerializeField] private TextMeshProUGUI rerollCostText;
@@ -153,6 +152,7 @@ public class ShopUI : BaseUI
             card.buyButton.onClick.AddListener(() =>
             {
                 selectedBulletIndex = idx;
+                removeButton.interactable = true;
             });
         }
         cost++;
@@ -166,22 +166,25 @@ public class ShopUI : BaseUI
 
     private void PlayerHPBar()
     {
-        float fill = currentHp / maxHp;
-        hpBar.fillAmount = (int)fill;
+        float fill = (float)currentHp / (float)maxHp;
+        hpBar.fillAmount = fill;
     }
 
     private void OnRemoveBulletCicked()
     {
         if (selectedBulletIndex >= 0)
         {
-            var player = GameManager.Unit.Player.playerHandler;
-            if (selectedBulletIndex < player.bullets.Count)
+            var drowPile = GameManager.ItemControl.drawPile;
+            if (selectedBulletIndex < drowPile.Count)
             {
                 
-                player.bullets.RemoveAt(selectedBulletIndex);
+                drowPile.RemoveAt(selectedBulletIndex);
+                GameManager.Event.Publish(EventType.ShopPlayerCardsConfim);
+                RebuildPlayerBullets();
             }
         }
         selectedBulletIndex = -1;
+        removeButton.interactable = false; // 선택 초기화 시 비활성
 
     }
     private void ClearSection(Transform root)
@@ -195,13 +198,11 @@ public class ShopUI : BaseUI
         if (rerollCostText != null && shop != null)
             rerollCostText.text = $"리롤 {shop.rerollCost}";
     }
-
     
     private void NextStage()
     {
         // TODO: 여기에 추가해 주시면 됩니당.(JBS)
         int nextStageIndex = GameManager.Shop.stage.GetCurrentStageIndex() + 1;
-        GameManager.Unit.CurrentStatReset();
         GameManager.SaveLoad.nextSceneIndex = nextStageIndex;
         GameManager.SceneLoad.RestartScene();
     }
