@@ -18,5 +18,9 @@ public class PlayerAnimHandler : MonoBehaviour
         }
     }
 
+    public void PlayerAttackAnim()
+    {
+        animator.SetTrigger("IsAttack");
+    }
 
 }
