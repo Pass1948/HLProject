@@ -50,8 +50,11 @@ public class ToggleBtnController : MonoBehaviour
         {
             return;
         }
-        panel.gameObject.SetActive(!panel.gameObject.activeSelf);
-        bikeControllUI.gameObject.SetActive(!bikeControllUI.gameObject.activeSelf);
+        if (GameManager.Mouse.isShowRange)
+        {
+            panel.gameObject.SetActive(!panel.gameObject.activeSelf);
+            bikeControllUI.gameObject.SetActive(!bikeControllUI.gameObject.activeSelf);
+        }
     }
 
     public void ToggleRelicList()
@@ -65,7 +68,7 @@ public class ToggleBtnController : MonoBehaviour
 
     public void ToggleKick()
     {
-        if (GameManager.Mouse.IsKicking)
+        if (GameManager.Mouse.IsKicking && GameManager.Mouse.isShowRange)
         {
             GameManager.Map.attackRange.ClearAttackType();
             GameManager.Mouse.IsKicking = false;
@@ -80,14 +83,14 @@ public class ToggleBtnController : MonoBehaviour
 
     public void ToggleMove()
     {
-        if (GameManager.Mouse.isMoving && GameManager.Mouse.isShowRange)
+        if (GameManager.Mouse.isMoving && GameManager.Mouse.isShowMoveRange)
         {
-            GameManager.Mouse.ShowPlayerRange(GameManager.Map.GetPlayer3Position());
+            GameManager.Mouse.OnClickPlayer(GameManager.Map.GetPlayer3Position());
             GameManager.Mouse.isMoving = false;
         }
         else
         {
-            GameManager.Mouse.HidePlayerRange();
+            GameManager.Mouse.OnClickPlayer(GameManager.Map.GetPlayer3Position());
             GameManager.Mouse.isMoving = true;
         }
     }

@@ -43,7 +43,7 @@ public class AttackController : MonoBehaviour
     //탄환버튼 OnClick
     public void SelectAmmo(Button btn)
     {
-
+        if(GameManager.Mouse.isShowRange == false) return;
         if (btn == null)
         {
             return;
