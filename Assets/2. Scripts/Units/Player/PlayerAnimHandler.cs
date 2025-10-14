@@ -23,4 +23,9 @@ public class PlayerAnimHandler : MonoBehaviour
         animator.SetTrigger("IsAttack");
     }
 
+    public void PlayerKickAnim()
+    {
+        animator.SetTrigger("IsKick");
+    }
+
 }

@@ -17,6 +17,7 @@ public class PlayerKickState : PlayerActionState
         float timer;
         public override void OnEnter()
         {
+            GameManager.Unit.Player.animHandler.PlayerKickAnim();
             timer = turnSetVlaue.resetTime;
         }
         public override void Tick(float dt)
