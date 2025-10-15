@@ -27,9 +27,6 @@ public enum EventType
     ShopPlayerCardsConfim,
     ShopPowderBundlePrompt,
     ShopRemoveBulletPrompt,
-    ShopTryBuyIndex,
-    ShopPowderBundleConfirm,
-    ShopRemoveBulletConfirm,
     //---
     EnemyUIUpdate,
     //--- 
