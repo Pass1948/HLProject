@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AttackBossState : BaseBossState
 {
-    public AttackBossState(BossStateMachine stateMachine, BossController controller, BossAnimHandler animHandler) : base(stateMachine, controller, animHandler)
+    public AttackBossState(BossStateMachine stateMachine, BossController controller, EnemyAnimHandler animHandler) : base(stateMachine, controller, animHandler)
     {
     }
 

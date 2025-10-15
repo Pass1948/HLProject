@@ -2,17 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EvaluateBossState : MonoBehaviour
+public class EvaluateBossState : BaseBossState
 {
-    // Start is called before the first frame update
-    void Start()
+    public EvaluateBossState(BossStateMachine stateMachine, BossController controller, EnemyAnimHandler animHandler) : base(stateMachine, controller, animHandler)
     {
         
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void Enter()
     {
         
+    }
+
+    public override void Exit()
+    {
+  
+    }
+
+    public override void Excute()
+    {
+
     }
 }
