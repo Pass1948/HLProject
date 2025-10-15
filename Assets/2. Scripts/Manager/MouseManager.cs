@@ -264,7 +264,7 @@ public class MouseManager : MonoBehaviour
     public IEnumerator MoveAlongPath(Transform actor, Vector3Int currentCell, List<Vector3Int> path, int tileIdForActor)
     {
         isMoving = true;
-        GameManager.Unit.Player.animHandler.PlayMoveAnim();
+        GameManager.Unit.Player.animHandler.PlayMoveAnim(pointer);
         foreach (var nextCell in path)
         {
             Vector3 start = actor.position;
@@ -286,7 +286,7 @@ public class MouseManager : MonoBehaviour
             selectedPlayerCell = nextCell;
         }
         map.ClearPlayerRange();
-        GameManager.Unit.Player.animHandler.PlayMoveAnim();
+        GameManager.Unit.Player.animHandler.PlayMoveAnim(pointer);
         isMoving = false;
     }
 
