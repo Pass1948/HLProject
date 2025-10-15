@@ -60,7 +60,8 @@ public class MouseManager : MonoBehaviour
     private BaseEnemy selectedEnemy;
     private bool enemyPopupVisible = false;
     public bool isMouse = false;
-    public bool isShowRange = true;  // ← 이동범위 보일 의도면 true로 두세요 (기본 false면 안 보입니다)
+    public bool isShowMoveRange = true;  // ← 이동범위 보일 의도면 true로 두세요 (기본 false면 안 보입니다)
+    public bool isShowRange = true;
 
     // hover
     private Vector3Int hoverCell;
@@ -175,7 +176,6 @@ public class MouseManager : MonoBehaviour
         if (cellIsPlayer)
         {
             isPlayer = true;
-            OnClickPlayer(GameManager.Map.GetPlayer3Position());
             return;
         }
         if (cellIsEnemy)
@@ -193,7 +193,7 @@ public class MouseManager : MonoBehaviour
     }
 
     // ===== 동작 핸들러 =====
-    private void OnClickPlayer(Vector3Int cell)
+    public void OnClickPlayer(Vector3Int cell)
     {
         // 공격/킥 모드면 범위만 끄고 취소
         if (isAttacking || IsKicking)
@@ -220,13 +220,13 @@ public class MouseManager : MonoBehaviour
 
         if (!isShowRange) return;
 
-       /* if (movePhaseActive)
+       if (movePhaseActive)
         {
             if (playerRangeVisible && selectedPlayerCell == cell)
                 HidePlayerRange();
             else
                 ShowPlayerRange(cell);
-        }*/
+        }
     }
 
     private void OnClickEnemy(Vector3Int cell)
@@ -245,8 +245,8 @@ public class MouseManager : MonoBehaviour
     {
         GameManager.UI.CloseUI<EnemyInfoPopUpUI>();
 
-        bool canMove = movePhaseActive && !isMoving && (selectedPlayer != null) && (destCell != selectedPlayerCell);
-        if (!canMove) return;
+/*        bool canMove = movePhaseActive && !isMoving && (selectedPlayer != null) && (destCell != selectedPlayerCell);
+        if (!canMove) return;*/
 
         var path = map.FindPath(selectedPlayerCell, destCell);
         if (path == null || path.Count > selectedMoveRange)
@@ -264,7 +264,7 @@ public class MouseManager : MonoBehaviour
     public IEnumerator MoveAlongPath(Transform actor, Vector3Int currentCell, List<Vector3Int> path, int tileIdForActor)
     {
         isMoving = true;
-
+        GameManager.Unit.Player.animHandler.PlayMoveAnim();
         foreach (var nextCell in path)
         {
             Vector3 start = actor.position;
@@ -286,6 +286,7 @@ public class MouseManager : MonoBehaviour
             selectedPlayerCell = nextCell;
         }
         map.ClearPlayerRange();
+        GameManager.Unit.Player.animHandler.PlayMoveAnim();
         isMoving = false;
     }
 

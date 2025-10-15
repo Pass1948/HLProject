@@ -7,14 +7,13 @@ public class IdleState : BaseTurnState
     float timer;
     public IdleState() { }
     
-        
     public override void OnEnter() 
     {
+        Time.timeScale = 3f;    // 배속 기능
         if (turnManager.isStarted == true)
         {
             timer =  turnSetVlaue.resetTime;
             GameManager.UI.OpenUI<PaseTurnUI>();
-
         }
     }
     public override void Tick(float dt)

@@ -20,6 +20,9 @@ public class GameManager : MonoBehaviour
     private static SceneLoadManager sceneLoadManager;
     public static SceneLoadManager SceneLoad => sceneLoadManager;
 
+    private static StageManager stageManager;
+    public static StageManager Stage => stageManager;
+    
     private static UnitManager unitManager;
     public static UnitManager Unit => unitManager;
 
@@ -71,6 +74,7 @@ public class GameManager : MonoBehaviour
         dataManager.Initialize();
         resourceManager = CreateChildManager<ResourceManager>("ResourceManager");
         sceneLoadManager = CreateChildManager<SceneLoadManager>("SceneLoadManager");
+        stageManager = CreateChildManager<StageManager>("StageManager");
         unitManager = CreateChildManager<UnitManager>("UnitManager");
         uiManager = CreateChildManager<UIManager>("UIManager");
         eventManager = CreateChildManager<EventManager>("EventManager");

@@ -5,16 +5,13 @@ using UnityEngine;
  
 public class Stage
 {
-    private int gateId = 6001;
-    private GateData gate;
-
-    private int stageId;
+    private int stageId = 7004;
     private StageData stage;
 
     private int currentStageIndex;
     public int GetCurrentStageIndex() => currentStageIndex;
     
-    public int id;                                           // 스테이지 앙이디
+    public int id;                                           // 스테이지 아이디
     public int mapSize;                                      // 맵 사이즈 
     public Dictionary<int, int> obstaclesDict = new();       // 구조물 <아이디, 갯수> 
     public Dictionary<int, int> enemiesDict = new();         // 적 <아이디, 갯수>
@@ -22,18 +19,11 @@ public class Stage
 
     public void InitStage(int stageIndex)
     {
-        gate = GameManager.Data.gateDataGroup.GetGateData(gateId);
-
-        LoadStage(stageIndex);
-        
-    }
-
-    public void LoadStage(int stageIndex)
-    {
+        Debug.Log("Stage : InitStage()");
         ClearAllData();
-        
-        stageId = gate.stageList[stageIndex];
-        stage = GameManager.Data.stageDataGroup.GetStageData(stageId); 
+        stageId += stageIndex;
+        stage = GameManager.Data.stageDataGroup.GetStageData(stageId);
+        Debug.Log(stageId);
         mapSize = stage.size;
         for (int i = 0; i < stage.enemyList.Count; i++)
         {
@@ -44,6 +34,11 @@ public class Stage
             obstaclesDict.Add(stage.obstacleList[i], stage.obstacleCount[i]);
         }
         eliteCnt = stage.eliteId;
+    }
+
+    public void LoadStage(int stageIndex)
+    {
+
     }
     
     public void NextStage()
@@ -56,6 +51,5 @@ public class Stage
         obstaclesDict.Clear();
         enemiesDict.Clear();
     }
-
 }
  
