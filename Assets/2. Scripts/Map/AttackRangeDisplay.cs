@@ -137,7 +137,7 @@ public class AttackRangeDisplay : MonoBehaviour
 
     private Vector3Int GetPlayerCellPosition()
     {
-        Vector2Int playerPos2D = GameManager.Map.GetPlayerPosition();
+        Vector2Int playerPos2D = GameManager.Map.GetPlayer2Position();
         return new Vector3Int(playerPos2D.x, playerPos2D.y, 0);
     }
 

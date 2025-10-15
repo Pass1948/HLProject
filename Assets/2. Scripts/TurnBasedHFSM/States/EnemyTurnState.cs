@@ -11,6 +11,7 @@ public class EnemyTurnState : BaseTurnState
     {
         timer = turnSetVlaue.resetTime;
         didClose= false;
+        GameManager.Mouse.isShowRange = false;
         GameManager.UI.OpenUI<PaseTurnUI>();
         GameManager.Event.Publish(EventType.CameraSenter);
     }

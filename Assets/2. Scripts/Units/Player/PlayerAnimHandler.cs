@@ -4,15 +4,19 @@ using UnityEngine;
 
 public class PlayerAnimHandler : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+   [SerializeField] Animator animator;
+
+    public void PlayMoveAnim()
     {
-        
+        if (animator.GetBool("IsMoving") == false)
+        {
+            animator.SetBool("IsMoving", true);
+        }
+        else
+        {
+            animator.SetBool("IsMoving", false);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
 }
