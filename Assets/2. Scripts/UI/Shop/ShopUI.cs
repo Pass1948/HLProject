@@ -22,10 +22,15 @@ public class ShopUI : BaseUI
     private int maxHp;
     private int currentHp;
     
+    private bool isOn =  false;
+    
     public Button rerollButton;
     public Button healButton;
     public Button removeButton;
     public Button nextStageButton;
+    public Button settingsButton;
+    
+    public GameObject settingsPanel;
     
     private readonly List<GameObject> spawned = new();
 
@@ -48,6 +53,7 @@ public class ShopUI : BaseUI
         rerollButton.onClick.AddListener(()=> shop.TryReroll());
         removeButton.onClick.AddListener(OnRemoveBulletClicked);
         nextStageButton.onClick.AddListener(NextStage);
+        settingsButton.onClick.AddListener(OnSettingButton);
         if (shop != null) Rebuild(shop.offers);
         
         RebuildPlayerBullets();
@@ -159,6 +165,7 @@ public class ShopUI : BaseUI
         cost++;
     }
 
+    
     private void PlayerHpCheck()
     {
         currentHp = GameManager.Unit.Player.playerModel.health;
@@ -178,7 +185,6 @@ public class ShopUI : BaseUI
             var drowPile = GameManager.ItemControl.drawPile;
             if (selectedBulletIndex < drowPile.Count)
             {
-                
                 drowPile.RemoveAt(selectedBulletIndex);
                 GameManager.Event.Publish(EventType.ShopPlayerCardsConfim);
                 RebuildPlayerBullets();
@@ -186,7 +192,6 @@ public class ShopUI : BaseUI
         }
         selectedBulletIndex = -1;
         removeButton.interactable = false; // 선택 초기화 시 비활성
-
     }
     private void ClearSection(Transform root)
     {
@@ -202,10 +207,16 @@ public class ShopUI : BaseUI
     }
 
     // 플레이어 돈
-    public void PlayerMoneyText()
+    private void PlayerMoneyText()
     {
         if (playerMoneyText != null)
             playerMoneyText.text = $"{player.playerMonney}";
+    }
+    // 세팅 버튼
+    private void OnSettingButton()
+    {
+        isOn = !isOn;
+        settingsPanel.SetActive(isOn);
     }
 
     private void NextStage()

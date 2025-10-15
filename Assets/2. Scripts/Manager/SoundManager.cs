@@ -56,6 +56,7 @@ public class SoundManager : MonoBehaviour
 
     public void PlaySFX(AudioClip clip, float pitch = 1f)
     {
-        
+        if (clip == null) return;
+        bgm.clip = clip;
     }
 }
