@@ -202,7 +202,8 @@ public class ShopUI : BaseUI
         // TODO: 여기에 추가해 주시면 됩니당.(JBS)
         int nextStageIndex = GameManager.Shop.stage.GetCurrentStageIndex() + 1;
         GameManager.Unit.CurrentStatReset();
-        GameManager.SaveLoad.nextSceneIndex = nextStageIndex;
+        GameManager.SaveLoad.nextSceneIndex += nextStageIndex;
+        GameManager.Stage.stageId++;
         GameManager.SceneLoad.RestartScene();
     }
 }

@@ -5,33 +5,51 @@ using UnityEngine;
 
 public class StageManager : MonoBehaviour
 {
-    private GateData currentGate;
-    // private int stageData = ;
-    private Dictionary<int, Stage> stageDB = new();
+    public Stage stage;
+    
+    public int stageId = 7001;
+    private StageData stageData;
 
-    public void LoadGate(int gateId)
+    private int currentStageIndex;
+    public int GetCurrentStageIndex() => currentStageIndex;
+    
+    public int id;                                           // 스테이지 앙이디
+    public int mapSize;                                      // 맵 사이즈 
+    public Dictionary<int, int> obstaclesDict = new();       // 구조물 <아이디, 갯수> 
+    public Dictionary<int, int> enemiesDict = new();         // 적 <아이디, 갯수>
+    public int eliteCnt;                                     // 부여될 엘리트 수
+
+    public void InitStage(int stageIndex)
     {
-        currentGate = GameManager.Data.gateDataGroup.GetGateData(gateId);
-        if (currentGate == null)
+        ClearAllData();
+        
+        stageData = GameManager.Data.stageDataGroup.GetStageData(stageId);
+        Debug.Log(stageId);
+        mapSize = stageData.size;
+        for (int i = 0; i < stageData.enemyList.Count; i++)
         {
-            return;
+            enemiesDict.Add(stageData.enemyList[i], stageData.enemyCount[i]);
         }
+        for (int i = 0; i < stageData.obstacleList.Count; i++)
+        {
+            obstaclesDict.Add(stageData.obstacleList[i], stageData.obstacleCount[i]);
+        }
+        eliteCnt = stageData.eliteId;
+    }
+
+    public void LoadStage(int stageIndex)
+    {
+
     }
     
-    public void Init(List<Stage> stageList)
+    public void NextStage()
     {
-        foreach (Stage stage in stageList)
-        {
-            stageDB[stage.id] = stage;
-        }
+        currentStageIndex++;
     }
     
-    public void LoadStage(int stageId)
+    public void ClearAllData()
     {
-        if (!stageDB.ContainsKey(stageId))
-        {
-            return;
-        }
+        obstaclesDict.Clear();
+        enemiesDict.Clear();
     }
-
 }
