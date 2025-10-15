@@ -6,9 +6,9 @@ public abstract class BaseBossState : IEnemyState
 {
     protected BossStateMachine stateMachine;
     protected BossController controller;
-    protected BossAnimHandler animHandler;
+    protected EnemyAnimHandler animHandler;
 
-    public BaseBossState(BossStateMachine stateMachine, BossController controller, BossAnimHandler animHandler)
+    public BaseBossState(BossStateMachine stateMachine, BossController controller, EnemyAnimHandler animHandler)
     {
         this.stateMachine = stateMachine;
         this.controller = controller;
