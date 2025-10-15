@@ -15,7 +15,7 @@ public class RewardUI : MonoBehaviour
         Show(1);
     }
     // 스테이지 인트 예시
-    private Dictionary<int,int> stageRewards = new()
+    private readonly Dictionary<int,int> stageRewards = new()
     {
         {1, 10},
         {2, 20},
