@@ -37,7 +37,7 @@ public class EnemyController : MonoBehaviour
 
     public void InitController(BaseEnemy enemy, IAbility abilityParam = null)
     {
-        Vector2Int player = GameManager.Map.GetPlayerPosition();
+        Vector2Int player = GameManager.Map.GetPlayer2Position();
         // 상태머신 할당, Init 초기 상태 Idle로
         baseEnemy = enemy;
         moveRange = model.moveRange;
@@ -65,7 +65,7 @@ public class EnemyController : MonoBehaviour
 
     public void UpdatePlayerPos()
     {
-        Vector2Int player = GameManager.Map.GetPlayerPosition();
+        Vector2Int player = GameManager.Map.GetPlayer2Position();
 
         if (player.x != -1) // 찾았으면
         {

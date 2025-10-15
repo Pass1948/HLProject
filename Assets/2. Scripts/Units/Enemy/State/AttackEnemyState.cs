@@ -33,7 +33,7 @@ public class AttackEnemyState : BaseEnemyState
     {
         yield return new WaitForSeconds(1f);
 
-        Vector2Int playerPos2D = GameManager.Map.GetPlayerPosition();
+        Vector2Int playerPos2D = GameManager.Map.GetPlayer2Position();
         Vector3Int playerPos = new Vector3Int(playerPos2D.x, playerPos2D.y, 0);
 
         int dist = Mathf.Abs(controller.GridPos.x - playerPos.x) + Math.Abs(controller.GridPos.y - playerPos.y);

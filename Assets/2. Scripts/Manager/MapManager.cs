@@ -244,7 +244,7 @@ public class MapManager : MonoBehaviour
         return pathfinding.FindPath(start, dest);
     }
 
-    public Vector2Int GetPlayerPosition()
+    public Vector2Int GetPlayer2Position()
     {
         for(int x = 0; x < mapWidth; x++)
         {
@@ -256,6 +256,20 @@ public class MapManager : MonoBehaviour
         }
         return new Vector2Int(-1, -1);
     }
+
+    public Vector3Int GetPlayer3Position()
+    {
+        for (int x = 0; x < mapWidth; x++)
+        {
+            for (int y = 0; y < mapHeight; y++)
+            {
+                if (mapData[x, y] == TileID.Player)
+                    return new Vector3Int(x, y);
+            }
+        }
+        return new Vector3Int(-1, -1);
+    }
+
 
     public bool IsMovable(Vector3Int cell)
     {
