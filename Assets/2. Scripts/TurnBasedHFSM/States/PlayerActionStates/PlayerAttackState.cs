@@ -63,6 +63,9 @@ public class PlayerAttackState : PlayerActionState
                         GameManager.Unit.Player.playerModel.attack,
                         turnSetVlaue.fireAmmo
                     );
+                    GameManager.UI.GetUI<EnemyInfoPopUpUI>().SetData(enemy.enemyModel.attri, enemy.enemyModel.rank,
+                        enemy.enemyModel.attack, enemy.enemyModel.moveRange, enemy.enemyModel.currentHealth,
+                        enemy.enemyModel.maxHealth);
                     enemy.controller.OnHitState();
                 }
             }

@@ -40,7 +40,7 @@ public class EnemyModel : UnitModel
         unitName = data.name;
         attri = data.attribute;
         rank = Random.Range(data.minNum, data.maxNum);
-        maxHealth = data.health;
+        maxHealth = 10;
         currentHealth = maxHealth;
         attack = data.attack;
         minAttackRange = data.minAttackRange;
