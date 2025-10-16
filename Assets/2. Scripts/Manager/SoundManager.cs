@@ -8,8 +8,8 @@ public class SoundManager : MonoBehaviour
 {
     public AudioClip defaultBgm;
     
-    public float bgmVolume;
-    public float sfxVolume;
+    public float bgmVolume = 1f;
+    public float sfxVolume = 1f;
 
     [Range(0, 10)] public int sfxVoices = 4;
     
@@ -26,10 +26,12 @@ public class SoundManager : MonoBehaviour
         bgm.playOnAwake = false;
         bgm.loop = true;
         bgm.volume = Mathf.Clamp01(bgmVolume);
+        defaultBgm = GameManager.Resource.Load<AudioClip>(Path.Sound + "Activate Glyph Forcefield");
         
         bgm.clip = defaultBgm;
         bgm.Play();
 
+        // sfx 보이스를 여러 개 만드는 초기화 루프
         for (int i = 0; i < sfxVoices; i++)
         {
             var go = new GameObject($"SFX_Voice_{i}");
@@ -54,9 +56,32 @@ public class SoundManager : MonoBehaviour
     public void StopBGM() => bgm.Stop();
     
 
-    public void PlaySFX(AudioClip clip, float pitch = 1f)
+    public void PlaySfx(AudioClip clip, float pitch = 1f)
     {
         if (clip == null) return;
-        bgm.clip = clip;
+        var src = NextVoice();
+        src.transform.SetParent(transform, false);
+        src.transform.localPosition = Vector3.zero;
+        src.spatialBlend = 0;
+        src.pitch = pitch;
+        src.clip = clip;
+        src.volume = Mathf.Clamp01(sfxVolume);
+        src.Play();
+    }
+    public AudioSource NextVoice()
+    {
+        sfxIndex = (sfxIndex + 1) % sfxV.Count;
+        return sfxV[sfxIndex];
     }
 }
+
+
+
+
+
+
+
+
+
+
+
