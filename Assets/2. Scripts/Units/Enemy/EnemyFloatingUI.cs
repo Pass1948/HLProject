@@ -10,7 +10,7 @@ public class EnemyFloatingUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI rankText;
     [SerializeField] private TextMeshProUGUI attributeText;
     [SerializeField] private Slider hpSlider;
-    [SerializeField] private EnemyModel model;
+    [SerializeField] private BaseEnemy model;
     // Start is called before the first frame update
 
     private void OnEnable()
@@ -26,22 +26,22 @@ public class EnemyFloatingUI : MonoBehaviour
 
     void Start()
     {
-        hpSlider.maxValue = model.maxHealth;
-        hpSlider.value = model.currentHealth;
+        hpSlider.maxValue = model.enemyModel.maxHealth;
+        hpSlider.value = model.enemyModel.currentHealth;
         
         string attri = null;
-        if(model.attri == EnemyAttribute.High)
+        if(model.enemyModel.attri == EnemyAttribute.High)
         {
             attri = "H";
         }
-        else if(model.attri == EnemyAttribute.Low)
+        else if(model.enemyModel.attri == EnemyAttribute.Low)
         {
             attri = "L";
         }
         attributeText.text = attri;
         
         string rankStr;
-        switch (model.rank)
+        switch (model.enemyModel.rank)
         {
             case 1:
                 rankStr = "A";
@@ -56,7 +56,7 @@ public class EnemyFloatingUI : MonoBehaviour
                 rankStr = "K";
                 break;
             default:
-                rankStr = $"{model.rank}";
+                rankStr = $"{model.enemyModel.rank}";
                 break;
         }
         rankText.text = rankStr;
@@ -64,22 +64,21 @@ public class EnemyFloatingUI : MonoBehaviour
 
     public void Init(EnemyModel model)
     {
-        this.model = model;
+        this.model.enemyModel = model;
     }
 
     public void SetData()
     {
         string attri = null;
-        if (model.attri == EnemyAttribute.High)
+        if (model.enemyModel.attri == EnemyAttribute.High)
         {
             attri = "H";
         }
-        else if (model.attri == EnemyAttribute.Low)
+        else if (model.enemyModel.attri == EnemyAttribute.Low)
         {
             attri = "L";
         }
         attributeText.text = attri;
-        Debug.Log($"Áö±Ý ·©Å©{attri}");
-        hpSlider.value = model.currentHealth;
+        hpSlider.value = model.enemyModel.currentHealth;
     }
 }

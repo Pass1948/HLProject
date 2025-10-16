@@ -45,6 +45,7 @@ public class UnitManager : MonoBehaviour
         if (unit.unitType == UnitType.Player)
         {
             Player.playerHandler.TakeDamage(damage);
+            Player.animHandler.PlayerHitAnim();
         }
         else if (unit.unitType == UnitType.Enemy)
         {

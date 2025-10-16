@@ -386,7 +386,7 @@ GameObject:
   - component: {fileID: 7108647385520497506}
   - component: {fileID: 8273540929910058778}
   - component: {fileID: 4679994803986074871}
-  - component: {fileID: 2148925682071657845}
+  - component: {fileID: 1039833188029029000}
   m_Layer: 0
   m_Name: NormalEnemy
   m_TagString: Enemy
@@ -475,8 +475,9 @@ MonoBehaviour:
   rankText: {fileID: 2712573020315886494}
   attributeText: {fileID: 4498999961563248467}
   hpSlider: {fileID: 517022972094271315}
---- !u!136 &2148925682071657845
-CapsuleCollider:
+  model: {fileID: 8273540929910058778}
+--- !u!65 &1039833188029029000
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -493,11 +494,9 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.25
-  m_Height: 1
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.5, z: 0}
+  serializedVersion: 3
+  m_Size: {x: 1, y: 2.6821232, z: 1}
+  m_Center: {x: -0, y: 0.84106135, z: -0}
 --- !u!1 &5783527730616375366
 GameObject:
   m_ObjectHideFlags: 0
@@ -987,6 +986,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SkeletonWarrior
+      objectReference: {fileID: 0}
+    - target: {fileID: 759923595828384833, guid: 94025afe18059204e901d3bec7d70224,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 759923595828384833, guid: 94025afe18059204e901d3bec7d70224,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 759923595828384833, guid: 94025afe18059204e901d3bec7d70224,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 759923595828384833, guid: 94025afe18059204e901d3bec7d70224,
         type: 3}

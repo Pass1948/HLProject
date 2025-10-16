@@ -18,6 +18,7 @@ public class PlayerAttackState : PlayerActionState
         public override void OnEnter()
         {
             timer = turnSetVlaue.resetTime;
+            GameManager.Unit.Player.animHandler.PlayerAttackAnim(GameManager.Mouse.pointer);
         }
         public override void Tick(float dt)
         {
@@ -62,6 +63,9 @@ public class PlayerAttackState : PlayerActionState
                         GameManager.Unit.Player.playerModel.attack,
                         turnSetVlaue.fireAmmo
                     );
+                    GameManager.UI.GetUI<EnemyInfoPopUpUI>().SetData(enemy.enemyModel.attri, enemy.enemyModel.rank,
+                        enemy.enemyModel.attack, enemy.enemyModel.moveRange, enemy.enemyModel.currentHealth,
+                        enemy.enemyModel.maxHealth);
                     enemy.controller.OnHitState();
                 }
             }
