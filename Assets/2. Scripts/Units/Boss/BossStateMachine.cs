@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BossStateMachine : MonoBehaviour
+public class BossStateMachine
 {
+    private IdleBossState idleState;
     private EvaluateBossState evaluateState;
     private DecideBossState decideState;
     private MoveBossState moveState;
@@ -14,6 +15,7 @@ public class BossStateMachine : MonoBehaviour
     private HitBossState hitState;
     private DieBossState dieState;
     
+    public IdleBossState IdleState => idleState;
     public EvaluateBossState EvaluateState => evaluateState;
     public DecideBossState DecideState => decideState;
     public MoveBossState MoveState => moveState;
@@ -35,6 +37,18 @@ public class BossStateMachine : MonoBehaviour
     {
         this.controller = controller;
         this.animHandler = animHandler;
+
+        idleState = new IdleBossState(this, controller, animHandler);
+        evaluateState = new EvaluateBossState(this, controller, animHandler);
+        decideState = new DecideBossState(this, controller, animHandler);
+        moveState = new MoveBossState(this, controller, animHandler);
+        warningState = new WarningBossState(this, controller, animHandler);
+        attackState = new AttackBossState(this, controller, animHandler);
+        patternState = new PatternBossState(this, controller, animHandler);
+        endState = new EndBossState(this, controller, animHandler);
+        hitState = new HitBossState(this, controller, animHandler);
+        dieState = new DieBossState(this, controller, animHandler);
+        
     }
     
     public void Init()

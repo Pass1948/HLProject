@@ -20,6 +20,9 @@ public class GameManager : MonoBehaviour
     private static SceneLoadManager sceneLoadManager;
     public static SceneLoadManager SceneLoad => sceneLoadManager;
 
+    private static StageManager stageManager;
+    public static StageManager Stage => stageManager;
+    
     private static UnitManager unitManager;
     public static UnitManager Unit => unitManager;
 
@@ -40,11 +43,15 @@ public class GameManager : MonoBehaviour
     
     private static SaveLoadManager saveLoadManager;
     public static SaveLoadManager SaveLoad => saveLoadManager;
+    
     private static ItemControlManger itemControlManger;
     public static ItemControlManger ItemControl => itemControlManger;
 
     private static ShopManager shopManager;
     public static ShopManager Shop => shopManager;
+    
+    private static SoundManager soundManager;
+    public static SoundManager Sound => soundManager;
 
 
     private void Awake()
@@ -67,6 +74,7 @@ public class GameManager : MonoBehaviour
         dataManager.Initialize();
         resourceManager = CreateChildManager<ResourceManager>("ResourceManager");
         sceneLoadManager = CreateChildManager<SceneLoadManager>("SceneLoadManager");
+        stageManager = CreateChildManager<StageManager>("StageManager");
         unitManager = CreateChildManager<UnitManager>("UnitManager");
         uiManager = CreateChildManager<UIManager>("UIManager");
         eventManager = CreateChildManager<EventManager>("EventManager");
@@ -76,6 +84,7 @@ public class GameManager : MonoBehaviour
         saveLoadManager = CreateChildManager<SaveLoadManager>("SaveLoadManager");
         itemControlManger = CreateChildManager<ItemControlManger>("ItemControlManger");
         shopManager = CreateChildManager<ShopManager>("ShopManager");
+        soundManager = CreateChildManager<SoundManager>("SoundManager");
     }
     private T CreateChildManager<T>(string goName) where T : Component
     {
