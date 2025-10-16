@@ -49,7 +49,7 @@ public class ShopUI : BaseUI
         GameManager.Event.Subscribe(EventType.ShopPlayerCardsConfim,RebuildPlayerBullets); // 소지 카드 체크
         GameManager.Event.Subscribe(EventType.ShopPlayerCardsConfim,PlayerHpCheck);       // 체력 체크
         
-        healButton.onClick.AddListener(()=> shop.TryHeal());
+        healButton.onClick.AddListener(PlayerHeal);
         rerollButton.onClick.AddListener(()=> shop.TryReroll());
         removeButton.onClick.AddListener(OnRemoveBulletClicked);
         nextStageButton.onClick.AddListener(NextStage);
@@ -165,15 +165,16 @@ public class ShopUI : BaseUI
         cost++;
     }
 
+    private void PlayerHeal()
+    {
+        shop.TryHeal();
+        PlayerHpCheck();
+    }
     
     private void PlayerHpCheck()
     {
         currentHp = GameManager.Unit.Player.playerModel.health;
         maxHp = GameManager.Unit.Player.playerModel.maxHealth;
-    }
-
-    private void PlayerHpBar()
-    {
         float fill = (float)currentHp / (float)maxHp;
         hpBar.fillAmount = fill;
     }
