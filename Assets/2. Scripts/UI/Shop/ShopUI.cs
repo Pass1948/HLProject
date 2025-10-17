@@ -38,7 +38,10 @@ public class ShopUI : BaseUI
     {
         shop = GameManager.Shop;
         player = GameManager.Unit.Player.playerHandler;
+    }
 
+    private void Start()
+    {
     }
     private void OnEnable()
     {
@@ -57,6 +60,7 @@ public class ShopUI : BaseUI
         if (shop != null) Rebuild(shop.offers);
         
         RebuildPlayerBullets();
+        
     }
 
 

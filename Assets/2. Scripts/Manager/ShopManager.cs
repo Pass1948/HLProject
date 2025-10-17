@@ -57,6 +57,7 @@ public class ShopManager : MonoBehaviour
         canRemoveBullet = true;
         powderBundleLeft = 2;
         GenerateOffers();
+        
     }
     
     //상품 구성만 다시 생성(리롤 시 이거만 호출)
@@ -68,6 +69,7 @@ public class ShopManager : MonoBehaviour
         GenerateCardOffers(player.bullets);
         // 2) 유물
         GenerateRelicOffers(player.ownedRelics, GameManager.ItemControl.buyItems);
+        
 
         // 탄환 제거 (입장당 1회)
         if (canRemoveBullet)

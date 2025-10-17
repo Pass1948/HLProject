@@ -139,6 +139,13 @@ public static class TileID
     public const int Obstacle_B = 6;
 }
 
+public static class Sound
+{
+    public const string Title = "Paladin’s Dash";
+    public const string MainGame =  "Paladin’s Gun Style";
+    public const string Shop = "Buy some cards!";
+}
+
 [UGS(typeof(EliteType))]
 public enum EliteType
 {
