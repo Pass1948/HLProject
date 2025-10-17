@@ -25,6 +25,9 @@ public class SettingUI : MonoBehaviour
     private int speedIndex = 0;
     private GameObject[] speedPanels;
 
+    //숫자 가이드 토글
+    [SerializeField] private Toggle showGuideToggle;
+
     private void Awake()
     {
         windowPrevBtn.onClick.AddListener(WindowPrevPanel);
@@ -39,6 +42,13 @@ public class SettingUI : MonoBehaviour
 
         closeBtn.onClick.AddListener(CloseSettingUi);
         backToMainMenuBtn.onClick.AddListener(BackToMainMenu);
+
+        showGuideToggle.onValueChanged.AddListener(GuideToggleChanged);
+        AutoRegisterGuide();
+    }
+    private void OnDestroy()
+    {
+        showGuideToggle?.onValueChanged.RemoveListener(GuideToggleChanged);
     }
 
     private void CloseSettingUi()
@@ -117,4 +127,27 @@ public class SettingUI : MonoBehaviour
             speedPanels[i].SetActive(i == speedIndex);
     }
 
+    // === Guide 섹션 ===
+    void AutoRegisterGuide()
+    {
+        // 저장된 값으로 토글 초기 동기화
+        bool on = GameManager.UI?.ShowGuide ?? true;
+        showGuideToggle.SetIsOnWithoutNotify(on);
+        ApplyGuide(on); // 열릴 때 한 번 즉시 반영
+    }
+
+    void GuideToggleChanged(bool on)
+    {
+        // 토글 바뀌자마자 저장 + 즉시 반영
+        ApplyGuide(on);
+    }
+
+    // 공통 처리: 값 저장(씬 간 유지) + 씬에 MainUI 있으면 즉시 반영
+    void ApplyGuide(bool on)
+    {
+        if (GameManager.UI) GameManager.UI.ShowGuide = on;
+
+        var main = FindFirstObjectByType<MainUI>(FindObjectsInactive.Include);
+        if (main) main.GuideVisible = on;
+    }
 }
