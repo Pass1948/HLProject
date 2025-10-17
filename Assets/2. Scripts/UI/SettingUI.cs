@@ -100,6 +100,7 @@ public class SettingUI : MonoBehaviour
     {
         speedIndex = (speedIndex - 1 + speedPanels.Length) % speedPanels.Length;
         UpdateSpeedView();
+        
     }
 
     void SpeedNextPanel()

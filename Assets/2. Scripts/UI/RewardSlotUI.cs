@@ -48,6 +48,7 @@ public class RewardSlotUI : BaseUI
     }
     private void SelectReward()
     {
+        Debug.Log("카드 선택했어");
         if (rewardItem is int gold)
         {
             GameManager.Unit.Player.playerHandler.AddGold(gold);

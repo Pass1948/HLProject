@@ -67,7 +67,7 @@ public class Deck : MonoBehaviour
     //초기 덱 구성/셔플
     private void BuildInitialDeck()
     {
-        GameManager.ItemControl.drawPile.Clear();
+        //GameManager.ItemControl.drawPile.Clear();
         //==============================
         //기본덱
         //숫자 1~13 각 1장, 문양은 랜덤
@@ -86,8 +86,6 @@ public class Deck : MonoBehaviour
                 
             }
         }
-        
-            
 
         //==============================
         //다이아 덱

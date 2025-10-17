@@ -966,14 +966,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3007652353126875673}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3536353225757083333}
   m_Father: {fileID: 6322886087296942939}
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3144190896709762281
 GameObject:
   m_ObjectHideFlags: 0
@@ -1147,8 +1147,8 @@ GameObject:
   - component: {fileID: 5924809414660045425}
   - component: {fileID: 2745894007068241230}
   - component: {fileID: 700642621865749940}
-  - component: {fileID: 1528413966898938324}
   - component: {fileID: 2922439317234410360}
+  - component: {fileID: 7896334244637794927}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1199,6 +1199,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 175c2c057a64e39489841a49aa8a4bd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 7490482686699707583}
+  snap: 0.15
 --- !u!114 &700642621865749940
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1214,29 +1216,6 @@ MonoBehaviour:
   playerMonney: 0
   bullets: []
   ownedRelics: 
---- !u!136 &1528413966898938324
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3720717254693977143}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 1, z: 0}
 --- !u!114 &2922439317234410360
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1256,6 +1235,27 @@ MonoBehaviour:
   _isMoving: 0
   isPlayer: 0
   mouse: {fileID: 0}
+--- !u!65 &7896334244637794927
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3720717254693977143}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 2.1810646, z: 1}
+  m_Center: {x: 0, y: 0.5905327, z: 0}
 --- !u!1 &3876015544735563849
 GameObject:
   m_ObjectHideFlags: 0
@@ -1345,7 +1345,7 @@ Transform:
   m_GameObject: {fileID: 4204240171274509439}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.317, z: 0.079}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1363,13 +1363,15 @@ Animator:
   m_GameObject: {fileID: 4204240171274509439}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 55bd647e920fe994dba2a525663abf21, type: 3}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c8e642b913726364ca30b6fed0355319, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
-  m_WarningMessage: 
+  m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
+    are already bound by a Humanoid avatar. These transforms can only be changed
+    by Humanoid clips.\n\tTransform 'forearm_stretch.l'\n\tFrom animation clip 'VehicleDrive'"
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
@@ -2825,8 +2827,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7918214465493200852}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0.5, y: -0.5, z: -0.5, w: 0.5}
+  m_LocalPosition: {x: 0, y: -0, z: -0.043}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2840,7 +2842,7 @@ Transform:
   - {fileID: 7562272737592033620}
   - {fileID: 8015278587629856921}
   m_Father: {fileID: 6522719620283053869}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: -90, z: 0}
 --- !u!1 &8080348156483859555
 GameObject:
   m_ObjectHideFlags: 0

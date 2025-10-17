@@ -38,7 +38,7 @@ public class MouseManager : MonoBehaviour
 
     [Header("Movement")]
     public float stepMoveTime = 0.2f;
-    private bool isMoving = false;
+    public bool isMoving = false;
     public bool movePhaseActive = false;   // 이 값이 false면 이동 안 됨
     private BasePlayer selectedPlayer;
     private Vector3Int selectedPlayerCell;
@@ -60,7 +60,8 @@ public class MouseManager : MonoBehaviour
     private BaseEnemy selectedEnemy;
     private bool enemyPopupVisible = false;
     public bool isMouse = false;
-    public bool isShowRange = true;  // ← 이동범위 보일 의도면 true로 두세요 (기본 false면 안 보입니다)
+    public bool isShowMoveRange = true;  // ← 이동범위 보일 의도면 true로 두세요 (기본 false면 안 보입니다)
+    public bool isShowRange = true;
 
     // hover
     private Vector3Int hoverCell;
@@ -143,7 +144,10 @@ public class MouseManager : MonoBehaviour
         bool cellIsPlayer = map.IsPlayer(cell);
         bool cellIsEnemy = map.IsEnemy(cell);
         bool cellIsTerrain = map.IsMovable(cell);
-
+        
+        Debug.Log("Player인가?"+cellIsPlayer);
+        Debug.Log("Enemy 인가?"+cellIsEnemy);
+        Debug.Log("Terrain인가?"+cellIsTerrain);
         // 공격
         if (isAttacking)
         {
@@ -175,7 +179,6 @@ public class MouseManager : MonoBehaviour
         if (cellIsPlayer)
         {
             isPlayer = true;
-            OnClickPlayer(cell);
             return;
         }
         if (cellIsEnemy)
@@ -193,7 +196,7 @@ public class MouseManager : MonoBehaviour
     }
 
     // ===== 동작 핸들러 =====
-    private void OnClickPlayer(Vector3Int cell)
+    public void OnClickPlayer(Vector3Int cell)
     {
         // 공격/킥 모드면 범위만 끄고 취소
         if (isAttacking || IsKicking)
@@ -220,7 +223,7 @@ public class MouseManager : MonoBehaviour
 
         if (!isShowRange) return;
 
-        if (movePhaseActive)
+       if (movePhaseActive)
         {
             if (playerRangeVisible && selectedPlayerCell == cell)
                 HidePlayerRange();
@@ -235,17 +238,18 @@ public class MouseManager : MonoBehaviour
         if (isMoving) return;
 
         var enemy = useOverlapLookup ? FindAtCell<BaseEnemy>(cell) : null;
+        Debug.Log(enemy.name);
         if (enemy == null) { HideEnemyPopup(); CancelSelection(); return; }
-
-        if (enemyPopupVisible && selectedEnemy == enemy) HideEnemyPopup();
+        if (enemyPopupVisible) HideEnemyPopup();
         else ShowEnemyPopup(enemy);
+        
     }
 
     private void OnClickTerrain(Vector3Int destCell)
     {
         GameManager.UI.CloseUI<EnemyInfoPopUpUI>();
 
-        bool canMove = movePhaseActive && !isMoving && (selectedPlayer != null) && (destCell != selectedPlayerCell);
+        bool canMove = movePhaseActive && (selectedPlayer != null) && (destCell != selectedPlayerCell);
         if (!canMove) return;
 
         var path = map.FindPath(selectedPlayerCell, destCell);
@@ -264,7 +268,7 @@ public class MouseManager : MonoBehaviour
     public IEnumerator MoveAlongPath(Transform actor, Vector3Int currentCell, List<Vector3Int> path, int tileIdForActor)
     {
         isMoving = true;
-
+        GameManager.Unit.Player.animHandler.PlayMoveAnim(pointer);
         foreach (var nextCell in path)
         {
             Vector3 start = actor.position;
@@ -286,6 +290,7 @@ public class MouseManager : MonoBehaviour
             selectedPlayerCell = nextCell;
         }
         map.ClearPlayerRange();
+        GameManager.Unit.Player.animHandler.PlayMoveAnim(pointer);
         isMoving = false;
     }
 
@@ -332,6 +337,7 @@ public void InputCance()
         isAttacking = false;
         isKicking = false;
         isPlayer = false;
+        isMoving = isMoving ? false : true;
         HidePlayerRange();
         HideEnemyPopup();
         map.ClearPlayerRange();
@@ -346,28 +352,26 @@ public void InputCance()
 
         Vector3 center = tilemap.GetCellCenterWorld(cell);
         Vector3 halfExtents = new Vector3(
-            tilemap.cellSize.x * 0.5f * overlapShrink,
-            overlapHeight * 0.5f,
-            tilemap.cellSize.y * 0.5f * overlapShrink
+            tilemap.cellSize.x * 1f * overlapShrink,
+            overlapHeight * 2f,
+            tilemap.cellSize.y * 1f * overlapShrink
         );
 
         int hitCount = Physics.OverlapBoxNonAlloc(
             center, halfExtents, Hits, Quaternion.identity, unitDetectMask, QueryTriggerInteraction.Ignore);
+
         if (hitCount <= 0) return null;
 
         for (int i = 0; i < hitCount; i++)
-            if (Hits[i] && Hits[i].TryGetComponent<BasePlayer>(out _))
+        {
+            if (Hits[i] && Hits[i].TryGetComponent<BasePlayer>(out _) || Hits[i] && Hits[i].TryGetComponent<BaseEnemy>(out _))
                 return Hits[i].GetComponentInParent<T>(true);
-
-        // 2순위: Enemy
-        for (int i = 0; i < hitCount; i++)
-            if (Hits[i] && Hits[i].TryGetComponent<BaseEnemy>(out _))
-                return Hits[i].GetComponentInParent<T>(true);
+        }
 
         return null;
     }
 
-    private void ShowPlayerRange(Vector3Int cell)
+    public void ShowPlayerRange(Vector3Int cell)
     {
         playerRangeVisible = true;
         map.ClearPlayerRange();
@@ -381,7 +385,6 @@ public void InputCance()
 
     private void ShowEnemyPopup(BaseEnemy enemy)
     {
-        if (enemy == null) return;
         selectedEnemy = enemy;
         enemyPopupVisible = true;
         GameManager.UI.GetUI<EnemyInfoPopUpUI>()
@@ -392,7 +395,6 @@ public void InputCance()
     private void HideEnemyPopup()
     {
         enemyPopupVisible = false;
-        selectedEnemy = null;
         GameManager.UI.CloseUI<EnemyInfoPopUpUI>();
     }
 
