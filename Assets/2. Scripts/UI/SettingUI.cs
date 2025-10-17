@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SettingUI : MonoBehaviour
+public class SettingUI : BaseUI
 {
     [SerializeField] private Transform windowPanel;
     [SerializeField] private Button windowPrevBtn;
