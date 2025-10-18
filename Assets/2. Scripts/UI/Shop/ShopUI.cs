@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI; 
 
 public class ShopUI : BaseUI
@@ -16,7 +17,7 @@ public class ShopUI : BaseUI
     
     [SerializeField] private TextMeshProUGUI rerollCostText;
     [SerializeField] private TextMeshProUGUI playerMoneyText;
-    [SerializeField] private TextMeshProUGUI healCost;
+    [SerializeField] private TextMeshProUGUI healCostText;
 
     private int selectedBulletIndex = -1;
     private int maxHp;
@@ -141,6 +142,7 @@ public class ShopUI : BaseUI
             {
                 shop.TryBuy(idx);
                 UpdateRerollLabel();
+                UpdateHealLabel();
             });
             spawned.Add(card.gameObject);
         }
@@ -194,6 +196,7 @@ public class ShopUI : BaseUI
                 RebuildPlayerBullets();
             }
         }
+        GameManager.Sound.PlayUISfx();
         selectedBulletIndex = -1;
         removeButton.interactable = false; // 선택 초기화 시 비활성
     }
@@ -203,7 +206,7 @@ public class ShopUI : BaseUI
             Destroy(root.GetChild(i).gameObject);
     }
 
-    // 리롤
+    // 리롤 가격
     private void UpdateRerollLabel()
     {
         if (rerollCostText != null && shop != null)
@@ -215,6 +218,13 @@ public class ShopUI : BaseUI
     {
         if (playerMoneyText != null)
             playerMoneyText.text = $"{player.playerMonney}";
+    }
+
+    // 힐 가격
+    private void UpdateHealLabel()
+    {
+        if (healCostText != null)
+            healCostText.text = $"{shop.healCost}";
     }
     // 세팅 버튼
     private void OnSettingButton()

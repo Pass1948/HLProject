@@ -151,10 +151,12 @@ public class MouseManager : MonoBehaviour
             if (IsCellInAttackOrKickRange(cell))
             {
                 GameManager.Event.Publish(EventType.PlayerAttack);
+                GameManager.Sound.PlaySfx(GameManager.Resource.Load<AudioClip>(Path.Sound + "GUNTech_Tormentor Shotgun Fire_05"));
             }
             else
             {
                 CancelAttackOrKickRange();
+                GameManager.Sound.PlaySfx(GameManager.Resource.Load<AudioClip>(Path.Sound + "UIGlitch_Error Tone_03"));
             }
             isAttacking = false;
             return;
@@ -164,9 +166,15 @@ public class MouseManager : MonoBehaviour
         if (isKicking)
         {
             if (IsCellInAttackOrKickRange(cell))
+            {
                 GameManager.TurnBased.ChangeTo<PlayerKickState>();
+                GameManager.Sound.PlaySfx(GameManager.Resource.Load<AudioClip>(Path.Sound + "PUNCH_CLEAN_HEAVY_10"));
+            }
             else
+            {
                 CancelAttackOrKickRange();
+                GameManager.Sound.PlaySfx(GameManager.Resource.Load<AudioClip>(Path.Sound + "UIGlitch_Error Tone_03"));
+            }
 
             isKicking = false;
             return;

@@ -28,15 +28,9 @@ public class ShopManager : MonoBehaviour
     [Header("상점 상태")]
     public List<ShopItem> offers = new(); // 상점에 등장한 아이템 목록
     public int rerollCost;                // 현재 리롤 비용
+    public int healCost;                  // 현재 힐 비용
     public bool canRemoveBullet;          // 탄환 제거 사용 가능 여부
     public int powderBundleLeft;          // 화역 꾸러미 남은 개수
-
-    public float attachPowderChance = 0.5f; // 탄환에 화약이 붙을 확률
-
-    public float weightNormal = 20f;
-    public float weightRare = 5f;
-    public float weightElite = 3f;
-    public float weightLegendary = 1f;
 
     public Stage stage;
     private void Start()
@@ -215,9 +209,12 @@ public class ShopManager : MonoBehaviour
     }
     public void TryHeal()
     {
-        int healCost = 4;
+        healCost = 4;
         if(!player.SpendGold(healCost)) return;
-        player.Heal(healCost/2); // 추후에 변수로 변경 예정
+        player.SpendGold(healCost);
+        player.Heal(healCost/2);
+        healCost++;
+        GameManager.Sound.PlayShopSfx();
     }
 
     // 화약 꾸러미 * 사용중지
