@@ -118,7 +118,7 @@ public class ShopManager : MonoBehaviour
     }
 
 
-    // ────────────── 유물 오퍼 ──────────────
+    //  유물 오퍼 
     private void GenerateRelicOffers(List<int> ownedRelics, List<ItemModel> it)
     {
         var usedIds = new HashSet<int>();
@@ -158,6 +158,7 @@ public class ShopManager : MonoBehaviour
                 GameManager.ItemControl.drawPile.Add(item.ammo);
                 RemoveOfferAt(index);
                 GameManager.Event.Publish(EventType.ShopPlayerCardsConfim);
+                GameManager.Sound.PlayShopSfx();
                 changed =  true;
                 break;
 
@@ -166,6 +167,7 @@ public class ShopManager : MonoBehaviour
                 {
                     GameManager.ItemControl.CreateRelicObject(item.relic.id, item.relic);
                     RemoveOfferAt(index);
+                    GameManager.Sound.PlayShopSfx();
                     changed = true;
                 }
                 break;
@@ -176,6 +178,7 @@ public class ShopManager : MonoBehaviour
                     powderBundleLeft--;
                     StartPowderBundle(player.bullets); // 모달 UI 열기 (파우더 번들 사기)TODO: 지금은 아직 미정
                     RemoveOfferAt(index);
+                    GameManager.Sound.PlayShopSfx();
                     changed = true;
                 }
                 break;
@@ -187,17 +190,11 @@ public class ShopManager : MonoBehaviour
             case ShopItemType.RemoveBullet:
                 if (canRemoveBullet)
                 {
-                    StartRemoveBullet(player.bullets);
-                    canRemoveBullet = false;
                     RemoveOfferAt(index);
-                    Debug.Log("탄환 제거 UI 열기");
+                    GameManager.Sound.PlayShopSfx();
                     changed = true;
                 }
                 break;
-
-            case ShopItemType.Reroll:
-                TryReroll();
-                return;
         }
         if(changed)
             GameManager.Event.Publish(EventType.ShopOffersChanged, offers);
@@ -262,14 +259,14 @@ public class ShopManager : MonoBehaviour
         // 이벤트 추가 UI에 제거 후보 신호 + 후보 전달
         GameManager.Event.Publish(EventType.ShopRemoveBulletPrompt,removeCandidates);
     }
-
+    // 카드 삭제
     public void ConfirmRemoveBullet(Ammo target)
     {
         if(target == null) return;
-        player.RemoveBullet(target);
+            GameManager.ItemControl.drawPile.Remove(target);
     }
 
-    // ────────────── 가격 계산 (RarityType 기반) ──────────────
+    // 가격 계산 (RarityType 기반)
     private int GetPowderPrice(RarityType rarity) => rarity switch
     {
         RarityType.Common    => 0, 
@@ -307,31 +304,32 @@ public class ShopManager : MonoBehaviour
         return pool.GetRange(0, count);
     }
 
-    private PowderData PickPowderByWeightedRarity()
-    {
-        float total = weightNormal + weightRare +  weightElite +  weightLegendary;
-        if(total <= 0) return null;
-        float roll = Random.Range(0, total);
-        float acc = 0f;
-        
-        RarityType picked = RarityType.Normal;
-        acc += weightNormal;
-        if (roll <= acc) picked = RarityType.Normal;
-        else
-        {
-            acc += weightRare;
-            if (roll <= acc) picked = RarityType.Rare;
-            else
-            {
-                acc += weightElite;
-                if (roll <= acc) picked = RarityType.Elite;
-                else picked = RarityType.Legendary;
-            }
-        }
-        var same = powderPool.FindAll(p => p.rarity == picked);
-        if(same.Count == 0) return powderPool[Random.Range(0, powderPool.Count)];
-        return same[Random.Range(0, same.Count)];
-    }
+    // 화약 유물 레어도 계산
+    // private PowderData PickPowderByWeightedRarity()
+    // {
+    //     float total = weightNormal + weightRare +  weightElite +  weightLegendary;
+    //     if(total <= 0) return null;
+    //     float roll = Random.Range(0, total);
+    //     float acc = 0f;
+    //     
+    //     RarityType picked = RarityType.Normal;
+    //     acc += weightNormal;
+    //     if (roll <= acc) picked = RarityType.Normal;
+    //     else
+    //     {
+    //         acc += weightRare;
+    //         if (roll <= acc) picked = RarityType.Rare;
+    //         else
+    //         {
+    //             acc += weightElite;
+    //             if (roll <= acc) picked = RarityType.Elite;
+    //             else picked = RarityType.Legendary;
+    //         }
+    //     }
+    //     var same = powderPool.FindAll(p => p.rarity == picked);
+    //     if(same.Count == 0) return powderPool[Random.Range(0, powderPool.Count)];
+    //     return same[Random.Range(0, same.Count)];
+    // }
 
     [Serializable]
     public struct ShopItem
