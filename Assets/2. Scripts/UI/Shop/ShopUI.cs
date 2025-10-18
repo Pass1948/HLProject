@@ -232,5 +232,6 @@ public class ShopUI : BaseUI
         GameManager.SaveLoad.nextSceneIndex += nextStageIndex;
         GameManager.Stage.stageId++;
         GameManager.SceneLoad.RestartScene();
+        GameManager.Sound.PlayUISfx();
     }
 }

@@ -38,7 +38,7 @@ public class SoundManager : MonoBehaviour
         bgm.volume = Mathf.Clamp01(bgmVolume);
         bgm.Play();
     }
-
+    // BGM 멈추고 싶을 때
     public void StopBGM()
     {
         if (!bgm) return;
@@ -50,7 +50,41 @@ public class SoundManager : MonoBehaviour
     public void PlaySfx(AudioClip clip, float volumeMul = 1f, float pitch = 1f)
     {
         if (clip == null) return;
+        sfx.volume = sfxVolume;
         sfx.pitch = Mathf.Clamp(pitch, 0.1f, 3f);
         sfx.PlayOneShot(clip, Mathf.Clamp01(sfxVolume * volumeMul));
     }
+
+    public void PlayUISfx()
+    {
+        sfx.clip = GameManager.Resource.Load<AudioClip>(Path.Sound + "BUTTON_12");
+        if (sfx.clip == null) return;
+        sfx.volume = sfxVolume;
+        sfx.pitch = Mathf.Clamp(sfx.pitch, 0.1f, 3f);
+        sfx.PlayOneShot(sfx.clip, Mathf.Clamp01(sfx.pitch));
+    }
+
+    public void PlayCardSelectSfx()
+    {
+        sfx.clip = GameManager.Resource.Load<AudioClip>(Path.Sound + "");
+        if (sfx.clip == null) return;
+        sfx.pitch = Mathf.Clamp(sfx.pitch, 0.1f, 3f);
+        sfx.volume = sfxVolume;
+        sfx.PlayOneShot(sfx.clip, Mathf.Clamp01(sfx.pitch));
+    }
+
+    public void PlayShopSfx()
+    {
+        sfx.clip = GameManager.Resource.Load<AudioClip>(Path.Sound + "Coins In Sack Dropped on Wood");
+        if (sfx.clip == null) return;
+        sfx.pitch = Mathf.Clamp(sfx.pitch, 0.1f, 3f);
+        sfx.volume = sfxVolume;
+        sfx.PlayOneShot(sfx.clip, Mathf.Clamp01(sfx.pitch));
+    }
 }
+
+
+
+
+
+

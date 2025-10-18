@@ -102,6 +102,7 @@ public class MainUI : BaseUI
         RefreshMovement();
         RefreshPlayerHP();
         RefreshVehicleHP();
+
     }
 
     
@@ -132,7 +133,7 @@ public class MainUI : BaseUI
     // ReSharper disable Unity.PerformanceAnalysis
     private void RefreshVehicleUI()
     {
-        switch (GameManager.Unit.Vehicle.vehicleModel.condition)    // 다들 여기서 에러남
+        switch (GameManager.Unit.Vehicle.vehicleModel.condition)
         {
             case VehicleCondition.Riding: // 위로 올라탔을 때
                 rerollBtn.gameObject.SetActive(true);
@@ -194,11 +195,13 @@ public class MainUI : BaseUI
         GameManager.Mouse.HidePlayerRange();
         if (GameManager.Mouse.isShowRange == false) return;
         kickBtnObj.ToggleKick();
+        GameManager.Sound.PlayUISfx();
     }
 
     void ToggleMove()
     {
         moveBtnObj.ToggleMove();
+        GameManager.Sound.PlayUISfx();
     }
 
     private bool IsNearVehicle()
@@ -341,6 +344,7 @@ public class MainUI : BaseUI
     private void OpenSettings()
     {
         Instantiate(settingUI);
+        GameManager.Sound.PlayUISfx();
     }
 
     

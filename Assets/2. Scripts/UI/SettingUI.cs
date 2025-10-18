@@ -44,12 +44,14 @@ public class SettingUI : MonoBehaviour
     private void CloseSettingUi()
     {
         gameObject.SetActive(false);
+        GameManager.Sound.PlayUISfx();
     }
 
     private void BackToMainMenu()
     {
         Debug.Log("메인메뉴로 가기");
         GameManager.SceneLoad.LoadScene(SceneType.Title);
+        GameManager.Sound.PlayUISfx();
     }
 
     void AutoRegisterWindowPanels()
@@ -68,6 +70,7 @@ public class SettingUI : MonoBehaviour
     {
         windowPanelIndex = (windowPanelIndex - 1 + windowPanels.Length) % windowPanels.Length;
         UpdateWindowView();
+        GameManager.Sound.PlayUISfx();
     }
 
     void WindowNextPanel()
@@ -75,6 +78,7 @@ public class SettingUI : MonoBehaviour
         if (windowPanels == null || windowPanels.Length == 0) return;
         windowPanelIndex = (windowPanelIndex + 1) % windowPanels.Length;
         UpdateWindowView();
+        GameManager.Sound.PlayUISfx();
     }
 
     private void UpdateWindowView()
@@ -100,7 +104,7 @@ public class SettingUI : MonoBehaviour
     {
         speedIndex = (speedIndex - 1 + speedPanels.Length) % speedPanels.Length;
         UpdateSpeedView();
-        
+        GameManager.Sound.PlayUISfx();
     }
 
     void SpeedNextPanel()
@@ -108,6 +112,7 @@ public class SettingUI : MonoBehaviour
         if (speedPanels == null || speedPanels.Length == 0) return;
         speedIndex = (speedIndex + 1) % speedPanels.Length;
         UpdateSpeedView();
+        GameManager.Sound.PlayUISfx();
     }
 
     private void UpdateSpeedView()
@@ -115,6 +120,7 @@ public class SettingUI : MonoBehaviour
         if (speedPanels == null) return;
         for (int i = 0; i < speedPanels.Length; i++)
             speedPanels[i].SetActive(i == speedIndex);
+        GameManager.Sound.PlayUISfx();
     }
 
 }

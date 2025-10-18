@@ -56,6 +56,7 @@ public class DeckSelUI : MonoBehaviour
         }
         GameManager.SceneLoad.LoadScene(SceneType.Test);
         GameManager.Event.Publish(EventType.SelectDeck);
+        GameManager.Sound.PlaySfx(GameManager.Resource.Load<AudioClip>(Path.Sound + "LOAD_CASSETTE_08"));
     }
     private void PrevDeck()
     {
@@ -66,6 +67,7 @@ public class DeckSelUI : MonoBehaviour
         GameManager.TurnBased.turnSettingValue.IsSpadeDeck = false;
         GameManager.TurnBased.turnSettingValue.IsClubDeck = false;
         UpdateView();
+        GameManager.Sound.PlayUISfx();
     }
 
     private void NextDeck()
@@ -77,6 +79,7 @@ public class DeckSelUI : MonoBehaviour
         GameManager.TurnBased.turnSettingValue.IsClubDeck = false;
         deckIndex = (deckIndex + 1) % deckPanels.Length;
         UpdateView();
+        GameManager.Sound.PlayUISfx();
     }
 
     private void BackToMenu()
@@ -87,6 +90,7 @@ public class DeckSelUI : MonoBehaviour
         GameManager.TurnBased.turnSettingValue.IsSpadeDeck = false;
         GameManager.TurnBased.turnSettingValue.IsClubDeck = false;
         gameObject.SetActive(false);
+        GameManager.Sound.PlayUISfx();
     }
 
     private void IsBasic()
@@ -94,31 +98,37 @@ public class DeckSelUI : MonoBehaviour
         GameManager.TurnBased.turnSettingValue.IsBasicDeck = true;
         //사실 다른 덱들의 불값도 false로 해줘야함(상호배제)
         //이 버튼을 눌렀을때 해당 데이터다라고 인식시켜야함
+        GameManager.Sound.PlayUISfx();
     }
 
     private void IsDiamond()
     {
         GameManager.TurnBased.turnSettingValue.IsDiamondDeck = true;
+        GameManager.Sound.PlayUISfx();
     }
 
     private void IsHeart()
     {
         GameManager.TurnBased.turnSettingValue.IsHeartDeck = true;
+        GameManager.Sound.PlayUISfx();
     }
 
     private void IsSpade()
     {
         GameManager.TurnBased.turnSettingValue.IsSpadeDeck = true;
+        GameManager.Sound.PlayUISfx();
     }
 
     private void IsClub()
     {
         GameManager.TurnBased.turnSettingValue.IsClubDeck = true;
+        GameManager.Sound.PlayUISfx();
     }
 
     private bool ISSelectDeck()
     {
         var IsSelected = GameManager.TurnBased.turnSettingValue;
+        GameManager.Sound.PlayUISfx();
         return IsSelected.IsBasicDeck || IsSelected.IsDiamondDeck || IsSelected.IsHeartDeck || IsSelected.IsSpadeDeck || IsSelected.IsClubDeck;
     }
 
