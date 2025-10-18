@@ -56,7 +56,11 @@ public class MainUI : BaseUI
     [SerializeField] private GameObject settingUI;
 
     [SerializeField] private TextMeshProUGUI stageInfoText;
-    
+
+    //숫자가이드 버튼
+    [SerializeField] Button guideBtn;
+    [SerializeField] ToggleBtnController guideBtnObj;
+
     private void Awake()
     {
         turnBtn.onClick.AddListener(OnTurnEnd);
@@ -73,6 +77,7 @@ public class MainUI : BaseUI
 
         settingActiveBtn.onClick.AddListener(OpenSettings);
 
+        guideBtn.onClick.AddListener(GuideToggle);
         //탄환 선택해제
         //오토바이 조작 안에 있는것들은 안넣어도 될것같음
         deckBtn.onClick.AddListener(fireBtnObj.Unselect);
@@ -84,12 +89,14 @@ public class MainUI : BaseUI
         settingActiveBtn.onClick.AddListener(fireBtnObj.Unselect);
 
         InitReloadUI();
+        SyncSettingManager();
     }
 
     private void OnEnable()
     {
         reloadBtnObj.ReloadChange += OnReloadChanged;
         stageInfoText.text = $"Stage {(GameManager.SaveLoad.nextSceneIndex+1).ToString()}";
+        SyncSettingManager();
     }
     private void OnDisable()
     {
@@ -354,5 +361,21 @@ public class MainUI : BaseUI
         GameManager.Sound.PlayUISfx();
     }
 
-    
+    //숫자 가이드 패널 열렸다 닫혔다
+    private void GuideToggle()
+    {
+        guideBtnObj.ToggleGuide();
+    }
+
+    //가이드 버튼이 보이기/숨기기되게
+    public bool GuideVisible
+    {
+        get => guideBtn && guideBtn.gameObject.activeSelf;
+        set { if (guideBtn) guideBtn.gameObject.SetActive(value); }
+    }
+
+    private void SyncSettingManager()
+    {
+        GuideVisible = GameManager.UI?.ShowGuide ?? true;
+    }
 }
