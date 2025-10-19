@@ -4,9 +4,7 @@ using UnityEngine;
 
 public class DecideBossState : BaseBossState
 {
-    public DecideBossState(BossStateMachine stateMachine, BossController controller, EnemyAnimHandler animHandler) : base(stateMachine, controller, animHandler)
-    {
-    }
+    public DecideBossState(BossStateMachine stateMachine, BossController controller, EnemyAnimHandler animHandler) : base(stateMachine, controller, animHandler) { }
 
     public override void Enter()
     {

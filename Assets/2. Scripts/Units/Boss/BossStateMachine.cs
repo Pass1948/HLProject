@@ -53,7 +53,8 @@ public class BossStateMachine
     
     public void Init()
     {
-        
+        currentState = idleState;
+        currentState.Enter();
     }
 
     public void ChangeState(IEnemyState State)
