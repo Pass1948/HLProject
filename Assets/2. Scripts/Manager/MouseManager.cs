@@ -19,7 +19,7 @@ public class MouseManager : MonoBehaviour
 
     [Header("Raycast / Plane")]
     public bool useLayerRaycast = true;
-    public LayerMask groundMask = ~0;
+    public LayerMask groundMask = 0;
     public float maxRayDistance = 1000f;
     public bool usePlaneIfMiss = true;
     public float groundY = 0f;
@@ -117,7 +117,7 @@ public class MouseManager : MonoBehaviour
         {
             Vector3 center = tilemap.GetCellCenterWorld(cell);
             center.y = groundY + 0.01f;
-            pointer.position = center;
+           pointer.position = center;
 
             lastCell = cell;
             lastValidCell = cell;
@@ -125,6 +125,7 @@ public class MouseManager : MonoBehaviour
 
         hoverCell = cell;
         hasHover = allowed && inside;
+
     }
 
     public void ClickCurrentHover()
