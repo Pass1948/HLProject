@@ -18,8 +18,6 @@ public class DeckSelUI : MonoBehaviour
     [SerializeField] private Button SpadeDeck;
     [SerializeField] private Button ClubDeck;
 
-    [SerializeField] private Button PlayBtn;
-
     [SerializeField] private Button BackToMenuBtn;
 
     private void Awake()
@@ -32,31 +30,10 @@ public class DeckSelUI : MonoBehaviour
         HeartDeck.onClick.AddListener(IsHeart);
         SpadeDeck.onClick.AddListener(IsSpade);
         ClubDeck.onClick.AddListener(IsClub);
-        PlayBtn.onClick.AddListener(OnSelectDeck);
         BackToMenuBtn.onClick.AddListener(BackToMenu);
         UpdateView();
     }
 
-    private void OnSelectDeck()
-    {
-        //테스트용 디버그 로그
-        /*
-        Debug.Log($"[{EventType.SelectDeck}] 선택 덱: " +
-        (GameManager.TurnBased.turnSettingValue.IsBasicDeck ? "Basic" :
-        GameManager.TurnBased.turnSettingValue.IsDiamondDeck ? "Diamond" :
-        GameManager.TurnBased.turnSettingValue.IsHeartDeck ? "Heart" :
-        GameManager.TurnBased.turnSettingValue.IsSpadeDeck ? "Spade" :
-        GameManager.TurnBased.turnSettingValue.IsClubDeck ? "Club" :
-        "None"));
-        */
-        if(!ISSelectDeck())
-        {
-            Debug.Log("Select Your Deck!");
-            return;
-        }
-        GameManager.SceneLoad.LoadScene(SceneType.Test);
-        GameManager.Event.Publish(EventType.SelectDeck);
-    }
     private void PrevDeck()
     {
         deckIndex = (deckIndex - 1 + deckPanels.Length) % deckPanels.Length;
@@ -66,6 +43,17 @@ public class DeckSelUI : MonoBehaviour
         GameManager.TurnBased.turnSettingValue.IsSpadeDeck = false;
         GameManager.TurnBased.turnSettingValue.IsClubDeck = false;
         UpdateView();
+    }
+
+    public void OnGameStart()
+    {
+        if(!ISSelectDeck())
+        {
+            Debug.Log("Select Your Deck!");
+            return;
+        }
+        GameManager.SceneLoad.LoadScene(SceneType.Test);
+        GameManager.Event.Publish(EventType.SelectDeck);
     }
 
     private void NextDeck()
