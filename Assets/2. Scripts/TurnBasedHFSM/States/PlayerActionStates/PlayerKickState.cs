@@ -9,6 +9,7 @@ public class PlayerKickState : PlayerActionState
         base.OnEnter();
         ChangeState<K_Windup>();
         GameManager.Mouse.isMouse = false;
+        GameManager.Mouse.isShowRange = false;
     }
 
     // Å± µ¿ÀÛ ³ª´©±â : ¼±µô, µ¿ÀÛ, ÈÄµô
@@ -17,6 +18,7 @@ public class PlayerKickState : PlayerActionState
         float timer;
         public override void OnEnter()
         {
+            GameManager.Unit.Player.animHandler.PlayerKickAnim(GameManager.Mouse.pointer);
             timer = turnSetVlaue.resetTime;
         }
         public override void Tick(float dt)

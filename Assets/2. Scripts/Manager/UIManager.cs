@@ -1,4 +1,4 @@
-  using System.Collections;
+﻿  using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -14,6 +14,8 @@ public class UIManager : MonoBehaviour
 
     private bool _isCleaning;
     private Dictionary<string, BaseUI> _uiDictionary = new Dictionary<string, BaseUI>();
+
+    public bool ShowGuide = true;
 
     private void OnEnable()
     {

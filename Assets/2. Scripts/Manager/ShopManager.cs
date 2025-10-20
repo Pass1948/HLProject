@@ -203,10 +203,7 @@ public class ShopManager : MonoBehaviour
 
     private void RemoveOfferAt(int index)
     {
-        if (index < 0 && index >= offers.Count)
-        {
-            return;
-        }
+        if (index < 0 && index >= offers.Count) return;
         offers.RemoveAt(index);
     }
     

@@ -8,8 +8,8 @@ using UnityEngine.InputSystem;
 public class CameraController : MonoBehaviour
 {
     private Transform followTarget;
-    [SerializeField] private float boundHalfX = 1f;     // 포인터 기준 좌우 허용경계
-    [SerializeField] private float boundHalfZ = 1f;     // 포인터 기준 앞뒤 허용 경계
+    [SerializeField] private float boundHalfX = 2f;     // 포인터 기준 좌우 허용경계
+    [SerializeField] private float boundHalfZ = 2f;     // 포인터 기준 앞뒤 허용 경계
     private Vector3 player;
     private float moveSpeed = 10f;
     private float zoomSpeed = 20f;

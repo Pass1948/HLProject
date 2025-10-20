@@ -10,7 +10,7 @@ public class EnemyFloatingUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI rankText;
     [SerializeField] private TextMeshProUGUI attributeText;
     [SerializeField] private Slider hpSlider;
-    [SerializeField] private EnemyModel model;
+     private EnemyModel model;
     // Start is called before the first frame update
 
     private void OnEnable()
@@ -79,7 +79,6 @@ public class EnemyFloatingUI : MonoBehaviour
             attri = "L";
         }
         attributeText.text = attri;
-        Debug.Log($"Áö±Ý ·©Å©{attri}");
         hpSlider.value = model.currentHealth;
     }
 }

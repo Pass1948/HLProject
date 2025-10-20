@@ -19,7 +19,7 @@ public class MouseManager : MonoBehaviour
 
     [Header("Raycast / Plane")]
     public bool useLayerRaycast = true;
-    public LayerMask groundMask = ~0;
+    public LayerMask groundMask = 0;
     public float maxRayDistance = 1000f;
     public bool usePlaneIfMiss = true;
     public float groundY = 0f;
@@ -117,7 +117,7 @@ public class MouseManager : MonoBehaviour
         {
             Vector3 center = tilemap.GetCellCenterWorld(cell);
             center.y = groundY + 0.01f;
-            pointer.position = center;
+           pointer.position = center;
 
             lastCell = cell;
             lastValidCell = cell;
@@ -125,6 +125,7 @@ public class MouseManager : MonoBehaviour
 
         hoverCell = cell;
         hasHover = allowed && inside;
+
     }
 
     public void ClickCurrentHover()
@@ -144,7 +145,10 @@ public class MouseManager : MonoBehaviour
         bool cellIsPlayer = map.IsPlayer(cell);
         bool cellIsEnemy = map.IsEnemy(cell);
         bool cellIsTerrain = map.IsMovable(cell);
-
+        
+        Debug.Log("Player인가?"+cellIsPlayer);
+        Debug.Log("Enemy 인가?"+cellIsEnemy);
+        Debug.Log("Terrain인가?"+cellIsTerrain);
         // 공격
         if (isAttacking)
         {
@@ -235,18 +239,19 @@ public class MouseManager : MonoBehaviour
         if (isMoving) return;
 
         var enemy = useOverlapLookup ? FindAtCell<BaseEnemy>(cell) : null;
+        Debug.Log(enemy.name);
         if (enemy == null) { HideEnemyPopup(); CancelSelection(); return; }
-
-        if (enemyPopupVisible && selectedEnemy == enemy) HideEnemyPopup();
+        if (enemyPopupVisible) HideEnemyPopup();
         else ShowEnemyPopup(enemy);
+        
     }
 
     private void OnClickTerrain(Vector3Int destCell)
     {
         GameManager.UI.CloseUI<EnemyInfoPopUpUI>();
 
-/*        bool canMove = movePhaseActive && !isMoving && (selectedPlayer != null) && (destCell != selectedPlayerCell);
-        if (!canMove) return;*/
+        bool canMove = movePhaseActive && (selectedPlayer != null) && (destCell != selectedPlayerCell);
+        if (!canMove) return;
 
         var path = map.FindPath(selectedPlayerCell, destCell);
         if (path == null || path.Count > selectedMoveRange)
@@ -264,7 +269,7 @@ public class MouseManager : MonoBehaviour
     public IEnumerator MoveAlongPath(Transform actor, Vector3Int currentCell, List<Vector3Int> path, int tileIdForActor)
     {
         isMoving = true;
-        GameManager.Unit.Player.animHandler.PlayMoveAnim();
+        GameManager.Unit.Player.animHandler.PlayMoveAnim(pointer);
         foreach (var nextCell in path)
         {
             Vector3 start = actor.position;
@@ -286,13 +291,13 @@ public class MouseManager : MonoBehaviour
             selectedPlayerCell = nextCell;
         }
         map.ClearPlayerRange();
-        GameManager.Unit.Player.animHandler.PlayMoveAnim();
+        GameManager.Unit.Player.animHandler.PlayMoveAnim(pointer);
         isMoving = false;
     }
 
 
     // 취소키
-public void InputCance()
+public void InputCancel()
     {
         CancelSelection();
     }
@@ -348,23 +353,21 @@ public void InputCance()
 
         Vector3 center = tilemap.GetCellCenterWorld(cell);
         Vector3 halfExtents = new Vector3(
-            tilemap.cellSize.x * 0.5f * overlapShrink,
-            overlapHeight * 0.5f,
-            tilemap.cellSize.y * 0.5f * overlapShrink
+            tilemap.cellSize.x * 1f * overlapShrink,
+            overlapHeight * 2f,
+            tilemap.cellSize.y * 1f * overlapShrink
         );
 
         int hitCount = Physics.OverlapBoxNonAlloc(
             center, halfExtents, Hits, Quaternion.identity, unitDetectMask, QueryTriggerInteraction.Ignore);
+
         if (hitCount <= 0) return null;
 
         for (int i = 0; i < hitCount; i++)
-            if (Hits[i] && Hits[i].TryGetComponent<BasePlayer>(out _))
+        {
+            if (Hits[i] && Hits[i].TryGetComponent<BasePlayer>(out _) || Hits[i] && Hits[i].TryGetComponent<BaseEnemy>(out _))
                 return Hits[i].GetComponentInParent<T>(true);
-
-        // 2순위: Enemy
-        for (int i = 0; i < hitCount; i++)
-            if (Hits[i] && Hits[i].TryGetComponent<BaseEnemy>(out _))
-                return Hits[i].GetComponentInParent<T>(true);
+        }
 
         return null;
     }
@@ -383,7 +386,6 @@ public void InputCance()
 
     private void ShowEnemyPopup(BaseEnemy enemy)
     {
-        if (enemy == null) return;
         selectedEnemy = enemy;
         enemyPopupVisible = true;
         GameManager.UI.GetUI<EnemyInfoPopUpUI>()
@@ -394,7 +396,6 @@ public void InputCance()
     private void HideEnemyPopup()
     {
         enemyPopupVisible = false;
-        selectedEnemy = null;
         GameManager.UI.CloseUI<EnemyInfoPopUpUI>();
     }
 

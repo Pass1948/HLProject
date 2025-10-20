@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Resources;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -43,11 +43,15 @@ public class GameManager : MonoBehaviour
     
     private static SaveLoadManager saveLoadManager;
     public static SaveLoadManager SaveLoad => saveLoadManager;
+    
     private static ItemControlManger itemControlManger;
     public static ItemControlManger ItemControl => itemControlManger;
 
     private static ShopManager shopManager;
     public static ShopManager Shop => shopManager;
+    
+    private static SoundManager soundManager;
+    public static SoundManager Sound => soundManager;
 
 
     private void Awake()
@@ -80,6 +84,7 @@ public class GameManager : MonoBehaviour
         saveLoadManager = CreateChildManager<SaveLoadManager>("SaveLoadManager");
         itemControlManger = CreateChildManager<ItemControlManger>("ItemControlManger");
         shopManager = CreateChildManager<ShopManager>("ShopManager");
+        soundManager = CreateChildManager<SoundManager>("SoundManager");
     }
     private T CreateChildManager<T>(string goName) where T : Component
     {
