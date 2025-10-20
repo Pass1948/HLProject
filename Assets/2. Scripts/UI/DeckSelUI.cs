@@ -21,6 +21,8 @@ public class DeckSelUI : MonoBehaviour
     [SerializeField] private Button PlayBtn;
 
     [SerializeField] private Button BackToMenuBtn;
+    
+    private AudioClip selectedClip;
 
     private void Awake()
     {
@@ -35,6 +37,7 @@ public class DeckSelUI : MonoBehaviour
         PlayBtn.onClick.AddListener(OnSelectDeck);
         BackToMenuBtn.onClick.AddListener(BackToMenu);
         UpdateView();
+        selectedClip = GameManager.Resource.Load<AudioClip>(Path.Sound + "LOAD_CASSETTE_08");
     }
 
     private void OnSelectDeck()
@@ -56,7 +59,7 @@ public class DeckSelUI : MonoBehaviour
         }
         GameManager.SceneLoad.LoadScene(SceneType.Test);
         GameManager.Event.Publish(EventType.SelectDeck);
-        GameManager.Sound.PlaySfx(GameManager.Resource.Load<AudioClip>(Path.Sound + "LOAD_CASSETTE_08"));
+        GameManager.Sound.PlaySfx(selectedClip);
     }
     private void PrevDeck()
     {

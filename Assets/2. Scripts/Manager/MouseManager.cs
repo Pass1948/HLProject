@@ -126,6 +126,7 @@ public class MouseManager : MonoBehaviour
         hoverCell = cell;
         hasHover = allowed && inside;
     }
+    
 
     public void ClickCurrentHover()
     {

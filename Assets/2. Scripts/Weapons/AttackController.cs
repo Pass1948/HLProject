@@ -14,6 +14,9 @@ public class AttackController : MonoBehaviour
     private Color bgNormal = new Color(0f, 0f, 0f, 1f);
     private Color bgSel = new Color(1f, 0f, 0f, 1f);
 
+    private AudioClip reroadSound;
+    private AudioClip reroadCancelSound;
+
     [SerializeField] private int AmmoCount = 6;
     public int Capacity => AmmoCount;
     public Ammo fireAmmo;
@@ -24,6 +27,8 @@ public class AttackController : MonoBehaviour
     {
         GameManager.Event.Subscribe(EventType.PlayerAttack, Fire);
         GameManager.Event.Subscribe(EventType.CancelAmmo, CancelAmmo);
+        reroadSound = GameManager.Resource.Load<AudioClip>(Path.Sound + "CASSETTE_RATTLE_12");
+        reroadCancelSound = GameManager.Resource.Load<AudioClip>(Path.Sound + "LOAD_CASSETTE_08");
     }
     private void OnDisable()
     {
@@ -65,7 +70,7 @@ public class AttackController : MonoBehaviour
             
             GameManager.Map.attackRange.ClearAttackType();
             GameManager.Mouse.IsAttacking = false;
-            GameManager.Sound.PlaySfx(GameManager.Resource.Load<AudioClip>(Path.Sound + "CASSETTE_RATTLE_12"));
+            GameManager.Sound.PlaySfx(reroadSound);
             return;
         }
 
@@ -114,7 +119,7 @@ public class AttackController : MonoBehaviour
         {
             selectBulletBg.color = bgSel;
         }
-        GameManager.Sound.PlaySfx(GameManager.Resource.Load<AudioClip>(Path.Sound +"LOAD_CASSETTE_08"));
+        GameManager.Sound.PlaySfx(reroadCancelSound);
     }
 
     public void Fire()
