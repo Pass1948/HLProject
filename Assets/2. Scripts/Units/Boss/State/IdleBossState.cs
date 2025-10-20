@@ -4,22 +4,21 @@ using UnityEngine;
 
 public class IdleBossState : BaseBossState
 {
-    public IdleBossState(BossStateMachine stateMachine, BossController controller, EnemyAnimHandler animHandler) : base(stateMachine, controller, animHandler)
-    {
-    }
+    public IdleBossState(BossStateMachine stateMachine, BossController controller, EnemyAnimHandler animHandler) : base(stateMachine, controller, animHandler) { }
 
     public override void Enter()
     {
-        throw new System.NotImplementedException();
+        
     }
-
-    public override void Exit()
-    {
-        throw new System.NotImplementedException();
-    }
-
+    
     public override void Excute()
     {
-        throw new System.NotImplementedException();
+        if (controller.startTurn == false) return;
+        stateMachine.ChangeState(stateMachine.EvaluateState); 
+    }
+    
+    public override void Exit()
+    {
+        controller.UpdatePlayerPos();
     }
 }

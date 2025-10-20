@@ -16,7 +16,8 @@ public class SpawnController : MonoBehaviour
     };
     
     private GameObject enemyPrefab;
-    
+
+    private GameObject golemPrefab;
     // MapManager의 Start에서 호출
     public void InitializeSpawnersAndPools()
     {
@@ -37,7 +38,6 @@ public class SpawnController : MonoBehaviour
     public void SpawnAllObjects(Stage stage)
     {
         enemyPrefab = GameManager.Resource.Load<GameObject>(Path.Enemy + "NormalEnemy");
-        
         //obstaclePool.InitializePool(20);
         
         SpawnPlayer();

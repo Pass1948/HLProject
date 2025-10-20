@@ -15,9 +15,7 @@ public class AttackEnemyState : BaseEnemyState
 
     public override void Enter()
     {
-
         ShowAttackPreview(controller.GridPos, minRange, maxRange);
-
         controller.StartCoroutine(AttackRoutine());
     }
 

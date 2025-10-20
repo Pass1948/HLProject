@@ -8,8 +8,6 @@ public class BaseBoss : MonoBehaviour
     public BossModel model;
     public BossController controller;
     public EnemyAnimHandler animHandler;
-    
-    protected virtual void Start() {}
 
     public void InitBoss(EntityData data)
     {
@@ -28,7 +26,11 @@ public class BaseBoss : MonoBehaviour
             Debug.LogError("보스 컨트롤러, 애님핸들러 없슴");
         }
         
-        
-
+        SetBossTypePattern();
     }
+
+    protected virtual void SetBossTypePattern()
+    {
+    }
+    
 }
