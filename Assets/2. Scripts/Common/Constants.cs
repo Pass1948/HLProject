@@ -12,31 +12,21 @@ public enum EventType
     CameraSenter,
     PlayerAction,
     PlayerAttack,
-    PlayerKick,
     PlayerMove, 
     EnemyTurnStart,
     EnemyTurnEnd,
-    EnemyHit,
-    VehicleOnMounted,
-    VehicleOnDismounted,
-    VehicleOnRepaired,
-    VehicleOnDestroyed,
     OnGoldChanged,
     //--- 상점
     ShopOffersChanged,
     ShopPlayerCardsConfim,
     ShopPowderBundlePrompt,
     ShopRemoveBulletPrompt,
-    //---
     EnemyUIUpdate,
-    //--- 
-    PlayerBulletChanged,
-    //---
-    
     //--- 덱
     SelectDeck,
-    //---
+    
     CancelAmmo,
+    EmptyAmmo,
     // =====(유물)=====
     AddAttackPoint,
     AddMoveRangePoint,

@@ -21,7 +21,7 @@ public class MouseControl : MonoBehaviour
     
     private void OnCancel(InputValue value)
     {
-        GameManager.Mouse.InputCance();
+        GameManager.Mouse.InputCancel();
 
     }
 

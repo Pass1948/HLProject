@@ -45,9 +45,6 @@ public class ReloadAmmo : MonoBehaviour
             ReloadChange?.Invoke(Remaining, maxReloads);
             return;
         }
-        {
-            
-        }
 
         if (!CanReload)
         {
@@ -81,7 +78,6 @@ public class ReloadAmmo : MonoBehaviour
             ReloadChange?.Invoke(Remaining, maxReloads);
             return;
         }
-        
 
         ClearChild(deckBg);
 

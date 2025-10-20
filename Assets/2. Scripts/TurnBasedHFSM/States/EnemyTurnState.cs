@@ -9,9 +9,9 @@ public class EnemyTurnState : BaseTurnState
     public EnemyTurnState() { }
     public override void OnEnter()
     {
+        GameManager.Event.Publish(EventType.EmptyAmmo);
         timer = turnSetVlaue.resetTime;
         didClose= false;
-        GameManager.Mouse.isShowRange = false;
         GameManager.UI.OpenUI<PaseTurnUI>();
         GameManager.Event.Publish(EventType.CameraSenter);
     }
