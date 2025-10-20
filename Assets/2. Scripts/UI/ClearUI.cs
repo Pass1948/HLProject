@@ -34,6 +34,8 @@ public class ClearUI : BaseUI
     private void OpenStore()
     {
         GameManager.UI.GetUI<ShopUI>();
+        GameManager.Sound.PlayBGM(GameManager.Resource.Create<AudioClip>(Path.Sound + "Buy some cards!"));
+        GameManager.Sound.PlayUISfx();
     }
 
 }

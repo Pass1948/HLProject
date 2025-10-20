@@ -20,13 +20,15 @@ public class SettingUI : BaseUI
     [SerializeField] private Transform speedPanel;
     [SerializeField] private Button speedPrevBtn;
     [SerializeField] private Button speedNextBtn;
+    
+    [SerializeField] private Slider masterVolumeBar;
+    [SerializeField] private Slider bgmVolumeBar;
+    [SerializeField] private Slider sfxVolumeBar;
+    
 
     private const string SpeedPrefix = "SpeedPanel_";
     private int speedIndex = 0;
     private GameObject[] speedPanels;
-
-    //숫자 가이드 토글
-    [SerializeField] private Toggle showGuideToggle;
 
     private void Awake()
     {
@@ -42,24 +44,28 @@ public class SettingUI : BaseUI
 
         closeBtn.onClick.AddListener(CloseSettingUi);
         backToMainMenuBtn.onClick.AddListener(BackToMainMenu);
+        
+        masterVolumeBar.minValue = 0f; masterVolumeBar.maxValue = 1f;
+        bgmVolumeBar.minValue = 0f; bgmVolumeBar.maxValue = 1f;
+        sfxVolumeBar.minValue = 0f; sfxVolumeBar.maxValue = 1f;
+        
+        masterVolumeBar.onValueChanged.AddListener(GameManager.Sound.SetMasterVolume);
+        sfxVolumeBar.onValueChanged.AddListener(GameManager.Sound.SetSfxVolume);
+        bgmVolumeBar.onValueChanged.AddListener(GameManager.Sound.SetBgmVolume);
+    }
 
-        showGuideToggle.onValueChanged.AddListener(GuideToggleChanged);
-        AutoRegisterGuide();
-    }
-    private void OnDestroy()
-    {
-        showGuideToggle?.onValueChanged.RemoveListener(GuideToggleChanged);
-    }
 
     private void CloseSettingUi()
     {
         gameObject.SetActive(false);
+        GameManager.Sound.PlayUISfx();
     }
 
     private void BackToMainMenu()
     {
         Debug.Log("메인메뉴로 가기");
         GameManager.SceneLoad.LoadScene(SceneType.Title);
+        GameManager.Sound.PlayUISfx();
     }
 
     void AutoRegisterWindowPanels()
@@ -78,6 +84,7 @@ public class SettingUI : BaseUI
     {
         windowPanelIndex = (windowPanelIndex - 1 + windowPanels.Length) % windowPanels.Length;
         UpdateWindowView();
+        GameManager.Sound.PlayUISfx();
     }
 
     void WindowNextPanel()
@@ -85,6 +92,7 @@ public class SettingUI : BaseUI
         if (windowPanels == null || windowPanels.Length == 0) return;
         windowPanelIndex = (windowPanelIndex + 1) % windowPanels.Length;
         UpdateWindowView();
+        GameManager.Sound.PlayUISfx();
     }
 
     private void UpdateWindowView()
@@ -110,7 +118,7 @@ public class SettingUI : BaseUI
     {
         speedIndex = (speedIndex - 1 + speedPanels.Length) % speedPanels.Length;
         UpdateSpeedView();
-        
+        GameManager.Sound.PlayUISfx();
     }
 
     void SpeedNextPanel()
@@ -118,6 +126,7 @@ public class SettingUI : BaseUI
         if (speedPanels == null || speedPanels.Length == 0) return;
         speedIndex = (speedIndex + 1) % speedPanels.Length;
         UpdateSpeedView();
+        GameManager.Sound.PlayUISfx();
     }
 
     private void UpdateSpeedView()
@@ -125,29 +134,6 @@ public class SettingUI : BaseUI
         if (speedPanels == null) return;
         for (int i = 0; i < speedPanels.Length; i++)
             speedPanels[i].SetActive(i == speedIndex);
-    }
-
-    // === Guide 섹션 ===
-    void AutoRegisterGuide()
-    {
-        // 저장된 값으로 토글 초기 동기화
-        bool on = GameManager.UI?.ShowGuide ?? true;
-        showGuideToggle.SetIsOnWithoutNotify(on);
-        ApplyGuide(on); // 열릴 때 한 번 즉시 반영
-    }
-
-    void GuideToggleChanged(bool on)
-    {
-        // 토글 바뀌자마자 저장 + 즉시 반영
-        ApplyGuide(on);
-    }
-
-    // 공통 처리: 값 저장(씬 간 유지) + 씬에 MainUI 있으면 즉시 반영
-    void ApplyGuide(bool on)
-    {
-        if (GameManager.UI) GameManager.UI.ShowGuide = on;
-
-        var main = FindFirstObjectByType<MainUI>(FindObjectsInactive.Include);
-        if (main) main.GuideVisible = on;
+        GameManager.Sound.PlayUISfx();
     }
 }
