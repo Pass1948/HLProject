@@ -29,11 +29,14 @@ public class AttackController : MonoBehaviour
         GameManager.Event.Subscribe(EventType.CancelAmmo, CancelAmmo);
         reroadSound = GameManager.Resource.Load<AudioClip>(Path.Sound + "CASSETTE_RATTLE_12");
         reroadCancelSound = GameManager.Resource.Load<AudioClip>(Path.Sound + "LOAD_CASSETTE_08");
+        GameManager.Event.Subscribe(EventType.EmptyAmmo, EmptyAmmo);
+
     }
     private void OnDisable()
     {
         GameManager.Event.Unsubscribe(EventType.PlayerAttack, Fire);
         GameManager.Event.Unsubscribe(EventType.CancelAmmo, CancelAmmo);
+        GameManager.Event.Unsubscribe(EventType.EmptyAmmo, EmptyAmmo);
     }
 
     public void CancelAmmo()
@@ -48,7 +51,7 @@ public class AttackController : MonoBehaviour
     //탄환버튼 OnClick
     public void SelectAmmo(Button btn)
     {
-        if(GameManager.Mouse.isShowRange == false) return;
+        if(!GameManager.Mouse.isShowRange) return;
         if (btn == null)
         {
             return;
@@ -258,6 +261,16 @@ public class AttackController : MonoBehaviour
         if(btn)
         {
             btn.onClick.AddListener(() => SelectAmmo(btn));
+        }
+    }
+
+    public void EmptyAmmo()
+    {
+        if (slotContainer.childCount <= 0 && GameManager.ItemControl.drawPile.Count <= 0)
+        {
+            ResultUI backUI = GameManager.UI.GetUI<ResultUI>();
+            backUI.GetResultType(ResultType.Over);
+            backUI.OpenUI();
         }
     }
 

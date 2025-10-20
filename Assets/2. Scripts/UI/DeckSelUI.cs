@@ -18,8 +18,6 @@ public class DeckSelUI : MonoBehaviour
     [SerializeField] private Button SpadeDeck;
     [SerializeField] private Button ClubDeck;
 
-    [SerializeField] private Button PlayBtn;
-
     [SerializeField] private Button BackToMenuBtn;
     
     private AudioClip selectedClip;
@@ -34,7 +32,6 @@ public class DeckSelUI : MonoBehaviour
         HeartDeck.onClick.AddListener(IsHeart);
         SpadeDeck.onClick.AddListener(IsSpade);
         ClubDeck.onClick.AddListener(IsClub);
-        PlayBtn.onClick.AddListener(OnSelectDeck);
         BackToMenuBtn.onClick.AddListener(BackToMenu);
         UpdateView();
         selectedClip = GameManager.Resource.Load<AudioClip>(Path.Sound + "LOAD_CASSETTE_08");
@@ -61,6 +58,7 @@ public class DeckSelUI : MonoBehaviour
         GameManager.Event.Publish(EventType.SelectDeck);
         GameManager.Sound.PlaySfx(selectedClip);
     }
+
     private void PrevDeck()
     {
         deckIndex = (deckIndex - 1 + deckPanels.Length) % deckPanels.Length;
@@ -71,6 +69,17 @@ public class DeckSelUI : MonoBehaviour
         GameManager.TurnBased.turnSettingValue.IsClubDeck = false;
         UpdateView();
         GameManager.Sound.PlayUISfx();
+    }
+
+    public void OnGameStart()
+    {
+        if(!ISSelectDeck())
+        {
+            Debug.Log("Select Your Deck!");
+            return;
+        }
+        GameManager.SceneLoad.LoadScene(SceneType.Test);
+        GameManager.Event.Publish(EventType.SelectDeck);
     }
 
     private void NextDeck()

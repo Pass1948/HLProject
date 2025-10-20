@@ -32,7 +32,6 @@ public class PlayerTurnState : BaseTurnState
         if (timer > turnSetVlaue.turnDelayTime)
         {
             GameManager.UI.CloseUI<PaseTurnUI>();
-            GameManager.UI.OpenUI<MainUI>();
             MouseSet();
             didClose = true;// 한 번만 처리하게 설정
         }
