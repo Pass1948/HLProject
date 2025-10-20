@@ -129,6 +129,7 @@ public static class TileID
     public const int Obstacle_B = 6;
 }
 
+
 [UGS(typeof(EliteType))]
 public enum EliteType
 {

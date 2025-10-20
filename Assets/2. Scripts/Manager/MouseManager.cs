@@ -127,6 +127,7 @@ public class MouseManager : MonoBehaviour
         hasHover = allowed && inside;
 
     }
+    
 
     public void ClickCurrentHover()
     {
@@ -155,10 +156,12 @@ public class MouseManager : MonoBehaviour
             if (IsCellInAttackOrKickRange(cell))
             {
                 GameManager.Event.Publish(EventType.PlayerAttack);
+                GameManager.Sound.PlaySfx(GameManager.Resource.Load<AudioClip>(Path.Sound + "GUNTech_Tormentor Shotgun Fire_05"));
             }
             else
             {
                 CancelAttackOrKickRange();
+                GameManager.Sound.PlayErrorSfx();
             }
             isAttacking = false;
             return;
@@ -168,9 +171,15 @@ public class MouseManager : MonoBehaviour
         if (isKicking)
         {
             if (IsCellInAttackOrKickRange(cell))
+            {
                 GameManager.TurnBased.ChangeTo<PlayerKickState>();
+                GameManager.Sound.PlaySfx(GameManager.Resource.Load<AudioClip>(Path.Sound + "PUNCH_CLEAN_HEAVY_10"));
+            }
             else
+            {
                 CancelAttackOrKickRange();
+                GameManager.Sound.PlayErrorSfx();
+            }
 
             isKicking = false;
             return;
@@ -392,6 +401,7 @@ public void InputCancel()
             .SetData(enemy.enemyModel.attri, enemy.enemyModel.rank, enemy.enemyModel.attack,
                      enemy.enemyModel.moveRange, enemy.enemyModel.currentHealth, enemy.enemyModel.maxHealth);
         GameManager.UI.OpenUI<EnemyInfoPopUpUI>();
+        GameManager.Sound.PlayUISfx();
     }
     private void HideEnemyPopup()
     {
@@ -407,5 +417,6 @@ public void InputCancel()
     {
         if (GameManager.Map != null && GameManager.Map.attackRange != null)
             GameManager.Map.attackRange.ClearAttackType();
+        GameManager.Sound.PlayErrorSfx();
     }
 }
