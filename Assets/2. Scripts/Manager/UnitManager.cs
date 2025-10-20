@@ -26,7 +26,7 @@ public class UnitManager : MonoBehaviour
     public List<BaseEnemy> enemies = new List<BaseEnemy>();
 
     public BaseBoss boss = null;
-
+    
    public bool isInit = false;
 
     // =====[���� ���� ����� ����]=====
