@@ -296,7 +296,7 @@ public class MouseManager : MonoBehaviour
 
 
     // 취소키
-public void InputCance()
+public void InputCancel()
     {
         CancelSelection();
     }

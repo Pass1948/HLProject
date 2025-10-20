@@ -1,3 +1,4 @@
+
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -8,6 +9,8 @@ public class ShopCardUI : BaseUI
 {
     [SerializeField] private TextMeshProUGUI rankText;
     [SerializeField] private TextMeshProUGUI suitText;
+    [SerializeField] private TextMeshProUGUI rankText2;
+    [SerializeField] private TextMeshProUGUI suitText2;
     [SerializeField] private TextMeshProUGUI priceText;
     [SerializeField] private Image icon;
     public Button buyButton;
@@ -15,7 +18,9 @@ public class ShopCardUI : BaseUI
     public void Bind(ShopManager.ShopItem item)
     {
         rankText.text = RankLabel(item.ammo.rank);
+        rankText2.text = RankLabel(item.ammo.rank);
         suitText.text = SuitLetter(item.ammo.suit);
+        suitText2.text = SuitLetter(item.ammo.suit);
         priceText.text = item.price.ToString();
     }
     private static string SuitLetter(Suit s)
