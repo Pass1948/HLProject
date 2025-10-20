@@ -42,6 +42,7 @@ public class AttackEnemyState : BaseEnemyState
         {
             GameManager.Unit.ChangeHealth(GameManager.Unit.Player.playerModel, controller.model.attack);
             animHandler.OnAttack();
+            GameManager.Sound.PlaySfx(GameManager.Resource.Load<AudioClip>(Path.Sound + "PUNCH_CLEAN_HEAVY_10"));
         }
 
         ClearPreveiwTiles();

@@ -10,12 +10,16 @@ public class SoundManager : MonoBehaviour
     AudioSource sfx;   // 단발용 (SFX)
     
     private AudioClip uiClip;
+    private AudioClip shopUiClip;
     private AudioClip cardClip;
+    private AudioClip errorClip;
 
     void Awake()
     {
         uiClip = GameManager.Resource.Load<AudioClip>(Path.Sound + "Laptop_Keystroke_82");
         cardClip = GameManager.Resource.Load<AudioClip>(Path.Sound + "Laptop_Keystroke_82");
+        shopUiClip = GameManager.Resource.Load<AudioClip>(Path.Sound + "Coins In Sack Dropped on Wood");
+        errorClip = GameManager.Resource.Load<AudioClip>(Path.Sound + "UIGlitch_Error Tone_03");
         ApplyVolumes();
         // BGM 소스
         var bgmGO = new GameObject("BGM_Source");
@@ -92,29 +96,38 @@ public class SoundManager : MonoBehaviour
 
     public void PlayUISfx()
     {
-        sfx.clip = cardClip;
+        sfx.clip = uiClip;
         if (sfx.clip == null || cardClip == null) return;
         sfx.volume = sfxVolume;
         sfx.pitch = Mathf.Clamp(sfx.pitch, 0.1f, 3f);
-        sfx.PlayOneShot(sfx.clip, Mathf.Clamp01(sfx.pitch));
+        sfx.PlayOneShot(sfx.clip, Mathf.Clamp01(sfxVolume));
     }
 
     public void PlayCardSelectSfx()
     {
-        sfx.clip = GameManager.Resource.Load<AudioClip>(Path.Sound + "");
+        sfx.clip = cardClip;
         if (sfx.clip == null) return;
         sfx.pitch = Mathf.Clamp(sfx.pitch, 0.1f, 3f);
         sfx.volume = sfxVolume;
-        sfx.PlayOneShot(sfx.clip, Mathf.Clamp01(sfx.pitch));
+        sfx.PlayOneShot(sfx.clip, Mathf.Clamp01(sfxVolume));
     }
 
     public void PlayShopSfx()
     {
-        sfx.clip = uiClip;
+        sfx.clip = shopUiClip;
         if (sfx.clip == null || uiClip == null) return;
         sfx.pitch = Mathf.Clamp(sfx.pitch, 0.1f, 3f);
         sfx.volume = sfxVolume;
-        sfx.PlayOneShot(sfx.clip, Mathf.Clamp01(sfx.pitch));
+        sfx.PlayOneShot(sfx.clip, Mathf.Clamp01(sfxVolume));
+    }
+
+    public void PlayErrorSfx()
+    {
+        sfx.clip = errorClip;
+        if(sfx.clip == null || uiClip == null) return;
+        sfx.pitch = Mathf.Clamp(sfx.pitch, 0.1f, 3f);
+        sfx.volume = sfxVolume;
+        sfx.PlayOneShot(sfx.clip, Mathf.Clamp01(sfxVolume));
     }
 }
 

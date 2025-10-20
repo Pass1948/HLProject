@@ -160,7 +160,7 @@ public class MouseManager : MonoBehaviour
             else
             {
                 CancelAttackOrKickRange();
-                GameManager.Sound.PlaySfx(GameManager.Resource.Load<AudioClip>(Path.Sound + "UIGlitch_Error Tone_03"));
+                GameManager.Sound.PlayErrorSfx();
             }
             isAttacking = false;
             return;
@@ -177,7 +177,7 @@ public class MouseManager : MonoBehaviour
             else
             {
                 CancelAttackOrKickRange();
-                GameManager.Sound.PlaySfx(GameManager.Resource.Load<AudioClip>(Path.Sound + "UIGlitch_Error Tone_03"));
+                GameManager.Sound.PlayErrorSfx();
             }
 
             isKicking = false;
@@ -400,6 +400,7 @@ public void InputCance()
             .SetData(enemy.enemyModel.attri, enemy.enemyModel.rank, enemy.enemyModel.attack,
                      enemy.enemyModel.moveRange, enemy.enemyModel.currentHealth, enemy.enemyModel.maxHealth);
         GameManager.UI.OpenUI<EnemyInfoPopUpUI>();
+        GameManager.Sound.PlayUISfx();
     }
     private void HideEnemyPopup()
     {
@@ -415,5 +416,6 @@ public void InputCance()
     {
         if (GameManager.Map != null && GameManager.Map.attackRange != null)
             GameManager.Map.attackRange.ClearAttackType();
+        GameManager.Sound.PlayErrorSfx();
     }
 }
