@@ -382,11 +382,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1696456059084993760}
-  - component: {fileID: 6163269708227033138}
-  - component: {fileID: 7108647385520497506}
   - component: {fileID: 8273540929910058778}
   - component: {fileID: 4679994803986074871}
   - component: {fileID: 2148925682071657845}
+  - component: {fileID: 4477629318787804435}
+  - component: {fileID: -7874073719074947271}
+  - component: {fileID: 2972931693289029707}
   m_Layer: 0
   m_Name: Boss
   m_TagString: Enemy
@@ -411,40 +412,6 @@ Transform:
   - {fileID: 5446102610744019040}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6163269708227033138
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5509707868626203645}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e83ac3fe4869a0a468b52d2bef644353, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  baseEnemy: {fileID: 0}
-  animHandler: {fileID: 0}
-  moveRange: 0
-  minAttackRange: 0
-  maxAttackRange: 0
-  isDie: 0
-  isDone: 0
-  startTurn: 0
-  moveDuration: 0.2
---- !u!114 &7108647385520497506
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5509707868626203645}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66c4cbe262ee5be4192c4133ec7c9b08, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 5758160549951095835}
 --- !u!114 &8273540929910058778
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -498,6 +465,54 @@ CapsuleCollider:
   m_Height: 1
   m_Direction: 1
   m_Center: {x: 0, y: 0.5, z: 0}
+--- !u!114 &4477629318787804435
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5509707868626203645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9da7b8c49f577db4d9dbc906b8a2c8cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controller: {fileID: 0}
+  animHandler: {fileID: 0}
+--- !u!114 &-7874073719074947271
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5509707868626203645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cc8107a58a0142438a063fe2aa8cd4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseBoss: {fileID: 0}
+  animHandler: {fileID: 0}
+  moveRange: 0
+  minAttackRange: 0
+  maxAttackRange: 0
+  isDie: 0
+  isDone: 0
+  startTurn: 0
+  moveDuration: 0.2
+  warningCells: []
+--- !u!114 &2972931693289029707
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5509707868626203645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1618e0f72e49ca8418bcd3256c2e448f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5783527730616375366
 GameObject:
   m_ObjectHideFlags: 0
