@@ -338,7 +338,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1360, y: 506}
+  m_AnchoredPosition: {x: -578, y: -371}
   m_SizeDelta: {x: 291, y: 329.0253}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8430043252497810428
@@ -3257,10 +3257,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f187e6cb1addd0b4aadbf1ca8bd1cd7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shopCardUI: {fileID: 0}
+  buyCardUI: {fileID: 0}
   rankText: {fileID: 0}
   suitText: {fileID: 0}
+  rankText2: {fileID: 0}
+  suitText2: {fileID: 0}
   priceText: {fileID: 0}
-  icon: {fileID: 8890357001349981976}
+  bulltBtn: {fileID: 0}
+  playerCardBtn: {fileID: 0}
   buyButton: {fileID: 657454243209856119}
 --- !u!1 &5440513829661980777
 GameObject:
@@ -5227,10 +5232,10 @@ RectTransform:
   - {fileID: 2564032144066342801}
   m_Father: {fileID: 8394531809833428427}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 45, y: -50}
+  m_SizeDelta: {x: 40, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8395655036133449255
 CanvasRenderer:
@@ -5326,10 +5331,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f187e6cb1addd0b4aadbf1ca8bd1cd7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shopCardUI: {fileID: 0}
+  buyCardUI: {fileID: 0}
   rankText: {fileID: 7570906088305846831}
   suitText: {fileID: 1921770423837644169}
+  rankText2: {fileID: 0}
+  suitText2: {fileID: 0}
   priceText: {fileID: 8588505345078821153}
-  icon: {fileID: 8653043224015698316}
+  bulltBtn: {fileID: 0}
+  playerCardBtn: {fileID: 0}
   buyButton: {fileID: 5662965666163523530}
 --- !u!1 &8107659394853280367
 GameObject:

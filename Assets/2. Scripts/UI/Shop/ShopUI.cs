@@ -156,10 +156,12 @@ public class ShopUI : BaseUI
             int idx = i;
             var card = GameManager.UI.CreateSlotUI<ShopCardUI>(playerBulletRoot);
             card.Bind(new ShopManager.ShopItem(ShopItemType.Bullet, ammo.ToString(), cost, ammo));
+            card.OnBuyCard();
             card.OpenUI();
-            card.buyButton.onClick.RemoveAllListeners();
-            card.buyButton.onClick.AddListener(() =>
+            card.playerCardBtn.onClick.RemoveAllListeners();
+            card.playerCardBtn.onClick.AddListener(() =>
             {
+                card.OnPlayerCard();
                 selectedBulletIndex = idx;
                 removeButton.interactable = true;
             });

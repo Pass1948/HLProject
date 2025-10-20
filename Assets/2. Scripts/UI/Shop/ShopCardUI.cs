@@ -7,13 +7,56 @@ using UnityEngine.UI;
 
 public class ShopCardUI : BaseUI
 {
+    private static ShopCardUI currentSelectedCard;
+    [SerializeField] private GameObject shopCardUI;
+    [SerializeField] private GameObject buyCardUI;
     [SerializeField] private TextMeshProUGUI rankText;
     [SerializeField] private TextMeshProUGUI suitText;
     [SerializeField] private TextMeshProUGUI rankText2;
     [SerializeField] private TextMeshProUGUI suitText2;
     [SerializeField] private TextMeshProUGUI priceText;
-    [SerializeField] private Image icon;
-    public Button buyButton;
+    [SerializeField] private Button bulltBtn;
+    [SerializeField] public Button playerCardBtn;
+ public Button buyButton;
+    Animator animator;
+
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
+    }
+
+    private void OnEnable()
+    {
+        bulltBtn.onClick.AddListener(OnBulltClick);
+    }
+
+
+    private void OnBulltClick()
+    {
+        if (currentSelectedCard != null && currentSelectedCard != this)
+        {
+            currentSelectedCard.animator.SetBool("IsOnClick", false);
+        }
+        animator.SetBool("IsOnClick", true);
+        currentSelectedCard = this;
+    }
+
+    public void OnPlayerCard()
+    {
+        if (currentSelectedCard != null && currentSelectedCard != this)
+        {
+            currentSelectedCard.animator.SetBool("IsOnPlayerCardClick", false);
+        }
+        animator.SetBool("IsOnPlayerCardClick", true);
+        currentSelectedCard = this;
+    }
+
+    public void OnBuyCard()
+    {
+        shopCardUI.SetActive(false);
+        buyCardUI.SetActive(true);
+    }
+
 
     public void Bind(ShopManager.ShopItem item)
     {
