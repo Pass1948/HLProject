@@ -11,7 +11,7 @@ public class BossModel : UnitModel
     public int attack;
     public int minAttackRange;
     public int maxAttackRange;
-
+    
     public bool isDie = false;
     public bool isDone = true;
 
