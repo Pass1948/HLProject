@@ -9,7 +9,15 @@ public class DecideBossState : BaseBossState
 
     public override void Enter()
     {
-        DecidePreviewPath();
+        if (controller.isCooldown == true)
+        {
+            DecidePreviewPath();
+        }
+        else
+        {
+            stateMachine.ChangeState(stateMachine.WarningState);
+        }
+        
     }
 
     public override void Exit()

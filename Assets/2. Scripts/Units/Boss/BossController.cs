@@ -20,6 +20,10 @@ public class BossController : MonoBehaviour
     public bool isDie;
     public bool isDone;
     public bool startTurn = false;
+    public bool isCooldown = false;
+    public bool canPattern;
+    public int cooldown;
+    public int patternPower;
 
     public float moveDuration = 0.2f;
 
@@ -45,7 +49,12 @@ public class BossController : MonoBehaviour
         isDie = model.isDie;
 
         RunStateMachine();
-        
+    }
+
+    public void SetController(int cooldown, int patternPower)
+    {
+        this.cooldown = cooldown;
+        this.patternPower = patternPower;
     }
 
     private void RunStateMachine()

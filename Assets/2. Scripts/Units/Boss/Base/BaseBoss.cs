@@ -9,6 +9,9 @@ public class BaseBoss : MonoBehaviour
     public BossController controller;
     public EnemyAnimHandler animHandler;
 
+    public int cooldown;
+    public int patternPower;
+    
     public void InitBoss(EntityData data)
     {
         model = new BossModel();
