@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DataTable;
-using System.Linq;
 
 
 public class SpawnController : MonoBehaviour
@@ -83,7 +82,6 @@ public class SpawnController : MonoBehaviour
 
     }
     
-    /// ////////////////////
     // 장애물 스폰
     public void SpawnObstacles(Dictionary<int, int> obstacles)
     {
@@ -247,30 +245,40 @@ public class SpawnController : MonoBehaviour
         }
     }
 
-    /////////////////
+    /// //////
     // 적 스폰
+    // 
     private void SpawnEnemies(Dictionary<int, int> enemies, int eliteCount, int stageId)
     {
         List<BaseEnemy> spawnedList = new List<BaseEnemy>();
-        List<int> finalEnemyList = new List<int>();
 
-        foreach (var enemyEntry in enemies)
+        foreach (var enemy in enemies)
         {
-            for (int i = 0; i < enemyEntry.Value; i++)
+            for (int i = 0; i < enemy.Value; i++)
             {
-                finalEnemyList.Add(enemyEntry.Key);
-            }
-        }
+                int randX = Random.Range(0, GameManager.Map.mapWidth);
+                int randY = Random.Range(0, GameManager.Map.mapHeight);
 
-        // 사이즈가 큰 몬스터부터 배치
-        finalEnemyList = finalEnemyList.OrderByDescending(
-            id => GameManager.Data.entityDataGroup.GetEntityData(id).size
-        ).ToList();
-        
-        foreach (int enemyId in finalEnemyList)
-        {
-            // 사이즈를 고려한 스폰을 시도, 성공 시 spawnedList에 추가
-            TrySpawnOneEnemyWithSize(enemyId, spawnedList);
+                if (GameManager.Map.mapData[randX, randY] == TileID.Terrain &&
+                    !(randX >= 0 && randX <= 3 && randY >= 0 && randY <= 3))
+                {
+                    GameObject obj =  Instantiate(enemyPrefab, transform);
+                    BaseEnemy baseEnemy = obj.GetComponent<BaseEnemy>();
+
+                    GridSnapper.SnapToCellCenter(obj.transform, GameManager.Map.tilemap, new Vector2Int(randX, randY));
+                    
+                    baseEnemy.InitEnemy(GameManager.Data.entityDataGroup.GetEntityData(enemy.Key), EnemyType.Normal);
+                    baseEnemy.controller.SetPosition(randX, randY);
+                    baseEnemy.controller.UpdatePlayerPos();
+                    
+                    GameManager.Map.SetObjectPosition(randX, randY, TileID.Enemy);
+                    
+                    FindObjectOfType<AttackRangeDisplay>().enemies.Add(baseEnemy);
+                    spawnedList.Add(baseEnemy);
+
+                    // break;
+                }
+            }
         }
 
         if (eliteCount > 0 && spawnedList.Count > 0)
@@ -286,158 +294,8 @@ public class SpawnController : MonoBehaviour
         }
     }
     
-    // 단일 몬스터의 스폰 시도
-    private void TrySpawnOneEnemyWithSize(int entityId, List<BaseEnemy> spawnedList)
-    {
-        // 사이즈 
-        int size = GameManager.Data.entityDataGroup.GetEntityData(entityId).size;
-        if (size <= 0) size = 1; // 최소 1x1
-
-        // 다중 타일 공간 탐색
-        Vector3Int spawnPos = FindMultiTileSpawnPosition(size);
-        
-        if (spawnPos != Vector3Int.zero)
-        {
-            // 몬스터 생성 및 맵 데이터 업데이트
-            SpawnOneEnemyWithSize(entityId, spawnPos, size, spawnedList);
-        }
-        else
-        {
-            Debug.LogWarning($"몬스터ID: {entityId}) 스폰 실패");
-        }
-    }
     
-    // 실제 몬스터 생성, 위치/크기 , 맵 데이터 업데이트
-    private void SpawnOneEnemyWithSize(int entityId, Vector3Int pos, int size, List<BaseEnemy> spawnedList)
-    {
-        // 몬스터 생성
-        GameObject obj =  Instantiate(enemyPrefab, transform);
-        BaseEnemy baseEnemy = obj.GetComponent<BaseEnemy>();
-
-        // 몬스터의 위치 계산
-        Vector2Int gridPos = new Vector2Int(pos.x, pos.y);
-        
-        // 사이즈가 1보다 클 경우 중앙 보정 (2x2는 1칸, 3x3은 2칸 중앙)
-        if (size > 1)
-        {
-            // 2x2 유닛은 좌측 하단 타일 중앙이 아닌, 2x2 영역의 중앙으로 위치 보정
-            // GridSnapper는 1x1 타일 기준
-            
-            // 2x2의 중심은 (1,1) 타일 중앙
-            // 1x1 타일 중앙을 기준으로 (size - 1) / 2 만큼 이동
-            float offset = (size - 1) / 2.0f; 
-            
-            Vector3 centerWorldPos = GameManager.Map.tilemap.GetCellCenterWorld(new Vector3Int(pos.x, pos.y, 0));
-            
-            centerWorldPos.x += offset * GameManager.Map.tilemap.cellSize.x;
-            centerWorldPos.y += offset * GameManager.Map.tilemap.cellSize.y;
-            
-            obj.transform.position = centerWorldPos;
-            
-        }
-        else
-        {
-            GridSnapper.SnapToCellCenter(obj.transform, GameManager.Map.tilemap, gridPos);
-        }
-        
-        baseEnemy.InitEnemy(GameManager.Data.entityDataGroup.GetEntityData(entityId), EnemyType.Normal);
-        baseEnemy.controller.SetPosition(pos.x, pos.y);
-        baseEnemy.controller.UpdatePlayerPos();
-        
-        FindObjectOfType<AttackRangeDisplay>().enemies.Add(baseEnemy);
-        spawnedList.Add(baseEnemy);
-        
-        // 맵 데이터 업데이트 TileID.Enemy
-        UpdateMapDataForEnemy(pos, size, TileID.Enemy);
-    }
     
-    // 몬스터의 크기만큼 맵 데이터를 업데이트
-    private void UpdateMapDataForEnemy(Vector3Int pos, int size, int tileId)
-    {
-        // size 영역을 tileId로 설정
-        for (int x = pos.x; x < pos.x + size; x++)
-        {
-            for (int y = pos.y; y < pos.y + size; y++)
-            {
-                GameManager.Map.SetObjectPosition(x, y, tileId);
-            }
-        }
-    }
-    
-    // size에 맞게 배치 가능한지 확인
-    private bool IsSpawnAreaAvailable(int startX, int startY, int size)
-    {
-        int mapWidth = GameManager.Map.mapWidth;
-        int mapHeight = GameManager.Map.mapHeight;
-
-        for (int x = startX; x < startX + size; x++)
-        {
-            for (int y = startY; y < startY + size; y++)
-            {
-                // 맵 경계 체크
-                if (x < 0 || x >= mapWidth || y < 0 || y >= mapHeight)
-                {
-                    return false;
-                }
-                
-                // 타일이 이동 가능한 Terrain인지 확인
-                if (GameManager.Map.mapData[x, y] != TileID.Terrain)
-                {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    // 다중 타일 몬스터 배치 가능한 좌표 탐색
-    private Vector3Int FindMultiTileSpawnPosition(int size)
-    {
-        List<Vector3Int> potentialSpots = new List<Vector3Int>();
-        int mapWidth = GameManager.Map.mapWidth;
-        int mapHeight = GameManager.Map.mapHeight;
-
-        // size 영역을 확인
-        for (int x = 0; x <= mapWidth - size; x++)
-        {
-            for (int y = 0; y <= mapHeight - size; y++)
-            {
-                // 플레이어 스폰 금지 영역 체크
-                bool isNearPlayerStart = false;
-                for (int sx = x; sx < x + size; sx++)
-                {
-                    for (int sy = y; sy < y + size; sy++)
-                    {
-                        if (sx >= 0 && sx <= 3 && sy >= 0 && sy <= 3) 
-                        {
-                            isNearPlayerStart = true;
-                            break;
-                        }
-                    }
-                    if (isNearPlayerStart) break;
-                }
-                
-                if (isNearPlayerStart)
-                {
-                    continue;
-                }
-
-                if (IsSpawnAreaAvailable(x, y, size))
-                {
-                    potentialSpots.Add(new Vector3Int(x, y, 0)); 
-                }
-            }
-        }
-
-        if (potentialSpots.Count > 0)
-        {
-            // 무작위
-            int randomIndex = Random.Range(0, potentialSpots.Count);
-            return potentialSpots[randomIndex];
-        }
-
-        return Vector3Int.zero; // 배치할 수 있는 공간 없음
-    }
     
     
 }
