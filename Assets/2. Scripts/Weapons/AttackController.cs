@@ -65,6 +65,7 @@ public class AttackController : MonoBehaviour
             
             GameManager.Map.attackRange.ClearAttackType();
             GameManager.Mouse.IsAttacking = false;
+            GameManager.Sound.PlaySfx(GameManager.Resource.Load<AudioClip>(Path.Sound + "CASSETTE_RATTLE_12"));
             return;
         }
 
@@ -113,6 +114,7 @@ public class AttackController : MonoBehaviour
         {
             selectBulletBg.color = bgSel;
         }
+        GameManager.Sound.PlaySfx(GameManager.Resource.Load<AudioClip>(Path.Sound +"LOAD_CASSETTE_08"));
     }
 
     public void Fire()

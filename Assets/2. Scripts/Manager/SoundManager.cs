@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
+    [Range(0,1)] public float masterVolume = 1f;
     [Range(0,1)] public float bgmVolume = 1f;
     [Range(0,1)] public float sfxVolume = 1f;
 
@@ -10,6 +11,7 @@ public class SoundManager : MonoBehaviour
 
     void Awake()
     {
+        ApplyVolumes();
         // BGM 소스
         var bgmGO = new GameObject("BGM_Source");
         bgmGO.transform.SetParent(transform, false);
@@ -28,6 +30,34 @@ public class SoundManager : MonoBehaviour
         sfx.spatialBlend = 0f;
         sfx.volume = sfxVolume;
     }
+
+    void ApplyVolumes()
+    {
+        if (bgm != null)
+            bgm.volume = Mathf.Clamp01(bgmVolume * masterVolume);
+        if (sfx != null)
+            sfx.volume = Mathf.Clamp01(sfxVolume * masterVolume);
+    }
+    
+    // 마스터
+    public void SetMasterVolume(float v)
+    {
+        masterVolume = Mathf.Clamp01(v);
+        ApplyVolumes();
+    }
+    // 브금
+    public void SetBgmVolume(float v)
+    {
+        bgmVolume = Mathf.Clamp01(v);
+        ApplyVolumes();
+    }
+    // 효과음
+    public void SetSfxVolume(float v)
+    {
+        sfxVolume = Mathf.Clamp01(v);
+        ApplyVolumes();
+    }
+    
 
     // BGM 
     public void PlayBGM(AudioClip clip)

@@ -20,6 +20,11 @@ public class SettingUI : MonoBehaviour
     [SerializeField] private Transform speedPanel;
     [SerializeField] private Button speedPrevBtn;
     [SerializeField] private Button speedNextBtn;
+    
+    [SerializeField] private Slider masterVolumeBar;
+    [SerializeField] private Slider bgmVolumeBar;
+    [SerializeField] private Slider sfxVolumeBar;
+    
 
     private const string SpeedPrefix = "SpeedPanel_";
     private int speedIndex = 0;
@@ -39,7 +44,16 @@ public class SettingUI : MonoBehaviour
 
         closeBtn.onClick.AddListener(CloseSettingUi);
         backToMainMenuBtn.onClick.AddListener(BackToMainMenu);
+        
+        masterVolumeBar.minValue = 0f; masterVolumeBar.maxValue = 1f;
+        bgmVolumeBar.minValue = 0f; bgmVolumeBar.maxValue = 1f;
+        sfxVolumeBar.minValue = 0f; sfxVolumeBar.maxValue = 1f;
+        
+        masterVolumeBar.onValueChanged.AddListener(GameManager.Sound.SetMasterVolume);
+        sfxVolumeBar.onValueChanged.AddListener(GameManager.Sound.SetSfxVolume);
+        bgmVolumeBar.onValueChanged.AddListener(GameManager.Sound.SetBgmVolume);
     }
+
 
     private void CloseSettingUi()
     {
@@ -122,5 +136,4 @@ public class SettingUI : MonoBehaviour
             speedPanels[i].SetActive(i == speedIndex);
         GameManager.Sound.PlayUISfx();
     }
-
 }
