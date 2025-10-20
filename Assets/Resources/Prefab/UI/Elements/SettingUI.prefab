@@ -1937,7 +1937,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: 3bbe408b024ebe54eabd0986623bf816, type: 3}
-  m_Type: 1
+  m_Type: 2
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -5272,17 +5272,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 0, b: 0, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
+  m_Maskable: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: f216212bb5ce1d84fb10af2d16e97bd2, type: 3}
-  m_Type: 1
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
-  m_FillMethod: 4
+  m_FillMethod: 0
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
@@ -6451,7 +6451,9 @@ MonoBehaviour:
   speedPanel: {fileID: 1791527487219993392}
   speedPrevBtn: {fileID: 103367240832139699}
   speedNextBtn: {fileID: 5244041542374406180}
-  showGuideToggle: {fileID: 6497799169057703332}
+  masterVolumeBar: {fileID: 2587782895275668747}
+  bgmVolumeBar: {fileID: 8218579112807782984}
+  sfxVolumeBar: {fileID: 6691482039484948356}
 --- !u!1 &7852152897500723118
 GameObject:
   m_ObjectHideFlags: 0

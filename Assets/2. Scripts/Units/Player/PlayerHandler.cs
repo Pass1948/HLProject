@@ -11,11 +11,7 @@ public class PlayerHandler : MonoBehaviour
     public List<Ammo> GetBullet() { return bullets;}
     
     public List<int> ownedRelics = new(); // 유물 리스트
-    
-    private void Awake()
-    {
-    }
-
+ 
     private void Start()
     {
         playerMonney = 500000000;

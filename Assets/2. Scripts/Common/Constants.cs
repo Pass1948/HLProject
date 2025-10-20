@@ -129,6 +129,7 @@ public static class TileID
     public const int Boss = 6;
 }
 
+
 [UGS(typeof(EliteType))]
 public enum EliteType
 {
