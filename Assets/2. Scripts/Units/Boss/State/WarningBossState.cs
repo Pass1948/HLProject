@@ -4,20 +4,26 @@ using UnityEngine;
 
 public class WarningBossState : BaseBossState
 {
-    public WarningBossState(BossStateMachine stateMachine, BossController controller, EnemyAnimHandler animHandler) : base(stateMachine, controller, animHandler) { }
+    public MapManager map;
+    
+    public WarningBossState(BossStateMachine stateMachine, BossController controller, EnemyAnimHandler animHandler) 
+        : base(stateMachine, controller, animHandler) { }
 
     public override void Enter()
     {
-        throw new System.NotImplementedException();
+        map = GameManager.Map;
     }
 
     public override void Exit()
     {
-        throw new System.NotImplementedException();
     }
 
     public override void Excute()
     {
-        throw new System.NotImplementedException();
+    }
+
+    public void WarningArea()
+    {
+        
     }
 }

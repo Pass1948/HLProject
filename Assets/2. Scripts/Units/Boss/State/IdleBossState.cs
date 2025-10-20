@@ -8,16 +8,17 @@ public class IdleBossState : BaseBossState
 
     public override void Enter()
     {
-        throw new System.NotImplementedException();
+        
     }
     
     public override void Excute()
     {
-        
+        if (controller.startTurn == false) return;
+        stateMachine.ChangeState(stateMachine.EvaluateState); 
     }
     
     public override void Exit()
     {
-        throw new System.NotImplementedException();
+        controller.UpdatePlayerPos();
     }
 }
