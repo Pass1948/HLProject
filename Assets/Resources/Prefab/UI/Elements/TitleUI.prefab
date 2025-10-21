@@ -6884,7 +6884,7 @@ MonoBehaviour:
   HeartDeck: {fileID: 7591188313358132547}
   SpadeDeck: {fileID: 1587652587456374200}
   ClubDeck: {fileID: 1321216720680193320}
-  PlayBtn: {fileID: 3955336164707208559}
+  gamePlayButton: {fileID: 3955336164707208559}
   BackToMenuBtn: {fileID: 7645934107919076120}
 --- !u!1 &8894827171653364477
 GameObject:

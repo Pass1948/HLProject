@@ -17,6 +17,7 @@ public class DeckSelUI : MonoBehaviour
     [SerializeField] private Button HeartDeck;
     [SerializeField] private Button SpadeDeck;
     [SerializeField] private Button ClubDeck;
+    [SerializeField] private Button gamePlayButton;
 
     [SerializeField] private Button BackToMenuBtn;
     
@@ -33,6 +34,7 @@ public class DeckSelUI : MonoBehaviour
         SpadeDeck.onClick.AddListener(IsSpade);
         ClubDeck.onClick.AddListener(IsClub);
         BackToMenuBtn.onClick.AddListener(BackToMenu);
+        gamePlayButton.onClick.AddListener(OnGameStart);
         UpdateView();
         selectedClip = GameManager.Resource.Load<AudioClip>(Path.Sound + "LOAD_CASSETTE_08");
     }
