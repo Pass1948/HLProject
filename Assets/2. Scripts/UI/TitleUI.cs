@@ -13,10 +13,19 @@ public class TitleUI : BaseUI
     [SerializeField] private GameObject deckSelUI;
     [SerializeField] private GameObject settingUI;
 
+    private AudioClip audioClip;
+
+    private void Awake()
+    {
+        GameManager.Sound.PlayBGM(GameManager.Resource.Load<AudioClip>(Path.Sound + "Paladin’s Dash"));
+    }
+
     private void OnEnable()
     {
         startButton.onClick.AddListener(StartGame);
         settingButton.onClick.AddListener(OpenSetting);
+        exitButton.onClick.AddListener(ExitButton);
+        restartButton.onClick.AddListener(ReLoadPlay);
     }
 
     private void StartGame()
@@ -25,10 +34,28 @@ public class TitleUI : BaseUI
         //게임 씬 로드하는건 DeckSelUI에 옮겨놓고 DeckSelUI를 키게 작업해놓겠습니다
         //deckSelUI.SetActive(true);
         deckSelUI.SetActive(true);
+        GameManager.Sound.PlayUISfx();
     }
 
     private void OpenSetting()
     {
         Instantiate(settingUI);
+        GameManager.Sound.PlayUISfx();
+    }
+
+    private void ReLoadPlay()
+    {  
+        GameManager.Sound.PlayUISfx();
+    }
+
+    private void ExitButton()
+    {
+#if UNITY_EDITOR
+        
+        Application.Quit();
+        
+#endif        
+
+        GameManager.Sound.PlayUISfx();
     }
 }

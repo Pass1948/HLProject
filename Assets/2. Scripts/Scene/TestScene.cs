@@ -25,6 +25,11 @@ public class TestScene : BaseScene
         GameManager.ItemControl.ItemDataSet();  // 아이템데이터 리스트 초기 세팅
         GameManager.Mouse.CreateMouse();
         GameManager.Shop.ShopInit(_stage);
+        
+        // Sound
+        var gameBgm = GameManager.Resource.Load<AudioClip>(Path.Sound + "Paladin’s Gun Style");
+        GameManager.Sound.PlayBGM(gameBgm);
+        
         if (GameManager.Unit.isInit == true)
         {
             GameManager.Unit.SetCurrentStat();
