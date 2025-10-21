@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -50,11 +51,11 @@ public class ShopUI : BaseUI
         GameManager.Event.Subscribe<List<ShopManager.ShopItem>>(EventType.ShopOffersChanged, OnOffersChanged);
         // GameManager.Event.Subscribe<(List<Ammo>, List<PowderData>)>(EventType.ShopPowderBundlePrompt, OnPowderBundlePrompt);
         GameManager.Event.Subscribe<List<Ammo>>(EventType.ShopRemoveBulletPrompt, OnRemoveBulletPrompt);
-        GameManager.Event.Subscribe(EventType.ShopPlayerCardsConfim,RebuildPlayerBullets); // 소지 카드 체크
-        GameManager.Event.Subscribe(EventType.ShopPlayerCardsConfim,PlayerHpCheck);       // 체력 체크
-        
-        healButton.onClick.AddListener(()=> shop.TryHeal());
-        rerollButton.onClick.AddListener(()=> shop.TryReroll());
+        GameManager.Event.Subscribe(EventType.ShopPlayerCardsConfim, RebuildPlayerBullets); // 소지 카드 체크
+        GameManager.Event.Subscribe(EventType.ShopPlayerCardsConfim, PlayerHpCheck); // 체력 체크
+
+        healButton.onClick.AddListener(PlayerHeal);
+        rerollButton.onClick.AddListener(OnReroll);
         removeButton.onClick.AddListener(OnRemoveBulletClicked);
         nextStageButton.onClick.AddListener(NextStage);
         settingsButton.onClick.AddListener(OnSettingButton);
@@ -159,11 +160,13 @@ public class ShopUI : BaseUI
             var ammo = bullets[i];
             int idx = i;
             var card = GameManager.UI.CreateSlotUI<ShopCardUI>(playerBulletRoot);
-            card.Bind(new ShopManager.ShopItem(ShopItemType.Bullet, ammo.ToString(),cost,ammo));
+            card.Bind(new ShopManager.ShopItem(ShopItemType.Bullet, ammo.ToString(), cost, ammo));
+            card.OnBuyCard();
             card.OpenUI();
-            card.buyButton.onClick.RemoveAllListeners();
-            card.buyButton.onClick.AddListener(() =>
+            card.playerCardBtn.onClick.RemoveAllListeners();
+            card.playerCardBtn.onClick.AddListener(() =>
             {
+                card.OnPlayerCard();
                 selectedBulletIndex = idx;
                 removeButton.interactable = true;
             });
@@ -171,7 +174,15 @@ public class ShopUI : BaseUI
         cost++;
     }
 
-    
+    private void PlayerHeal()
+    {
+        var seq = DOTween.Sequence();
+        seq.Append(healButton.transform.DOScale(2.7f, 0.2f));
+        seq.Append(healButton.transform.DOScale(2.4f, 0.2f));
+        shop.TryHeal();
+        PlayerHpCheck();
+    }
+
     private void PlayerHpCheck()
     {
         currentHp = GameManager.Unit.Player.playerModel.health;
@@ -182,6 +193,14 @@ public class ShopUI : BaseUI
     {
         float fill = (float)currentHp / (float)maxHp;
         hpBar.fillAmount = fill;
+    }
+
+    private void OnReroll()
+    {
+        var seq = DOTween.Sequence();
+        seq.Append(rerollButton.transform.DOScale(1.1f, 0.2f));
+        seq.Append(rerollButton.transform.DOScale(1f, 0.2f));
+        shop.TryReroll();
     }
 
     private void OnRemoveBulletClicked()
