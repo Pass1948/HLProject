@@ -14,6 +14,8 @@ public class BaseBoss : MonoBehaviour
     
     public void InitBoss(EntityData data)
     {
+        GameManager.Unit.boss = this;
+        
         model = new BossModel();
         model.InitData(data);
         animHandler = GetComponent<EnemyAnimHandler>();
