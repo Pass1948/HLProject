@@ -23,7 +23,7 @@ public class AttackRangeDisplay : MonoBehaviour
     private bool isKickAttack = false;
 
     public List<BaseEnemy> enemies = new List<BaseEnemy>();
-
+    public List<BaseBoss> bosses = new List<BaseBoss>();
 
 
     void Update()
@@ -113,7 +113,7 @@ public class AttackRangeDisplay : MonoBehaviour
         isInitialized = true;
     }
 
-    private void ShowRange(List<Vector3Int> rangeCells)
+    public void ShowRange(List<Vector3Int> rangeCells)
     {
         if (attackRangeTilemap != null)
         {
@@ -127,7 +127,7 @@ public class AttackRangeDisplay : MonoBehaviour
         }
     }
 
-    private void ClearRange()
+    public void ClearRange()
     {
         if (attackRangeTilemap != null)
         {

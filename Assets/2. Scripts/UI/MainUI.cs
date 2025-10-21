@@ -109,12 +109,14 @@ public class MainUI : BaseUI
         RefreshMovement();
         RefreshPlayerHP();
         RefreshVehicleHP();
+
     }
 
     
     private void OnTurnEnd()
     {
         GameManager.TurnBased.ChangeTo<PlayerTurnEndState>("Force");
+        GameManager.Sound.PlayUISfx();
     }
 
     private void OnReload()
@@ -124,22 +126,25 @@ public class MainUI : BaseUI
         {
             bikeControllBtnObj.ToggleBikeControll();
         }
+        GameManager.Sound.PlayUISfx();
     }
 
     private void DeckToggle()
     {
         deckBtnObj.ToggleDeck();
+        GameManager.Sound.PlayUISfx();
     }
 
     private void DiscardToggle()
     {
         discardBtnObj.ToggleDiscard();
+        GameManager.Sound.PlayUISfx();
     }
 
     // ReSharper disable Unity.PerformanceAnalysis
     private void RefreshVehicleUI()
     {
-        switch (GameManager.Unit.Vehicle.vehicleModel.condition)    // 다들 여기서 에러남
+        switch (GameManager.Unit.Vehicle.vehicleModel.condition)
         {
             case VehicleCondition.Riding: // 위로 올라탔을 때
                 rerollBtn.gameObject.SetActive(true);
@@ -201,11 +206,13 @@ public class MainUI : BaseUI
         GameManager.Mouse.HidePlayerRange();
         if (GameManager.Mouse.isShowRange == false) return;
         kickBtnObj.ToggleKick();
+        GameManager.Sound.PlayUISfx();
     }
 
     void ToggleMove()
     {
         moveBtnObj.ToggleMove();
+        GameManager.Sound.PlayUISfx();
     }
 
     private bool IsNearVehicle()
@@ -229,7 +236,7 @@ public class MainUI : BaseUI
         {
             bikeControllBtnObj.ToggleBikeControll();
         }
-        
+        GameManager.Sound.PlayUISfx();
     }
     // 내리는 로직
     private void GetOff()
@@ -239,6 +246,7 @@ public class MainUI : BaseUI
         {
             bikeControllBtnObj.ToggleBikeControll();
         }
+        GameManager.Sound.PlayUISfx();
     }
     // 수리 // 오토바이 버튼에 넣어주면 된다.
     private void RepairButton()
@@ -248,17 +256,19 @@ public class MainUI : BaseUI
         {
             bikeControllBtnObj.ToggleBikeControll();
         }
+        GameManager.Sound.PlayUISfx();
         GameManager.TurnBased.ChangeTo<PlayerTurnEndState>("Force");
     }
     private void BikeToggle()
     {
         bikeControllBtnObj.ToggleBikeControll();
+        GameManager.Sound.PlayUISfx();
     }
 
     private void RelicToggle()
     {
         RelicBtnObj.ToggleRelicList();
-
+        GameManager.Sound.PlayUISfx();
     }
 
     // 테스트 버전
@@ -296,10 +306,10 @@ public class MainUI : BaseUI
        }
        
        if(remain <= 0)
-        {
+       {
             rerollBtn.interactable = false;
             return;
-        }
+       }
     }
 
     private void InitReloadUI()
@@ -348,6 +358,7 @@ public class MainUI : BaseUI
     private void OpenSettings()
     {
         Instantiate(settingUI);
+        GameManager.Sound.PlayUISfx();
     }
 
     //숫자 가이드 패널 열렸다 닫혔다

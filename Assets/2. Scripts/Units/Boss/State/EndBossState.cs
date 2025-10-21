@@ -4,22 +4,22 @@ using UnityEngine;
 
 public class EndBossState : BaseBossState
 {
-    public EndBossState(BossStateMachine stateMachine, BossController controller, EnemyAnimHandler animHandler) : base(stateMachine, controller, animHandler)
-    {
-    }
+    public EndBossState(BossStateMachine stateMachine, BossController controller, EnemyAnimHandler animHandler) 
+        : base(stateMachine, controller, animHandler) { }
 
     public override void Enter()
     {
-        throw new System.NotImplementedException();
+        controller.ReduceCooldown();
+        controller.CompleteTurn();
+
+        stateMachine.ChangeState(stateMachine.IdleState);
     }
 
     public override void Exit()
     {
-        throw new System.NotImplementedException();
     }
 
     public override void Excute()
     {
-        throw new System.NotImplementedException();
     }
 }

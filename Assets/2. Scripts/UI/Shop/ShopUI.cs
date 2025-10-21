@@ -2,35 +2,38 @@ using DG.Tweening;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.Serialization;
+using UnityEngine.UI; 
 
 public class ShopUI : BaseUI
 {
-    [Header("참조(인스펙터에서 할당)")] private ShopManager shop;
+    [Header("참조(인스펙터에서 할당)")]
+    private ShopManager shop;
 
     private PlayerHandler player;
     [SerializeField] private Transform bulletRoot;
     [SerializeField] private Transform relicRoot;
     [SerializeField] private Transform playerBulletRoot;
     [SerializeField] private Image hpBar;
-
+    
     [SerializeField] private TextMeshProUGUI rerollCostText;
     [SerializeField] private TextMeshProUGUI playerMoneyText;
-    [SerializeField] private TextMeshProUGUI healCost;
+    [SerializeField] private TextMeshProUGUI healCostText;
 
     private int selectedBulletIndex = -1;
     private int maxHp;
     private int currentHp;
-
-    private bool isOn = false;
-
+    
+    private bool isOn =  false;
+    
     public Button rerollButton;
     public Button healButton;
     public Button removeButton;
     public Button nextStageButton;
     public Button settingsButton;
-
-
+    
+    public GameObject settingsPanel;
+    
     private readonly List<GameObject> spawned = new();
 
     private void Awake()
@@ -39,6 +42,9 @@ public class ShopUI : BaseUI
         player = GameManager.Unit.Player.playerHandler;
     }
 
+    private void Start()
+    {
+    }
     private void OnEnable()
     {
         // EventBus 구독
@@ -54,8 +60,9 @@ public class ShopUI : BaseUI
         nextStageButton.onClick.AddListener(NextStage);
         settingsButton.onClick.AddListener(OnSettingButton);
         if (shop != null) Rebuild(shop.offers);
-
+        
         RebuildPlayerBullets();
+        
     }
 
 
@@ -111,7 +118,7 @@ public class ShopUI : BaseUI
         ClearSection(relicRoot);
         removeButton.interactable = false;
         PlayerMoneyText();
-
+        
         if (offers == null) return;
 
         // 카드 생성 offers 기준으로
@@ -120,28 +127,25 @@ public class ShopUI : BaseUI
             var data = offers[i];
             int idx = i;
 
-            Transform parent = data.type 
-                switch
-                {
-                    ShopItemType.Bullet => bulletRoot,
-                    ShopItemType.SpecialTotem => relicRoot,
-                    _ => null
-                };
-            if (parent == null) continue;
-
-            if (data.type == ShopItemType.Bullet)   // 총알만 UI에 반영되게 조건문추가
+            Transform parent = data.type switch
             {
-                ShopCardUI card = null;
-                card = GameManager.UI.CreateSlotUI<ShopCardUI>(parent);
-                card.Bind(data);
-                card.buyButton.onClick.RemoveAllListeners();
-                card.buyButton.onClick.AddListener(() =>
-                {
-                    shop.TryBuy(idx);
-                    UpdateRerollLabel();
-                });
-                spawned.Add(card.gameObject);
-            }
+                ShopItemType.Bullet => bulletRoot,
+                ShopItemType.SpecialTotem => relicRoot,
+                _ => null
+            };
+            if(parent == null) continue;
+            
+            ShopCardUI card = null;
+            card = GameManager.UI.CreateSlotUI<ShopCardUI>(parent);
+            card.Bind(data);
+            card.buyButton.onClick.RemoveAllListeners();
+            card.buyButton.onClick.AddListener(() =>
+            {
+                shop.TryBuy(idx);
+                UpdateRerollLabel();
+                UpdateHealLabel();
+            });
+            spawned.Add(card.gameObject);
         }
         UpdateRerollLabel();
     }
@@ -150,7 +154,7 @@ public class ShopUI : BaseUI
     {
         int cost = 1;
         ClearSection(playerBulletRoot);
-        var bullets = GameManager.ItemControl.drawPile;
+        var bullets = GameManager.ItemControl.drawPile; 
         for (int i = 0; i < bullets.Count; i++)
         {
             var ammo = bullets[i];
@@ -167,7 +171,6 @@ public class ShopUI : BaseUI
                 removeButton.interactable = true;
             });
         }
-
         cost++;
     }
 
@@ -184,6 +187,10 @@ public class ShopUI : BaseUI
     {
         currentHp = GameManager.Unit.Player.playerModel.health;
         maxHp = GameManager.Unit.Player.playerModel.maxHealth;
+    }
+
+    private void PlayerHpBar()
+    {
         float fill = (float)currentHp / (float)maxHp;
         hpBar.fillAmount = fill;
     }
@@ -208,18 +215,17 @@ public class ShopUI : BaseUI
                 RebuildPlayerBullets();
             }
         }
-
+        GameManager.Sound.PlayUISfx();
         selectedBulletIndex = -1;
         removeButton.interactable = false; // 선택 초기화 시 비활성
     }
-
     private void ClearSection(Transform root)
     {
         for (int i = root.childCount - 1; i >= 0; i--)
             Destroy(root.GetChild(i).gameObject);
     }
 
-    // 리롤
+    // 리롤 가격
     private void UpdateRerollLabel()
     {
         if (rerollCostText != null && shop != null)
@@ -233,11 +239,17 @@ public class ShopUI : BaseUI
             playerMoneyText.text = $"{player.playerMonney}";
     }
 
+    // 힐 가격
+    private void UpdateHealLabel()
+    {
+        if (healCostText != null)
+            healCostText.text = $"{shop.healCost}";
+    }
     // 세팅 버튼
     private void OnSettingButton()
     {
         isOn = !isOn;
-        GameManager.UI.OpenUI<SettingUI>();
+        settingsPanel.SetActive(isOn);
     }
 
     private void NextStage()
@@ -249,5 +261,6 @@ public class ShopUI : BaseUI
         GameManager.SaveLoad.nextSceneIndex += nextStageIndex;
         GameManager.Stage.stageId++;
         GameManager.SceneLoad.RestartScene();
+        GameManager.Sound.PlayUISfx();
     }
 }

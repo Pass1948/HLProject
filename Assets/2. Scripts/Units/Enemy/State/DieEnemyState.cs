@@ -12,9 +12,6 @@ public class DieEnemyState : BaseEnemyState
         if (controller.isDie)
         {
             animHandler.OnDie();
-            // �ִϸ��̼� ���
-
-            // �� �ı�
             Exit();
         }
     }

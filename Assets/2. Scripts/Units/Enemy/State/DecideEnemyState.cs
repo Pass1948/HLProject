@@ -11,9 +11,7 @@ public class DecideEnemyState : BaseEnemyState
     {
         DecidePreviewPath();
     }
-
     
-
     public override void Excute()
     {
     }
