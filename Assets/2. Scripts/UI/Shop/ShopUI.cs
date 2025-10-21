@@ -146,6 +146,10 @@ public class ShopUI : BaseUI
                 });
                 spawned.Add(card.gameObject);
             }
+/*            if(data.type == ShopItemType.SpecialTotem)
+            {
+
+            }*/
         }
         UpdateRerollLabel();
         UpdateHPLabel();
