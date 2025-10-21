@@ -146,6 +146,11 @@ public class TurnBasedManager : MonoBehaviour
         currentEnemy = null;
         enemyPhaseActive = true;
 
+        if (GameManager.Unit.boss != null && GameManager.Unit.boss.controller !=null)
+        {
+            GameManager.Unit.boss.controller.StartTurn();
+        }
+
         List<BaseEnemy> monsters = GameManager.Unit.enemies;
         foreach (var enemy in monsters)
         {
@@ -196,9 +201,7 @@ public class TurnBasedManager : MonoBehaviour
         if (currentEnemy == null)
         {
             enemyPhaseActive = false;
-            
             GameManager.Event.Publish(EventType.EnemyTurnEnd);
-            
             ChangeTo<ClearCheckState>();    // 적 상태종료
         }
     }

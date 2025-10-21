@@ -81,7 +81,7 @@ public class BossController : MonoBehaviour
         }
     }
     
-    private void StartTurn()
+    public void StartTurn()
     {
         // 이미 죽었으면 무시
         if (isDie) return;
