@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -48,7 +49,7 @@ public class ShopUI : BaseUI
         GameManager.Event.Subscribe(EventType.ShopPlayerCardsConfim, PlayerHpCheck); // 체력 체크
 
         healButton.onClick.AddListener(PlayerHeal);
-        rerollButton.onClick.AddListener(() => shop.TryReroll());
+        rerollButton.onClick.AddListener(OnReroll);
         removeButton.onClick.AddListener(OnRemoveBulletClicked);
         nextStageButton.onClick.AddListener(NextStage);
         settingsButton.onClick.AddListener(OnSettingButton);
@@ -172,6 +173,9 @@ public class ShopUI : BaseUI
 
     private void PlayerHeal()
     {
+        var seq = DOTween.Sequence();
+        seq.Append(healButton.transform.DOScale(2.7f, 0.2f));
+        seq.Append(healButton.transform.DOScale(2.4f, 0.2f));
         shop.TryHeal();
         PlayerHpCheck();
     }
@@ -182,6 +186,14 @@ public class ShopUI : BaseUI
         maxHp = GameManager.Unit.Player.playerModel.maxHealth;
         float fill = (float)currentHp / (float)maxHp;
         hpBar.fillAmount = fill;
+    }
+
+    private void OnReroll()
+    {
+        var seq = DOTween.Sequence();
+        seq.Append(rerollButton.transform.DOScale(1.1f, 0.2f));
+        seq.Append(rerollButton.transform.DOScale(1f, 0.2f));
+        shop.TryReroll();
     }
 
     private void OnRemoveBulletClicked()
