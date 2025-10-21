@@ -271,7 +271,7 @@ public class SpawnController : MonoBehaviour
                 switch (entityId)
                 {
                     case 2011:
-                        bossPrefabName = "Boss"; // 7008 Boss
+                        bossPrefabName = "Torial"; // 7008 Boss
                         break;
                     case 2012:
                         bossPrefabName = "Boss2"; // 7016 Boss
