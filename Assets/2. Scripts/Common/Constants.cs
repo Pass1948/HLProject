@@ -126,7 +126,7 @@ public static class TileID
     public const int Vehicle = 3;
     public const int Obstacle = 4;
     public const int Enemy = 5;
-    public const int Obstacle_B = 6;
+    public const int Boss = 6;
 }
 
 

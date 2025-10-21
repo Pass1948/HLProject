@@ -23,7 +23,7 @@ public class AttackRangeDisplay : MonoBehaviour
     private bool isKickAttack = false;
 
     public List<BaseEnemy> enemies = new List<BaseEnemy>();
-
+    public List<BaseBoss> bosses = new List<BaseBoss>();
 
 
     void Update()
