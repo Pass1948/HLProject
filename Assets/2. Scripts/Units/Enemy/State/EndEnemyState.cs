@@ -19,8 +19,5 @@ public class EndEnemyState : BaseEnemyState
 
     public override void Exit()
     {
-
     }
-
-
 }

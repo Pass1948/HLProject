@@ -12,6 +12,8 @@ public class EndBossState : BaseBossState
         controller.ReduceCooldown();
         controller.CompleteTurn();
 
+        controller.startTurn = false;
+        controller.isDone = true;
         stateMachine.ChangeState(stateMachine.IdleState);
     }
 
