@@ -22,6 +22,7 @@ public class GolemWarningState : WarningBossState
         map.attackRange.ShowRange(range);
         controller.warningCells = range;
 
+        controller.canPattern = true;
         yield return new WaitForSeconds(1f);
         
         stateMachine.ChangeState(stateMachine.EndState);

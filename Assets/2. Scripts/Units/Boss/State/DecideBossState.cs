@@ -9,7 +9,39 @@ public class DecideBossState : BaseBossState
 
     public override void Enter()
     {
-        DecidePreviewPath();
+        // 플레이어가 패턴 범위 안에 있고 패턴 사용이 가능하다 -> 경고
+        // 경고를 한 이후 -> 패턴 공격
+        // 패턴이 쿨타임이다 -> 이동 or 일반 공격
+
+        Vector3Int bossPos = controller.GridPos;
+        Vector3Int playerPos = controller.TargetPos;
+        int distance = GetDistanceTarget(bossPos, playerPos);
+
+        if (controller.canPattern)
+        {
+            controller.canPattern = false;
+            stateMachine.ChangeState(stateMachine.PatternState);
+            return;
+        }
+
+        if (controller.isCooldown)
+        {
+            if (distance <= controller.maxAttackRange)
+                stateMachine.ChangeState(stateMachine.AttackState);
+            else
+                stateMachine.ChangeState(stateMachine.MoveState);
+            return;
+        }
+
+        bool isPlayerInRange = distance <= controller.patternRange;
+        if (isPlayerInRange)
+        {
+            stateMachine.ChangeState(stateMachine.WarningState);
+        }
+        else
+        {
+            stateMachine.ChangeState(stateMachine.MoveState);
+        }
     }
 
     public override void Exit()
