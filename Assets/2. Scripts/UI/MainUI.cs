@@ -154,7 +154,7 @@ public class MainUI : BaseUI
                 break;
             case VehicleCondition.Repair: // 수리 하고 있을 때
                 rerollBtn.gameObject.SetActive(false);
-                repairBtn.gameObject.SetActive(true);
+                if(CheckVehicleHp()) repairBtn.gameObject.SetActive(true);
                 mountBtn.gameObject.SetActive(false);
                 getOffBtn.gameObject.SetActive(false);
                 break;
@@ -162,7 +162,7 @@ public class MainUI : BaseUI
                 if (IsNearVehicle()) // 위치가 일치해 있을 때 수리, 리롤
                 {
                     rerollBtn.gameObject.SetActive(true);
-                    repairBtn.gameObject.SetActive(true);
+                    if(CheckVehicleHp()) repairBtn.gameObject.SetActive(true);
                     mountBtn.gameObject.SetActive(false);
                     getOffBtn.gameObject.SetActive(false);
                 }
@@ -178,12 +178,12 @@ public class MainUI : BaseUI
                 if (IsNearVehicle()) // 위치가 일치해 있을 때 수리,
                 {
                     rerollBtn.gameObject.SetActive(true);
-                    repairBtn.gameObject.SetActive(true);
+                    if(CheckVehicleHp()) repairBtn.gameObject.SetActive(true);
                     mountBtn.gameObject.SetActive(true);
                     getOffBtn.gameObject.SetActive(false);
                 }
                 else if(IsSideVehicle())// 주변에 있어도 
-                    rerollBtn.gameObject.SetActive(true);
+                    if(CheckVehicleHp()) repairBtn.gameObject.SetActive(true);
                 else
                 {
                     rerollBtn.gameObject.SetActive(false);
@@ -209,19 +209,25 @@ public class MainUI : BaseUI
         GameManager.Sound.PlayUISfx();
     }
 
+
     void ToggleMove()
     {
         moveBtnObj.ToggleMove();
         GameManager.Sound.PlayUISfx();
     }
-
+    // 오토바이와 플레이어의 위치가 겹치는지 쳌
     private bool IsNearVehicle()
     {
         Vector3 vehiclePos = GameManager.Unit.Vehicle.transform.position;
         Vector3  playerPos = GameManager.Unit.Player.transform.position;
         return playerPos == vehiclePos;
     }
-
+    // 오토바이 체력 체크
+    private bool CheckVehicleHp()
+    {
+        return GameManager.Unit.Vehicle.vehicleModel.currentHealth == 0 ? true : false;
+    }
+    // 오토바이와 플레이어의 위치값이 1이하인지
     private bool IsSideVehicle()
     {
         Vector3 vehiclePos = GameManager.Unit.Vehicle.transform.position;
@@ -269,12 +275,6 @@ public class MainUI : BaseUI
     {
         RelicBtnObj.ToggleRelicList();
         GameManager.Sound.PlayUISfx();
-    }
-
-    // 테스트 버전
-    private void BikeTest()
-    {
-        GameManager.Unit.Vehicle.vehicleHandler.DamageVehicle(3);
     }
 
     
