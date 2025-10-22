@@ -87,11 +87,11 @@ public class RelicUI : MonoBehaviour
             if (titleTf) titleTf.gameObject.SetActive(false);
 
             // 구매 비활성
-            if (card.bulletBtn)
+            if (card.buyBulletBtn)
             {
-                card.bulletBtn.interactable = false;
-                card.bulletBtn.transition = Selectable.Transition.None;
-                var nav = card.bulletBtn.navigation; nav.mode = Navigation.Mode.None; card.bulletBtn.navigation = nav;
+                card.buyBulletBtn.interactable = false;
+                card.buyBulletBtn.transition = Selectable.Transition.None;
+                var nav = card.buyBulletBtn.navigation; nav.mode = Navigation.Mode.None; card.bulletBtn.navigation = nav;
             }
 
             var rt = card.transform as RectTransform;
