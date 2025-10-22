@@ -10,7 +10,7 @@ public class ShopCardUI : BaseUI
 {
     public Button bulletBtn;
     public Button rellicBtn;
-
+    public Button buyBulletBtn;
     Animator animator;
     private static ShopCardUI currentSelectedCard;
 
@@ -31,11 +31,10 @@ public class ShopCardUI : BaseUI
     [SerializeField] private TextMeshProUGUI suitText2;
     [SerializeField] private Image buyBulletBG1;
     [SerializeField] private Image buyBulletBG2;
-    [SerializeField] private Button buyBulletBtn;
+
 
     [Header("=====유물=====")]
     [SerializeField] private GameObject rellicUI;
-    [SerializeField] private GameObject rellicInfoUI;
     [SerializeField] private TextMeshProUGUI rellicName;
     [SerializeField] private TextMeshProUGUI rellicDesc;
 
@@ -77,19 +76,22 @@ public class ShopCardUI : BaseUI
         currentSelectedCard = this;
     }
 
-    public void OnPlayerCard()
+    public void OnPlayerCard(GameObject remove)
     {
         if (currentSelectedCard != null && currentSelectedCard != this)
         {
             currentSelectedCard.animator.SetBool("IsClickBuyBulletBtn", false);
+            remove.SetActive(false);
         }
         if (currentSelectedCard == this)
         {
             animator.SetBool("IsClickBuyBulletBtn", false);
+            remove.SetActive(false);
             currentSelectedCard = null;
             return;
         }
         animator.SetBool("IsClickBuyBulletBtn", true);
+        remove.SetActive(true);
         currentSelectedCard = this;
     }
 

@@ -18,6 +18,7 @@ public class ShopUI : BaseUI
     [SerializeField] private TextMeshProUGUI playerMoneyText;
     [SerializeField] private TextMeshProUGUI healCost;
 
+
     private int selectedBulletIndex = -1;
     private int maxHp;
     private int currentHp;
@@ -30,6 +31,8 @@ public class ShopUI : BaseUI
     public Button nextStageButton;
     public Button settingsButton;
 
+    [SerializeField] private Button rellicInvenBtn;
+    [SerializeField] private GameObject PlayerBulletsInfoUI;
 
     private readonly List<GameObject> spawned = new();
 
@@ -55,6 +58,7 @@ public class ShopUI : BaseUI
         removeButton.onClick.AddListener(OnRemoveBulletClicked);
         nextStageButton.onClick.AddListener(NextStage);
         settingsButton.onClick.AddListener(OnSettingButton);
+        rellicInvenBtn.onClick.AddListener(OnOpenInven);
         if (shop != null) Rebuild(shop.offers);
 
         RebuildPlayerBullets();
@@ -91,6 +95,21 @@ public class ShopUI : BaseUI
     //     });
     // }
 
+
+    //===== 인벤토리 관련 로직 =====
+    private void OnOpenInven()
+    {
+        bool willOpen = !PlayerBulletsInfoUI.activeSelf;
+        PlayerBulletsInfoUI.SetActive(willOpen);
+
+        string spriteName = willOpen
+            ? "Chest_Luckybox_Bronze_Open"
+            : "Chest_Luckybox_Bronze";
+
+        rellicInvenBtn.image.sprite = GameManager.Resource.Load<Sprite>(Path.UI + "Image/" + spriteName);
+    }
+
+    //===== 상점에 총알과 아이템 배치 관련 로직 =====
     private void OnRemoveBulletPrompt(List<Ammo> candidates)
     {
         var modal = GameManager.UI.GetUI<RemoveBulletModalUI>();
@@ -130,7 +149,7 @@ public class ShopUI : BaseUI
                 ShopItemType.SpecialTotem => relicRoot,
                 _ => null
             };
-            if(data.type == ShopItemType.Bullet)
+            if (data.type == ShopItemType.Bullet)
             {
                 if (parent == null) continue;
                 ShopCardUI card = null;
@@ -146,7 +165,7 @@ public class ShopUI : BaseUI
                 spawned.Add(card.gameObject);
             }
 
-            if(data.type == ShopItemType.SpecialTotem)
+            if (data.type == ShopItemType.SpecialTotem)
             {
                 if (parent == null) continue;
                 ShopCardUI card = null;
@@ -163,7 +182,7 @@ public class ShopUI : BaseUI
             }
 
         }
-           
+
         UpdateRerollLabel();
         UpdateHPLabel();
     }
@@ -181,10 +200,10 @@ public class ShopUI : BaseUI
             card.CardBind(new ShopManager.ShopItem(ShopItemType.Bullet, ammo.ToString(), cost, ammo));
             card.OnBuyCard();
             card.OpenUI();
-            card.bulletBtn.onClick.RemoveAllListeners();
-            card.bulletBtn.onClick.AddListener(() =>
+            card.buyBulletBtn.onClick.RemoveAllListeners();
+            card.buyBulletBtn.onClick.AddListener(() =>
             {
-                card.OnPlayerCard();
+                card.OnPlayerCard(removeButton.gameObject);
                 selectedBulletIndex = idx;
                 removeButton.interactable = true;
             });
@@ -236,6 +255,7 @@ public class ShopUI : BaseUI
 
         selectedBulletIndex = -1;
         removeButton.interactable = false; // 선택 초기화 시 비활성
+        removeButton.gameObject.SetActive(false);
     }
 
     private void ClearSection(Transform root)
@@ -251,7 +271,7 @@ public class ShopUI : BaseUI
             rerollCostText.text = "Ð" + shop.rerollCost.ToString();
     }
 
-// HP cost
+    // HP cost
     private void UpdateHPLabel()
     {
         if (healCost != null && shop != null)
