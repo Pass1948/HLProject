@@ -12,7 +12,7 @@ public class DecideBossState : BaseBossState
         // 플레이어가 패턴 범위 안에 있고 패턴 사용이 가능하다 -> 경고
         // 경고를 한 이후 -> 패턴 공격
         // 패턴이 쿨타임이다 -> 이동 or 일반 공격
-
+        Debug.Log("Decide boss state");
         Vector3Int bossPos = controller.GridPos;
         Vector3Int playerPos = controller.TargetPos;
         int distance = GetDistanceTarget(bossPos, playerPos);
@@ -34,6 +34,7 @@ public class DecideBossState : BaseBossState
         }
 
         bool isPlayerInRange = distance <= controller.patternRange;
+        Debug.Log(isPlayerInRange);
         if (isPlayerInRange)
         {
             stateMachine.ChangeState(stateMachine.WarningState);
@@ -120,14 +121,12 @@ public class DecideBossState : BaseBossState
             {
                 Vector3Int candidate = new Vector3Int(enemyPos.x + dx, enemyPos.y + dy, 0);
 
-                // �� ���̰� �̵� �����ؾ� ��
                 if (!GameManager.Map.IsMovable(candidate))
                     continue;
-
-                // �÷��̾���� �Ÿ�
+                
                 int dist = GetDistanceTarget(candidate, playerPos);
 
-                if (dist > bestDist) // �� �ָ� �� �� �ִ� ĭ
+                if (dist > bestDist)
                 {
                     List<Vector3Int> path = GameManager.Map.FindPath(enemyPos, candidate);
                     if (path != null && path.Count <= moveRange)

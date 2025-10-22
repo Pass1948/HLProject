@@ -30,7 +30,7 @@ public class AttackRangeDisplay : MonoBehaviour
     {
         if (!isInitialized || (currentRank == 0 && !isKickAttack))
         {
-            ClearRange();
+            // ClearRange();
             GameManager.Map.ClearAttackTargets();
             return;
         }

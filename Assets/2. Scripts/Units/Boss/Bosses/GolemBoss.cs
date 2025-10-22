@@ -11,8 +11,9 @@ public class GolemBoss : BaseBoss
 
         cooldown = 2;
         patternPower = model.attack * 5;
+        patternRange = 3;
 
-        controller.SetController(cooldown, patternPower);
+        controller.SetController(cooldown, patternPower, patternRange);
         
         controller.stateMachine.SetPattern(
             new GolemWarningState(controller.stateMachine, controller, animHandler),

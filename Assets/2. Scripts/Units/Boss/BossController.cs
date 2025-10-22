@@ -53,10 +53,12 @@ public class BossController : MonoBehaviour
         RunStateMachine();
     }
 
-    public void SetController(int cooldown, int patternPower)
+    public void SetController(int cooldown, int patternPower, int patternRange)
     {
         this.cooldown = cooldown;
+        this.remainCooldown = 0;
         this.patternPower = patternPower;
+        this.patternRange = patternRange;
     }
 
     private void RunStateMachine()
@@ -122,8 +124,7 @@ public class BossController : MonoBehaviour
             Debug.LogWarning("길이 비었음");
             yield break;
         }
-
-
+        
         foreach (var cell in path)
         {
             Vector3 targetPos = GameManager.Map.tilemap.GetCellCenterWorld(cell);
