@@ -146,6 +146,11 @@ public class TurnBasedManager : MonoBehaviour
         currentEnemy = null;
         enemyPhaseActive = true;
 
+        if (GameManager.Unit.boss != null && GameManager.Unit.boss.controller !=null)
+        {
+            GameManager.Unit.boss.controller.StartTurn();
+        }
+        
         List<BaseEnemy> monsters = GameManager.Unit.enemies;
         foreach (var enemy in monsters)
         {

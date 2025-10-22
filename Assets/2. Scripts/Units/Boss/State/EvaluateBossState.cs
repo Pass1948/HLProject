@@ -10,7 +10,7 @@ public class EvaluateBossState : BaseBossState
     public override void Enter()
     {
         // 쿨타임 만들기
-        
+        Debug.Log("Evaluate boss state");
         if(GameManager.Unit.Player.playerModel.die)
         {
             stateMachine.ChangeState(stateMachine.EndState);

@@ -293,7 +293,7 @@ public class SpawnController : MonoBehaviour
                     continue;
                 }
 
-                Debug.Log($"보스 Entity ID {entityId} 확인. 프리팹 로드 성공.");
+                // Debug.Log($"보스 Entity ID {entityId} 확인. 프리팹 로드 성공.");
 
                 // 고정 좌표
                 const int BossX = 7;
@@ -330,8 +330,8 @@ public class SpawnController : MonoBehaviour
                 // bosses 리스트에 보스 추가
                 bosses.Add(baseBoss);
                 FindObjectOfType<AttackRangeDisplay>()?.bosses.Add(baseBoss);
-                Debug.Log(
-                    $"보스 ID {entityId} ({bossPrefabName})가 ({BossX}, {BossY})에 성공적으로 소환되었습니다.");
+                // Debug.Log(
+                    // $"보스 ID {entityId} ({bossPrefabName})가 ({BossX}, {BossY})에 성공적으로 소환되었습니다.");
                 
                 continue;
             }

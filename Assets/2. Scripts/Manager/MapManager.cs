@@ -323,7 +323,7 @@ public class MapManager : MonoBehaviour
 
         sb.AppendLine("-----------------------------------------");
 
-        Debug.Log(sb.ToString());
+        // Debug.Log(sb.ToString());
     }
 
 }
