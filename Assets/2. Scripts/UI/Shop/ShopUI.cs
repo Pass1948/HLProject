@@ -130,27 +130,40 @@ public class ShopUI : BaseUI
                 ShopItemType.SpecialTotem => relicRoot,
                 _ => null
             };
-            if (parent == null) continue;
-
-            if (data.type == ShopItemType.Bullet)   // 총알만 UI에 반영되게 조건문추가
+            if(data.type == ShopItemType.Bullet)
             {
+                if (parent == null) continue;
                 ShopCardUI card = null;
                 card = GameManager.UI.CreateSlotUI<ShopCardUI>(parent);
-                card.Bind(data);
-                card.buyButton.onClick.RemoveAllListeners();
-                card.buyButton.onClick.AddListener(() =>
+                card.CheckItemType(data);
+                card.CardBind(data);
+                card.bulletBtn.onClick.RemoveAllListeners();
+                card.bulletBtn.onClick.AddListener(() =>
                 {
                     shop.TryBuy(idx);
                     UpdateRerollLabel();
-                    UpdateHPLabel();
                 });
                 spawned.Add(card.gameObject);
             }
-/*            if(data.type == ShopItemType.SpecialTotem)
-            {
 
-            }*/
+            if(data.type == ShopItemType.SpecialTotem)
+            {
+                if (parent == null) continue;
+                ShopCardUI card = null;
+                card = GameManager.UI.CreateSlotUI<ShopCardUI>(parent);
+                card.CheckItemType(data);
+                card.RellicBind(data, data.relic.description);
+                card.rellicBtn.onClick.RemoveAllListeners();
+                card.rellicBtn.onClick.AddListener(() =>
+                {
+                    shop.TryBuy(idx);
+                    UpdateRerollLabel();
+                });
+                spawned.Add(card.gameObject);
+            }
+
         }
+           
         UpdateRerollLabel();
         UpdateHPLabel();
     }
@@ -165,11 +178,11 @@ public class ShopUI : BaseUI
             var ammo = bullets[i];
             int idx = i;
             var card = GameManager.UI.CreateSlotUI<ShopCardUI>(playerBulletRoot);
-            card.Bind(new ShopManager.ShopItem(ShopItemType.Bullet, ammo.ToString(), cost, ammo));
+            card.CardBind(new ShopManager.ShopItem(ShopItemType.Bullet, ammo.ToString(), cost, ammo));
             card.OnBuyCard();
             card.OpenUI();
-            card.playerCardBtn.onClick.RemoveAllListeners();
-            card.playerCardBtn.onClick.AddListener(() =>
+            card.bulletBtn.onClick.RemoveAllListeners();
+            card.bulletBtn.onClick.AddListener(() =>
             {
                 card.OnPlayerCard();
                 selectedBulletIndex = idx;
@@ -188,7 +201,7 @@ public class ShopUI : BaseUI
         seq.Append(healButton.transform.DOScale(2.7f, 0.2f));
         seq.Append(healButton.transform.DOScale(2.4f, 0.2f));
         shop.TryHeal();
-        healCost.text = shop.healCost.ToString();
+        healCost.text = "Ð" + shop.healCost.ToString();
         PlayerHpCheck();
     }
 
@@ -203,8 +216,8 @@ public class ShopUI : BaseUI
     private void OnReroll()
     {
         var seq = DOTween.Sequence();
-        seq.Append(rerollButton.transform.DOScale(1.1f, 0.2f));
-        seq.Append(rerollButton.transform.DOScale(1f, 0.2f));
+        seq.Append(rerollButton.transform.DOScale(2.7f, 0.2f));
+        seq.Append(rerollButton.transform.DOScale(2.4f, 0.2f));
         shop.TryReroll();
     }
 
@@ -235,21 +248,21 @@ public class ShopUI : BaseUI
     private void UpdateRerollLabel()
     {
         if (rerollCostText != null && shop != null)
-            rerollCostText.text = shop.rerollCost.ToString();
+            rerollCostText.text = "Ð" + shop.rerollCost.ToString();
     }
 
 // HP cost
     private void UpdateHPLabel()
     {
         if (healCost != null && shop != null)
-            healCost.text = shop.healCost.ToString();
+            healCost.text = "Ð" + shop.healCost.ToString();
     }
 
     // 플레이어 돈
     private void PlayerMoneyText()
     {
         if (playerMoneyText != null)
-            playerMoneyText.text = player.playerMonney.ToString();
+            playerMoneyText.text = "Ð" + player.playerMonney.ToString();
     }
 
     // 세팅 버튼

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class DeckSelUI : MonoBehaviour
@@ -164,4 +165,19 @@ public class DeckSelUI : MonoBehaviour
         for (int i = 0; i < deckPanels.Length; i++)
             deckPanels[i].SetActive(i == deckIndex);
     }
+
+    public struct Point
+    {
+        public int x, y;
+    }
+
+
+    
+    
 }
+
+
+
+
+
+
