@@ -9,6 +9,7 @@ public class GolemPatternState : PatternBossState
 
     public override void Enter()
     {
+        Debug.Log("GolemPattern boss state");
         // 패턴 공격 사용
         controller.StartCoroutine(RunPattern());
     }
@@ -25,7 +26,7 @@ public class GolemPatternState : PatternBossState
         }
 
         GameManager.Map.attackRange.ClearRange();
-        animHandler.OnAttack();
+        animHandler.OnPattern();
         yield return new WaitForSeconds(1f);
 
         foreach (Vector3Int cell in attackCells)
@@ -37,7 +38,7 @@ public class GolemPatternState : PatternBossState
         }
 
         yield return new WaitForSeconds(0.5f);
-        
+        controller.PatternCooldown();
         stateMachine.ChangeState(stateMachine.EndState);
     }
 }
