@@ -19,11 +19,11 @@ public class Stage
 
     public void InitStage(int stageIndex)
     {
-        Debug.Log("Stage : InitStage()");
+        // Debug.Log("Stage : InitStage()");
         ClearAllData();
         stageId += stageIndex;
         stage = GameManager.Data.stageDataGroup.GetStageData(stageId);
-        Debug.Log(stageId);
+        // Debug.Log(stageId);
         mapSize = stage.size;
         for (int i = 0; i < stage.enemyList.Count; i++)
         {

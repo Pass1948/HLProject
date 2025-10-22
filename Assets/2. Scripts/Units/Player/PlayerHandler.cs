@@ -43,6 +43,10 @@ public class PlayerHandler : MonoBehaviour
     {
         var player = GameManager.Unit.Player.playerModel;
         player.currentHealth += amount;
+        if (player.currentHealth >= player.maxHealth)
+        {
+            player.currentHealth = player.maxHealth;
+        }
         Debug.Log($"체력 회복: {amount}, 현재 체력: {player.health}");
     }
     
