@@ -357,7 +357,7 @@ public class MainUI : BaseUI
 
     private void OpenSettings()
     {
-        Instantiate(settingUI);
+        GameManager.UI.OpenPopUI<SettingUI>();
         GameManager.Sound.PlayUISfx();
     }
 

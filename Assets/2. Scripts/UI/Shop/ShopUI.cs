@@ -289,7 +289,7 @@ public class ShopUI : BaseUI
     private void OnSettingButton()
     {
         isOn = !isOn;
-        GameManager.UI.OpenUI<SettingUI>();
+        GameManager.UI.OpenPopUI<SettingUI>();
     }
 
     private void NextStage()
