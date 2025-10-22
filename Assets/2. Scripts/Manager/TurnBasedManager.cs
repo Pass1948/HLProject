@@ -17,9 +17,9 @@ public class TurnBasedManager : MonoBehaviour
 
     // 현재 진행 중인 몬스터(없으면 null)
     private BaseEnemy currentEnemy;
-    
-    public bool isCamera=true;
-    
+
+    public bool isCamera = true;
+
     // 적 턴 진행 여부 플래그
     private bool enemyPhaseActive;
 
@@ -61,20 +61,20 @@ public class TurnBasedManager : MonoBehaviour
     {
         turnHFSM.FixedTick(Time.fixedDeltaTime);
     }
-    
+
     public void StartTotalTurn() => isStarted = !isStarted;
 
 
     public void AddCount() => count++;
     public void ResetCount() => count = 0; // TODO : 턴카운터 초기화
-    
+
     public void SwitchIsCamera() => isCamera = !isCamera;
     public void ChangeStartTurn()    // TODO:스테이지 시작과 종료 시점에 호출해주기 바람
     {
-        if(isStarted == false)  StartTotalTurn();
+        if (isStarted == false) StartTotalTurn();
         ChangeTo<IdleState>("Force");
     }
-    
+
     public void SetTo<T>(string reason = null) where T : ITurnState, new()
     {
         var next = GetState<T>();
@@ -146,7 +146,7 @@ public class TurnBasedManager : MonoBehaviour
         currentEnemy = null;
         enemyPhaseActive = true;
 
-        if (GameManager.Unit.boss != null && GameManager.Unit.boss.controller !=null)
+        if (GameManager.Unit.boss != null && GameManager.Unit.boss.controller != null)
         {
             GameManager.Unit.boss.controller.StartTurn();
         }
@@ -198,7 +198,7 @@ public class TurnBasedManager : MonoBehaviour
         }
 
         // 큐가 비었고 진행 중인 적이 없으면 적 턴 종료
-        if(GameManager.Unit.boss.controller != null)
+        if (GameManager.Unit.boss.controller != null)
         {
             if (GameManager.Unit.boss.controller.isDie)
             {
@@ -216,18 +216,33 @@ public class TurnBasedManager : MonoBehaviour
     public bool EnemyDieCheck()
     {
         var monsters = (GameManager.Unit != null) ? GameManager.Unit.enemies : null;
+        var monsterBoss = (GameManager.Unit != null) ? GameManager.Unit.boss : null;
         // 적 리스트가 없거나 비어 있으면 '모두 처치됨'으로 간주
-        if (monsters == null || monsters.Count == 0)
-            return true;
-
-        foreach (var e in monsters)
+        if(monsterBoss != null)
         {
-            if (e == null)  // null 이면 바로 반환
-                continue;
-
-            // 하나라도 살아있으면 false 반환
-            if (!e.controller.isDie)
+            if((monsterBoss.controller == null))
+                return true;
+            if (monsterBoss.controller.isDie)
+                return true;
+            if (!monsterBoss.controller.isDie)
                 return false;
+        }
+
+
+        if(monsterBoss == null)
+        {
+            if (monsters == null || monsters.Count == 0)
+                return true;
+
+            foreach (var e in monsters)
+            {
+                if (e == null)  // null 이면 바로 반환
+                    continue;
+
+                // 하나라도 살아있으면 false 반환
+                if (!e.controller.isDie)
+                    return false;
+            }
         }
         return true;
     }
