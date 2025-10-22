@@ -150,7 +150,7 @@ public class TurnBasedManager : MonoBehaviour
         {
             GameManager.Unit.boss.controller.StartTurn();
         }
-        
+
         List<BaseEnemy> monsters = GameManager.Unit.enemies;
         foreach (var enemy in monsters)
         {
@@ -198,12 +198,18 @@ public class TurnBasedManager : MonoBehaviour
         }
 
         // 큐가 비었고 진행 중인 적이 없으면 적 턴 종료
-        if (currentEnemy == null)
+        if(GameManager.Unit.boss.controller != null)
+        {
+            if (GameManager.Unit.boss.controller.isDie)
+            {
+                ChangeTo<ClearCheckState>();    // 적 상태종료
+            }
+        }
+
+        if (currentEnemy == null && GameManager.Unit.boss.controller == null)
         {
             enemyPhaseActive = false;
-            
             GameManager.Event.Publish(EventType.EnemyTurnEnd);
-            
             ChangeTo<ClearCheckState>();    // 적 상태종료
         }
     }

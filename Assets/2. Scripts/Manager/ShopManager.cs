@@ -36,7 +36,6 @@ public class ShopManager : MonoBehaviour
     private void Start()
     {
         // 아직 바로 실행 중입니다.
- 
         if (relicPool == null || relicPool.Count == 0)
             relicPool = DataTable.RelicData.GetList();
         
@@ -47,7 +46,6 @@ public class ShopManager : MonoBehaviour
     {
         this.stage = stage;
         deck = GameManager.Resource.Create<Deck>(Path.UI + "Deck");
-        rerollCost = 2;
         canRemoveBullet = true;
         powderBundleLeft = 2;
         GenerateOffers();
@@ -204,12 +202,13 @@ public class ShopManager : MonoBehaviour
     public void TryReroll()
     {
         if (!player.SpendGold(rerollCost)) return;
+        player.SpendGold(rerollCost);
         rerollCost++;
         GenerateOffers();
+        GameManager.Sound.PlayShopSfx();
     }
     public void TryHeal()
     {
-        healCost = 4;
         if(!player.SpendGold(healCost)) return;
         player.SpendGold(healCost);
         player.Heal(healCost/2);

@@ -365,7 +365,7 @@ public void InputCancel()
 
         for (int i = 0; i < hitCount; i++)
         {
-            if (Hits[i] && Hits[i].TryGetComponent<BasePlayer>(out _) || Hits[i] && Hits[i].TryGetComponent<BaseEnemy>(out _))
+            if (Hits[i] && Hits[i].TryGetComponent<BasePlayer>(out _) || Hits[i] && Hits[i].TryGetComponent<BaseEnemy>(out _) || Hits[i] && Hits[i].TryGetComponent<BaseBoss>(out _))
                 return Hits[i].GetComponentInParent<T>(true);
         }
 
