@@ -9,7 +9,7 @@ public class IdleState : BaseTurnState
     
     public override void OnEnter() 
     {
-       Time.timeScale = 3f;    // 배속 기능
+       Time.timeScale = 1f;    // 배속 기능
         if (turnManager.isStarted == true)
         {
             timer =  turnSetVlaue.resetTime;

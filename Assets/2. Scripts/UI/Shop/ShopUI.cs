@@ -215,12 +215,12 @@ public class ShopUI : BaseUI
     private void PlayerHeal()
     {
         UpdateHPLabel();
-        PlayerMoneyText();
         var seq = DOTween.Sequence();
         seq.Append(healButton.transform.DOScale(2.7f, 0.2f));
         seq.Append(healButton.transform.DOScale(2.4f, 0.2f));
         shop.TryHeal();
         healCost.text = "Ð" + shop.healCost.ToString();
+        PlayerMoneyText();
         PlayerHpCheck();
     }
 

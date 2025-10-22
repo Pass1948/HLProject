@@ -60,7 +60,6 @@ public class PlayerHandler : MonoBehaviour
     {
         playerMonney += amount;
         // 골드 추가시 여기에
-        GameManager.Event.Publish(EventType.OnGoldChanged, playerMonney);
     }
 
     public bool SpendGold(int amount)
@@ -68,7 +67,6 @@ public class PlayerHandler : MonoBehaviour
         if (playerMonney >= amount)
         {
             playerMonney -= amount;
-            GameManager.Event.Publish(EventType.OnGoldChanged, playerMonney);
             return true;
         }
         else
