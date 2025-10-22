@@ -216,7 +216,7 @@ public class TurnBasedManager : MonoBehaviour
     public bool EnemyDieCheck()
     {
         var monsters = (GameManager.Unit != null) ? GameManager.Unit.enemies : null;
-      /*  var monsterBoss = (GameManager.Unit != null) ? GameManager.Unit.boss : null;
+       var monsterBoss = (GameManager.Unit != null) ? GameManager.Unit.boss : null;
         // 적 리스트가 없거나 비어 있으면 '모두 처치됨'으로 간주
         if(monsterBoss != null)
         {
@@ -242,9 +242,9 @@ public class TurnBasedManager : MonoBehaviour
                 if (!e.controller.isDie)
                     return false;
             }
-        }*/
+        }
 
-        if (monsters == null || monsters.Count == 0)
+     /*   if (monsters == null || monsters.Count == 0)
             return true;
 
         foreach (var e in monsters)
@@ -255,7 +255,7 @@ public class TurnBasedManager : MonoBehaviour
             // 하나라도 살아있으면 false 반환
             if (!e.controller.isDie)
                 return false;
-        }
+        }*/
 
 
         return true;
