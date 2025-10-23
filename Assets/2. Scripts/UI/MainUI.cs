@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
@@ -267,6 +268,8 @@ public class MainUI : BaseUI
     }
     private void BikeToggle()
     {
+        bikeControllBtn.transform.DOMoveY(0f, 0.1f);
+        //bikeControllBtn.image.DOColor(Color.878787, 0.1f);
         bikeControllBtnObj.ToggleBikeControll();
         GameManager.Sound.PlayUISfx();
     }
