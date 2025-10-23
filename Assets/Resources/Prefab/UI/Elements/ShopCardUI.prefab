@@ -3023,6 +3023,8 @@ MonoBehaviour:
   shopRellicItemBtn: {fileID: 756107620760909632}
   buyRellicUI: {fileID: 4007846454869137198}
   buyRelletBtn: {fileID: 1309867766113464572}
+  rellicName2: {fileID: 3779438325952566445}
+  rellicDesc2: {fileID: 3795536014678553787}
 --- !u!95 &1897738505229644486
 Animator:
   serializedVersion: 5

@@ -23,7 +23,7 @@ public class IdleState : BaseTurnState
             timer+= dt;
             if(timer>0.5f)
             {
-                GameManager.UI.OpenUI<FadeOutUI>();
+
                 GameManager.UI.OpenUI<MainUI>();
                 ChangeState<PlayerTurnState>();
             }

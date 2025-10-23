@@ -41,13 +41,12 @@ public class PlayerHandler : MonoBehaviour
     // 회복.
     public void Heal(int amount)
     {
-        var player = GameManager.Unit.Player.playerModel;
-        player.currentHealth += amount;
-        if (player.currentHealth >= player.maxHealth)
+        GameManager.Unit.Player.playerModel.currentHealth += amount;
+        if (GameManager.Unit.Player.playerModel.currentHealth >= GameManager.Unit.Player.playerModel.maxHealth)
         {
-            player.currentHealth = player.maxHealth;
+            GameManager.Unit.Player.playerModel.currentHealth = GameManager.Unit.Player.playerModel.maxHealth;
         }
-        Debug.Log($"체력 회복: {amount}, 현재 체력: {player.health}");
+        Debug.Log($"체력 회복: {amount}, 현재 체력: {GameManager.Unit.Player.playerModel.currentHealth}");
     }
     
 

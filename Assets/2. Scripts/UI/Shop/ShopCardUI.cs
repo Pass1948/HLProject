@@ -47,6 +47,8 @@ public class ShopCardUI : BaseUI
     [Header("구매유물")]
     [SerializeField] private GameObject buyRellicUI;
     [SerializeField] private Button buyRelletBtn;
+    [SerializeField] private TextMeshProUGUI rellicName2;
+    [SerializeField] private TextMeshProUGUI rellicDesc2;
 
     private void Awake()
     {
@@ -156,8 +158,15 @@ public class ShopCardUI : BaseUI
     public void RellicBind(ShopManager.ShopItem item, string decs)
     {
         rellicName.text = item.name;
+        rellicName2.text = item.name;
         rellicDesc.text = decs;
+        rellicDesc2.text = decs;
         rellicPrice.text = "Ð" + item.price.ToString();
+    }
+
+    public void ChangScele()
+    {
+        buyRelletBtn.transform.localScale = Vector3.one;
     }
 
     // ===========[유틸]=============

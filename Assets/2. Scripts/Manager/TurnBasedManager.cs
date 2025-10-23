@@ -198,18 +198,19 @@ public class TurnBasedManager : MonoBehaviour
         }
 
         // 큐가 비었고 진행 중인 적이 없으면 적 턴 종료
-        if (GameManager.Unit.boss.controller != null)
+        if(GameManager.Unit.boss != null && GameManager.Unit.boss.controller != null)
         {
-            if (GameManager.Unit.boss.controller.isDie)
+            if (GameManager.Unit.boss.controller.isDone)
             {
+                OnEnemyTurnEnded();
                 ChangeTo<ClearCheckState>();    // 적 상태종료
             }
         }
 
-        if (currentEnemy == null && GameManager.Unit.boss.controller == null)
+        if (currentEnemy == null)
         {
             enemyPhaseActive = false;
-            GameManager.Event.Publish(EventType.EnemyTurnEnd);
+            OnEnemyTurnEnded();
             ChangeTo<ClearCheckState>();    // 적 상태종료
         }
     }
@@ -218,33 +219,33 @@ public class TurnBasedManager : MonoBehaviour
         var monsters = (GameManager.Unit != null) ? GameManager.Unit.enemies : null;
        var monsterBoss = (GameManager.Unit != null) ? GameManager.Unit.boss : null;
         // 적 리스트가 없거나 비어 있으면 '모두 처치됨'으로 간주
-       // if(monsterBoss != null)
-       //  {
-       //      if((monsterBoss.controller == null))
-       //          return true;
-       //      if (monsterBoss.controller.isDie)
-       //          return true;
-       //      if (!monsterBoss.controller.isDie)
-       //          return false;
-       //  }
-       //
-       //  if(monsterBoss == null)
-       //  {
-       //      if (monsters == null || monsters.Count == 0)
-       //          return true;
-       //
-       //      foreach (var e in monsters)
-       //      {
-       //          if (e == null)  // null 이면 바로 반환
-       //              continue;
-       //
-       //          // 하나라도 살아있으면 false 반환
-       //          if (!e.controller.isDie)
-       //              return false;
-       //      }
-       //  }
- 
-/*                //보스 없이 테스트용 로직
+  if(monsterBoss != null)
+                {
+                    if((monsterBoss.controller == null))
+                        return true;
+                    if (monsterBoss.controller.isDie)
+                        return true;
+                    if (!monsterBoss.controller.isDie)
+                        return false;
+                }
+
+                if(monsterBoss == null)
+                {
+                    if (monsters == null || monsters.Count == 0)
+                        return true;
+
+                    foreach (var e in monsters)
+                    {
+                        if (e == null)  // null 이면 바로 반환
+                            continue;
+
+                        // 하나라도 살아있으면 false 반환
+                        if (!e.controller.isDie)
+                            return false;
+                    }
+                }
+
+      /*//보스 없이 테스트용 로직
         if (monsters == null || monsters.Count == 0)
             return true;
 
