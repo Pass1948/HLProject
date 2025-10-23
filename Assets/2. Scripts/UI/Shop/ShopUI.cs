@@ -208,8 +208,6 @@ public class ShopUI : BaseUI
                 removeButton.interactable = true;
             });
         }
-
-        cost++;
     }
 
     private void PlayerHeal()
