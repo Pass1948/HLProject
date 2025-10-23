@@ -128,8 +128,9 @@ public class MouseManager : MonoBehaviour
 
     public void ClickCurrentHover()
     {
+        if (blockWhenUI && EventSystem.current && EventSystem.current.IsPointerOverGameObject())
+            return;
         if (!hasHover) return;
-
         HandleLeftClick(hoverCell);
     }
 
