@@ -28,7 +28,7 @@ public class TestScene : BaseScene
         GameManager.Shop.ShopInit(_stage);
         
         // Sound
-        var gameBgm = GameManager.Resource.Load<AudioClip>(Path.Sound + "Paladin’s Gun Style");
+        var gameBgm = GameManager.Resource.Load<AudioClip>(Path.Sound + "NeonCityPaladin");
         GameManager.Sound.PlayBGM(gameBgm);
         
         if (GameManager.Unit.isInit == true)
