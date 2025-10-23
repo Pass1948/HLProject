@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class ItemControlManger : MonoBehaviour
+public class ItemControlManager : MonoBehaviour
 {
     // ===== 가중치값 =====
     [Header("등급별 확률(백분율)")]

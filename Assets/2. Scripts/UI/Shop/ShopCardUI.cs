@@ -164,6 +164,11 @@ public class ShopCardUI : BaseUI
         rellicPrice.text = "Ð" + item.price.ToString();
     }
 
+    public void ChangScele()
+    {
+        buyRelletBtn.transform.localScale = Vector3.one;
+    }
+
     // ===========[유틸]=============
 
     public void CheckItemType(ShopManager.ShopItem item)

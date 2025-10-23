@@ -8,14 +8,13 @@ public class RelicUI : MonoBehaviour
 {
     //보유 유물 리스트쪽
     [SerializeField] private RectTransform content;   // 카드가 붙을 부모(그리드/컨텐츠)
-    [SerializeField] private ShopCardUI cardPrefab;   // 상점 카드 프리팹 (그대로 재사용)
 
     //info창
     [SerializeField] private RectTransform infoPanel;
     [SerializeField] private TMP_Text infoName;
+    [SerializeField] private TMP_Text infoDecs;
     [SerializeField] private TMP_Text infoRare;
 
-    private ItemControlManger icm;
     private Canvas rootCanvas;
     private Camera uiCam;
 
@@ -32,8 +31,6 @@ public class RelicUI : MonoBehaviour
     private void Awake()
     {
         //한번 캐싱해서 부담 줄이기
-        icm = GameManager.ItemControl != null ? GameManager.ItemControl
-                                              : FindFirstObjectByType<ItemControlManger>();
         rootCanvas = GetComponentInParent<Canvas>();
         uiCam = rootCanvas ? rootCanvas.worldCamera : null;
         HideInfo();
@@ -51,14 +48,7 @@ public class RelicUI : MonoBehaviour
     // ===== 렌더링 =====
     public void Render()
     {
-        if (!content || !cardPrefab) return;
-
-        if (icm == null)
-            icm = GameManager.ItemControl ?? FindFirstObjectByType<ItemControlManger>();
-
-        var list = icm?.buyItems ?? EmptyList;
-
-        EnsurePool(list.Count);
+        var list = GameManager.ItemControl.buyItems;
 
         cards.Clear();
         hovered = null;
@@ -67,29 +57,20 @@ public class RelicUI : MonoBehaviour
         // 활성 구간 채우기
         for (int i = 0; i < list.Count; i++)
         {
-            var card = pool[i];
-            var relic = list[i];
+            var card = GameManager.UI.CreateSlotUI<ShopCardUI>(content);
 
             if (!card.gameObject.activeSelf) card.gameObject.SetActive(true);
-
             var item = new ShopManager.ShopItem(
                 ShopItemType.SpecialTotem,
-                relic?.name ?? $"Relic {relic?.id}",
-                0, null, relic
+                 list[i]?.name ?? $"Relic {list[i]?.id}",
+                0, null, list[i]
             );
+            card.CheckItemType(item);
             card.RellicBind(item, item.relic.description);
             card.OnBuyRellic();
-
-            // 구매 비활성
-            if (card.buyBulletBtn)
-            {
-                card.buyBulletBtn.interactable = false;
-                card.buyBulletBtn.transition = Selectable.Transition.None;
-                var nav = card.buyBulletBtn.navigation; nav.mode = Navigation.Mode.None; card.bulletBtn.navigation = nav;
-            }
-
+            card.ChangScele();
             var rt = card.transform as RectTransform;
-            if (rt) cards.Add((rt, relic));
+            if (rt) cards.Add((rt, list[i]));
         }
 
         // 여분 비활성
@@ -100,15 +81,6 @@ public class RelicUI : MonoBehaviour
         }
 
         if (cards.Count == 0) HideInfo();
-    }
-
-    private void EnsurePool(int need)
-    {
-        while (pool.Count < need)
-        {
-            var inst = Instantiate(cardPrefab, content);
-            pool.Add(inst);
-        }
     }
 
     // ===== Hover 검사 (마우스 움직였을 때만) =====
@@ -147,6 +119,7 @@ public class RelicUI : MonoBehaviour
     {
         if (m == null || !infoPanel) { HideInfo(); return; }
         if (infoName) infoName.text = m.name;
+        if (infoDecs) infoDecs.text = m.description;
         if (infoRare) infoRare.text = (m.rarity).ToString();
         infoPanel.gameObject.SetActive(true);
     }

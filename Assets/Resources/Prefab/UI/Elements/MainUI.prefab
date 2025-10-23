@@ -7384,8 +7384,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 430}
-  m_SizeDelta: {x: 200, y: 500}
+  m_AnchoredPosition: {x: -175.90854, y: 430}
+  m_SizeDelta: {x: 551.8171, y: 500}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &359673637714970297
 CanvasRenderer:
@@ -7446,7 +7446,7 @@ MonoBehaviour:
   m_StartCorner: 0
   m_StartAxis: 0
   m_CellSize: {x: 100, y: 100}
-  m_Spacing: {x: 10, y: 10}
+  m_Spacing: {x: 3, y: 10}
   m_Constraint: 0
   m_ConstraintCount: 2
 --- !u!1 &5486267573467202701
@@ -12364,10 +12364,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   content: {fileID: 5445743431424829266}
-  cardPrefab: {fileID: 7582488277917788581, guid: f4dc73df85c21af45bd33eff20d0288b,
-    type: 3}
   infoPanel: {fileID: 9161907831399997782}
   infoName: {fileID: 3541620456121837484}
+  infoDecs: {fileID: 8320679006151859751}
   infoRare: {fileID: 2944771778032856596}
 --- !u!1 &7677612569644503060
 GameObject:

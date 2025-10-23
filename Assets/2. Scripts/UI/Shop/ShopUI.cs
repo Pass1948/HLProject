@@ -176,10 +176,8 @@ public class ShopUI : BaseUI
                 card.rellicBtn.onClick.RemoveAllListeners();
                 card.rellicBtn.onClick.AddListener(() =>
                 {
-                    GameManager.UI.CreateSlotUI<ShopCardUI>(playerRellicRoot);
-                    card.CheckItemType(data);
-                    card.OnBuyRellic();
                     shop.TryBuy(idx);
+                    RebuildPlayerRellics();
                     UpdateRerollLabel();
                 });
                 spawned.Add(card.gameObject);
@@ -214,12 +212,24 @@ public class ShopUI : BaseUI
         }
         cost++;
     }
-
-
-
-
-
-
+    private void RebuildPlayerRellics()
+    {
+        ClearSection(playerRellicRoot);
+        var bullets = GameManager.ItemControl.buyItems;
+        for (int i = 0; i < bullets.Count; i++)
+        {
+            var rellic = bullets[i];
+            int idx = i;
+            var card =  GameManager.UI.CreateSlotUI<ShopCardUI>(playerRellicRoot);
+            var rellicitem = new ShopManager.ShopItem(ShopItemType.SpecialTotem, rellic.name, 1, null, rellic);
+            card.RellicBind(rellicitem, rellic.description);
+            card.CheckItemType(rellicitem);
+            card.OnBuyRellic();
+            card.OpenUI();
+            PlayerMoneyText();
+            PlayerHpCheck();
+        }
+    }
 
     private void PlayerHeal()
     {
@@ -235,7 +245,7 @@ public class ShopUI : BaseUI
 
     private void PlayerHpCheck()
     {
-        currentHp = GameManager.Unit.Player.playerModel.health;
+        currentHp = GameManager.Unit.Player.playerModel.currentHealth;
         maxHp = GameManager.Unit.Player.playerModel.maxHealth;
         float fill = (float)currentHp / (float)maxHp;
         hpBar.fillAmount = fill;
