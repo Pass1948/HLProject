@@ -150,20 +150,20 @@ public class SettingUI : PopUpUI
 
     void SpeedPrevPanel()
     {
-        var t = GameManager.TurnBased.turnSettingValue.gameTime-=1;
+        GameManager.TurnBased.turnSettingValue.gameTime-=1;
         if(GameManager.TurnBased.turnSettingValue.gameTime < 1)
             GameManager.TurnBased.turnSettingValue.gameTime = 4;
-        Time.timeScale = t;
+        Time.timeScale = GameManager.TurnBased.turnSettingValue.gameTime;
         UpdateSpeedView();
         GameManager.Sound.PlayUISfx();
     }
 
     void SpeedNextPanel()
     {
-        var t = GameManager.TurnBased.turnSettingValue.gameTime += 1;
+       GameManager.TurnBased.turnSettingValue.gameTime += 1;
         if (GameManager.TurnBased.turnSettingValue.gameTime >4)
             GameManager.TurnBased.turnSettingValue.gameTime = 1;
-        Time.timeScale = t;
+        Time.timeScale = GameManager.TurnBased.turnSettingValue.gameTime;
         UpdateSpeedView();
         GameManager.Sound.PlayUISfx();
     }

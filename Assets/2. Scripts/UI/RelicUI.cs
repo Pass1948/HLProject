@@ -77,14 +77,8 @@ public class RelicUI : MonoBehaviour
                 relic?.name ?? $"Relic {relic?.id}",
                 0, null, relic
             );
-            card.CardBind(item);
-
-            // 가격/제목 숨김
-            var priceTf = card.transform.Find("Price");
-            if (priceTf) priceTf.gameObject.SetActive(false);
-
-            var titleTf = card.transform.Find("Title");
-            if (titleTf) titleTf.gameObject.SetActive(false);
+            card.RellicBind(item, item.relic.description);
+            card.OnBuyRellic();
 
             // 구매 비활성
             if (card.buyBulletBtn)

@@ -12,6 +12,7 @@ public class ShopUI : BaseUI
     [SerializeField] private Transform bulletRoot;
     [SerializeField] private Transform relicRoot;
     [SerializeField] private Transform playerBulletRoot;
+    [SerializeField] private Transform playerRellicRoot;
     [SerializeField] private Image hpBar;
 
     [SerializeField] private TextMeshProUGUI rerollCostText;
@@ -175,6 +176,9 @@ public class ShopUI : BaseUI
                 card.rellicBtn.onClick.RemoveAllListeners();
                 card.rellicBtn.onClick.AddListener(() =>
                 {
+                    GameManager.UI.CreateSlotUI<ShopCardUI>(playerRellicRoot);
+                    card.CheckItemType(data);
+                    card.OnBuyRellic();
                     shop.TryBuy(idx);
                     UpdateRerollLabel();
                 });
@@ -208,9 +212,14 @@ public class ShopUI : BaseUI
                 removeButton.interactable = true;
             });
         }
-
         cost++;
     }
+
+
+
+
+
+
 
     private void PlayerHeal()
     {
