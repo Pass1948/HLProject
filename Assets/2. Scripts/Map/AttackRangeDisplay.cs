@@ -30,7 +30,7 @@ public class AttackRangeDisplay : MonoBehaviour
     {
         if (!isInitialized || (currentRank == 0 && !isKickAttack))
         {
-            ClearRange();
+            // ClearRange();
             GameManager.Map.ClearAttackTargets();
             return;
         }
@@ -185,7 +185,7 @@ public class AttackRangeDisplay : MonoBehaviour
     {
         Vector3Int playerPos = GetPlayerCellPosition();
         var range = new List<Vector3Int>();
-        int effectiveRange = 2 + range_plus;
+        int effectiveRange = 2 + GameManager.Unit.Player.playerModel.attackRange;
         for (int i = 1; i <= effectiveRange; i++)
         {
             range.Add(playerPos + direction * i);
@@ -217,7 +217,7 @@ public class AttackRangeDisplay : MonoBehaviour
             diagonalDirection = new Vector3Int(-1, -1, 0);
         }
         
-        int effectiveRange = 2 + range_plus;
+        int effectiveRange = 2 + GameManager.Unit.Player.playerModel.attackRange;
         for (int i = 1; i <= effectiveRange; i++)
         {
             range.Add(playerPos + diagonalDirection * i);
@@ -231,7 +231,7 @@ public class AttackRangeDisplay : MonoBehaviour
     {
         Vector3Int playerPos = GetPlayerCellPosition();
         var range = new List<Vector3Int>();
-        int effectiveRange = 1 + range_plus;
+        int effectiveRange = 1 + GameManager.Unit.Player.playerModel.attackRange;
 
         for (int i = 1; i <= effectiveRange; i++)
         {
@@ -257,7 +257,7 @@ public class AttackRangeDisplay : MonoBehaviour
         Vector3Int diagLeft = new Vector3Int(direction.x - direction.y, direction.y + direction.x, 0);
         Vector3Int diagRight = new Vector3Int(direction.x + direction.y, direction.y - direction.x, 0);
 
-        for (int i = 1; i <= 1 + range_plus; i++)
+        for (int i = 1; i <= 1 + GameManager.Unit.Player.playerModel.attackRange; i++)
         {
             range.Add(playerPos + diagLeft * i);
             range.Add(playerPos + diagRight * i);

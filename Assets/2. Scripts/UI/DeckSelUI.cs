@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class DeckSelUI : MonoBehaviour
@@ -80,8 +81,9 @@ public class DeckSelUI : MonoBehaviour
             Debug.Log("Select Your Deck!");
             return;
         }
-        GameManager.SceneLoad.LoadScene(SceneType.Test);
+        GameManager.UI.OpenUI<FadeInUI>();
         GameManager.Event.Publish(EventType.SelectDeck);
+        GameManager.SceneLoad.LoadScene(SceneType.Test);
     }
 
     private void NextDeck()
@@ -164,4 +166,19 @@ public class DeckSelUI : MonoBehaviour
         for (int i = 0; i < deckPanels.Length; i++)
             deckPanels[i].SetActive(i == deckIndex);
     }
+
+    public struct Point
+    {
+        public int x, y;
+    }
+
+
+    
+    
 }
+
+
+
+
+
+

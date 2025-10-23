@@ -53,10 +53,12 @@ public class BossController : MonoBehaviour
         RunStateMachine();
     }
 
-    public void SetController(int cooldown, int patternPower)
+    public void SetController(int cooldown, int patternPower, int patternRange)
     {
         this.cooldown = cooldown;
+        this.remainCooldown = 0;
         this.patternPower = patternPower;
+        this.patternRange = patternRange;
     }
 
     private void RunStateMachine()
@@ -81,7 +83,7 @@ public class BossController : MonoBehaviour
         }
     }
     
-    private void StartTurn()
+    public void StartTurn()
     {
         // 이미 죽었으면 무시
         if (isDie) return;
@@ -112,7 +114,7 @@ public class BossController : MonoBehaviour
         // 완료 플래그 설정
         isDone = true;
         GameManager.Map.pathfinding.ResetMapData();
-        GameManager.Event.Publish(EventType.EnemyTurnEnd);        // 이벤트 발행: TurnBasedManager가 이 신호를 받아 다음 적을 진행
+        GameManager.TurnBased.ChangeTo<PlayerTurnState>();
     }
     
     public IEnumerator MoveAlongPath(List<Vector3Int> path)
@@ -122,8 +124,7 @@ public class BossController : MonoBehaviour
             Debug.LogWarning("길이 비었음");
             yield break;
         }
-
-
+        
         foreach (var cell in path)
         {
             Vector3 targetPos = GameManager.Map.tilemap.GetCellCenterWorld(cell);

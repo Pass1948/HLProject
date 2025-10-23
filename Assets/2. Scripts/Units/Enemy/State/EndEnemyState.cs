@@ -9,7 +9,6 @@ public class EndEnemyState : BaseEnemyState
     public override void Enter()
     {
         controller.CompleteTurn();
-
         stateMachine.ChangeState(stateMachine.IdleState);
     }
 
@@ -19,8 +18,5 @@ public class EndEnemyState : BaseEnemyState
 
     public override void Exit()
     {
-
     }
-
-
 }

@@ -17,7 +17,7 @@ public class TitleUI : BaseUI
 
     private void Awake()
     {
-        GameManager.Sound.PlayBGM(GameManager.Resource.Load<AudioClip>(Path.Sound + "Paladin’s Dash"));
+        GameManager.Sound.PlayBGM(GameManager.Resource.Load<AudioClip>(Path.Sound + "BangPaladin"));
     }
 
     private void OnEnable()
@@ -39,7 +39,7 @@ public class TitleUI : BaseUI
 
     private void OpenSetting()
     {
-        Instantiate(settingUI);
+        GameManager.UI.OpenPopUI<SettingUI>();
         GameManager.Sound.PlayUISfx();
     }
 

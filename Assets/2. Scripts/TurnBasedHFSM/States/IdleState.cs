@@ -9,7 +9,7 @@ public class IdleState : BaseTurnState
     
     public override void OnEnter() 
     {
-       Time.timeScale = 3f;    // 배속 기능
+      
         if (turnManager.isStarted == true)
         {
             timer =  turnSetVlaue.resetTime;
@@ -23,7 +23,7 @@ public class IdleState : BaseTurnState
             timer+= dt;
             if(timer>0.5f)
             {
-                GameManager.UI.OpenUI<FadeOutUI>();
+
                 GameManager.UI.OpenUI<MainUI>();
                 ChangeState<PlayerTurnState>();
             }

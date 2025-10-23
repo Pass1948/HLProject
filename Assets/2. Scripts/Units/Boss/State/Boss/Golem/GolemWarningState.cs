@@ -9,17 +9,20 @@ public class GolemWarningState : WarningBossState
 
     public override void Enter()
     {
+        Debug.Log("GolemWarning boss state");
         controller.StartCoroutine(ShowWarning());
     }
 
     private IEnumerator ShowWarning()
     {
+        Debug.Log("WarningState : ShowWarning");
         Vector3Int bossPos = controller.GridPos;
         Vector3Int playerPos = controller.TargetPos;
         Vector3Int dir = GetDirection(bossPos, playerPos);
         List<Vector3Int> range = GetForwardRange(bossPos, dir);
 
-        map.attackRange.ShowRange(range);
+        if (GameManager.Map.attackRange == null) Debug.Log("맵 어택 레인지 엄슴"); 
+        GameManager.Map.attackRange.ShowRange(range);
         controller.warningCells = range;
 
         controller.canPattern = true;
@@ -54,20 +57,22 @@ public class GolemWarningState : WarningBossState
             range.Add(bossPos + RotationOffset(offset, dir));
         }
         
+        Debug.Log(range);
+        
         return range;
     }
 
     private Vector3Int RotationOffset(Vector3Int offset, Vector3Int dir)
     {
-        if (dir == Vector3Int.up) return new Vector3Int(offset.x, -offset.y, 0);
-        if (dir == Vector3Int.down) return offset;
-        if (dir == Vector3Int.left) return new Vector3Int(offset.y, offset.x, 0);
-        if (dir == Vector3Int.right) return new Vector3Int(-offset.y, -offset.x, 0);
+        if (dir == Vector3Int.up) return new Vector3Int(offset.x, offset.y, 0);
+        if (dir == Vector3Int.down) return new Vector3Int(offset.x, -offset.y, 0);
+        if (dir == Vector3Int.left) return new Vector3Int(-offset.y, offset.x, 0);
+        if (dir == Vector3Int.right) return new Vector3Int(offset.y, -offset.x, 0);
         return offset;
     }
 
     public override void Exit()
     {
-        map.attackRange.ClearRange();
+        GameManager.Map.attackRange.ClearRange();
     }
 }

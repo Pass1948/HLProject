@@ -128,8 +128,9 @@ public class MouseManager : MonoBehaviour
 
     public void ClickCurrentHover()
     {
+        if (blockWhenUI && EventSystem.current && EventSystem.current.IsPointerOverGameObject())
+            return;
         if (!hasHover) return;
-
         HandleLeftClick(hoverCell);
     }
 
@@ -365,7 +366,7 @@ public void InputCancel()
 
         for (int i = 0; i < hitCount; i++)
         {
-            if (Hits[i] && Hits[i].TryGetComponent<BasePlayer>(out _) || Hits[i] && Hits[i].TryGetComponent<BaseEnemy>(out _))
+            if (Hits[i] && Hits[i].TryGetComponent<BasePlayer>(out _) || Hits[i] && Hits[i].TryGetComponent<BaseEnemy>(out _) || Hits[i] && Hits[i].TryGetComponent<BaseBoss>(out _))
                 return Hits[i].GetComponentInParent<T>(true);
         }
 

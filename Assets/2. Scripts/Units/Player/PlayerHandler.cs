@@ -41,9 +41,12 @@ public class PlayerHandler : MonoBehaviour
     // 회복.
     public void Heal(int amount)
     {
-        var player = GameManager.Unit.Player.playerModel;
-        player.currentHealth += amount;
-        Debug.Log($"체력 회복: {amount}, 현재 체력: {player.health}");
+        GameManager.Unit.Player.playerModel.currentHealth += amount;
+        if (GameManager.Unit.Player.playerModel.currentHealth >= GameManager.Unit.Player.playerModel.maxHealth)
+        {
+            GameManager.Unit.Player.playerModel.currentHealth = GameManager.Unit.Player.playerModel.maxHealth;
+        }
+        Debug.Log($"체력 회복: {amount}, 현재 체력: {GameManager.Unit.Player.playerModel.currentHealth}");
     }
     
 
@@ -56,7 +59,6 @@ public class PlayerHandler : MonoBehaviour
     {
         playerMonney += amount;
         // 골드 추가시 여기에
-        GameManager.Event.Publish(EventType.OnGoldChanged, playerMonney);
     }
 
     public bool SpendGold(int amount)
@@ -64,7 +66,6 @@ public class PlayerHandler : MonoBehaviour
         if (playerMonney >= amount)
         {
             playerMonney -= amount;
-            GameManager.Event.Publish(EventType.OnGoldChanged, playerMonney);
             return true;
         }
         else

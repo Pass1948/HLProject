@@ -16,6 +16,7 @@ public class AttackBossState : BaseBossState
 
     public override void Enter()
     {
+        Debug.Log("Attack boss state");
         ShowAttackPreview(controller.GridPos, minRange, maxRange);
         controller.StartCoroutine(AttackRoutine());
     }
