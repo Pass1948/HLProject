@@ -12,6 +12,9 @@ public class TurnSettingValue : MonoBehaviour
     public float ActionRecoverTime = 1.5f; // 행동 후딜 시간
     [Header("게임 속도")]
     public int gameTime=1;
+    [Header("게임 화면 해상도")]
+    public int windowPanelIndex = 0;
+
 
     [HideInInspector] public bool IsBasicDeck = false;
     [HideInInspector] public bool IsDiamondDeck = false;
