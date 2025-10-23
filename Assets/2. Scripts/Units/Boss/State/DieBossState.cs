@@ -26,6 +26,7 @@ public class DieBossState : BaseBossState
         // GameManager.Unit.enemies.Remove(controller.baseBoss);
         controller.baseBoss.gameObject.SetActive(false);
         //controller.baseEnemy.gameObject.Destroy();
+        GameManager.UI.OpenUI<GameClearUI>();
     }
 
     public override void Excute()
