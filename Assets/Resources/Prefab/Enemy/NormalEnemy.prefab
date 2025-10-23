@@ -949,11 +949,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: SwordBroken
       objectReference: {fileID: 0}
-    - target: {fileID: 3444151666051009639, guid: 4f27320a171e6b14faeeafcb26276f77,
-        type: 3}
-      propertyPath: m_Layer
-      value: 6
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1167,6 +1162,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2539421741823844525, guid: 94025afe18059204e901d3bec7d70224,
+        type: 3}
+      propertyPath: m_CastShadows
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2664762919888838598, guid: 94025afe18059204e901d3bec7d70224,
         type: 3}
