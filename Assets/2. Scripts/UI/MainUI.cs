@@ -323,12 +323,7 @@ public class MainUI : BaseUI
 
     private void RefreshMovement()
     {
-        int move = 0;
-        if(GameManager.Map != null)
-        {
-            move = GameManager.Map.moveRange;
-        }
-        movementText.text = ($"{move}");
+        movementText.text = GameManager.Unit.Player.playerModel.moveRange.ToString();
     }
 
     private void RefreshPlayerHP()
