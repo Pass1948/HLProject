@@ -42,51 +42,64 @@ public class SpawnController : MonoBehaviour
         enemyPrefab = GameManager.Resource.Load<GameObject>(Path.Enemy + "NormalEnemy");
         //obstaclePool.InitializePool(20);
 
-        SpawnPlayer();
+        SpawnPlayer(stage);
         // SpawnEnemys(stage.enemiesDict); 
 
-        SpawnEnemies(stage.enemiesDict, stage.eliteCnt, stage.id);
+        SpawnEnemies(stage.enemiesDict, stage.eliteCnt, stage.stageId);
 
-        SpawnObstacles(stage.obstaclesDict);
+        SpawnObstacles(stage.obstaclesDict, stage.stageId);
     }
 
-    private void SpawnPlayer()
+    private void SpawnPlayer(Stage stage)
     {
-        int count = 100;
-        for (int i = 0; i < count; i++)
+        // 튜토리얼 스테이지(7001)
+        bool tutorialPlayerSpawn = (stage.stageId == 7001);
+        Vector2Int playerPos;
+        Vector2Int vehiclePos;
+
+        if (tutorialPlayerSpawn)
         {
-            // (1,1) - (2,2) 플레이어 생성 범위
-            int randX = Random.Range(1, 2);
-            int randY = Random.Range(1, 2);
-
-            if (GameManager.Map.mapData[randX, randY] == TileID.Terrain)
-            {
-                // 플레이어 생성
-                GameObject playerSpawn = GameManager.Resource.Create<GameObject>(Path.Player + "Player");
-                BasePlayer basePlayer = GameManager.Unit.Player.GetComponent<BasePlayer>();
-
-                GameObject vehicleSpawn = GameManager.Resource.Create<GameObject>(Path.Player + "Vehicle");
-
-                BaseVehicle baseVehicle = GameManager.Unit.Vehicle.GetComponent<BaseVehicle>();
-
-                basePlayer.playerModel.InitData(GameManager.Data.entityDataGroup.GetEntityData(1001));
-                basePlayer.controller.GetPosition(randX, randY);
-
-                baseVehicle.vehicleModel.InitData(GameManager.Data.entityDataGroup.GetEntityData(1501));
-
-                //좌표 보정
-                GridSnapper.SnapToCellCenter(playerSpawn.transform, GameManager.Map.tilemap,
-                    new Vector2Int(randX, randY));
-                // 맵 데이터에 기록
-                GameManager.Map.SetObjectPosition(randX, randY, TileID.Player);
-                return;
-            }
+            // 튜토리얼 고정 위치 플레이어 (2, 2), 오토바이 (1, 2)
+            playerPos = new Vector2Int(2, 2);
+            vehiclePos = new Vector2Int(1, 2);
         }
+        else
+        {
+            // 기존 플레이어 위치 (1, 2)
+            playerPos = new Vector2Int(1, 2);
+            vehiclePos = new Vector2Int(2, 2);
+        }
+        
+        if (GameManager.Map.mapData[playerPos.x, playerPos.y] != TileID.Terrain && !tutorialPlayerSpawn)
+        {
+            Debug.LogError("플레이어를 소환할 수 없습니다.");
+            return;
+        }
+        
+        // 플레이어 생성 
+        GameObject playerSpawn = GameManager.Resource.Create<GameObject>(Path.Player + "Player");
+        BasePlayer basePlayer = GameManager.Unit.Player.GetComponent<BasePlayer>(); 
+        
+        GameObject vehicleSpawn = GameManager.Resource.Create<GameObject>(Path.Player + "Vehicle");
+        BaseVehicle baseVehicle = GameManager.Unit.Vehicle.GetComponent<BaseVehicle>(); 
+        
+        basePlayer.playerModel.InitData(GameManager.Data.entityDataGroup.GetEntityData(1001));
+        basePlayer.controller.GetPosition(playerPos.x, playerPos.y); 
+        
+        baseVehicle.vehicleModel.InitData(GameManager.Data.entityDataGroup.GetEntityData(1501));
+        //baseVehicle.controller.GetPosition(vehiclePos.x, vehiclePos.y); 
+        
+        // 좌표 보정 및 맵 데이터 업데이트
+        GridSnapper.SnapToCellCenter(playerSpawn.transform, GameManager.Map.tilemap, playerPos); 
+        GridSnapper.SnapToCellCenter(vehicleSpawn.transform, GameManager.Map.tilemap, vehiclePos);
+        
+        GameManager.Map.SetObjectPosition(playerPos.x, playerPos.y, TileID.Player);
+        GameManager.Map.SetObjectPosition(vehiclePos.x, vehiclePos.y, TileID.Vehicle);
 
     }
 
     // 장애물 스폰
-    public void SpawnObstacles(Dictionary<int, int> obstacles)
+    public void SpawnObstacles(Dictionary<int, int> obstacles, int stageId)
     {
         int maxAttempts = GameManager.Map.mapWidth * GameManager.Map.mapHeight * 2;
         foreach (var obstacleEntry in obstacles)
@@ -112,57 +125,102 @@ public class SpawnController : MonoBehaviour
             {
                 continue;
             }
-
-            for (int i = 0; i < maxAttempts && spawnedCount < obstacleEntry.Value; i++)
+            if (stageId == 7001)
             {
-                int randX = Random.Range(0, GameManager.Map.mapWidth);
-                int randY = Random.Range(0, GameManager.Map.mapHeight);
-                Vector3Int spawnPos = new Vector3Int(randX, randY, 0);
-
-                if (GameManager.Map.mapData[randX, randY] == (int)TileID.Terrain)
+                const int FixedX = 5;
+                const int MaxY = 9;
+    
+                // Y=0부터 Y=9까지 배치
+                for (int y = 0; y <= MaxY; y++) 
                 {
-                    if (CheckAdjacentObstacle(randX, randY))
+                    int x = FixedX;
+                    Vector3Int spawnPos = new Vector3Int(x, y, 0);
+        
+                    // 맵 확인
+                    if (x < GameManager.Map.mapWidth && y < GameManager.Map.mapHeight && 
+                        GameManager.Map.mapData[x, y] == TileID.Terrain)
                     {
-                        // 주변에 장애물이 이미 있으면 다시 찾기
-                        continue;
+                        // 풀에서 오브젝트를 가져옴
+                        GameObject obj = pool.GetPooledObject();
+
+                        if (obj == null) continue;
+
+                        obj.transform.SetParent(transform);
+                        BaseObstacle baseObstacle = obj.GetComponent<BaseObstacle>();
+
+                        if (baseObstacle != null)
+                        {
+                            baseObstacle.InitObstacle(spawnPos, obstacleData);
+                            baseObstacle.SetPosition(spawnPos);
+
+                            TurnEndDamageEffect damageEffect = obj.GetComponent<TurnEndDamageEffect>();
+                            if (damageEffect != null)
+                            {
+                                damageEffect.SetupEffect();
+                            }
+                            
+                            GameManager.Map.SetObjectPosition(x, y, TileID.Obstacle);
+                
+                            spawnedCount++;
+                        }
                     }
+                }
+                spawnedCount = obstacleEntry.Value; 
+            }
+            else // 7001이 아닌 경우: 기존 랜덤 배치
+            {
 
-                    // 풀에서 오브젝트를 가져옴
-                    GameObject obj = pool.GetPooledObject();
+                for (int i = 0; i < maxAttempts && spawnedCount < obstacleEntry.Value; i++)
+                {
+                    int randX = Random.Range(0, GameManager.Map.mapWidth);
+                    int randY = Random.Range(0, GameManager.Map.mapHeight);
+                    Vector3Int spawnPos = new Vector3Int(randX, randY, 0);
 
-                    // 정상적으로 리턴되었는지 확인
-                    if (obj == null)
+                    if (GameManager.Map.mapData[randX, randY] == TileID.Terrain)
                     {
-                        continue;
+                        if (CheckAdjacentObstacle(randX, randY))
+                        {
+                            // 주변에 장애물이 이미 있으면 다시 찾기
+                            continue;
+                        }
+
+                        // 풀에서 오브젝트를 가져옴
+                        GameObject obj = pool.GetPooledObject();
+
+                        // 정상적으로 리턴되었는지 확인
+                        if (obj == null)
+                        {
+                            continue;
+                        }
+
+                        // 풀에서 가져온 오브젝트의 위치와 활성 상태를 초기화
+                        obj.transform.SetParent(transform);
+                        obj.SetActive(true);
+
+                        BaseObstacle baseObstacle = obj.GetComponent<BaseObstacle>();
+
+                        baseObstacle.InitObstacle(spawnPos, obstacleData);
+                        baseObstacle.SetPosition(spawnPos);
+
+                        TurnEndDamageEffect damageEffect = obj.GetComponent<TurnEndDamageEffect>();
+
+                        if (damageEffect != null)
+                        {
+                            damageEffect.SetupEffect();
+                        }
+
+
+                        // TileID 설정
+                        int tileIdToSet = TileID.Terrain;
+                        if (obstacleData.canPlaceUnit == 0)
+                        {
+                            tileIdToSet = TileID.Obstacle;
+                        }
+
+                        GameManager.Map.SetObjectPosition(randX, randY, tileIdToSet);
+                        spawnedCount++;
+
                     }
-
-                    // 풀에서 가져온 오브젝트의 위치와 활성 상태를 초기화
-                    obj.transform.SetParent(transform);
-                    obj.SetActive(true);
-
-                    BaseObstacle baseObstacle = obj.GetComponent<BaseObstacle>();
-
-                    baseObstacle.InitObstacle(spawnPos, obstacleData);
-                    baseObstacle.SetPosition(spawnPos);
-
-                    TurnEndDamageEffect damageEffect = obj.GetComponent<TurnEndDamageEffect>();
-
-                    if (damageEffect != null)
-                    {
-                        damageEffect.SetupEffect();
-                    }
-
-
-                    // TileID 설정
-                    int tileIdToSet = (int)TileID.Terrain;
-                    if (obstacleData.canPlaceUnit == 0)
-                    {
-                        tileIdToSet = (int)TileID.Obstacle;
-                    }
-
-                    GameManager.Map.SetObjectPosition(randX, randY, tileIdToSet);
-                    spawnedCount++;
-
                 }
             }
 
@@ -262,22 +320,22 @@ public class SpawnController : MonoBehaviour
             int count = enemy.Value;
 
             // ------------------------------------
-            // 보스 소환 로직 (2011 이상)
+            // 보스 소환 로직 (2014 이상)
             // ------------------------------------
-            if (entityId >= 2011)
+            if (entityId == 2003 || entityId >= 2014)
             {
                 // Entity ID에 따라 프리팹 이름 결정
                 string bossPrefabName = "";
                 switch (entityId)
                 {
-                    case 2011:
-                        bossPrefabName = "Boss"; // 7008 Boss
+                    case 2003:
+                        bossPrefabName = "Boss"; // 7002 Boss (튜토리얼)
                         break;
-                    case 2012:
-                        bossPrefabName = "Boss2"; // 7016 Boss
+                    case 2014:
+                        bossPrefabName = "Boss2"; // 7008 Boss
                         break;
-                    case 2013:
-                        bossPrefabName = "Boss3"; // 7024 Boss
+                    case 2015:
+                        bossPrefabName = "Boss3"; // 7016 Boss
                         break;
                     default:
                         Debug.LogError($"알 수 없는 보스 Entity ID: {entityId}입니다.");
@@ -292,8 +350,6 @@ public class SpawnController : MonoBehaviour
                     Debug.LogError($"보스 프리팹 로드 실패: {Path.Enemy + bossPrefabName}. 경로와 파일명 확인 필요.");
                     continue;
                 }
-
-                Debug.Log($"보스 Entity ID {entityId} 확인. 프리팹 로드 성공.");
 
                 // 고정 좌표
                 const int BossX = 7;
@@ -330,48 +386,102 @@ public class SpawnController : MonoBehaviour
                 // bosses 리스트에 보스 추가
                 bosses.Add(baseBoss);
                 FindObjectOfType<AttackRangeDisplay>()?.bosses.Add(baseBoss);
-                Debug.Log(
-                    $"보스 ID {entityId} ({bossPrefabName})가 ({BossX}, {BossY})에 성공적으로 소환되었습니다.");
                 
                 continue;
             }
-
+            
             // ------------------------------------
-            // 일반 적 소환 로직 (2001 ~ 2010)
+            // 일반 적 소환 로직 (2004 ~ 2013)
             // ------------------------------------
-            if (entityId >= 2001 && entityId <= 2010)
+            
+            var tutorialEnemySpawn = new Vector2Int[]
             {
-                for (int i = 0; i < count; i++)
+                new Vector2Int(3, 3),   // 첫 번째 적 (2001) 위치
+                new Vector2Int(1, 9)  // 두 번째 적 (2002) 위치
+            };
+        
+            int enemySpawnedCount = 0;
+            
+            // 튜토리얼 애너미 (2001,2002) / 일반 에너미 ID (2004-2013) 
+            if ((entityId >= 2001 && entityId <= 2013) && entityId != 2003)
+            { 
+                // 스테이지 7001 고정 소환
+                if (stageId == 7001)
                 {
-                    int tryCount = 0;
-                    while (tryCount < 100) 
+                    // count만큼 반복하며 고정된 위치에 소환
+                    for (int i = 0; i < count; i++)
                     {
-                        int randX = Random.Range(0, GameManager.Map.mapWidth);
-                        int randY = Random.Range(0, GameManager.Map.mapHeight);
-                        
-                        if (GameManager.Map.mapData[randX, randY] == TileID.Terrain &&
-                            !(randX >= 0 && randX <= 3 && randY >= 0 && randY <= 3))
+                        if (enemySpawnedCount < tutorialEnemySpawn.Length)
                         {
+                            Vector2Int fixedPos = tutorialEnemySpawn[enemySpawnedCount];
+                            
                             GameObject obj = Instantiate(enemyPrefab, transform);
                             BaseEnemy baseEnemy = obj.GetComponent<BaseEnemy>();
 
-                            GridSnapper.SnapToCellCenter(obj.transform, GameManager.Map.tilemap,
-                                new Vector2Int(randX, randY));
+                            if (baseEnemy == null)
+                            {
+                                Debug.LogError($"에너미 프리팹에 BaseEnemy 컴포넌트가 없습니다. EntityID: {entityId}");
+                                Destroy(obj);
+                                enemySpawnedCount++;
+                                continue;
+                            }
 
-                            baseEnemy.InitEnemy(GameManager.Data.entityDataGroup.GetEntityData(entityId),
-                                EnemyType.Normal);
-                            baseEnemy.controller.SetPosition(randX, randY);
+                            GridSnapper.SnapToCellCenter(obj.transform, GameManager.Map.tilemap, fixedPos);
+
+                            baseEnemy.InitEnemy(GameManager.Data.entityDataGroup.GetEntityData(entityId), EnemyType.Normal);
+                            baseEnemy.controller.SetPosition(fixedPos.x, fixedPos.y); 
                             baseEnemy.controller.UpdatePlayerPos();
-
-                            GameManager.Map.SetObjectPosition(randX, randY, TileID.Enemy);
-
+                            
+                            GameManager.Map.SetObjectPosition(fixedPos.x, fixedPos.y, TileID.Enemy);
                             FindObjectOfType<AttackRangeDisplay>()?.enemies.Add(baseEnemy);
                             spawnedList.Add(baseEnemy);
-
-                            break;
+                            // ----------------------------------------------------
+                            
+                            enemySpawnedCount++; 
                         }
+                        else
+                        {
+                            Debug.LogWarning($"튜토리얼 스테이지 {stageId}의 위치가 부족합니다");
+                            break; 
+                        }
+                    }
+                }
+                ////
+                // 7001이 아닌 일반 스테이지
+                else
+                {
+                    for (int i = 0; i < count; i++)
+                    {
+                        int tryCount = 0;
+                        while (tryCount < 100)
+                        {
+                            int randX = Random.Range(0, GameManager.Map.mapWidth);
+                            int randY = Random.Range(0, GameManager.Map.mapHeight);
 
-                        tryCount++;
+                            if (GameManager.Map.mapData[randX, randY] == TileID.Terrain &&
+                                !(randX >= 0 && randX <= 3 && randY >= 0 && randY <= 3))
+                            {
+                                GameObject obj = Instantiate(enemyPrefab, transform);
+                                BaseEnemy baseEnemy = obj.GetComponent<BaseEnemy>();
+
+                                GridSnapper.SnapToCellCenter(obj.transform, GameManager.Map.tilemap,
+                                    new Vector2Int(randX, randY));
+
+                                baseEnemy.InitEnemy(GameManager.Data.entityDataGroup.GetEntityData(entityId),
+                                    EnemyType.Normal);
+                                baseEnemy.controller.SetPosition(randX, randY);
+                                baseEnemy.controller.UpdatePlayerPos();
+
+                                GameManager.Map.SetObjectPosition(randX, randY, TileID.Enemy);
+
+                                FindObjectOfType<AttackRangeDisplay>()?.enemies.Add(baseEnemy);
+                                spawnedList.Add(baseEnemy);
+
+                                break;
+                            }
+
+                            tryCount++;
+                        }
                     }
                 }
             }

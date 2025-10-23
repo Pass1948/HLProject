@@ -5,7 +5,7 @@ using UnityEngine;
  
 public class Stage
 {
-    private int stageId = 7008;
+    public int stageId = 7003;
     private StageData stage;
 
     private int currentStageIndex;
