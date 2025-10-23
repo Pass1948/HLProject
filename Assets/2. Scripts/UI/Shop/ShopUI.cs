@@ -12,6 +12,7 @@ public class ShopUI : BaseUI
     [SerializeField] private Transform bulletRoot;
     [SerializeField] private Transform relicRoot;
     [SerializeField] private Transform playerBulletRoot;
+    [SerializeField] private Transform playerRellicRoot;
     [SerializeField] private Image hpBar;
 
     [SerializeField] private TextMeshProUGUI rerollCostText;
@@ -176,6 +177,7 @@ public class ShopUI : BaseUI
                 card.rellicBtn.onClick.AddListener(() =>
                 {
                     shop.TryBuy(idx);
+                    RebuildPlayerRellics();
                     UpdateRerollLabel();
                 });
                 spawned.Add(card.gameObject);
@@ -208,25 +210,42 @@ public class ShopUI : BaseUI
                 removeButton.interactable = true;
             });
         }
-
         cost++;
+    }
+    private void RebuildPlayerRellics()
+    {
+        ClearSection(playerRellicRoot);
+        var bullets = GameManager.ItemControl.buyItems;
+        for (int i = 0; i < bullets.Count; i++)
+        {
+            var rellic = bullets[i];
+            int idx = i;
+            var card =  GameManager.UI.CreateSlotUI<ShopCardUI>(playerRellicRoot);
+            var rellicitem = new ShopManager.ShopItem(ShopItemType.SpecialTotem, rellic.name, 1, null, rellic);
+            card.RellicBind(rellicitem, rellic.description);
+            card.CheckItemType(rellicitem);
+            card.OnBuyRellic();
+            card.OpenUI();
+            PlayerMoneyText();
+            PlayerHpCheck();
+        }
     }
 
     private void PlayerHeal()
     {
         UpdateHPLabel();
-        PlayerMoneyText();
         var seq = DOTween.Sequence();
         seq.Append(healButton.transform.DOScale(2.7f, 0.2f));
         seq.Append(healButton.transform.DOScale(2.4f, 0.2f));
         shop.TryHeal();
         healCost.text = "Ð" + shop.healCost.ToString();
+        PlayerMoneyText();
         PlayerHpCheck();
     }
 
     private void PlayerHpCheck()
     {
-        currentHp = GameManager.Unit.Player.playerModel.health;
+        currentHp = GameManager.Unit.Player.playerModel.currentHealth;
         maxHp = GameManager.Unit.Player.playerModel.maxHealth;
         float fill = (float)currentHp / (float)maxHp;
         hpBar.fillAmount = fill;
@@ -289,7 +308,7 @@ public class ShopUI : BaseUI
     private void OnSettingButton()
     {
         isOn = !isOn;
-        GameManager.UI.OpenUI<SettingUI>();
+        GameManager.UI.OpenPopUI<SettingUI>();
     }
 
     private void NextStage()

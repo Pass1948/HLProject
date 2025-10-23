@@ -39,7 +39,7 @@ public class TitleUI : BaseUI
 
     private void OpenSetting()
     {
-        Instantiate(settingUI);
+        GameManager.UI.OpenPopUI<SettingUI>();
         GameManager.Sound.PlayUISfx();
     }
 

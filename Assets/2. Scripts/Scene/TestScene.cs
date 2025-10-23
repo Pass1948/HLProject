@@ -16,6 +16,7 @@ public class TestScene : BaseScene
         // Debug.Log("new Stage");
         // Debug.Log(GameManager.SaveLoad.nextSceneIndex);
         _stage.InitStage(GameManager.SaveLoad.nextSceneIndex);
+        GameManager.UI.OpenUI<FadeOutUI>();
         GameManager.Map.CreateMap(_stage);
         var cam = GameManager.Resource.Create<GameObject>(Path.Camera + "MainCamera");
         CameraController cc = cam.GetComponent<CameraController>();

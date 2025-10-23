@@ -114,7 +114,7 @@ public class BossController : MonoBehaviour
         // 완료 플래그 설정
         isDone = true;
         GameManager.Map.pathfinding.ResetMapData();
-        GameManager.Event.Publish(EventType.EnemyTurnEnd);        // 이벤트 발행: TurnBasedManager가 이 신호를 받아 다음 적을 진행
+        GameManager.TurnBased.ChangeTo<PlayerTurnState>();
     }
     
     public IEnumerator MoveAlongPath(List<Vector3Int> path)

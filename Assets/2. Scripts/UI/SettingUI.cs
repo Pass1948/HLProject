@@ -4,14 +4,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SettingUI : BaseUI
+public class SettingUI : PopUpUI
 {
     [SerializeField] private Transform windowPanel;
     [SerializeField] private Button windowPrevBtn;
     [SerializeField] private Button windowNextBtn;
 
     private const string windowPanelPrefix = "WindowSizePanel_";
-    private int windowPanelIndex = 0;
+
     private GameObject[] windowPanels;
 
     [SerializeField] Button closeBtn;
@@ -48,16 +48,30 @@ public class SettingUI : BaseUI
         masterVolumeBar.minValue = 0f; masterVolumeBar.maxValue = 1f;
         bgmVolumeBar.minValue = 0f; bgmVolumeBar.maxValue = 1f;
         sfxVolumeBar.minValue = 0f; sfxVolumeBar.maxValue = 1f;
-        
+    }
+
+    private void OnEnable()
+    {
+        UpdateSpeedView();
         masterVolumeBar.onValueChanged.AddListener(GameManager.Sound.SetMasterVolume);
         sfxVolumeBar.onValueChanged.AddListener(GameManager.Sound.SetSfxVolume);
         bgmVolumeBar.onValueChanged.AddListener(GameManager.Sound.SetBgmVolume);
+        masterVolumeBar.value = GameManager.Sound.masterVolume;
+        sfxVolumeBar.value = GameManager.Sound.sfxVolume;
+        bgmVolumeBar.value = GameManager.Sound.bgmVolume;
+    }
+
+    private void OnDisable()
+    {
+        masterVolumeBar.onValueChanged.RemoveListener(GameManager.Sound.SetMasterVolume);
+        sfxVolumeBar.onValueChanged.RemoveListener(GameManager.Sound.SetSfxVolume);
+        bgmVolumeBar.onValueChanged.RemoveListener(GameManager.Sound.SetBgmVolume);
     }
 
 
     private void CloseSettingUi()
     {
-        gameObject.SetActive(false);
+        CloseUI();
         GameManager.Sound.PlayUISfx();
     }
 
@@ -82,24 +96,44 @@ public class SettingUI : BaseUI
 
     void WindowPrevPanel()
     {
-        windowPanelIndex = (windowPanelIndex - 1 + windowPanels.Length) % windowPanels.Length;
+        GameManager.TurnBased.turnSettingValue.windowPanelIndex-= 1;
+        if(GameManager.TurnBased.turnSettingValue.windowPanelIndex < 0)
+            GameManager.TurnBased.turnSettingValue.windowPanelIndex = windowPanels.Length;
         UpdateWindowView();
         GameManager.Sound.PlayUISfx();
     }
 
     void WindowNextPanel()
     {
-        if (windowPanels == null || windowPanels.Length == 0) return;
-        windowPanelIndex = (windowPanelIndex + 1) % windowPanels.Length;
+        GameManager.TurnBased.turnSettingValue.windowPanelIndex += 1;
+        if (GameManager.TurnBased.turnSettingValue.windowPanelIndex > 2)
+            GameManager.TurnBased.turnSettingValue.windowPanelIndex = 0;
         UpdateWindowView();
         GameManager.Sound.PlayUISfx();
     }
 
     private void UpdateWindowView()
     {
+        var index = GameManager.TurnBased.turnSettingValue.windowPanelIndex;
+
         if (windowPanels == null) return;
         for (int i = 0; i < windowPanels.Length; i++)
-            windowPanels[i].SetActive(i == windowPanelIndex);
+            windowPanels[i].SetActive(i == index);
+        switch (index)
+        {
+            case 0:
+                Screen.fullScreen = true;
+                Screen.SetResolution(1920, 1080, FullScreenMode.FullScreenWindow);
+                break;
+            case 1:
+                Screen.fullScreen = false;
+                Screen.SetResolution(1600, 900, FullScreenMode.Windowed);
+                break;
+            case 2:
+                Screen.fullScreen = false;
+                Screen.SetResolution(1280, 720, FullScreenMode.Windowed);
+                break;
+        }
     }
 
     void AutoRegisterSpeedPanels()
@@ -116,24 +150,30 @@ public class SettingUI : BaseUI
 
     void SpeedPrevPanel()
     {
-        speedIndex = (speedIndex - 1 + speedPanels.Length) % speedPanels.Length;
+        GameManager.TurnBased.turnSettingValue.gameTime-=1;
+        if(GameManager.TurnBased.turnSettingValue.gameTime < 1)
+            GameManager.TurnBased.turnSettingValue.gameTime = 4;
+        Time.timeScale = GameManager.TurnBased.turnSettingValue.gameTime;
         UpdateSpeedView();
         GameManager.Sound.PlayUISfx();
     }
 
     void SpeedNextPanel()
     {
-        if (speedPanels == null || speedPanels.Length == 0) return;
-        speedIndex = (speedIndex + 1) % speedPanels.Length;
+       GameManager.TurnBased.turnSettingValue.gameTime += 1;
+        if (GameManager.TurnBased.turnSettingValue.gameTime >4)
+            GameManager.TurnBased.turnSettingValue.gameTime = 1;
+        Time.timeScale = GameManager.TurnBased.turnSettingValue.gameTime;
         UpdateSpeedView();
         GameManager.Sound.PlayUISfx();
     }
 
     private void UpdateSpeedView()
     {
+        int t = GameManager.TurnBased.turnSettingValue.gameTime;
         if (speedPanels == null) return;
         for (int i = 0; i < speedPanels.Length; i++)
-            speedPanels[i].SetActive(i == speedIndex);
+            speedPanels[i].SetActive(i == t - 1);
         GameManager.Sound.PlayUISfx();
     }
 }
