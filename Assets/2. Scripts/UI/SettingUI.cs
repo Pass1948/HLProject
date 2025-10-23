@@ -52,6 +52,7 @@ public class SettingUI : PopUpUI
 
     private void OnEnable()
     {
+        UpdateSpeedView();
         masterVolumeBar.onValueChanged.AddListener(GameManager.Sound.SetMasterVolume);
         sfxVolumeBar.onValueChanged.AddListener(GameManager.Sound.SetSfxVolume);
         bgmVolumeBar.onValueChanged.AddListener(GameManager.Sound.SetBgmVolume);
@@ -129,24 +130,30 @@ public class SettingUI : PopUpUI
 
     void SpeedPrevPanel()
     {
-        speedIndex = (speedIndex - 1 + speedPanels.Length) % speedPanels.Length;
+        var t = GameManager.TurnBased.turnSettingValue.gameTime-=1;
+        if(GameManager.TurnBased.turnSettingValue.gameTime < 1)
+            GameManager.TurnBased.turnSettingValue.gameTime = 4;
+        Time.timeScale = t;
         UpdateSpeedView();
         GameManager.Sound.PlayUISfx();
     }
 
     void SpeedNextPanel()
     {
-        if (speedPanels == null || speedPanels.Length == 0) return;
-        speedIndex = (speedIndex + 1) % speedPanels.Length;
+        var t = GameManager.TurnBased.turnSettingValue.gameTime += 1;
+        if (GameManager.TurnBased.turnSettingValue.gameTime >4)
+            GameManager.TurnBased.turnSettingValue.gameTime = 1;
+        Time.timeScale = t;
         UpdateSpeedView();
         GameManager.Sound.PlayUISfx();
     }
 
     private void UpdateSpeedView()
     {
+        int t = GameManager.TurnBased.turnSettingValue.gameTime;
         if (speedPanels == null) return;
         for (int i = 0; i < speedPanels.Length; i++)
-            speedPanels[i].SetActive(i == speedIndex);
+            speedPanels[i].SetActive(i == t - 1);
         GameManager.Sound.PlayUISfx();
     }
 }

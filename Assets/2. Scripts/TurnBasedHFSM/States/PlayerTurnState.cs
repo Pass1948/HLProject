@@ -14,7 +14,6 @@ public class PlayerTurnState : BaseTurnState
         didClose = false;
         GameManager.Mouse.isShowRange = true;
         turnManager.AddCount();
-        
         // 턴 시작 시 커맨드 초기화후 입력 대기
         GameManager.UI.OpenUI<PaseTurnUI>();
         if (turnManager.isCamera == false)
