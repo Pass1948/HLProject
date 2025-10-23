@@ -77,7 +77,7 @@ public class RelicUI : MonoBehaviour
                 relic?.name ?? $"Relic {relic?.id}",
                 0, null, relic
             );
-            card.Bind(item);
+            card.CardBind(item);
 
             // 가격/제목 숨김
             var priceTf = card.transform.Find("Price");
@@ -87,11 +87,11 @@ public class RelicUI : MonoBehaviour
             if (titleTf) titleTf.gameObject.SetActive(false);
 
             // 구매 비활성
-            if (card.buyButton)
+            if (card.buyBulletBtn)
             {
-                card.buyButton.interactable = false;
-                card.buyButton.transition = Selectable.Transition.None;
-                var nav = card.buyButton.navigation; nav.mode = Navigation.Mode.None; card.buyButton.navigation = nav;
+                card.buyBulletBtn.interactable = false;
+                card.buyBulletBtn.transition = Selectable.Transition.None;
+                var nav = card.buyBulletBtn.navigation; nav.mode = Navigation.Mode.None; card.bulletBtn.navigation = nav;
             }
 
             var rt = card.transform as RectTransform;

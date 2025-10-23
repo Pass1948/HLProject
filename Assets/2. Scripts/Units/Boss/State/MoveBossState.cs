@@ -10,7 +10,7 @@ public class MoveBossState : BaseBossState
     public override void Enter()
     {
         //GameManager.Map.PlayerUpdateRange(controller.GridPos, controller.moveRange);
-
+        Debug.Log("Move boss state");
         Vector3Int start = controller.GridPos;
         Vector3Int dest = controller.TargetPos;
         List<Vector3Int> path = GameManager.Map.FindPath(start, dest);
@@ -58,7 +58,7 @@ public class MoveBossState : BaseBossState
         if (oldPos.x >= 0 && oldPos.y >= 0 && oldPos.x < GameManager.Map.mapWidth && oldPos.y < GameManager.Map.mapHeight)
         {
             int oldTileID = GameManager.Map.mapData[oldPos.x, oldPos.y];
-            Debug.Log($"몬스터가 떠난 이전 좌표: ({oldPos.x}, {oldPos.y}) | 타일 ID: {oldTileID}");
+            // Debug.Log($"몬스터가 떠난 이전 좌표: ({oldPos.x}, {oldPos.y}) | 타일 ID: {oldTileID}");
         }
         
         yield return controller.MoveAlongPath(path);

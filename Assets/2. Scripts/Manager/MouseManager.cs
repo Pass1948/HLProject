@@ -94,9 +94,6 @@ public class MouseManager : MonoBehaviour
     {
         if (pointer == null || tilemap == null || map == null || cam == null) return;
 
-        if (blockWhenUI && EventSystem.current && EventSystem.current.IsPointerOverGameObject())
-        { hasHover = false; return; }
-
         if (!TryGetMouseWorld(screen, out var world))
         { hasHover = false; return; }
 
@@ -132,8 +129,6 @@ public class MouseManager : MonoBehaviour
     public void ClickCurrentHover()
     {
         if (!hasHover) return;
-        if (blockWhenUI && EventSystem.current && EventSystem.current.IsPointerOverGameObject())
-            return;
 
         HandleLeftClick(hoverCell);
     }
@@ -146,10 +141,6 @@ public class MouseManager : MonoBehaviour
         bool cellIsPlayer = map.IsPlayer(cell);
         bool cellIsEnemy = map.IsEnemy(cell);
         bool cellIsTerrain = map.IsMovable(cell);
-        
-        Debug.Log("Player인가?"+cellIsPlayer);
-        Debug.Log("Enemy 인가?"+cellIsEnemy);
-        Debug.Log("Terrain인가?"+cellIsTerrain);
         // 공격
         if (isAttacking)
         {
@@ -374,7 +365,7 @@ public void InputCancel()
 
         for (int i = 0; i < hitCount; i++)
         {
-            if (Hits[i] && Hits[i].TryGetComponent<BasePlayer>(out _) || Hits[i] && Hits[i].TryGetComponent<BaseEnemy>(out _))
+            if (Hits[i] && Hits[i].TryGetComponent<BasePlayer>(out _) || Hits[i] && Hits[i].TryGetComponent<BaseEnemy>(out _) || Hits[i] && Hits[i].TryGetComponent<BaseBoss>(out _))
                 return Hits[i].GetComponentInParent<T>(true);
         }
 

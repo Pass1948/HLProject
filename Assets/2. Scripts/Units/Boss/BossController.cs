@@ -20,6 +20,12 @@ public class BossController : MonoBehaviour
     public bool isDie;
     public bool isDone;
     public bool startTurn = false;
+    public bool isCooldown = false;  // 현재 쿨타임 중인가?
+    public bool canPattern;          // 패턴 사용가능한가? -> 전 에너미 턴에 경고를 했는가
+    public int cooldown;             // 쿨타임
+    public int remainCooldown;       // 쿨타임을 연산할 변수
+    public int patternPower;         // 패턴 공격력
+    public int patternRange;         // 패턴 공격 범위
 
     public float moveDuration = 0.2f;
 
@@ -45,7 +51,14 @@ public class BossController : MonoBehaviour
         isDie = model.isDie;
 
         RunStateMachine();
-        
+    }
+
+    public void SetController(int cooldown, int patternPower, int patternRange)
+    {
+        this.cooldown = cooldown;
+        this.remainCooldown = 0;
+        this.patternPower = patternPower;
+        this.patternRange = patternRange;
     }
 
     private void RunStateMachine()
@@ -70,7 +83,7 @@ public class BossController : MonoBehaviour
         }
     }
     
-    private void StartTurn()
+    public void StartTurn()
     {
         // 이미 죽었으면 무시
         if (isDie) return;
@@ -111,8 +124,7 @@ public class BossController : MonoBehaviour
             Debug.LogWarning("길이 비었음");
             yield break;
         }
-
-
+        
         foreach (var cell in path)
         {
             Vector3 targetPos = GameManager.Map.tilemap.GetCellCenterWorld(cell);
@@ -133,6 +145,25 @@ public class BossController : MonoBehaviour
         }
 
         transform.position = target;
+    }
+
+    public void PatternCooldown()
+    {
+        isCooldown = true;
+        remainCooldown = cooldown;
+    }
+
+    public void ReduceCooldown()
+    {
+        if (isCooldown)
+        {
+            remainCooldown--;
+            if (remainCooldown <= 0)
+            {
+                isCooldown = false;
+                Debug.Log("패턴 쿨타임 해제됨");
+            }
+        }
     }
 
     public void OnClickPreviewPath()

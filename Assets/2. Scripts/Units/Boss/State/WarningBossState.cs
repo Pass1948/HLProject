@@ -21,9 +21,4 @@ public class WarningBossState : BaseBossState
     public override void Excute()
     {
     }
-
-    public void WarningArea()
-    {
-        
-    }
 }

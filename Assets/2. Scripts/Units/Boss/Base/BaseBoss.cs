@@ -9,8 +9,14 @@ public class BaseBoss : MonoBehaviour
     public BossController controller;
     public EnemyAnimHandler animHandler;
 
+    public int cooldown;
+    public int patternPower;
+    public int patternRange;
+    
     public void InitBoss(EntityData data)
     {
+        GameManager.Unit.boss = this;
+        
         model = new BossModel();
         model.InitData(data);
         animHandler = GetComponent<EnemyAnimHandler>();

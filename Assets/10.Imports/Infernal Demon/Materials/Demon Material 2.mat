@@ -1,0 +1,90 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-4628112881193040797
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 7
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Demon Material 2
+  m_Shader: {fileID: -6465566751694194690, guid: 8fc2588f8b3848b4584759d8f1558979, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 2
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _SampleTexture2D_6e983a790a834fbfa4574c4e603a66cc_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: 24d100bce219e474da238aa252b2a2a6, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Texture_Color:
+        m_Texture: {fileID: 2800000, guid: e724f5b73e9b4ab41acad59575e22448, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Texture_Emission_1:
+        m_Texture: {fileID: 2800000, guid: ecbc77db2aa3744459facd28639cc96c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Texture_Emission_2:
+        m_Texture: {fileID: 2800000, guid: f9e51a98edd92124ba76da446be05cdd, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Texture_Emission_Craks:
+        m_Texture: {fileID: 2800000, guid: f16668149fe7322449dd4c7331a6803d, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Texture_Metallic_Smoothness:
+        m_Texture: {fileID: 2800000, guid: 5cf3bd403408fad4a9a773bab6a6d13b, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _Albedo_Brightness: 1
+    - _Change_Body_color: 0
+    - _Change_Emissive_color: 0
+    - _Emissive_Power_2: 2
+    - _Emissive_Power_Base: 2
+    - _Emissive_Power_Craks: 2
+    - _Fresnel_Power: 5
+    - _QueueControl: 0
+    - _QueueOffset: 0
+    m_Colors:
+    - _Body_color: {r: 0.25264397, g: 0.26415086, b: 0.24795297, a: 1}
+    - _Emisseve_color: {r: 0.6402727, g: 1, b: 0, a: 1}
+    - _FresnelColor: {r: 0.6037736, g: 0.3140014, b: 0, a: 0}
+  m_BuildTextureStacks: []

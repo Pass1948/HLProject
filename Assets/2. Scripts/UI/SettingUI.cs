@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SettingUI : BaseUI
+public class SettingUI : PopUpUI
 {
     [SerializeField] private Transform windowPanel;
     [SerializeField] private Button windowPrevBtn;
@@ -48,16 +48,29 @@ public class SettingUI : BaseUI
         masterVolumeBar.minValue = 0f; masterVolumeBar.maxValue = 1f;
         bgmVolumeBar.minValue = 0f; bgmVolumeBar.maxValue = 1f;
         sfxVolumeBar.minValue = 0f; sfxVolumeBar.maxValue = 1f;
-        
+    }
+
+    private void OnEnable()
+    {
         masterVolumeBar.onValueChanged.AddListener(GameManager.Sound.SetMasterVolume);
         sfxVolumeBar.onValueChanged.AddListener(GameManager.Sound.SetSfxVolume);
         bgmVolumeBar.onValueChanged.AddListener(GameManager.Sound.SetBgmVolume);
+        masterVolumeBar.value = GameManager.Sound.masterVolume;
+        sfxVolumeBar.value = GameManager.Sound.sfxVolume;
+        bgmVolumeBar.value = GameManager.Sound.bgmVolume;
+    }
+
+    private void OnDisable()
+    {
+        masterVolumeBar.onValueChanged.RemoveListener(GameManager.Sound.SetMasterVolume);
+        sfxVolumeBar.onValueChanged.RemoveListener(GameManager.Sound.SetSfxVolume);
+        bgmVolumeBar.onValueChanged.RemoveListener(GameManager.Sound.SetBgmVolume);
     }
 
 
     private void CloseSettingUi()
     {
-        gameObject.SetActive(false);
+        CloseUI();
         GameManager.Sound.PlayUISfx();
     }
 
