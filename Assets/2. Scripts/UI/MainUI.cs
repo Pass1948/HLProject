@@ -204,6 +204,12 @@ public class MainUI : BaseUI
 
     void ToggleKick()
     {
+        var t = kickBtn.transform.position;
+        kickBtn.transform.DOMoveY(kickBtn.transform.position.y - 5f, 0.1f).OnComplete(() =>
+        {
+            kickBtn.transform.DOMoveY(kickBtn.transform.position.y + 5f, 0.1f);
+            kickBtn.transform.position = t;
+        });
         GameManager.Mouse.HidePlayerRange();
         if (GameManager.Mouse.isShowRange == false) return;
         kickBtnObj.ToggleKick();
@@ -213,6 +219,12 @@ public class MainUI : BaseUI
 
     void ToggleMove()
     {
+        var t = moveBtn.transform.position;
+        moveBtn.transform.DOMoveY(moveBtn.transform.position.y - 5f, 0.1f).OnComplete(() =>
+        {
+            moveBtn.transform.DOMoveY(moveBtn.transform.position.y + 5f, 0.1f);
+            moveBtn.transform.position = t;
+        });
         moveBtnObj.ToggleMove();
         GameManager.Sound.PlayUISfx();
     }
@@ -258,6 +270,12 @@ public class MainUI : BaseUI
     // 수리 // 오토바이 버튼에 넣어주면 된다.
     private void RepairButton()
     {
+        var t = repairBtn.transform.position;
+        repairBtn.transform.DOMoveY(repairBtn.transform.position.y - 2f, 0.1f).OnComplete(() =>
+        {
+            repairBtn.transform.DOMoveY(repairBtn.transform.position.y + 2f, 0.1f);
+            repairBtn.transform.position = t;
+        });
         GameManager.Unit.Vehicle.vehicleHandler.RepairVehicle();
         if (bikeControllBtnObj)
         {
@@ -268,14 +286,24 @@ public class MainUI : BaseUI
     }
     private void BikeToggle()
     {
-        bikeControllBtn.transform.DOMoveY(0f, 0.1f);
-        //bikeControllBtn.image.DOColor(Color.878787, 0.1f);
+        var t = bikeControllBtn.transform.position;
+        bikeControllBtn.transform.DOMoveY(bikeControllBtn.transform.position.y - 5f, 0.1f).OnComplete(() =>
+        {
+            bikeControllBtn.transform.DOMoveY(bikeControllBtn.transform.position.y + 5f, 0.1f);
+            bikeControllBtn.transform.position = t;
+        });
         bikeControllBtnObj.ToggleBikeControll();
         GameManager.Sound.PlayUISfx();
     }
 
     private void RelicToggle()
     {
+        var t = RelicBtn.transform.position;
+        RelicBtn.transform.DOMoveY(RelicBtn.transform.position.y - 5f, 0.1f).OnComplete(() =>
+        {
+            RelicBtn.transform.DOMoveY(RelicBtn.transform.position.y + 5f, 0.1f);
+            RelicBtn.transform.position = t;
+        });
         RelicBtnObj.ToggleRelicList();
         GameManager.Sound.PlayUISfx();
     }
