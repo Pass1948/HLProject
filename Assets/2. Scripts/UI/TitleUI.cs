@@ -14,6 +14,7 @@ public class TitleUI : BaseUI
     [SerializeField] private GameObject deckSelUI;
     [SerializeField] private GameObject settingUI;
     [SerializeField] private RectTransform menuPanel;
+    [SerializeField] private RectTransform logoPanel;
     
     
     private AudioClip audioClip;
@@ -21,6 +22,12 @@ public class TitleUI : BaseUI
     private void Awake()
     {
         GameManager.Sound.PlayBGM(GameManager.Resource.Load<AudioClip>(Path.Sound + "BangPaladin"));
+    }
+
+    private void Start()
+    {
+        menuPanel.transform.DOMove(new Vector2(1300f,530f), 0.8f);
+        logoPanel.transform.DOMove(new Vector2(0f,500f), 0.8f);
     }
 
     private void OnEnable()
