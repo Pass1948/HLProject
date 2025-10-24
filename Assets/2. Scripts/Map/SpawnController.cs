@@ -45,15 +45,15 @@ public class SpawnController : MonoBehaviour
         SpawnPlayer(stage);
         // SpawnEnemys(stage.enemiesDict); 
 
-        SpawnEnemies(stage.enemiesDict, stage.eliteCnt, stage.stageId);
+        SpawnEnemies(stage.enemiesDict, stage.eliteCnt, GameManager.Map.stageID);
 
-        SpawnObstacles(stage.obstaclesDict, stage.stageId);
+        SpawnObstacles(stage.obstaclesDict, GameManager.Map.stageID);
     }
 
     private void SpawnPlayer(Stage stage)
     {
         // 튜토리얼 스테이지(7001)
-        bool tutorialPlayerSpawn = (stage.stageId == 7001);
+        bool tutorialPlayerSpawn = (GameManager.Map.stageID == 7001);
         Vector2Int playerPos;
         Vector2Int vehiclePos;
 
