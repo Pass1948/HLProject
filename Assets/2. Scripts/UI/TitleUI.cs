@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,7 +13,9 @@ public class TitleUI : BaseUI
     [SerializeField] private Button exitButton;
     [SerializeField] private GameObject deckSelUI;
     [SerializeField] private GameObject settingUI;
-
+    [SerializeField] private RectTransform menuPanel;
+    
+    
     private AudioClip audioClip;
 
     private void Awake()
@@ -33,8 +36,9 @@ public class TitleUI : BaseUI
         // TODO: 나중에 게임씬으로 바꿔주기
         //게임 씬 로드하는건 DeckSelUI에 옮겨놓고 DeckSelUI를 키게 작업해놓겠습니다
         //deckSelUI.SetActive(true);
-        deckSelUI.SetActive(true);
+        deckSelUI.transform.DOMove(new Vector2(1300f,530f), 0.8f);
         GameManager.Sound.PlayUISfx();
+        menuPanel.transform.DOMove(new Vector2(2300f,530f), 0.8f);
     }
 
     private void OpenSetting()

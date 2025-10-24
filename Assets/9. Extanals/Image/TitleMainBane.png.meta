@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: cf45609a831e18247b826f4a8d4a54f4
+guid: c074e2e532e3f9b43921fdf9768f1c7a
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -97,13 +97,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: TitleMiniBane_0
+      name: "ChatGPT Image 2025\uB144 10\uC6D4 24\uC77C \uC624\uC804 10_47_26_0"
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 1536
-        height: 1024
+        x: 58
+        y: 602
+        width: 907
+        height: 368
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -111,20 +111,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: be6dd7b9723e9cf4f8d005ef5bda122e
-      internalID: -19391282
+      spriteID: a1e712c0574f3874bb62439a9508ec58
+      internalID: 970871193
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TitleMiniBane_1
+      name: "ChatGPT Image 2025\uB144 10\uC6D4 24\uC77C \uC624\uC804 10_47_26_1"
       rect:
         serializedVersion: 2
-        x: 80
-        y: 124
-        width: 582
-        height: 327
+        x: 59
+        y: 138
+        width: 430
+        height: 364
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -132,20 +132,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c1d0e3e09ac781344a907bcfd579f071
-      internalID: -1991295428
+      spriteID: f85b0a84bbbdf2649b761fb98c51664e
+      internalID: 1950605413
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TitleMiniBane_2
+      name: "ChatGPT Image 2025\uB144 10\uC6D4 24\uC77C \uC624\uC804 10_47_26_2"
       rect:
         serializedVersion: 2
-        x: 96
-        y: 0
-        width: 509
-        height: 5
+        x: 535
+        y: 255
+        width: 431
+        height: 249
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -153,20 +153,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 12131efa09fed91499ac6e28c1c78c16
-      internalID: -1002558308
+      spriteID: 936d9217128f88a409e32d85a76a6c5b
+      internalID: 1252714734
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TitleMiniBane_3
+      name: "ChatGPT Image 2025\uB144 10\uC6D4 24\uC77C \uC624\uC804 10_47_26_3"
       rect:
         serializedVersion: 2
-        x: 99
-        y: 574
-        width: 567
-        height: 322
+        x: 535
+        y: 45
+        width: 431
+        height: 183
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -174,50 +174,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b0822a17655449442a5884256af2bb36
-      internalID: -1798916515
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: TitleMiniBane_4
-      rect:
-        serializedVersion: 2
-        x: 752
-        y: 105
-        width: 679
-        height: 350
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 35fc14d5cb419e64c90643688b480434
-      internalID: 1068239695
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: TitleMiniBane_5
-      rect:
-        serializedVersion: 2
-        x: 789
-        y: 586
-        width: 628
-        height: 304
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 020b37b1617a9e54a9d7d2230bceff46
-      internalID: 1726473188
+      spriteID: fdfb40873c85d0d44bef7bddbb613a86
+      internalID: -864336977
       vertices: []
       indices: 
       edges: []
@@ -225,7 +183,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 3d938809113201a4a86e1febcf46ba70
+    spriteID: 5c79e37c689b1db4eb7617ef57e66255
     internalID: 0
     vertices: []
     indices: 
@@ -233,12 +191,10 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      TitleMiniBane_0: -19391282
-      TitleMiniBane_1: -1991295428
-      TitleMiniBane_2: -1002558308
-      TitleMiniBane_3: -1798916515
-      TitleMiniBane_4: 1068239695
-      TitleMiniBane_5: 1726473188
+      "ChatGPT Image 2025\uB144 10\uC6D4 24\uC77C \uC624\uC804 10_47_26_0": 970871193
+      "ChatGPT Image 2025\uB144 10\uC6D4 24\uC77C \uC624\uC804 10_47_26_1": 1950605413
+      "ChatGPT Image 2025\uB144 10\uC6D4 24\uC77C \uC624\uC804 10_47_26_2": 1252714734
+      "ChatGPT Image 2025\uB144 10\uC6D4 24\uC77C \uC624\uC804 10_47_26_3": -864336977
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
