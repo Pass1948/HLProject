@@ -6,12 +6,14 @@ using UnityEngine.UI;
 
 public class ShopUI : BaseUI
 {
+
     [Header("참조(인스펙터에서 할당)")] private ShopManager shop;
 
     private PlayerHandler player;
     [SerializeField] private Transform bulletRoot;
     [SerializeField] private Transform relicRoot;
     [SerializeField] private Transform playerBulletRoot;
+    [SerializeField] private Transform playerRellicRoot;
     [SerializeField] private Image hpBar;
 
     [SerializeField] private TextMeshProUGUI rerollCostText;
@@ -115,8 +117,8 @@ public class ShopUI : BaseUI
         var modal = GameManager.UI.GetUI<RemoveBulletModalUI>();
         modal.Open(candidates, (index) =>
         {
-            if (index >= 0 && index < candidates.Count)
-                shop.ConfirmRemoveBullet(candidates[index]);
+        /*    if (index >= 0 && index < candidates.Count)
+                shop.ConfirmRemoveBullet(candidates[index]);*/
 
             modal.CloseUI();
             Rebuild(shop.offers);
@@ -176,6 +178,7 @@ public class ShopUI : BaseUI
                 card.rellicBtn.onClick.AddListener(() =>
                 {
                     shop.TryBuy(idx);
+                    RebuildPlayerRellics();
                     UpdateRerollLabel();
                 });
                 spawned.Add(card.gameObject);
@@ -208,8 +211,25 @@ public class ShopUI : BaseUI
                 removeButton.interactable = true;
             });
         }
-
         cost++;
+    }
+    private void RebuildPlayerRellics()
+    {
+        ClearSection(playerRellicRoot);
+        var bullets = GameManager.ItemControl.buyItems;
+        for (int i = 0; i < bullets.Count; i++)
+        {
+            var rellic = bullets[i];
+            int idx = i;
+            var card = GameManager.UI.CreateSlotUI<ShopCardUI>(playerRellicRoot);
+            var rellicitem = new ShopManager.ShopItem(ShopItemType.SpecialTotem, rellic.name, 1, null, rellic);
+            card.RellicBind(rellicitem, rellic.description);
+            card.CheckItemType(rellicitem);
+            card.OnBuyRellic();
+            card.OpenUI();
+            PlayerMoneyText();
+            PlayerHpCheck();
+        }
     }
 
     private void PlayerHeal()
@@ -226,7 +246,7 @@ public class ShopUI : BaseUI
 
     private void PlayerHpCheck()
     {
-        currentHp = GameManager.Unit.Player.playerModel.health;
+        currentHp = GameManager.Unit.Player.playerModel.currentHealth;
         maxHp = GameManager.Unit.Player.playerModel.maxHealth;
         float fill = (float)currentHp / (float)maxHp;
         hpBar.fillAmount = fill;
@@ -296,10 +316,11 @@ public class ShopUI : BaseUI
     {
         // TODO: 여기에 추가해 주시면 됩니당.(JBS)
         int nextStageIndex = GameManager.Shop.stage.GetCurrentStageIndex() + 1;
-
         GameManager.Unit.CurrentStatReset();
         GameManager.SaveLoad.nextSceneIndex += nextStageIndex;
         GameManager.Stage.stageId++;
         GameManager.SceneLoad.RestartScene();
     }
+
+
 }

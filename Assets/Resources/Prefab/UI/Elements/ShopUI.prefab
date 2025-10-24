@@ -1946,6 +1946,7 @@ MonoBehaviour:
   bulletRoot: {fileID: 6111928920570415859}
   relicRoot: {fileID: 6152060099282032780}
   playerBulletRoot: {fileID: 8394531809833428427}
+  playerRellicRoot: {fileID: 1583031461694371042}
   hpBar: {fileID: 5877539454237717505}
   rerollCostText: {fileID: 7091258531656970014}
   playerMoneyText: {fileID: 3549062307500789980}

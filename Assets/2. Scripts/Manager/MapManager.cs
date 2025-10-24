@@ -31,6 +31,8 @@ public class MapManager : MonoBehaviour
 
     public Grid grid;
 
+    public int stageID;
+
     public List<BaseEnemy> CurrentEnemyTargets { get; private set; } = new List<BaseEnemy>();
     // 범위에 들어온 파괴 가능한 장애물 리스트
     public List<Vector3Int> CurrentObstacleCoords { get; private set; } = new List<Vector3Int>();
@@ -45,10 +47,18 @@ public class MapManager : MonoBehaviour
         attackRange = gameObject.AddComponent<AttackRangeDisplay>();
         
         spawnController.InitializeSpawnersAndPools();
-        
-
-
     }
+    private void OnEnable()
+    {
+        GameManager.Event.Subscribe(EventType.IsTutorial, TutorialStage);
+        GameManager.Event.Subscribe(EventType.IsNormalGame, NormalStage);
+    }
+    private void OnDisable()
+    {
+        GameManager.Event.Unsubscribe(EventType.IsTutorial, TutorialStage);
+        GameManager.Event.Unsubscribe(EventType.IsNormalGame, NormalStage);
+    }
+
     void Start()
     {
         //TODO: Test 할 시 주석 풀어주세요잉 (장보석)
@@ -66,6 +76,15 @@ public class MapManager : MonoBehaviour
         //mapCreator.GenerateMap(mapData, tilemap, groundTile, wallTile);
 
         //spawnController.SpawnAllObjects(); // SpawnAll();에서 변경
+    }
+
+    private void TutorialStage()
+    {
+        stageID = 7001;
+    }
+    private void NormalStage()
+    {
+        stageID = 7003;
     }
 
     public void CreateMap(Stage stage)

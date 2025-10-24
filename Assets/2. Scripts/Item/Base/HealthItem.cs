@@ -11,6 +11,7 @@ public class HealthItem : BaseItem
             if (items[i].id == id)
             {
                 playerModel.maxHealth += items[i].addMaxHealth;
+                playerModel.currentHealth += items[i].addMaxHealth;
             }
         }
         

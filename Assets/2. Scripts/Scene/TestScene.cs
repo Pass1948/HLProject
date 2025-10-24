@@ -16,6 +16,7 @@ public class TestScene : BaseScene
         // Debug.Log("new Stage");
         // Debug.Log(GameManager.SaveLoad.nextSceneIndex);
         _stage.InitStage(GameManager.SaveLoad.nextSceneIndex);
+        GameManager.UI.OpenUI<FadeOutUI>();
         GameManager.Map.CreateMap(_stage);
         var cam = GameManager.Resource.Create<GameObject>(Path.Camera + "MainCamera");
         CameraController cc = cam.GetComponent<CameraController>();
@@ -27,7 +28,7 @@ public class TestScene : BaseScene
         GameManager.Shop.ShopInit(_stage);
         
         // Sound
-        var gameBgm = GameManager.Resource.Load<AudioClip>(Path.Sound + "Paladin’s Gun Style");
+        var gameBgm = GameManager.Resource.Load<AudioClip>(Path.Sound + "NeonCityPaladin");
         GameManager.Sound.PlayBGM(gameBgm);
         
         if (GameManager.Unit.isInit == true)

@@ -5,7 +5,6 @@ using UnityEngine;
  
 public class Stage
 {
-    private int stageId = 7008;
     private StageData stage;
 
     private int currentStageIndex;
@@ -21,8 +20,8 @@ public class Stage
     {
         // Debug.Log("Stage : InitStage()");
         ClearAllData();
-        stageId += stageIndex;
-        stage = GameManager.Data.stageDataGroup.GetStageData(stageId);
+       GameManager.Map.stageID += stageIndex;
+        stage = GameManager.Data.stageDataGroup.GetStageData(GameManager.Map.stageID);
         // Debug.Log(stageId);
         mapSize = stage.size;
         for (int i = 0; i < stage.enemyList.Count; i++)

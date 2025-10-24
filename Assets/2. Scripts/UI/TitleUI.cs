@@ -17,7 +17,7 @@ public class TitleUI : BaseUI
 
     private void Awake()
     {
-        GameManager.Sound.PlayBGM(GameManager.Resource.Load<AudioClip>(Path.Sound + "Paladin’s Dash"));
+        GameManager.Sound.PlayBGM(GameManager.Resource.Load<AudioClip>(Path.Sound + "BangPaladin"));
     }
 
     private void OnEnable()
