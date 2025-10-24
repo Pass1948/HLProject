@@ -287,6 +287,9 @@ public class MapManager : MonoBehaviour
         int tileID = mapData[cell.x, cell.y];
         return tileID == TileID.Terrain;
     }
+
+
+
     public bool IsVehicle(Vector3Int cell)
     {
         return mapData[cell.x,cell.y] == TileID.Vehicle;
