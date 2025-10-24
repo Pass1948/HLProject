@@ -6,8 +6,21 @@ public class PlayerAnimHandler : MonoBehaviour
 {
    [SerializeField] Animator animator;
    [SerializeField] float snap = 0.15f;          // 수평 우선 가중치(0~0.3 권장) 값이 클수록 = 좌/우로 더 잘 스냅
-   // 4방향 스냅 회전 (대각선 금지, 경계는 좌/우 우선)
-  
+                                                 // 4방향 스냅 회전 (대각선 금지, 경계는 좌/우 우선)
+
+    public void OnRiding()
+    {
+        if(GameManager.Unit.Vehicle.vehicleModel.condition == VehicleCondition.Riding)
+        {
+            animator.SetBool("IsRiding", true);
+        }
+        else
+        {
+            animator.SetBool("IsRiding", false);
+        }
+    }
+
+
     public void PlayMoveAnim(Transform target)
     {
         if (animator.GetBool("IsMoving") == false)
@@ -36,9 +49,6 @@ public class PlayerAnimHandler : MonoBehaviour
     {
         animator.SetTrigger("IsHit");
     }
-    
-    
-    
     
     // =====================================================================
     // 유틸
