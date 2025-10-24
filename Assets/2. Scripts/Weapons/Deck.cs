@@ -30,7 +30,6 @@ public class Deck : MonoBehaviour
     //덱 상단에서 탄환 뽑기(부족하면 가진 만큼)
     public List<Ammo> DrawAmmos(int amount)
     {
-        Debug.Log("리롤전 덱 숫자" + GameManager.ItemControl.drawPile.Count);
         var res = new List<Ammo>();
         var draw = GameManager.ItemControl.drawPile;
 
@@ -47,8 +46,6 @@ public class Deck : MonoBehaviour
             GameManager.ItemControl.discardPile.Add(draw[last]);
             draw.RemoveAt(last);
         }
-        Debug.Log("리롤후 덱 숫자" + GameManager.ItemControl.drawPile.Count);
-        Debug.Log("버린 덱 숫자" + GameManager.ItemControl.discardPile.Count);
         // 여기서 어떤 '리필'도 하지 않는다. (덱이 0이 되면 그대로 빈 상태 유지)
         return res;
     }
@@ -86,7 +83,6 @@ public class Deck : MonoBehaviour
                 GameManager.ItemControl.drawPile.Add(new Ammo { suit = fixedSuit, rank = r });
             }
         }
-        Debug.Log("초기 덱 숫자" + GameManager.ItemControl.drawPile.Count);
         //==============================
         //다이아 덱
         //숫자 1~13 각 1장, 문양은 다이아몬드
