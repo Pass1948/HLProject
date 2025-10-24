@@ -1,4 +1,5 @@
 ﻿using System;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,6 +13,7 @@ public class DeckSelUI : MonoBehaviour
 
     [SerializeField] private int deckIndex = 0;
     [SerializeField] private GameObject[] deckPanels;     // Awake에서 자동 채움
+    [SerializeField] private GameObject titleUI;
 
     [SerializeField] private Button BasicDeck;
     [SerializeField] private Button DiamondDeck;
@@ -106,7 +108,8 @@ public class DeckSelUI : MonoBehaviour
         GameManager.TurnBased.turnSettingValue.IsHeartDeck = false;
         GameManager.TurnBased.turnSettingValue.IsSpadeDeck = false;
         GameManager.TurnBased.turnSettingValue.IsClubDeck = false;
-        gameObject.SetActive(false);
+        gameObject.transform.DOMove(new Vector3(2400f, 530f, 0f), 0.8f);
+        titleUI.gameObject.transform.DOMove(new Vector3(1300f, 530f, 0f), 0.8f);
         GameManager.Sound.PlayUISfx();
     }
 
