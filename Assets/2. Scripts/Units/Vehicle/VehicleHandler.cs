@@ -18,7 +18,7 @@ public class VehicleHandler : MonoBehaviour
     {
         GameManager.Unit.Player.playerModel.viecleBording = ViecleBording.On;
         
-        MountVehicle();
+        GameManager.Unit.Vehicle.vehicleModel.condition = VehicleCondition.GetOff;
         currentPlayerMoveRange = 1;
         currentPlayerHP = GameManager.Unit.Player.playerModel.currentHealth;
     }
@@ -60,7 +60,8 @@ public class VehicleHandler : MonoBehaviour
             vehicleDestruction.SetActive(true); 
             GameManager.Map.mapData[(int)transform.position.x, (int)transform.position.y] = TileID.Vehicle;
             GameManager.Unit.Player.playerModel.moveRange = currentPlayerMoveRange;
-           // GameManager.Unit.Player.playerModel.health -= GameManager.Unit.Vehicle.vehicleModel.health;
+            // GameManager.Unit.Player.playerModel.health -= GameManager.Unit.Vehicle.vehicleModel.health;
+            GameManager.Unit.Player.animHandler.OnRiding();
         }
         else
         {
@@ -76,6 +77,7 @@ public class VehicleHandler : MonoBehaviour
         {
             GameManager.Unit.Vehicle.vehicleModel.condition = VehicleCondition.Riding;
             MountVehicle();
+            GameManager.Unit.Player.animHandler.OnRiding();
         }
     }
 
@@ -90,6 +92,7 @@ public class VehicleHandler : MonoBehaviour
         GameManager.Unit.Player.playerModel.moveRange += GameManager.Unit.Vehicle.vehicleModel.moveRange;
         //GameManager.Unit.Player.playerModel.health += GameManager.Unit.Vehicle.vehicleModel.health;
         GameManager.Map.mapData[(int)transform.position.x, (int)transform.position.y] = 0;
+        GameManager.Unit.Player.animHandler.OnRiding();
     }
     // 내리는 버튼
     public void DismountVehicle()
@@ -100,6 +103,7 @@ public class VehicleHandler : MonoBehaviour
         GameManager.Unit.Player.playerModel.moveRange = currentPlayerMoveRange;
        // GameManager.Unit.Player.playerModel.health -= GameManager.Unit.Vehicle.vehicleModel.health;
         GameManager.Map.mapData[(int)transform.position.x, (int)transform.position.y] = TileID.Vehicle;
+        GameManager.Unit.Player.animHandler.OnRiding();
     }
     
 }

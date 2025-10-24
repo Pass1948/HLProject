@@ -116,6 +116,12 @@ public class MainUI : BaseUI
     
     private void OnTurnEnd()
     {
+        var t = turnBtn.transform.position;
+        turnBtn.transform.DOMoveY(turnBtn.transform.position.y - 5f, 0.1f).OnComplete(() =>
+        {
+            turnBtn.transform.DOMoveY(turnBtn.transform.position.y + 5f, 0.1f);
+            turnBtn.transform.position = t;
+        });
         GameManager.TurnBased.ChangeTo<PlayerTurnEndState>("Force");
         GameManager.Sound.PlayUISfx();
     }
@@ -132,12 +138,24 @@ public class MainUI : BaseUI
 
     private void DeckToggle()
     {
+        var t = deckBtn.transform.position;
+        deckBtn.transform.DOMoveY(deckBtn.transform.position.y - 5f, 0.1f).OnComplete(() =>
+        {
+            deckBtn.transform.DOMoveY(deckBtn.transform.position.y + 5f, 0.1f);
+            deckBtn.transform.position = t;
+        });
         deckBtnObj.ToggleDeck();
         GameManager.Sound.PlayUISfx();
     }
 
     private void DiscardToggle()
     {
+        var t = discardBtn.transform.position;
+        discardBtn.transform.DOMoveY(discardBtn.transform.position.y - 5f, 0.1f).OnComplete(() =>
+        {
+            discardBtn.transform.DOMoveY(discardBtn.transform.position.y + 5f, 0.1f);
+            discardBtn.transform.position = t;
+        });
         discardBtnObj.ToggleDiscard();
         GameManager.Sound.PlayUISfx();
     }
@@ -250,6 +268,7 @@ public class MainUI : BaseUI
     // 타는 로직
     private void OnRiding()
     {
+        GameManager.Unit.Player.animHandler.OnRiding();
         GameManager.Unit.Vehicle.vehicleHandler.MountVehicle();
         if (bikeControllBtnObj)
         {
@@ -260,6 +279,7 @@ public class MainUI : BaseUI
     // 내리는 로직
     private void GetOff()
     {
+        GameManager.Unit.Player.animHandler.OnRiding();
         GameManager.Unit.Vehicle.vehicleHandler.DismountVehicle();
         if (bikeControllBtnObj)
         {
@@ -383,6 +403,12 @@ public class MainUI : BaseUI
 
     private void OpenSettings()
     {
+        var t = settingActiveBtn.transform.position;
+        settingActiveBtn.transform.DOMoveY(settingActiveBtn.transform.position.y - 5f, 0.1f).OnComplete(() =>
+        {
+            settingActiveBtn.transform.DOMoveY(settingActiveBtn.transform.position.y + 5f, 0.1f);
+            settingActiveBtn.transform.position = t;
+        });
         GameManager.UI.OpenPopUI<SettingUI>();
         GameManager.Sound.PlayUISfx();
     }
