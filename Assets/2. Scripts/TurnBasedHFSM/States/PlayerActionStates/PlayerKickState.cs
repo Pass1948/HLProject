@@ -9,6 +9,7 @@ public class PlayerKickState : PlayerActionState
         base.OnEnter();
         ChangeState<K_Windup>();
         GameManager.Mouse.isMouse = false;
+        GameManager.Mouse.isShowRange = false;
     }
 
     // Å± µ¿ÀÛ ³ª´©±â : ¼±µô, µ¿ÀÛ, ÈÄµô

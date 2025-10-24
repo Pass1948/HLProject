@@ -11,11 +11,12 @@ public class TestScene : BaseScene
 
     public override void SceneEnter()
     {
-        Debug.Log("TestScene : SceneEnter");
+        // Debug.Log("TestScene : SceneEnter");
         _stage = new Stage();
-        Debug.Log("new Stage");
-        Debug.Log(GameManager.SaveLoad.nextSceneIndex);
+        // Debug.Log("new Stage");
+        // Debug.Log(GameManager.SaveLoad.nextSceneIndex);
         _stage.InitStage(GameManager.SaveLoad.nextSceneIndex);
+        GameManager.UI.OpenUI<FadeOutUI>();
         GameManager.Map.CreateMap(_stage);
         var cam = GameManager.Resource.Create<GameObject>(Path.Camera + "MainCamera");
         CameraController cc = cam.GetComponent<CameraController>();
@@ -25,6 +26,11 @@ public class TestScene : BaseScene
         GameManager.ItemControl.ItemDataSet();  // 아이템데이터 리스트 초기 세팅
         GameManager.Mouse.CreateMouse();
         GameManager.Shop.ShopInit(_stage);
+        
+        // Sound
+        var gameBgm = GameManager.Resource.Load<AudioClip>(Path.Sound + "NeonCityPaladin");
+        GameManager.Sound.PlayBGM(gameBgm);
+        
         if (GameManager.Unit.isInit == true)
         {
             GameManager.Unit.SetCurrentStat();

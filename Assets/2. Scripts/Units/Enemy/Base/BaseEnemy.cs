@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using DataTable;
-using UnityEditor.Profiling.Memory.Experimental;
 using UnityEngine;
 
 public class BaseEnemy : MonoBehaviour

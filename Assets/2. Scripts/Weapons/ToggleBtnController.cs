@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using DG.Tweening;
 
 public class ToggleBtnController : MonoBehaviour
 {
@@ -7,7 +8,7 @@ public class ToggleBtnController : MonoBehaviour
     [SerializeField] private RectTransform bikeControllUI;
     [SerializeField] private RectTransform relicListUI;
     [SerializeField] private RectTransform panel;
-
+    [SerializeField] private RectTransform guideUI;
     //덱 토글
     public void ToggleDeck()
     {
@@ -59,12 +60,21 @@ public class ToggleBtnController : MonoBehaviour
 
     public void ToggleRelicList()
     {
-        if(!relicListUI)
+        if (!relicListUI)
         {
             return;
         }
-        relicListUI.gameObject.SetActive(!relicListUI.gameObject.activeSelf);
+
+        bool IsRelicOpenAfter = !relicListUI.gameObject.activeSelf;
+        relicListUI.gameObject.SetActive(IsRelicOpenAfter);
+
+        // 열릴 때만 그리기
+        if (IsRelicOpenAfter)
+        {
+            relicListUI.GetComponent<RelicUI>()?.Render();
+        }
     }
+
 
     public void ToggleKick()
     {
@@ -81,17 +91,20 @@ public class ToggleBtnController : MonoBehaviour
         }
     }
 
+
     public void ToggleMove()
     {
-        if (GameManager.Mouse.isMoving && GameManager.Mouse.isShowMoveRange)
+        if (GameManager.Mouse.isShowMoveRange)
         {
             GameManager.Mouse.OnClickPlayer(GameManager.Map.GetPlayer3Position());
-            GameManager.Mouse.isMoving = false;
         }
-        else
-        {
-            GameManager.Mouse.OnClickPlayer(GameManager.Map.GetPlayer3Position());
-            GameManager.Mouse.isMoving = true;
-        }
+    }
+
+    //가이드 UI패널을 토글함
+    public void ToggleGuide()
+    {
+        if (!guideUI) return;
+        guideUI.gameObject.SetActive(!guideUI.gameObject.activeSelf);
+
     }
 }

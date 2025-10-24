@@ -26,7 +26,7 @@ public class UnitManager : MonoBehaviour
     public List<BaseEnemy> enemies = new List<BaseEnemy>();
 
     public BaseBoss boss = null;
-
+    
    public bool isInit = false;
 
     // =====[���� ���� ����� ����]=====
@@ -35,6 +35,7 @@ public class UnitManager : MonoBehaviour
     public int curMoveRange;
     public int curMulligan;
     public int curHealth;
+    public int curHealthRange;
 
     // =====[���� ���� ����� ����]=====
     public int curVMoveRange;
@@ -82,6 +83,7 @@ public class UnitManager : MonoBehaviour
         curAttack = Player.playerModel.attack;
       curAttackRange = Player.playerModel.attackRange;
         curMoveRange = Player.playerModel.moveRange;
+        curHealthRange = Player.playerModel.maxHealth;
         curMulligan = Player.playerModel.mulligan;
         curHealth = Player.playerModel.currentHealth;
         curVHealth = Vehicle.vehicleModel.currentHealth;
@@ -95,6 +97,7 @@ public class UnitManager : MonoBehaviour
         Player.playerModel.moveRange = curMoveRange;
         Player.playerModel.mulligan = curMulligan;
         Player.playerModel.currentHealth = curHealth;
+        Player.playerModel.maxHealth = curHealthRange;
         Vehicle.vehicleModel.currentHealth = curVHealth;
         isInit  = false;
     }

@@ -19,7 +19,7 @@ public class MouseManager : MonoBehaviour
 
     [Header("Raycast / Plane")]
     public bool useLayerRaycast = true;
-    public LayerMask groundMask = ~0;
+    public LayerMask groundMask = 0;
     public float maxRayDistance = 1000f;
     public bool usePlaneIfMiss = true;
     public float groundY = 0f;
@@ -94,9 +94,6 @@ public class MouseManager : MonoBehaviour
     {
         if (pointer == null || tilemap == null || map == null || cam == null) return;
 
-        if (blockWhenUI && EventSystem.current && EventSystem.current.IsPointerOverGameObject())
-        { hasHover = false; return; }
-
         if (!TryGetMouseWorld(screen, out var world))
         { hasHover = false; return; }
 
@@ -117,7 +114,7 @@ public class MouseManager : MonoBehaviour
         {
             Vector3 center = tilemap.GetCellCenterWorld(cell);
             center.y = groundY + 0.01f;
-            pointer.position = center;
+           pointer.position = center;
 
             lastCell = cell;
             lastValidCell = cell;
@@ -125,14 +122,15 @@ public class MouseManager : MonoBehaviour
 
         hoverCell = cell;
         hasHover = allowed && inside;
+
     }
+    
 
     public void ClickCurrentHover()
     {
-        if (!hasHover) return;
         if (blockWhenUI && EventSystem.current && EventSystem.current.IsPointerOverGameObject())
             return;
-
+        if (!hasHover) return;
         HandleLeftClick(hoverCell);
     }
 
@@ -144,20 +142,18 @@ public class MouseManager : MonoBehaviour
         bool cellIsPlayer = map.IsPlayer(cell);
         bool cellIsEnemy = map.IsEnemy(cell);
         bool cellIsTerrain = map.IsMovable(cell);
-        
-        Debug.Log("Player인가?"+cellIsPlayer);
-        Debug.Log("Enemy 인가?"+cellIsEnemy);
-        Debug.Log("Terrain인가?"+cellIsTerrain);
         // 공격
         if (isAttacking)
         {
             if (IsCellInAttackOrKickRange(cell))
             {
                 GameManager.Event.Publish(EventType.PlayerAttack);
+                GameManager.Sound.PlaySfx(GameManager.Resource.Load<AudioClip>(Path.Sound + "GUNTech_Tormentor Shotgun Fire_05"));
             }
             else
             {
                 CancelAttackOrKickRange();
+                GameManager.Sound.PlayErrorSfx();
             }
             isAttacking = false;
             return;
@@ -167,9 +163,15 @@ public class MouseManager : MonoBehaviour
         if (isKicking)
         {
             if (IsCellInAttackOrKickRange(cell))
+            {
                 GameManager.TurnBased.ChangeTo<PlayerKickState>();
+                GameManager.Sound.PlaySfx(GameManager.Resource.Load<AudioClip>(Path.Sound + "PUNCH_CLEAN_HEAVY_10"));
+            }
             else
+            {
                 CancelAttackOrKickRange();
+                GameManager.Sound.PlayErrorSfx();
+            }
 
             isKicking = false;
             return;
@@ -296,7 +298,7 @@ public class MouseManager : MonoBehaviour
 
 
     // 취소키
-public void InputCance()
+public void InputCancel()
     {
         CancelSelection();
     }
@@ -364,7 +366,7 @@ public void InputCance()
 
         for (int i = 0; i < hitCount; i++)
         {
-            if (Hits[i] && Hits[i].TryGetComponent<BasePlayer>(out _) || Hits[i] && Hits[i].TryGetComponent<BaseEnemy>(out _))
+            if (Hits[i] && Hits[i].TryGetComponent<BasePlayer>(out _) || Hits[i] && Hits[i].TryGetComponent<BaseEnemy>(out _) || Hits[i] && Hits[i].TryGetComponent<BaseBoss>(out _))
                 return Hits[i].GetComponentInParent<T>(true);
         }
 
@@ -391,6 +393,7 @@ public void InputCance()
             .SetData(enemy.enemyModel.attri, enemy.enemyModel.rank, enemy.enemyModel.attack,
                      enemy.enemyModel.moveRange, enemy.enemyModel.currentHealth, enemy.enemyModel.maxHealth);
         GameManager.UI.OpenUI<EnemyInfoPopUpUI>();
+        GameManager.Sound.PlayUISfx();
     }
     private void HideEnemyPopup()
     {
@@ -406,5 +409,6 @@ public void InputCance()
     {
         if (GameManager.Map != null && GameManager.Map.attackRange != null)
             GameManager.Map.attackRange.ClearAttackType();
+        GameManager.Sound.PlayErrorSfx();
     }
 }

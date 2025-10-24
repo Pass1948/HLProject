@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class BossStateMachine
 {
+    // idle -> Evaluate -> Decide -> move
+    //  ㄴ>hit -> die             -> attack
+    //                            -> pattern
+    //                            -> warning
+    
+    
+    
     private IdleBossState idleState;
     private EvaluateBossState evaluateState;
     private DecideBossState decideState;
@@ -38,22 +45,27 @@ public class BossStateMachine
         this.controller = controller;
         this.animHandler = animHandler;
 
-        idleState = new IdleBossState(this, controller, animHandler);
-        evaluateState = new EvaluateBossState(this, controller, animHandler);
-        decideState = new DecideBossState(this, controller, animHandler);
-        moveState = new MoveBossState(this, controller, animHandler);
-        warningState = new WarningBossState(this, controller, animHandler);
-        attackState = new AttackBossState(this, controller, animHandler);
-        patternState = new PatternBossState(this, controller, animHandler);
-        endState = new EndBossState(this, controller, animHandler);
-        hitState = new HitBossState(this, controller, animHandler);
-        dieState = new DieBossState(this, controller, animHandler);
+        idleState = new(this, controller, animHandler);
+        evaluateState = new(this, controller, animHandler);
+        decideState = new(this, controller, animHandler);
+        moveState = new(this, controller, animHandler);
+        attackState = new(this, controller, animHandler);
+        endState = new(this, controller, animHandler);
+        hitState = new(this, controller, animHandler);
+        dieState = new(this, controller, animHandler);
         
+    }
+
+    public void SetPattern(WarningBossState warningState, PatternBossState patternState)
+    {
+        this.warningState = warningState;
+        this.patternState = patternState;
     }
     
     public void Init()
     {
-        
+        currentState = idleState;
+        currentState.Enter();
     }
 
     public void ChangeState(IEnemyState State)

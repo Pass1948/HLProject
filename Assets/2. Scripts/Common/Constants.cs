@@ -12,31 +12,21 @@ public enum EventType
     CameraSenter,
     PlayerAction,
     PlayerAttack,
-    PlayerKick,
     PlayerMove, 
     EnemyTurnStart,
     EnemyTurnEnd,
-    EnemyHit,
-    VehicleOnMounted,
-    VehicleOnDismounted,
-    VehicleOnRepaired,
-    VehicleOnDestroyed,
     OnGoldChanged,
     //--- 상점
     ShopOffersChanged,
     ShopPlayerCardsConfim,
     ShopPowderBundlePrompt,
     ShopRemoveBulletPrompt,
-    //---
     EnemyUIUpdate,
-    //--- 
-    PlayerBulletChanged,
-    //---
-    
     //--- 덱
     SelectDeck,
-    //---
+    
     CancelAmmo,
+    EmptyAmmo,
     // =====(유물)=====
     AddAttackPoint,
     AddMoveRangePoint,
@@ -44,7 +34,9 @@ public enum EventType
     AddBulletPoint,
     AddHealthPoint,
     
-    // =====(화약)=====
+    // =====(튜토리얼)=====
+    IsTutorial,
+    IsNormalGame,
 }
 
 [UGS(typeof(RarityType))]
@@ -136,8 +128,9 @@ public static class TileID
     public const int Vehicle = 3;
     public const int Obstacle = 4;
     public const int Enemy = 5;
-    public const int Obstacle_B = 6;
+    public const int Boss = 6;
 }
+
 
 [UGS(typeof(EliteType))]
 public enum EliteType

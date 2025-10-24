@@ -1,62 +1,138 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Audio;
 
 public class SoundManager : MonoBehaviour
 {
-    public AudioClip defaultBgm;
-    
-    public float bgmVolume;
-    public float sfxVolume;
+    [Range(0,1)] public float masterVolume = 1f;
+    [Range(0,1)] public float bgmVolume = 1f;
+    [Range(0,1)] public float sfxVolume = 1f;
 
-    [Range(0, 10)] public int sfxVoices = 4;
+    AudioSource bgm;   // 루프용 (BGM)
+    AudioSource sfx;   // 단발용 (SFX)
     
-    private AudioSource bgm;
-    private List<AudioSource> sfxV;
-    private int sfxIndex;
+    private AudioClip uiClip;
+    private AudioClip shopUiClip;
+    private AudioClip cardClip;
+    private AudioClip errorClip;
 
-    private void Awake()
+    void Awake()
     {
-        var bgmGO = GameManager.Resource.Create<GameObject>(Path.Sound +"BGM");
-        bgmGO.transform.SetParent(transform);
-        bgm = bgmGO.GetComponent<AudioSource>();
-        
+        uiClip = GameManager.Resource.Load<AudioClip>(Path.Sound + "Laptop_Keystroke_82");
+        cardClip = GameManager.Resource.Load<AudioClip>(Path.Sound + "Laptop_Keystroke_82");
+        shopUiClip = GameManager.Resource.Load<AudioClip>(Path.Sound + "Coins In Sack Dropped on Wood");
+        errorClip = GameManager.Resource.Load<AudioClip>(Path.Sound + "UIGlitch_Error Tone_03");
+        ApplyVolumes();
+        // BGM 소스
+        var bgmGO = new GameObject("BGM_Source");
+        bgmGO.transform.SetParent(transform, false);
+        bgm = bgmGO.AddComponent<AudioSource>();
         bgm.playOnAwake = false;
         bgm.loop = true;
-        bgm.volume = Mathf.Clamp01(bgmVolume);
-        
-        bgm.clip = defaultBgm;
-        bgm.Play();
+        bgm.spatialBlend = 0f;
+        bgm.volume = bgmVolume;
 
-        for (int i = 0; i < sfxVoices; i++)
-        {
-            var go = new GameObject($"SFX_Voice_{i}");
-            go.transform.SetParent(bgm.transform);
-            var src = go.AddComponent<AudioSource>();
-            src.playOnAwake = false;
-            src.loop = false;
-            src.volume = Mathf.Clamp01(bgmVolume);
-            sfxV.Add(src);
-        }
+        // SFX 소스
+        var sfxGO = new GameObject("SFX_Source");
+        sfxGO.transform.SetParent(transform, false);
+        sfx = sfxGO.AddComponent<AudioSource>();
+        sfx.playOnAwake = false;
+        sfx.loop = false;
+        sfx.spatialBlend = 0f;
+        sfx.volume = sfxVolume;
     }
 
-    //BGM 플레이
-    public void PlayerBGM(AudioClip clip)
+    void ApplyVolumes()
     {
-        if (clip == null) return;
-        bgm.clip = clip;
-        bgm.volume = Mathf.Clamp01(bgm.volume);
-        bgm.Play();
+        if (bgm != null)
+            bgm.volume = Mathf.Clamp01(bgmVolume * masterVolume);
+        if (sfx != null)
+            sfx.volume = Mathf.Clamp01(sfxVolume * masterVolume);
     }
-    //BGM 멈춰
-    public void StopBGM() => bgm.Stop();
+    
+    // 마스터
+    public void SetMasterVolume(float v)
+    {
+        masterVolume = Mathf.Clamp01(v);
+        ApplyVolumes();
+    }
+    // 브금
+    public void SetBgmVolume(float v)
+    {
+        bgmVolume = Mathf.Clamp01(v);
+        ApplyVolumes();
+    }
+    // 효과음
+    public void SetSfxVolume(float v)
+    {
+        sfxVolume = Mathf.Clamp01(v);
+        ApplyVolumes();
+    }
     
 
-    public void PlaySFX(AudioClip clip, float pitch = 1f)
+    // BGM 
+    public void PlayBGM(AudioClip clip)
     {
         if (clip == null) return;
+        if (bgm.clip == clip && bgm.isPlaying) return; // 같은 곡이면 무시
         bgm.clip = clip;
+        bgm.volume = Mathf.Clamp01(bgmVolume);
+        bgm.Play();
+    }
+    // BGM 멈추고 싶을 때
+    public void StopBGM()
+    {
+        if (!bgm) return;
+        bgm.Stop();
+        bgm.clip = null;
+    }
+
+    // SFX겹침 거의 없으니 OneShot
+    public void PlaySfx(AudioClip clip, float volumeMul = 1f, float pitch = 1f)
+    {
+        if (clip == null) return;
+        sfx.volume = sfxVolume;
+        sfx.pitch = Mathf.Clamp(pitch, 0.1f, 3f);
+        sfx.PlayOneShot(clip, Mathf.Clamp01(sfxVolume * volumeMul));
+    }
+
+    public void PlayUISfx()
+    {
+        sfx.clip = uiClip;
+        if (sfx.clip == null || cardClip == null) return;
+        sfx.volume = sfxVolume;
+        sfx.pitch = Mathf.Clamp(sfx.pitch, 0.1f, 3f);
+        sfx.PlayOneShot(sfx.clip, Mathf.Clamp01(sfxVolume));
+    }
+
+    public void PlayCardSelectSfx()
+    {
+        sfx.clip = cardClip;
+        if (sfx.clip == null) return;
+        sfx.pitch = Mathf.Clamp(sfx.pitch, 0.1f, 3f);
+        sfx.volume = sfxVolume;
+        sfx.PlayOneShot(sfx.clip, Mathf.Clamp01(sfxVolume));
+    }
+
+    public void PlayShopSfx()
+    {
+        sfx.clip = shopUiClip;
+        if (sfx.clip == null || uiClip == null) return;
+        sfx.pitch = Mathf.Clamp(sfx.pitch, 0.1f, 3f);
+        sfx.volume = sfxVolume;
+        sfx.PlayOneShot(sfx.clip, Mathf.Clamp01(sfxVolume));
+    }
+
+    public void PlayErrorSfx()
+    {
+        sfx.clip = errorClip;
+        if(sfx.clip == null || uiClip == null) return;
+        sfx.pitch = Mathf.Clamp(sfx.pitch, 0.1f, 3f);
+        sfx.volume = sfxVolume;
+        sfx.PlayOneShot(sfx.clip, Mathf.Clamp01(sfxVolume));
     }
 }
+
+
+
+
+
+

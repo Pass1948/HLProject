@@ -62,6 +62,7 @@ public class RewardSlotUI : BaseUI
             GameManager.ItemControl.buyItems.Add(relic);
             GameManager.ItemControl.CreateRelicObject(relic.id, relic);
         }
+        GameManager.Sound.PlayUISfx();
         gameObject.SetActive(false);
     }
     

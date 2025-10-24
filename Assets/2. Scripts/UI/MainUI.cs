@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
@@ -56,7 +57,11 @@ public class MainUI : BaseUI
     [SerializeField] private GameObject settingUI;
 
     [SerializeField] private TextMeshProUGUI stageInfoText;
-    
+
+    //숫자가이드 버튼
+    [SerializeField] Button guideBtn;
+    [SerializeField] ToggleBtnController guideBtnObj;
+
     private void Awake()
     {
         turnBtn.onClick.AddListener(OnTurnEnd);
@@ -73,6 +78,7 @@ public class MainUI : BaseUI
 
         settingActiveBtn.onClick.AddListener(OpenSettings);
 
+        guideBtn.onClick.AddListener(GuideToggle);
         //탄환 선택해제
         //오토바이 조작 안에 있는것들은 안넣어도 될것같음
         deckBtn.onClick.AddListener(fireBtnObj.Unselect);
@@ -84,12 +90,14 @@ public class MainUI : BaseUI
         settingActiveBtn.onClick.AddListener(fireBtnObj.Unselect);
 
         InitReloadUI();
+        SyncSettingManager();
     }
 
     private void OnEnable()
     {
         reloadBtnObj.ReloadChange += OnReloadChanged;
         stageInfoText.text = $"Stage {(GameManager.SaveLoad.nextSceneIndex+1).ToString()}";
+        SyncSettingManager();
     }
     private void OnDisable()
     {
@@ -102,12 +110,20 @@ public class MainUI : BaseUI
         RefreshMovement();
         RefreshPlayerHP();
         RefreshVehicleHP();
+
     }
 
     
     private void OnTurnEnd()
     {
+        var t = turnBtn.transform.position;
+        turnBtn.transform.DOMoveY(turnBtn.transform.position.y - 5f, 0.1f).OnComplete(() =>
+        {
+            turnBtn.transform.DOMoveY(turnBtn.transform.position.y + 5f, 0.1f);
+            turnBtn.transform.position = t;
+        });
         GameManager.TurnBased.ChangeTo<PlayerTurnEndState>("Force");
+        GameManager.Sound.PlayUISfx();
     }
 
     private void OnReload()
@@ -117,22 +133,37 @@ public class MainUI : BaseUI
         {
             bikeControllBtnObj.ToggleBikeControll();
         }
+        GameManager.Sound.PlayUISfx();
     }
 
     private void DeckToggle()
     {
+        var t = deckBtn.transform.position;
+        deckBtn.transform.DOMoveY(deckBtn.transform.position.y - 5f, 0.1f).OnComplete(() =>
+        {
+            deckBtn.transform.DOMoveY(deckBtn.transform.position.y + 5f, 0.1f);
+            deckBtn.transform.position = t;
+        });
         deckBtnObj.ToggleDeck();
+        GameManager.Sound.PlayUISfx();
     }
 
     private void DiscardToggle()
     {
+        var t = discardBtn.transform.position;
+        discardBtn.transform.DOMoveY(discardBtn.transform.position.y - 5f, 0.1f).OnComplete(() =>
+        {
+            discardBtn.transform.DOMoveY(discardBtn.transform.position.y + 5f, 0.1f);
+            discardBtn.transform.position = t;
+        });
         discardBtnObj.ToggleDiscard();
+        GameManager.Sound.PlayUISfx();
     }
 
     // ReSharper disable Unity.PerformanceAnalysis
     private void RefreshVehicleUI()
     {
-        switch (GameManager.Unit.Vehicle.vehicleModel.condition)    // 다들 여기서 에러남
+        switch (GameManager.Unit.Vehicle.vehicleModel.condition)
         {
             case VehicleCondition.Riding: // 위로 올라탔을 때
                 rerollBtn.gameObject.SetActive(true);
@@ -142,7 +173,7 @@ public class MainUI : BaseUI
                 break;
             case VehicleCondition.Repair: // 수리 하고 있을 때
                 rerollBtn.gameObject.SetActive(false);
-                repairBtn.gameObject.SetActive(true);
+                if(CheckVehicleHp()) repairBtn.gameObject.SetActive(true);
                 mountBtn.gameObject.SetActive(false);
                 getOffBtn.gameObject.SetActive(false);
                 break;
@@ -150,7 +181,7 @@ public class MainUI : BaseUI
                 if (IsNearVehicle()) // 위치가 일치해 있을 때 수리, 리롤
                 {
                     rerollBtn.gameObject.SetActive(true);
-                    repairBtn.gameObject.SetActive(true);
+                    if(CheckVehicleHp()) repairBtn.gameObject.SetActive(true);
                     mountBtn.gameObject.SetActive(false);
                     getOffBtn.gameObject.SetActive(false);
                 }
@@ -166,12 +197,12 @@ public class MainUI : BaseUI
                 if (IsNearVehicle()) // 위치가 일치해 있을 때 수리,
                 {
                     rerollBtn.gameObject.SetActive(true);
-                    repairBtn.gameObject.SetActive(true);
+                    if(CheckVehicleHp()) repairBtn.gameObject.SetActive(true);
                     mountBtn.gameObject.SetActive(true);
                     getOffBtn.gameObject.SetActive(false);
                 }
                 else if(IsSideVehicle())// 주변에 있어도 
-                    rerollBtn.gameObject.SetActive(true);
+                    if(CheckVehicleHp()) repairBtn.gameObject.SetActive(true);
                 else
                 {
                     rerollBtn.gameObject.SetActive(false);
@@ -191,23 +222,43 @@ public class MainUI : BaseUI
 
     void ToggleKick()
     {
+        var t = kickBtn.transform.position;
+        kickBtn.transform.DOMoveY(kickBtn.transform.position.y - 5f, 0.1f).OnComplete(() =>
+        {
+            kickBtn.transform.DOMoveY(kickBtn.transform.position.y + 5f, 0.1f);
+            kickBtn.transform.position = t;
+        });
         GameManager.Mouse.HidePlayerRange();
         if (GameManager.Mouse.isShowRange == false) return;
         kickBtnObj.ToggleKick();
+        GameManager.Sound.PlayUISfx();
     }
+
 
     void ToggleMove()
     {
+        var t = moveBtn.transform.position;
+        moveBtn.transform.DOMoveY(moveBtn.transform.position.y - 5f, 0.1f).OnComplete(() =>
+        {
+            moveBtn.transform.DOMoveY(moveBtn.transform.position.y + 5f, 0.1f);
+            moveBtn.transform.position = t;
+        });
         moveBtnObj.ToggleMove();
+        GameManager.Sound.PlayUISfx();
     }
-
+    // 오토바이와 플레이어의 위치가 겹치는지 쳌
     private bool IsNearVehicle()
     {
         Vector3 vehiclePos = GameManager.Unit.Vehicle.transform.position;
         Vector3  playerPos = GameManager.Unit.Player.transform.position;
         return playerPos == vehiclePos;
     }
-
+    // 오토바이 체력 체크
+    private bool CheckVehicleHp()
+    {
+        return GameManager.Unit.Vehicle.vehicleModel.currentHealth == 0 ? true : false;
+    }
+    // 오토바이와 플레이어의 위치값이 1이하인지
     private bool IsSideVehicle()
     {
         Vector3 vehiclePos = GameManager.Unit.Vehicle.transform.position;
@@ -222,7 +273,7 @@ public class MainUI : BaseUI
         {
             bikeControllBtnObj.ToggleBikeControll();
         }
-        
+        GameManager.Sound.PlayUISfx();
     }
     // 내리는 로직
     private void GetOff()
@@ -232,32 +283,47 @@ public class MainUI : BaseUI
         {
             bikeControllBtnObj.ToggleBikeControll();
         }
+        GameManager.Sound.PlayUISfx();
     }
     // 수리 // 오토바이 버튼에 넣어주면 된다.
     private void RepairButton()
     {
+        var t = repairBtn.transform.position;
+        repairBtn.transform.DOMoveY(repairBtn.transform.position.y - 2f, 0.1f).OnComplete(() =>
+        {
+            repairBtn.transform.DOMoveY(repairBtn.transform.position.y + 2f, 0.1f);
+            repairBtn.transform.position = t;
+        });
         GameManager.Unit.Vehicle.vehicleHandler.RepairVehicle();
         if (bikeControllBtnObj)
         {
             bikeControllBtnObj.ToggleBikeControll();
         }
+        GameManager.Sound.PlayUISfx();
         GameManager.TurnBased.ChangeTo<PlayerTurnEndState>("Force");
     }
     private void BikeToggle()
     {
+        var t = bikeControllBtn.transform.position;
+        bikeControllBtn.transform.DOMoveY(bikeControllBtn.transform.position.y - 5f, 0.1f).OnComplete(() =>
+        {
+            bikeControllBtn.transform.DOMoveY(bikeControllBtn.transform.position.y + 5f, 0.1f);
+            bikeControllBtn.transform.position = t;
+        });
         bikeControllBtnObj.ToggleBikeControll();
+        GameManager.Sound.PlayUISfx();
     }
 
     private void RelicToggle()
     {
+        var t = RelicBtn.transform.position;
+        RelicBtn.transform.DOMoveY(RelicBtn.transform.position.y - 5f, 0.1f).OnComplete(() =>
+        {
+            RelicBtn.transform.DOMoveY(RelicBtn.transform.position.y + 5f, 0.1f);
+            RelicBtn.transform.position = t;
+        });
         RelicBtnObj.ToggleRelicList();
-
-    }
-
-    // 테스트 버전
-    private void BikeTest()
-    {
-        GameManager.Unit.Vehicle.vehicleHandler.DamageVehicle(3);
+        GameManager.Sound.PlayUISfx();
     }
 
     
@@ -289,10 +355,10 @@ public class MainUI : BaseUI
        }
        
        if(remain <= 0)
-        {
+       {
             rerollBtn.interactable = false;
             return;
-        }
+       }
     }
 
     private void InitReloadUI()
@@ -306,12 +372,7 @@ public class MainUI : BaseUI
 
     private void RefreshMovement()
     {
-        int move = 0;
-        if(GameManager.Map != null)
-        {
-            move = GameManager.Map.moveRange;
-        }
-        movementText.text = ($"{move}");
+        movementText.text = GameManager.Unit.Player.playerModel.moveRange.ToString();
     }
 
     private void RefreshPlayerHP()
@@ -340,8 +401,31 @@ public class MainUI : BaseUI
 
     private void OpenSettings()
     {
-        Instantiate(settingUI);
+        var t = settingActiveBtn.transform.position;
+        settingActiveBtn.transform.DOMoveY(settingActiveBtn.transform.position.y - 5f, 0.1f).OnComplete(() =>
+        {
+            settingActiveBtn.transform.DOMoveY(settingActiveBtn.transform.position.y + 5f, 0.1f);
+            settingActiveBtn.transform.position = t;
+        });
+        GameManager.UI.OpenPopUI<SettingUI>();
+        GameManager.Sound.PlayUISfx();
     }
 
-    
+    //숫자 가이드 패널 열렸다 닫혔다
+    private void GuideToggle()
+    {
+        guideBtnObj.ToggleGuide();
+    }
+
+    //가이드 버튼이 보이기/숨기기되게
+    public bool GuideVisible
+    {
+        get => guideBtn && guideBtn.gameObject.activeSelf;
+        set { if (guideBtn) guideBtn.gameObject.SetActive(value); }
+    }
+
+    private void SyncSettingManager()
+    {
+        GuideVisible = GameManager.UI?.ShowGuide ?? true;
+    }
 }

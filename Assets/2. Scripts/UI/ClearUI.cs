@@ -33,7 +33,20 @@ public class ClearUI : BaseUI
     
     private void OpenStore()
     {
+        OnAddPile();
         GameManager.UI.GetUI<ShopUI>();
+        GameManager.Sound.PlayBGM(GameManager.Resource.Create<AudioClip>(Path.Sound + "Buy some cards!"));
+        GameManager.Sound.PlayUISfx();
     }
 
+    private void OnAddPile()
+    {
+        for(int i = 0; i < GameManager.ItemControl.discardPile.Count; i++)
+        {
+            GameManager.ItemControl.drawPile.Add(GameManager.ItemControl.discardPile[i]);
+        }
+        Debug.Log("덱 숫자" + GameManager.ItemControl.drawPile.Count);
+        Debug.Log("버린덱 숫자" + GameManager.ItemControl.discardPile.Count);
+        GameManager.ItemControl.discardPile.Clear();
+    }
 }

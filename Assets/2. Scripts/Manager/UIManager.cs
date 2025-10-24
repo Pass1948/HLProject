@@ -1,4 +1,4 @@
-  using System.Collections;
+﻿  using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -10,10 +10,13 @@ public class UIManager : MonoBehaviour
     public const string UIPrefabPath = "Elements/";
 
     private Transform _uiRoot;
+    private Transform popUpUIRoot;
     private EventSystem _eventSystem;
 
     private bool _isCleaning;
     private Dictionary<string, BaseUI> _uiDictionary = new Dictionary<string, BaseUI>();
+
+    public bool ShowGuide = true;
 
     private void OnEnable()
     {
@@ -31,11 +34,28 @@ public class UIManager : MonoBehaviour
         ui?.OpenUI();
     }
 
+    public void OpenPopUI<T>() where T : PopUpUI
+    {
+        var ui = GetPopUI<T>();
+        ui?.OpenUI();
+    }
+
+
+
     public void CloseUI<T>() where T : BaseUI
     {
         if (IsExistUI<T>())
         {
             var ui = GetUI<T>();
+            ui?.CloseUI();
+        }
+    }
+
+    public void ClosePopUI<T>() where T : PopUpUI
+    {
+        if (IsExistUI<T>())
+        {
+            var ui = GetPopUI<T>();
             ui?.CloseUI();
         }
     }
@@ -54,6 +74,22 @@ public class UIManager : MonoBehaviour
 
         return ui as T;
     }
+
+    public T GetPopUI<T>() where T : PopUpUI
+    {
+        if (_isCleaning) return null;
+
+        string uiName = GetUIName<T>();
+
+        BaseUI ui;
+        if (IsExistUI<T>())
+            ui = _uiDictionary[uiName];
+        else
+            ui = CreatePopUpUI<T>();
+
+        return ui as T;
+    }
+
 
     private T CreateUI<T>() where T : BaseUI
     {
@@ -85,11 +121,47 @@ public class UIManager : MonoBehaviour
             return null;
         }
 
-        // 3. Dictionary ���
         _uiDictionary[uiName] = ui;
 
         return ui;
     }
+
+    private T CreatePopUpUI<T>() where T : PopUpUI
+    {
+        if (_isCleaning) return null;
+
+        string uiName = GetUIName<T>();
+        if (_uiDictionary.TryGetValue(uiName, out var prevUi) && prevUi != null)
+        {
+            Destroy(prevUi.gameObject);
+            _uiDictionary.Remove(uiName);
+        }
+
+        CheckPopUICanvas();
+        CheckEventSystem();
+
+        string path = GetPath<T>();
+        GameObject prefab = GameManager.Resource.CreateUI<GameObject>(path, popUpUIRoot);
+        if (prefab == null)
+        {
+            Debug.LogError($"[UIManager] Prefab not found: {path}");
+            return null;
+        }
+
+        T ui = prefab.GetComponent<T>();
+        if (ui == null)
+        {
+            Debug.LogError($"[UIManager] Prefab has no component : {uiName}");
+            Destroy(prefab);
+            return null;
+        }
+
+        _uiDictionary[uiName] = ui;
+
+        return ui;
+    }
+
+
 
     public T CreateSlotUI<T>(Transform parent = null) where T : BaseUI
     {
@@ -131,6 +203,17 @@ public class UIManager : MonoBehaviour
         string prefKey = Path.UI + UICommonPath + Prefab.Canvas;
         _uiRoot = GameManager.Resource.Create<Transform>(prefKey);
     }
+
+    private void CheckPopUICanvas()
+    {
+        if (popUpUIRoot != null)
+            return;
+
+        string prefKey = Path.UI + UICommonPath + Prefab.Canvas;
+        popUpUIRoot = GameManager.Resource.Create<Transform>(prefKey);
+        popUpUIRoot.gameObject.name = "PopUpUIRoot";
+    }
+
 
     private void CheckEventSystem()
     {

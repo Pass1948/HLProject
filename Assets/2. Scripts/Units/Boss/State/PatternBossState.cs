@@ -4,22 +4,17 @@ using UnityEngine;
 
 public class PatternBossState : BaseBossState
 {
-    public PatternBossState(BossStateMachine stateMachine, BossController controller, EnemyAnimHandler animHandler) : base(stateMachine, controller, animHandler)
-    {
-    }
+    public PatternBossState(BossStateMachine stateMachine, BossController controller, EnemyAnimHandler animHandler) : base(stateMachine, controller, animHandler) { }
 
     public override void Enter()
     {
-        throw new System.NotImplementedException();
+        Debug.Log("패턴 상태 진입");
     }
-
+    
+    public override void Excute() { }
+    
     public override void Exit()
     {
-        throw new System.NotImplementedException();
-    }
-
-    public override void Excute()
-    {
-        throw new System.NotImplementedException();
+        Debug.Log("패턴 상태 종료");
     }
 }

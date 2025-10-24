@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Resources;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -44,8 +44,8 @@ public class GameManager : MonoBehaviour
     private static SaveLoadManager saveLoadManager;
     public static SaveLoadManager SaveLoad => saveLoadManager;
     
-    private static ItemControlManger itemControlManger;
-    public static ItemControlManger ItemControl => itemControlManger;
+    private static ItemControlManager itemControlManger;
+    public static ItemControlManager ItemControl => itemControlManger;
 
     private static ShopManager shopManager;
     public static ShopManager Shop => shopManager;
@@ -82,7 +82,7 @@ public class GameManager : MonoBehaviour
         mapManager = CreateChildManager<MapManager>("MapManager");
         mouseManager = CreateChildManager<MouseManager>("MouseManager");
         saveLoadManager = CreateChildManager<SaveLoadManager>("SaveLoadManager");
-        itemControlManger = CreateChildManager<ItemControlManger>("ItemControlManger");
+        itemControlManger = CreateChildManager<ItemControlManager>("ItemControlManger");
         shopManager = CreateChildManager<ShopManager>("ShopManager");
         soundManager = CreateChildManager<SoundManager>("SoundManager");
     }

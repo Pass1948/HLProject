@@ -13,14 +13,12 @@ public class Deck : MonoBehaviour
     //덱 잔량만 유지
     public int Count => GameManager.ItemControl.drawPile.Count;
 
-    private bool isDeck = false;
     private void OnEnable()
     {
         GameManager.Event.Subscribe(EventType.SelectDeck, BuildInitialDeck);
-        if (!isDeck)
+        if (GameManager.TurnBased.turnSettingValue.isDeck==false)
         {
             BuildInitialDeck();
-            isDeck = true;
         }
     }
 
@@ -45,9 +43,9 @@ public class Deck : MonoBehaviour
         {
             int last = draw.Count - 1;
             res.Add(draw[last]);
+            GameManager.ItemControl.discardPile.Add(draw[last]);
             draw.RemoveAt(last);
         }
-
         // 여기서 어떤 '리필'도 하지 않는다. (덱이 0이 되면 그대로 빈 상태 유지)
         return res;
     }
@@ -67,15 +65,15 @@ public class Deck : MonoBehaviour
     //초기 덱 구성/셔플
     private void BuildInitialDeck()
     {
-        //GameManager.ItemControl.drawPile.Clear();
+        GameManager.TurnBased.turnSettingValue.isDeck = true;
         //==============================
         //기본덱
         //숫자 1~13 각 1장, 문양은 랜덤
         //==============================
         //나중에 테스트 끝나면 안에 넣기
 
-        
-        if(GameManager.TurnBased.turnSettingValue.IsBasicDeck == true)
+
+        if (GameManager.TurnBased.turnSettingValue.IsBasicDeck == true)
         {
             var deck = GameManager.Data.bulletDataGroup.GetBulletData(9005);
 
@@ -83,10 +81,8 @@ public class Deck : MonoBehaviour
             {
                 Suit fixedSuit = (Suit)UnityEngine.Random.Range(0, 4);
                 GameManager.ItemControl.drawPile.Add(new Ammo { suit = fixedSuit, rank = r });
-                
             }
         }
-
         //==============================
         //다이아 덱
         //숫자 1~13 각 1장, 문양은 다이아몬드
