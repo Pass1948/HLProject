@@ -22,7 +22,7 @@ public class Stage
         ClearAllData();
        GameManager.Map.stageID += stageIndex;
         stage = GameManager.Data.stageDataGroup.GetStageData(GameManager.Map.stageID);
-        // Debug.Log(stageId);
+        Debug.Log(stage.id);
         mapSize = stage.size;
         for (int i = 0; i < stage.enemyList.Count; i++)
         {
