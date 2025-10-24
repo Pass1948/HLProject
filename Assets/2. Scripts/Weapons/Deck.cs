@@ -176,6 +176,43 @@ public class Deck : MonoBehaviour
     }
     */
 
+    // 튜토리얼 시작할 때 불러주면 됩니다
+    public void BuildTutorialDeck_TR1()
+    {
+        var p = GameManager.ItemControl.drawPile;
+        p.Clear();
+
+        p.Add(new Ammo { suit = Suit.Diamond, rank = 8 });
+        p.Add(new Ammo { suit = Suit.Club, rank = 4 });
+        p.Add(new Ammo { suit = Suit.Heart, rank = 4 });
+        p.Add(new Ammo { suit = Suit.Spade, rank = 4 });
+    }
+
+    // TR2 시작할 때 불러주면 됩니다
+    public void BuildTutorial_TR2(AttackController magazine)
+    {
+        var p = GameManager.ItemControl.drawPile;
+        p.Clear();
+
+        // A♣×3, K♠×3 넣기
+        for (int i = 0; i < 3; i++) p.Add(new Ammo { suit = Suit.Club, rank = 1 }); // A = 1
+        for (int i = 0; i < 3; i++) p.Add(new Ammo { suit = Suit.Spade, rank = 13 }); // K = 13
+
+        // 손패 세팅 (2♦×3, 2♣×3)
+        var hand = new List<Ammo>(6)
+    {
+        new Ammo { suit = Suit.Diamond, rank = 2 },
+        new Ammo { suit = Suit.Diamond, rank = 2 },
+        new Ammo { suit = Suit.Diamond, rank = 2 },
+        new Ammo { suit = Suit.Club,    rank = 2 },
+        new Ammo { suit = Suit.Club,    rank = 2 },
+        new Ammo { suit = Suit.Club,    rank = 2 },
+    };
+
+        magazine.ClearMagazine();
+        magazine.AddBullets(hand);
+    }
+
     //피셔-예이츠 셔플방식
     //랜덤보다 메모리가 더 효율적임
     private void Shuffle(List<Ammo> list)
