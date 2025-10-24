@@ -34,7 +34,9 @@ public enum EventType
     AddBulletPoint,
     AddHealthPoint,
     
-    // =====(화약)=====
+    // =====(튜토리얼)=====
+    IsTutorial,
+    IsNormalGame,
 }
 
 [UGS(typeof(RarityType))]
