@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
@@ -115,6 +116,12 @@ public class MainUI : BaseUI
     
     private void OnTurnEnd()
     {
+        var t = turnBtn.transform.position;
+        turnBtn.transform.DOMoveY(turnBtn.transform.position.y - 5f, 0.1f).OnComplete(() =>
+        {
+            turnBtn.transform.DOMoveY(turnBtn.transform.position.y + 5f, 0.1f);
+            turnBtn.transform.position = t;
+        });
         GameManager.TurnBased.ChangeTo<PlayerTurnEndState>("Force");
         GameManager.Sound.PlayUISfx();
     }
@@ -131,12 +138,24 @@ public class MainUI : BaseUI
 
     private void DeckToggle()
     {
+        var t = deckBtn.transform.position;
+        deckBtn.transform.DOMoveY(deckBtn.transform.position.y - 5f, 0.1f).OnComplete(() =>
+        {
+            deckBtn.transform.DOMoveY(deckBtn.transform.position.y + 5f, 0.1f);
+            deckBtn.transform.position = t;
+        });
         deckBtnObj.ToggleDeck();
         GameManager.Sound.PlayUISfx();
     }
 
     private void DiscardToggle()
     {
+        var t = discardBtn.transform.position;
+        discardBtn.transform.DOMoveY(discardBtn.transform.position.y - 5f, 0.1f).OnComplete(() =>
+        {
+            discardBtn.transform.DOMoveY(discardBtn.transform.position.y + 5f, 0.1f);
+            discardBtn.transform.position = t;
+        });
         discardBtnObj.ToggleDiscard();
         GameManager.Sound.PlayUISfx();
     }
@@ -203,6 +222,12 @@ public class MainUI : BaseUI
 
     void ToggleKick()
     {
+        var t = kickBtn.transform.position;
+        kickBtn.transform.DOMoveY(kickBtn.transform.position.y - 5f, 0.1f).OnComplete(() =>
+        {
+            kickBtn.transform.DOMoveY(kickBtn.transform.position.y + 5f, 0.1f);
+            kickBtn.transform.position = t;
+        });
         GameManager.Mouse.HidePlayerRange();
         if (GameManager.Mouse.isShowRange == false) return;
         kickBtnObj.ToggleKick();
@@ -212,6 +237,12 @@ public class MainUI : BaseUI
 
     void ToggleMove()
     {
+        var t = moveBtn.transform.position;
+        moveBtn.transform.DOMoveY(moveBtn.transform.position.y - 5f, 0.1f).OnComplete(() =>
+        {
+            moveBtn.transform.DOMoveY(moveBtn.transform.position.y + 5f, 0.1f);
+            moveBtn.transform.position = t;
+        });
         moveBtnObj.ToggleMove();
         GameManager.Sound.PlayUISfx();
     }
@@ -257,6 +288,12 @@ public class MainUI : BaseUI
     // 수리 // 오토바이 버튼에 넣어주면 된다.
     private void RepairButton()
     {
+        var t = repairBtn.transform.position;
+        repairBtn.transform.DOMoveY(repairBtn.transform.position.y - 2f, 0.1f).OnComplete(() =>
+        {
+            repairBtn.transform.DOMoveY(repairBtn.transform.position.y + 2f, 0.1f);
+            repairBtn.transform.position = t;
+        });
         GameManager.Unit.Vehicle.vehicleHandler.RepairVehicle();
         if (bikeControllBtnObj)
         {
@@ -267,12 +304,24 @@ public class MainUI : BaseUI
     }
     private void BikeToggle()
     {
+        var t = bikeControllBtn.transform.position;
+        bikeControllBtn.transform.DOMoveY(bikeControllBtn.transform.position.y - 5f, 0.1f).OnComplete(() =>
+        {
+            bikeControllBtn.transform.DOMoveY(bikeControllBtn.transform.position.y + 5f, 0.1f);
+            bikeControllBtn.transform.position = t;
+        });
         bikeControllBtnObj.ToggleBikeControll();
         GameManager.Sound.PlayUISfx();
     }
 
     private void RelicToggle()
     {
+        var t = RelicBtn.transform.position;
+        RelicBtn.transform.DOMoveY(RelicBtn.transform.position.y - 5f, 0.1f).OnComplete(() =>
+        {
+            RelicBtn.transform.DOMoveY(RelicBtn.transform.position.y + 5f, 0.1f);
+            RelicBtn.transform.position = t;
+        });
         RelicBtnObj.ToggleRelicList();
         GameManager.Sound.PlayUISfx();
     }
@@ -352,6 +401,12 @@ public class MainUI : BaseUI
 
     private void OpenSettings()
     {
+        var t = settingActiveBtn.transform.position;
+        settingActiveBtn.transform.DOMoveY(settingActiveBtn.transform.position.y - 5f, 0.1f).OnComplete(() =>
+        {
+            settingActiveBtn.transform.DOMoveY(settingActiveBtn.transform.position.y + 5f, 0.1f);
+            settingActiveBtn.transform.position = t;
+        });
         GameManager.UI.OpenPopUI<SettingUI>();
         GameManager.Sound.PlayUISfx();
     }

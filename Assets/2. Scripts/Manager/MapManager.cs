@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using DataTable;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
@@ -31,6 +32,8 @@ public class MapManager : MonoBehaviour
 
     public Grid grid;
 
+    public int stageID;
+
     public List<BaseEnemy> CurrentEnemyTargets { get; private set; } = new List<BaseEnemy>();
     // 범위에 들어온 파괴 가능한 장애물 리스트
     public List<Vector3Int> CurrentObstacleCoords { get; private set; } = new List<Vector3Int>();
@@ -45,9 +48,6 @@ public class MapManager : MonoBehaviour
         attackRange = gameObject.AddComponent<AttackRangeDisplay>();
         
         spawnController.InitializeSpawnersAndPools();
-        
-
-
     }
     void Start()
     {
@@ -66,6 +66,15 @@ public class MapManager : MonoBehaviour
         //mapCreator.GenerateMap(mapData, tilemap, groundTile, wallTile);
 
         //spawnController.SpawnAllObjects(); // SpawnAll();에서 변경
+    }
+
+    public void TutorialStage()
+    {
+        stageID = 7001;
+    }
+    public void NormalStage()
+    {
+        stageID = 7003;
     }
 
     public void CreateMap(Stage stage)

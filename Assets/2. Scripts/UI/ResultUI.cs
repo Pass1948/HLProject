@@ -17,7 +17,6 @@ public class ResultUI : BaseUI
 
     private void OnEnable()
     {
-        
     }
 
     public void GetResultType(ResultType result)
