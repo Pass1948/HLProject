@@ -26,6 +26,8 @@ public class EnemyFloatingUI : MonoBehaviour
 
     void Start()
     {
+        if(model == null) Debug.Log("모델 없음");
+        
         hpSlider.maxValue = model.maxHealth;
         hpSlider.value = model.currentHealth;
         
