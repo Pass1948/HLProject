@@ -142,6 +142,7 @@ public class MouseManager : MonoBehaviour
         bool cellIsPlayer = map.IsPlayer(cell);
         bool cellIsEnemy = map.IsEnemy(cell);
         bool cellIsTerrain = map.IsMovable(cell);
+        bool cellIsVehicle = map.IsVehicle(cell);
         // 공격
         if (isAttacking)
         {
@@ -189,7 +190,7 @@ public class MouseManager : MonoBehaviour
             OnClickEnemy(cell);
             return;
         }
-        if (cellIsTerrain)
+        if (cellIsTerrain || cellIsVehicle)
         {
             OnClickTerrain(cell);
             return;
