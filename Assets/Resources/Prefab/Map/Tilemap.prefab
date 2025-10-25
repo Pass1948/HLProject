@@ -44,7 +44,7 @@ Light:
   serializedVersion: 10
   m_Type: 0
   m_Shape: 0
-  m_Color: {r: 1, g: 0.84341866, b: 0.7311321, a: 1}
+  m_Color: {r: 0.8705883, g: 0.14117648, b: 0.8980393, a: 1}
   m_Intensity: 10
   m_Range: 10
   m_SpotAngle: 66
@@ -145,7 +145,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 883746078805611318}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1344,7 +1344,7 @@ Light:
   serializedVersion: 10
   m_Type: 0
   m_Shape: 0
-  m_Color: {r: 1, g: 0.84313726, b: 0.7294118, a: 1}
+  m_Color: {r: 0.8705883, g: 0.14117648, b: 0.8980393, a: 1}
   m_Intensity: 10
   m_Range: 10
   m_SpotAngle: 66
@@ -1568,7 +1568,7 @@ Light:
   serializedVersion: 10
   m_Type: 0
   m_Shape: 0
-  m_Color: {r: 1, g: 0.84341866, b: 0.7311321, a: 1}
+  m_Color: {r: 0.8705883, g: 0.14117648, b: 0.8980393, a: 1}
   m_Intensity: 10
   m_Range: 10
   m_SpotAngle: 66
@@ -1686,7 +1686,7 @@ Light:
   serializedVersion: 10
   m_Type: 0
   m_Shape: 0
-  m_Color: {r: 1, g: 0.84313726, b: 0.7294118, a: 1}
+  m_Color: {r: 0.8705883, g: 0.14117648, b: 0.8980393, a: 1}
   m_Intensity: 10
   m_Range: 10
   m_SpotAngle: 66
@@ -1888,7 +1888,7 @@ Light:
   serializedVersion: 10
   m_Type: 0
   m_Shape: 0
-  m_Color: {r: 1, g: 0.84313726, b: 0.7294118, a: 1}
+  m_Color: {r: 0.8705883, g: 0.14117648, b: 0.8980393, a: 1}
   m_Intensity: 10
   m_Range: 10
   m_SpotAngle: 66
@@ -2006,7 +2006,7 @@ Light:
   serializedVersion: 10
   m_Type: 0
   m_Shape: 0
-  m_Color: {r: 1, g: 0.84341866, b: 0.7311321, a: 1}
+  m_Color: {r: 0.8705883, g: 0.14117648, b: 0.8980393, a: 1}
   m_Intensity: 10
   m_Range: 10
   m_SpotAngle: 66
@@ -2124,7 +2124,7 @@ Light:
   serializedVersion: 10
   m_Type: 0
   m_Shape: 0
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8705883, g: 0.14117648, b: 0.8980393, a: 1}
   m_Intensity: 30
   m_Range: 30
   m_SpotAngle: 60
