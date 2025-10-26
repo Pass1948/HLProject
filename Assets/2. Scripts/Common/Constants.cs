@@ -37,6 +37,7 @@ public enum EventType
     // =====(튜토리얼)=====
     IsTutorial,
     IsNormalGame,
+
 }
 
 [UGS(typeof(RarityType))]

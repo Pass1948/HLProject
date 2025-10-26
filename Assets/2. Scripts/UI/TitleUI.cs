@@ -37,6 +37,13 @@ public class TitleUI : BaseUI
         exitButton.onClick.AddListener(ExitButton);
         restartButton.onClick.AddListener(ReLoadPlay);
     }
+    private void OnDisable()
+    {
+        startButton.onClick.RemoveListener(StartGame);
+        settingButton.onClick.RemoveListener(OpenSetting);
+        exitButton.onClick.RemoveListener(ExitButton);
+        restartButton.onClick.RemoveListener(ReLoadPlay);
+    }
 
     private void StartGame()
     {
