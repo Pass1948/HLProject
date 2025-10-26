@@ -8637,6 +8637,7 @@ MonoBehaviour:
   windowPanel: {fileID: 402623412764868607}
   windowPrevBtn: {fileID: 2948022770133023430}
   windowNextBtn: {fileID: 7957453578274948958}
+  mainPanel: {fileID: 0}
   closeBtn: {fileID: 5058856127012601320}
   backToMainMenuBtn: {fileID: 1991808747088476593}
   speedPanel: {fileID: 1791527487219993392}

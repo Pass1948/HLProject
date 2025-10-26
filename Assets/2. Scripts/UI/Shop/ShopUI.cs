@@ -145,7 +145,6 @@ public class ShopUI : BaseUI
         {
             var data = offers[i];
             int idx = i;
-
             Transform parent = data.type
                 switch
             {
@@ -167,6 +166,7 @@ public class ShopUI : BaseUI
                     UpdateRerollLabel();
                 });
                 spawned.Add(card.gameObject);
+                Debug.Log("이런 시발"+card.gameObject.name);
             }
 
             if (data.type == ShopItemType.SpecialTotem)

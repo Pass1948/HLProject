@@ -37,6 +37,8 @@ public enum EventType
     // =====(튜토리얼)=====
     IsTutorial,
     IsNormalGame,
+    Tutorial1,
+    Tutorial2,
 
 }
 

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Timeline;
+using UnityEngine.XR;
 
 public class Deck : MonoBehaviour
 {
@@ -8,23 +10,39 @@ public class Deck : MonoBehaviour
     //현재 사용안함
     //[SerializeField] private int initialDeckSize = 13;
 
+    AttackController magazine;
+    ReloadAmmo reloadAmmo;
     //현재 덱
-    [SerializeField] 
+
     //덱 잔량만 유지
     public int Count => GameManager.ItemControl.drawPile.Count;
 
-    private void OnEnable()
+    private void Awake()
     {
-        GameManager.Event.Subscribe(EventType.SelectDeck, BuildInitialDeck);
-        if (GameManager.TurnBased.turnSettingValue.isDeck==false)
-        {
-            BuildInitialDeck();
-        }
+        magazine = GetComponent<AttackController>();
+        reloadAmmo = GetComponent<ReloadAmmo>();
+        GameManager.Shop.deck = this;
     }
 
-    private void OnDisable()
+    private void OnEnable()
     {
-        GameManager.Event.Unsubscribe(EventType.SelectDeck, BuildInitialDeck);
+        ChoisDeck();
+    }
+
+    public void ChoisDeck()
+    {
+        if (GameManager.TurnBased.turnSettingValue.isTutorial == true)
+        {
+            BuildTutorialDeck_TR1();
+
+        }
+        else
+        {
+            if (GameManager.TurnBased.turnSettingValue.isDeck == false)
+            {
+                BuildInitialDeck();
+            }
+        }
     }
 
     //덱 상단에서 탄환 뽑기(부족하면 가진 만큼)
@@ -36,7 +54,6 @@ public class Deck : MonoBehaviour
         // 요청이 0 이하이거나 덱이 없거나 비어 있으면 그대로 종료
         if (amount <= 0 || draw == null || draw.Count == 0) 
             return res;
-
         // 남은 장 수 만큼만 뽑는다(마지막 1장도 정상 소비)
         int take = Mathf.Min(amount, draw.Count);
         for (int i = 0; i < take; i++)
@@ -50,8 +67,24 @@ public class Deck : MonoBehaviour
         return res;
     }
 
-    //외부 UI용
-    public List<Ammo> GetDrawSnapshot() => new List<Ammo>(GameManager.ItemControl.drawPile);
+    public List<Ammo> DrawTutorialAmmos(int amount)
+    {
+        var res = new List<Ammo>();
+        var draw = GameManager.ItemControl.drawPile;
+
+        // 요청이 0 이하이거나 덱이 없거나 비어 있으면 그대로 종료
+        if (amount <= 0 || draw == null || draw.Count == 0)
+            return res;
+        // 남은 장 수 만큼만 뽑는다(마지막 1장도 정상 소비)
+        for (int i = 0; i < amount-1; i++)
+        {
+            Debug.Log("덱에서 탄환 뽑음"+ GameManager.ItemControl.drawPile[i]);
+            res.Add(draw[i]);
+            draw.RemoveAt(i);
+        }
+        // 여기서 어떤 '리필'도 하지 않는다. (덱이 0이 되면 그대로 빈 상태 유지)
+        return res;
+    }
 
     
     public void GetPlayerBullets(List<Ammo> pile)
@@ -175,25 +208,23 @@ public class Deck : MonoBehaviour
     // 튜토리얼 시작할 때 불러주면 됩니다
     public void BuildTutorialDeck_TR1()
     {
-        var p = GameManager.ItemControl.drawPile;
-        p.Clear();
-
-        p.Add(new Ammo { suit = Suit.Diamond, rank = 8 });
-        p.Add(new Ammo { suit = Suit.Club, rank = 4 });
-        p.Add(new Ammo { suit = Suit.Heart, rank = 4 });
-        p.Add(new Ammo { suit = Suit.Spade, rank = 4 });
+        GameManager.ItemControl.drawPile.Clear();
+            GameManager.ItemControl.drawPile.Add(new Ammo { suit = Suit.Diamond, rank = 8 });
+            GameManager.ItemControl.drawPile.Add(new Ammo { suit = Suit.Club, rank = 4 });
+            GameManager.ItemControl.drawPile.Add(new Ammo { suit = Suit.Heart, rank = 4 });
+            GameManager.ItemControl.drawPile.Add(new Ammo { suit = Suit.Spade, rank = 4 });
+        magazine.AddBullets(GameManager.ItemControl.drawPile);
     }
 
     // TR2 시작할 때 불러주면 됩니다
-    public void BuildTutorial_TR2(AttackController magazine)
+    public void BuildTutorialDeck_TR2()
     {
-        var p = GameManager.ItemControl.drawPile;
-        p.Clear();
+        GameManager.ItemControl.drawPile.Clear();
 
         // A♣×3, K♠×3 넣기
-        for (int i = 0; i < 3; i++) p.Add(new Ammo { suit = Suit.Club, rank = 1 }); // A = 1
-        for (int i = 0; i < 3; i++) p.Add(new Ammo { suit = Suit.Spade, rank = 13 }); // K = 13
-
+        for (int i = 0; i < 3; i++) GameManager.ItemControl.drawPile.Add(new Ammo { suit = Suit.Club, rank = 1 }); // A = 1
+        for (int i = 0; i < 3; i++) GameManager.ItemControl.drawPile.Add(new Ammo { suit = Suit.Spade, rank = 13 }); // K = 13
+        reloadAmmo.RefreshDeckUI();
         // 손패 세팅 (2♦×3, 2♣×3)
         var hand = new List<Ammo>(6)
     {
@@ -204,7 +235,6 @@ public class Deck : MonoBehaviour
         new Ammo { suit = Suit.Club,    rank = 2 },
         new Ammo { suit = Suit.Club,    rank = 2 },
     };
-
         magazine.ClearMagazine();
         magazine.AddBullets(hand);
     }

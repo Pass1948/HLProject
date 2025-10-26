@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class ReloadAmmo : MonoBehaviour
 {
-    [SerializeField] private Deck deck;
+    Deck deck;
     [SerializeField] private AttackController magazine;
     [SerializeField] private bool autoReload = true;
 
@@ -18,6 +18,10 @@ public class ReloadAmmo : MonoBehaviour
 
     public event Action<int, int> ReloadChange;
 
+    private void Awake()
+    {
+        deck = GetComponent<Deck>();
+    }
     void Start()
     {
         if (autoReload)
@@ -70,7 +74,7 @@ public class ReloadAmmo : MonoBehaviour
     }
 
     //덱 UI 새로고침
-    private void RefreshDeckUI()
+    public void RefreshDeckUI()
     {
         if (deckBg == null) 
         {
@@ -83,7 +87,7 @@ public class ReloadAmmo : MonoBehaviour
 
         if (deck != null)
         {
-            foreach (var a in deck.GetDrawSnapshot())
+            foreach (var a in GameManager.ItemControl.drawPile)
             {
                 SpawnDeckItem(deckBg, a);
             }

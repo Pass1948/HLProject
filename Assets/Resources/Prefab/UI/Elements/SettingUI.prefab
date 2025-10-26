@@ -8647,7 +8647,6 @@ MonoBehaviour:
   masterVolumeBar: {fileID: 2587782895275668747}
   bgmVolumeBar: {fileID: 8218579112807782984}
   sfxVolumeBar: {fileID: 6691482039484948356}
-  tooltipPrefabName: TutorialToolTipUI
   showToolTipBtn: {fileID: 1937994517338546015}
   ToolTip: {fileID: 3520284118162220502}
   bulletToolTiplBtn: {fileID: 2453159701434298348}

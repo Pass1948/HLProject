@@ -33,6 +33,7 @@ public class ShopManager : MonoBehaviour
     public int powderBundleLeft;          // 화역 꾸러미 남은 개수
 
     public Stage stage;
+
     private void Start()
     {
         // 아직 바로 실행 중입니다.
@@ -45,7 +46,6 @@ public class ShopManager : MonoBehaviour
     public void ShopInit(Stage stage)
     {
         this.stage = stage;
-        deck = GameManager.Resource.Create<Deck>(Path.UI + "Deck");
         canRemoveBullet = true;
         powderBundleLeft = 2;
         GenerateOffers();
@@ -73,32 +73,37 @@ public class ShopManager : MonoBehaviour
     // 탄환 오퍼 
     private void GenerateCardOffers(List<Ammo> playerOwned)
     {
-        var snapshot = deck.GetDrawSnapshot();
+        var snapshot = new List<Ammo>(GameManager.ItemControl.drawPile);
 
         Shuffle(snapshot);
 
         int want = GetBulletOfferCount();
-        int added = 0;
+      //  int added = 0;
 
-        foreach (var card in snapshot)
+        for (int i = 0; i < want; i++)
         {
-            // 보유 중이면 제외(중복 구매 방지)
-            // List<T>.Exists(Predicate<T>) = 리스트 안에 조건을 만족하는 원소가 하나라도 있으면 true반환
-            // bool owned = playerOwned.Exists(p => p.suit == card.suit && p.rank == card.rank);
-            // if (owned) continue;
-
             // 새로운 탄환 후보 생성
-            var offerAmmo = new Ammo { suit = card.suit, rank = card.rank, powder = null};
-            
+            Suit fixedSuit = (Suit)UnityEngine.Random.Range(0, 4);
+            int r = Random.Range(1, 14);
+            var offerAmmo = new Ammo { suit = fixedSuit, rank = r, powder = null };
             // 가격 = 기본3 + (화약 레어도 추가 비용)
             int price = 3;
             if (offerAmmo.powder != null)
                 price += GetPowderPrice(offerAmmo.powder.rarity);
 
             offers.Add(new ShopItem(ShopItemType.Bullet, offerAmmo.ToString(), price, offerAmmo));
+        }
+
+      /*  foreach (var card in snapshot)
+        {
+            // 보유 중이면 제외(중복 구매 방지)
+            // List<T>.Exists(Predicate<T>) = 리스트 안에 조건을 만족하는 원소가 하나라도 있으면 true반환
+            // bool owned = playerOwned.Exists(p => p.suit == card.suit && p.rank == card.rank);
+            // if (owned) continue;
+
             added++;
             if (added >= want) break;
-        }
+        }*/
     }
     
     private int GetBulletOfferCount()
