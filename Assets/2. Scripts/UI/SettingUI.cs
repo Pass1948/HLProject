@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,6 +14,7 @@ public class SettingUI : PopUpUI
     private const string windowPanelPrefix = "WindowSizePanel_";
 
     private GameObject[] windowPanels;
+    [SerializeField] private GameObject mainPanel;
 
     [SerializeField] Button closeBtn;
     [SerializeField] Button backToMainMenuBtn;
@@ -71,7 +73,8 @@ public class SettingUI : PopUpUI
 
     private void CloseSettingUi()
     {
-        CloseUI();
+        mainPanel.transform.DOMove(new Vector2(1300f,530f), 0.8f);
+        transform.DOMove(new Vector2(2950f,530f), 0.8f);
         GameManager.Sound.PlayUISfx();
     }
 
