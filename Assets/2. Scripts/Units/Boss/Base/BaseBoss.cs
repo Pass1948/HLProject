@@ -12,6 +12,9 @@ public class BaseBoss : MonoBehaviour
     public int cooldown;
     public int patternPower;
     public int patternRange;
+
+    public string bossName;
+    public string bossDescription;
     
     public void InitBoss(EntityData data)
     {
