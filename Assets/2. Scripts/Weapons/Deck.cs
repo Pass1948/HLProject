@@ -34,7 +34,6 @@ public class Deck : MonoBehaviour
         if (GameManager.TurnBased.turnSettingValue.isTutorial == true)
         {
             BuildTutorialDeck_TR1();
-
         }
         else
         {

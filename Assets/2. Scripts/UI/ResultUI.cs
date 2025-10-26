@@ -1,28 +1,42 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum ResultType
 {
     Clear,
-    Over
+    Over,
+    Tutorial,
+    GameClear,
 }
 
 public class ResultUI : BaseUI
 {
     [SerializeField] ClearUI clearUI;
     [SerializeField] OverUI overUI;
+    [SerializeField] GameObject gameClearUI;
+    [SerializeField] Button gameClearBtn;
+
+    //========[튜토리얼]========
+    [SerializeField] GameObject tutorialUI1;
+    [SerializeField] Button tutorialBtn1;
+    [SerializeField] GameObject tutorialUI2;
+    [SerializeField] Button tutorialBtn2;
+    bool isTutorial1 = false;
+
 
     public ResultType resulttype;
 
-    private void OnEnable()
+    private void Awake()
     {
+        tutorialBtn1.onClick.AddListener(NextStage);
+        tutorialBtn2.onClick.AddListener(MainmenuScene);
+        gameClearBtn.onClick.AddListener(MainmenuScene);
     }
 
     public void GetResultType(ResultType result)
     {
-        Debug.Log("GetResultType");
-
         if (result == ResultType.Clear)
         {
             overUI.CloseUI();
@@ -33,7 +47,51 @@ public class ResultUI : BaseUI
             clearUI.CloseUI();
             overUI.OpenUI();
         }
+        else if (result == ResultType.Tutorial)
+        {
+            if(isTutorial1 == false)
+            {
+                tutorialUI1.SetActive(true);
+                tutorialUI2.SetActive(false);
+                clearUI.CloseUI();
+                overUI.CloseUI();
+            }
+            else
+            {
+                tutorialUI1.SetActive(false);
+                tutorialUI2.SetActive(true);
+                clearUI.CloseUI();
+                overUI.CloseUI();
+            }
+        }
+        else if (result == ResultType.GameClear)
+        {
+            gameClearUI.SetActive(true);
+            tutorialUI1.SetActive(false);
+            tutorialUI2.SetActive(false);
+            clearUI.CloseUI();
+            overUI.CloseUI();
+        }
     }
 
+    public void NextStage()
+    {
+        isTutorial1 = true;
+        int nextStageIndex = GameManager.Shop.stage.GetCurrentStageIndex() + 1;
+        GameManager.Unit.CurrentStatReset();
+        GameManager.SaveLoad.nextSceneIndex += nextStageIndex;
+        GameManager.Stage.stageId++;
+        GameManager.TurnBased.ChangeStartTurn();
+        GameManager.SceneLoad.RestartScene();
+        GameManager.Shop.deck.BuildTutorialDeck_TR2();  
+    }
 
+    private void MainmenuScene()
+    {
+        // 메인메뉴 (인트로?) 씬으로 
+        GameManager.ItemControl.drawPile.Clear();
+        GameManager.TurnBased.turnSettingValue.isTutorial = false;
+        GameManager.ItemControl.ClearData();
+        GameManager.SceneLoad.LoadScene(SceneType.Title);
+    }
 }
