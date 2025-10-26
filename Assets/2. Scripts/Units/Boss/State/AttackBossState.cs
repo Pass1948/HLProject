@@ -44,7 +44,7 @@ public class AttackBossState : BaseBossState
         if (dist >= minRange && dist <= maxRange)
         {
             GameManager.Unit.ChangeHealth(GameManager.Unit.Player.playerModel, controller.model.attack);
-            animHandler.OnAttack();
+            animHandler.OnAttack(GameManager.Unit.Player.transform);
         }
 
         ClearPreveiwTiles();
