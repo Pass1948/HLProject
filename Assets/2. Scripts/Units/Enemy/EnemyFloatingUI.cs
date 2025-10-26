@@ -11,11 +11,13 @@ public class EnemyFloatingUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI attributeText;
     [SerializeField] private Slider hpSlider;
      private EnemyModel model;
-    // Start is called before the first frame update
 
+     private Quaternion fixedRotation;
+     
     private void OnEnable()
     {
-        GameManager.Event.Subscribe(EventType.EnemyUIUpdate, SetData);  
+        GameManager.Event.Subscribe(EventType.EnemyUIUpdate, SetData);
+        fixedRotation = transform.rotation;
     }
 
     private void OnDisable()
@@ -26,6 +28,8 @@ public class EnemyFloatingUI : MonoBehaviour
 
     void Start()
     {
+        if(model == null) Debug.Log("모델 없음");
+        
         hpSlider.maxValue = model.maxHealth;
         hpSlider.value = model.currentHealth;
         
@@ -80,5 +84,10 @@ public class EnemyFloatingUI : MonoBehaviour
         }
         attributeText.text = attri;
         hpSlider.value = model.currentHealth;
+    }
+    
+    private void LateUpdate()
+    {
+        transform.rotation = fixedRotation;
     }
 }

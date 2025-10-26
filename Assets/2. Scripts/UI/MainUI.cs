@@ -268,6 +268,7 @@ public class MainUI : BaseUI
     // 타는 로직
     private void OnRiding()
     {
+        GameManager.Unit.Player.animHandler.OnRiding();
         GameManager.Unit.Vehicle.vehicleHandler.MountVehicle();
         if (bikeControllBtnObj)
         {
@@ -278,6 +279,7 @@ public class MainUI : BaseUI
     // 내리는 로직
     private void GetOff()
     {
+        GameManager.Unit.Player.animHandler.OnRiding();
         GameManager.Unit.Vehicle.vehicleHandler.DismountVehicle();
         if (bikeControllBtnObj)
         {
@@ -407,7 +409,7 @@ public class MainUI : BaseUI
             settingActiveBtn.transform.DOMoveY(settingActiveBtn.transform.position.y + 5f, 0.1f);
             settingActiveBtn.transform.position = t;
         });
-        GameManager.UI.OpenPopUI<SettingUI>();
+        settingUI.transform.DOLocalMove(new Vector2(0, 0), 0.8f);
         GameManager.Sound.PlayUISfx();
     }
 

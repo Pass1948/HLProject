@@ -35,6 +35,8 @@ public class ShopUI : BaseUI
 
     [SerializeField] private Button rellicInvenBtn;
     [SerializeField] private GameObject PlayerBulletsInfoUI;
+    [SerializeField] private GameObject settingUI;
+
 
     private readonly List<GameObject> spawned = new();
 
@@ -309,7 +311,7 @@ public class ShopUI : BaseUI
     private void OnSettingButton()
     {
         isOn = !isOn;
-        GameManager.UI.OpenPopUI<SettingUI>();
+        settingUI.transform.DOLocalMove(new Vector2(0, 0), 0.8f);
     }
 
     private void NextStage()
