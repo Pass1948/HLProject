@@ -262,7 +262,7 @@ public class MouseManager : MonoBehaviour
         if (isMoving) return;
 
         var boss = useOverlapLookup ? FindAtCell<BaseBoss>(cell) : null;
-        Debug.Log(boss.name);
+        // Debug.Log(boss.name);
         if (boss == null) { HideBossPopup(); CancelSelection(); return; }
         if (bossPopupVisible) HideBossPopup();
         else ShowBossPopup(boss);
