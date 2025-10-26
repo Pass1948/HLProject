@@ -70,7 +70,7 @@ public class MapManager : MonoBehaviour
 
     public void TutorialStage()
     {
-        stageID = 7001;
+        stageID = 7008;
     }
     public void NormalStage()
     {
@@ -309,7 +309,13 @@ public class MapManager : MonoBehaviour
     {
         return mapData[cell.x, cell.y] == TileID.Enemy;
     }
-   
+
+    public bool IsBoss(Vector3Int cell)
+    {
+        return mapData[cell.x, cell.y] == TileID.Boss;
+    }
+
+
     // 맵 데이터 확인///////////
     public void DumpMapData()
     {
