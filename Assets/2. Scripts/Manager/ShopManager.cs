@@ -34,6 +34,7 @@ public class ShopManager : MonoBehaviour
 
     public Stage stage;
 
+    public bool isTutorial1 = true;
     private void Start()
     {
         // 아직 바로 실행 중입니다.

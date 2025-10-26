@@ -77,18 +77,19 @@ public class ResultUI : BaseUI
     public void NextStage()
     {
         isTutorial1 = true;
+        GameManager.Shop.isTutorial1 = false;
         int nextStageIndex = GameManager.Shop.stage.GetCurrentStageIndex() + 1;
         GameManager.Unit.CurrentStatReset();
         GameManager.SaveLoad.nextSceneIndex += nextStageIndex;
         GameManager.Stage.stageId++;
         GameManager.TurnBased.ChangeStartTurn();
         GameManager.SceneLoad.RestartScene();
-        GameManager.Shop.deck.BuildTutorialDeck_TR2();  
     }
 
     private void MainmenuScene()
     {
         // 메인메뉴 (인트로?) 씬으로 
+        GameManager.Shop.isTutorial1 = true;
         GameManager.ItemControl.drawPile.Clear();
         GameManager.TurnBased.turnSettingValue.isTutorial = false;
         GameManager.ItemControl.ClearData();

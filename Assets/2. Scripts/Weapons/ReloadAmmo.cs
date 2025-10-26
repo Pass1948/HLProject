@@ -24,13 +24,21 @@ public class ReloadAmmo : MonoBehaviour
     }
     void Start()
     {
-        if (autoReload)
+        FirstReload();
+    }
+
+    public void FirstReload()
+    {
+        if (deck != null)
         {
-            Reload();
-        }
-        else
-        {
-            RefreshDeckUI();
+            if (GameManager.TurnBased.turnSettingValue.isTutorial == true)
+                return;
+            else
+            {
+                int need = magazine.Capacity;
+                var draw = deck.DrawAmmos(need);
+                magazine.AddBullets(draw);
+            }
         }
     }
 
@@ -62,9 +70,9 @@ public class ReloadAmmo : MonoBehaviour
 
         if (deck != null)
         {
-            int need = magazine.Capacity;
-            var draw = deck.DrawAmmos(need);
-            magazine.AddBullets(draw);
+                int need = magazine.Capacity;
+                var draw = deck.DrawAmmos(need);
+                magazine.AddBullets(draw);
         }
 
         //사용탄약 증가
