@@ -70,7 +70,7 @@ public class MapManager : MonoBehaviour
 
     public void TutorialStage()
     {
-        stageID = 7008;
+        stageID = 7001;
     }
     public void NormalStage()
     {

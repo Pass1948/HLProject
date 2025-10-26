@@ -85,7 +85,7 @@ public class DeckSelUI : MonoBehaviour
         }
         GameManager.Event.Publish(EventType.SelectDeck);
         GameManager.UI.OpenUI<FadeInUI>();
-        GameManager.Map.TutorialStage();
+        GameManager.Map.NormalStage();
         GameManager.SceneLoad.LoadScene(SceneType.Test);
     }
 
