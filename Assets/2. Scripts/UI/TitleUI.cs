@@ -48,6 +48,13 @@ public class TitleUI : BaseUI
         tutorialYesBtn.onClick.AddListener(TutorialYes);
         tutorialNoBtn.onClick.AddListener(TutorialNo);
     }
+    private void OnDisable()
+    {
+        startButton.onClick.RemoveListener(StartGame);
+        settingButton.onClick.RemoveListener(OpenSetting);
+        exitButton.onClick.RemoveListener(ExitButton);
+        restartButton.onClick.RemoveListener(ReLoadPlay);
+    }
 
     private void StartGame()
     {
