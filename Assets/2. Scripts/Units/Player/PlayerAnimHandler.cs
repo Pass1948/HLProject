@@ -1,3 +1,4 @@
+using MyBox;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,13 +11,15 @@ public class PlayerAnimHandler : MonoBehaviour
 
     public void OnRiding()
     {
-        if(GameManager.Unit.Vehicle.vehicleModel.condition == VehicleCondition.Riding)
+        if (GameManager.Unit.Vehicle.vehicleModel.condition == VehicleCondition.Riding)
         {
             animator.SetBool("IsRiding", true);
+            GameManager.Unit.Vehicle.vehicleHandler.OnPositionForward();
         }
         else
         {
             animator.SetBool("IsRiding", false);
+            GameManager.Unit.Vehicle.vehicleHandler.OnPositionForward();
         }
     }
 
@@ -27,6 +30,7 @@ public class PlayerAnimHandler : MonoBehaviour
         {
             FaceToTarget4Dir(target);
             animator.SetBool("IsMoving", true);
+            GameManager.Unit.Vehicle.vehicleHandler.OnPositionForward();
         }
         else
         {
