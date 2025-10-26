@@ -50,7 +50,8 @@ public class TitleUI : BaseUI
 
     private void OpenSetting()
     {
-        GameManager.UI.OpenPopUI<SettingUI>();
+        settingUI.transform.DOMove(new Vector2(1400f,540f), 0.8f);
+        menuPanel.transform.DOMove(new Vector2(2300f,530f), 0.8f);
         GameManager.Sound.PlayUISfx();
     }
 
