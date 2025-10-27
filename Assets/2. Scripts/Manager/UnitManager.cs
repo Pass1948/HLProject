@@ -76,6 +76,36 @@ public class UnitManager : MonoBehaviour
                     break;
             }
         }
+        else if (unit.unitType == UnitType.Boss)
+        {
+            BossModel enemy = (BossModel)unit;
+
+            switch (enemy.attri)
+            {
+                case EnemyAttribute.High:
+                    if (enemy.rank == 13 && ammo.rank == 1)
+                    {
+                        unit.currentHealth -= damage;
+                    }
+                    else if (enemy.rank < ammo.rank)
+                    {
+                        unit.currentHealth -= damage;
+                    }
+
+                    break;
+                case EnemyAttribute.Low:
+                    if (enemy.rank == 1 && ammo.rank == 13)
+                    {
+                        unit.currentHealth -= damage;
+                    }
+                    else if (enemy.rank > ammo.rank)
+                    {
+                        unit.currentHealth -= damage;
+                    }
+
+                    break;
+            }
+        }
     }
 
     public void CurrentStatReset()
