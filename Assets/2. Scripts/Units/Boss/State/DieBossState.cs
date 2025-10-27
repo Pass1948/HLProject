@@ -26,6 +26,7 @@ public class DieBossState : BaseBossState
         // GameManager.Unit.enemies.Remove(controller.baseBoss);
         controller.baseBoss.gameObject.SetActive(false);
         //controller.baseEnemy.gameObject.Destroy();
+        if (GameManager.TurnBased.turnSettingValue.isTutorial) return;
         StageClearUI();
     }
 
