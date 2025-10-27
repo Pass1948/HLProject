@@ -55,7 +55,7 @@ public class MoveBossState : BaseBossState
         GameObject dummy = new GameObject("LastLookTarget");
         dummy.transform.position = finalPos;
         
-        animHandler.OnMove(true, dummy.transform);
+        animHandler.OnMove(false, dummy.transform);
         GameObject.Destroy(dummy, 0.1f);
         GameManager.Map.ClearPlayerRange();
         
