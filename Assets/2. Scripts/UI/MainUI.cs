@@ -103,7 +103,6 @@ public class MainUI : BaseUI
         }
         else
         {
-            GameManager.SaveLoad.nextSceneIndex = 0;
             stageInfoText.text = $"Stage {(GameManager.SaveLoad.nextSceneIndex + 1).ToString()}";
         }
        
