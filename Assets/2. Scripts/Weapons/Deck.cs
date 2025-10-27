@@ -227,8 +227,6 @@ public class Deck : MonoBehaviour
         // A♣×3, K♠×3 넣기
         for (int i = 0; i < 3; i++) GameManager.ItemControl.drawPile.Add(new Ammo { suit = Suit.Club, rank = 1 }); // A = 1
         for (int i = 0; i < 3; i++) GameManager.ItemControl.drawPile.Add(new Ammo { suit = Suit.Spade, rank = 13 }); // K = 13
-/*        for (int i = 0; i < 3; i++) GameManager.ItemControl.drawPile.Add(new Ammo { suit = Suit.Diamond, rank = 2 }); // A = 1
-        for (int i = 0; i < 3; i++) GameManager.ItemControl.drawPile.Add(new Ammo { suit = Suit.Club, rank = 2 }); // A = 1*/
         reloadAmmo.RefreshDeckUI();
 
         // 손패 세팅 (2♦×3, 2♣×3)
@@ -242,8 +240,7 @@ public class Deck : MonoBehaviour
                 new Ammo { suit = Suit.Club,    rank = 2 },
             };
         magazine.AddBullets(hand);
-        //magazine.ClearMagazine();
-
+        GameManager.Unit.Player.playerModel.moveRange = 3;
     }
 
     //피셔-예이츠 셔플방식
