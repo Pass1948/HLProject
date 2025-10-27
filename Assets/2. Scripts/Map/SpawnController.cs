@@ -54,6 +54,7 @@ public class SpawnController : MonoBehaviour
     {
         // 튜토리얼 스테이지(7001)
         bool tutorialPlayerSpawn = (GameManager.Map.stageID == 7001);
+
         Vector2Int playerPos;
         Vector2Int vehiclePos;
 

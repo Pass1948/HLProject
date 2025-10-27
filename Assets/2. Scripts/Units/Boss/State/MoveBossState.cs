@@ -81,7 +81,7 @@ public class MoveBossState : BaseBossState
         
         controller.GridPos = newPos;
         
-        GameManager.Map.UpdateObjectPosition(oldPos, oldPos, newPos, newPos, TileID.Enemy);
+        GameManager.Map.UpdateObjectPosition(oldPos, oldPos, newPos, newPos, TileID.Boss);
         GameManager.Map.pathfinding.ResetMapData();
         controller.transform.position = GameManager.Map.tilemap.GetCellCenterWorld(newPos);
         
