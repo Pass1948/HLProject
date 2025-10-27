@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using MyBox;
+using System.Collections.Generic;
 using System.Resources;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -53,7 +54,6 @@ public class GameManager : MonoBehaviour
     private static SoundManager soundManager;
     public static SoundManager Sound => soundManager;
 
-
     private void Awake()
     {
         if (instance != null) { Destroy(this); return; }
@@ -70,6 +70,7 @@ public class GameManager : MonoBehaviour
 
     private void InitManagers()
     {
+
         dataManager = CreateChildManager<DataManager>("DataManager");
         dataManager.Initialize();
         resourceManager = CreateChildManager<ResourceManager>("ResourceManager");

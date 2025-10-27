@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class ReloadAmmo : MonoBehaviour
 {
-    [SerializeField] private Deck deck;
+    Deck deck;
     [SerializeField] private AttackController magazine;
     [SerializeField] private bool autoReload = true;
 
@@ -18,15 +18,27 @@ public class ReloadAmmo : MonoBehaviour
 
     public event Action<int, int> ReloadChange;
 
+    private void Awake()
+    {
+        deck = GetComponent<Deck>();
+    }
     void Start()
     {
-        if (autoReload)
+        FirstReload();
+    }
+
+    public void FirstReload()
+    {
+        if (deck != null)
         {
-            Reload();
-        }
-        else
-        {
-            RefreshDeckUI();
+            if (GameManager.TurnBased.turnSettingValue.isTutorial == true)
+                return;
+            else
+            {
+                int need = magazine.Capacity;
+                var draw = deck.DrawAmmos(need);
+                magazine.AddBullets(draw);
+            }
         }
     }
 
@@ -58,9 +70,9 @@ public class ReloadAmmo : MonoBehaviour
 
         if (deck != null)
         {
-            int need = magazine.Capacity;
-            var draw = deck.DrawAmmos(need);
-            magazine.AddBullets(draw);
+                int need = magazine.Capacity;
+                var draw = deck.DrawAmmos(need);
+                magazine.AddBullets(draw);
         }
 
         //사용탄약 증가
@@ -70,7 +82,7 @@ public class ReloadAmmo : MonoBehaviour
     }
 
     //덱 UI 새로고침
-    private void RefreshDeckUI()
+    public void RefreshDeckUI()
     {
         if (deckBg == null) 
         {
@@ -83,7 +95,7 @@ public class ReloadAmmo : MonoBehaviour
 
         if (deck != null)
         {
-            foreach (var a in deck.GetDrawSnapshot())
+            foreach (var a in GameManager.ItemControl.drawPile)
             {
                 SpawnDeckItem(deckBg, a);
             }

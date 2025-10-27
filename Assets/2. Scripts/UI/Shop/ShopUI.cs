@@ -35,6 +35,8 @@ public class ShopUI : BaseUI
 
     [SerializeField] private Button rellicInvenBtn;
     [SerializeField] private GameObject PlayerBulletsInfoUI;
+    [SerializeField] private GameObject settingUI;
+
 
     private readonly List<GameObject> spawned = new();
 
@@ -143,7 +145,6 @@ public class ShopUI : BaseUI
         {
             var data = offers[i];
             int idx = i;
-
             Transform parent = data.type
                 switch
             {
@@ -165,6 +166,7 @@ public class ShopUI : BaseUI
                     UpdateRerollLabel();
                 });
                 spawned.Add(card.gameObject);
+                Debug.Log("이런 시발"+card.gameObject.name);
             }
 
             if (data.type == ShopItemType.SpecialTotem)
@@ -309,7 +311,7 @@ public class ShopUI : BaseUI
     private void OnSettingButton()
     {
         isOn = !isOn;
-        GameManager.UI.OpenPopUI<SettingUI>();
+        settingUI.transform.DOLocalMove(new Vector2(0, 0), 0.8f);
     }
 
     private void NextStage()

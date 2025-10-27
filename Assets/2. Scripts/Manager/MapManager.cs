@@ -287,6 +287,9 @@ public class MapManager : MonoBehaviour
         int tileID = mapData[cell.x, cell.y];
         return tileID == TileID.Terrain;
     }
+
+
+
     public bool IsVehicle(Vector3Int cell)
     {
         return mapData[cell.x,cell.y] == TileID.Vehicle;
@@ -306,7 +309,13 @@ public class MapManager : MonoBehaviour
     {
         return mapData[cell.x, cell.y] == TileID.Enemy;
     }
-   
+
+    public bool IsBoss(Vector3Int cell)
+    {
+        return mapData[cell.x, cell.y] == TileID.Boss;
+    }
+
+
     // 맵 데이터 확인///////////
     public void DumpMapData()
     {

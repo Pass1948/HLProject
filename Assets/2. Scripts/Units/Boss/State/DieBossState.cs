@@ -26,11 +26,18 @@ public class DieBossState : BaseBossState
         // GameManager.Unit.enemies.Remove(controller.baseBoss);
         controller.baseBoss.gameObject.SetActive(false);
         //controller.baseEnemy.gameObject.Destroy();
-        GameManager.UI.OpenUI<GameClearUI>();
+        StageClearUI();
     }
 
     public override void Excute()
     {
         throw new System.NotImplementedException();
+    }
+
+    public void StageClearUI()
+    {
+        ResultUI backUI = GameManager.UI.GetUI<ResultUI>();
+        backUI.GetResultType(ResultType.GameClear);
+        backUI.OpenUI();
     }
 }

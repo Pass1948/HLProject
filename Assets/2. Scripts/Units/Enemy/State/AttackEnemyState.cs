@@ -39,7 +39,7 @@ public class AttackEnemyState : BaseEnemyState
         if (dist >= minRange && dist <= maxRange)
         {
             GameManager.Unit.ChangeHealth(GameManager.Unit.Player.playerModel, controller.model.attack);
-            animHandler.OnAttack();
+            animHandler.OnAttack(GameManager.Unit.Player.transform);
             GameManager.Sound.PlaySfx(GameManager.Resource.Load<AudioClip>(Path.Sound + "PUNCH_CLEAN_HEAVY_10"));
         }
 

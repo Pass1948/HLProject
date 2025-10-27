@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class WinState : BaseTurnState
 {
-   
     public WinState() { }
     public override void OnEnter()
     {
+        if (GameManager.Unit.boss.model.isDie)
+        {
+            turnManager.ResetCount();
+        }
         StageClearUI();
         turnManager.ResetCount();
-        
     }
     public void StageClearUI()
     {

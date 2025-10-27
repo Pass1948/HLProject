@@ -84,6 +84,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 674104961912898505}
+  - component: {fileID: 2451083364672711609}
   m_Layer: 5
   m_Name: TutorialUI
   m_TagString: Untagged
@@ -118,6 +119,25 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 100}
   m_SizeDelta: {x: 400, y: 500}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2451083364672711609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1757567067877205875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5baf86d79cffb348bcd0fde64df697c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tutorialImage: {fileID: 7686959760397341940}
+  titleTMP: {fileID: 1804726179514873779}
+  descTMP: {fileID: 4274256645854146032}
+  pageTMP: {fileID: 8065800989581388457}
+  leftButton: {fileID: 7323234930764423536}
+  rightButton: {fileID: 9020126817995872181}
+  closeButton: {fileID: 8310242635372453515}
 --- !u!1 &2046579614835195328
 GameObject:
   m_ObjectHideFlags: 0
@@ -177,7 +197,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 1, b: 0.016809225, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -388,7 +408,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.1750474, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -464,7 +484,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1046,7 +1066,7 @@ MonoBehaviour:
     \uB530\uB77C \uACF5\uACA9 \uBC94\uC704\uAC00 \uB2EC\uB77C\uC9C0\uBA70, \uACF5\uACA9
     \uC2DC \uD50C\uB808\uC774\uC5B4\uC758 \uACF5\uACA9\uB825\uB9CC\uD07C \uD53C\uD574\uB97C
     \uC90D\uB2C8\uB2E4.\r\n\uC0C1\uD669\uC5D0 \uB9DE\uAC8C \uD0C4\uD658\uC744 \uC120\uD0DD\uD574
-    \uD6A8\uC728\uC801\uC73C\uB85C \uC801\uC744 \uACF5\uACA9\uD574\uBCF4\uC138\uC694."
+    \uD6A8\uC728\uC801\uC73C\uB85C \uC801\uC744 \uACF5\uACA9\uD574\uBCF4\uC138\uC694.\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b5e282670c2edc44297fcaa2d9ec1cc4, type: 2}
   m_sharedMaterial: {fileID: 1514732102080218433, guid: b5e282670c2edc44297fcaa2d9ec1cc4,

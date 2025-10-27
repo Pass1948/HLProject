@@ -14,8 +14,11 @@ public class EnemyAnimHandler : MonoBehaviour
 
     [SerializeField] private Animator animator;
 
-    public void OnMove(bool isMove)
+    [SerializeField] float snap = 0.15f; 
+    
+    public void OnMove(bool isMove, Transform target)
     {
+        FaceToTarget4Dir(target);
         animator.SetBool(Move, isMove);
     }
 
@@ -29,8 +32,9 @@ public class EnemyAnimHandler : MonoBehaviour
         animator.SetTrigger(Hit);
     }
 
-    public void OnAttack()
+    public void OnAttack(Transform target)
     {
+        this.transform.LookAt(target);
         animator.SetTrigger(Attack);
     }
 
@@ -47,5 +51,26 @@ public class EnemyAnimHandler : MonoBehaviour
     public void OnStun(bool isStun)
     {
         animator.SetBool(Stun, isStun);
+    }
+    
+    public void FaceToTarget4Dir(Transform target)  
+    {
+        if (target == null) return;
+
+        Vector3 dir = target.position - transform.position;
+        dir.y = 0f;
+        float ax = Mathf.Abs(dir.x); 
+        float az = Mathf.Abs(dir.z);
+
+        // 수평 우선적으로 상,화와 애매한 경계에서는 좌/우 쪽으로 더 쉽게 선택되도록함
+        az /= (1f + snap);
+
+        float angle;
+        if (ax >= az)
+            angle = (dir.x >= 0f) ? 90f : -90f;   // 우 / 좌
+        else
+            angle = (dir.z >= 0f) ? 0f  : 180f;   // 상 / 하
+
+        transform.rotation = Quaternion.Euler(0f, angle, 0f);
     }
 }

@@ -55,6 +55,11 @@ public class PlayerMoveInfo : MonoBehaviour
                             visited.Add(next);
                             queue.Enqueue((next, dist + 1));
                         }
+                        if (GameManager.Map.IsVehicle(next))
+                        {
+                            visited.Add(next);
+                            queue.Enqueue((next, dist + 1));
+                        }
                     }
                 }
             }

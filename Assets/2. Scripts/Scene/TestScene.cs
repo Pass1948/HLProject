@@ -21,12 +21,14 @@ public class TestScene : BaseScene
         var cam = GameManager.Resource.Create<GameObject>(Path.Camera + "MainCamera");
         CameraController cc = cam.GetComponent<CameraController>();
         cc.InitCamera();
-        GameManager.Unit.Vehicle.vehicleHandler.MountVehicle();
+        if(GameManager.Map.stageID >= 7002)
+        {
+            GameManager.Unit.Vehicle.vehicleHandler.MountVehicle();
+        }
         GameManager.TurnBased.ChangeStartTurn();
         GameManager.ItemControl.ItemDataSet();  // 아이템데이터 리스트 초기 세팅
         GameManager.Mouse.CreateMouse();
         GameManager.Shop.ShopInit(_stage);
-        
         // Sound
         var gameBgm = GameManager.Resource.Load<AudioClip>(Path.Sound + "NeonCityPaladin");
         GameManager.Sound.PlayBGM(gameBgm);

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,6 +14,7 @@ public class SettingUI : PopUpUI
     private const string windowPanelPrefix = "WindowSizePanel_";
 
     private GameObject[] windowPanels;
+    [SerializeField] private GameObject mainPanel;
 
     [SerializeField] Button closeBtn;
     [SerializeField] Button backToMainMenuBtn;
@@ -24,7 +26,22 @@ public class SettingUI : PopUpUI
     [SerializeField] private Slider masterVolumeBar;
     [SerializeField] private Slider bgmVolumeBar;
     [SerializeField] private Slider sfxVolumeBar;
-    
+
+    //툴팁관련
+
+    [SerializeField] private Button showToolTipBtn;
+
+    [SerializeField] private GameObject ToolTip;
+
+    [SerializeField] private Button bulletToolTiplBtn;
+    [SerializeField] private Button bikeToolTiplBtn;
+    [SerializeField] private Button moveToolTiplBtn;
+    [SerializeField] private Button monsterToolTiplBtn;
+    [SerializeField] private Button kickToolTiplBtn;
+    [SerializeField] private Button bossToolTiplBtn;
+    [SerializeField] private Button reloadToolTiplBtn;
+    [SerializeField] private Button toolTipCloseBtn;
+
 
     private const string SpeedPrefix = "SpeedPanel_";
     private int speedIndex = 0;
@@ -48,6 +65,17 @@ public class SettingUI : PopUpUI
         masterVolumeBar.minValue = 0f; masterVolumeBar.maxValue = 1f;
         bgmVolumeBar.minValue = 0f; bgmVolumeBar.maxValue = 1f;
         sfxVolumeBar.minValue = 0f; sfxVolumeBar.maxValue = 1f;
+
+        showToolTipBtn.onClick.AddListener(ShowToolTip);
+
+        bulletToolTiplBtn.onClick.AddListener(ShowBulletToolTip);
+        bikeToolTiplBtn.onClick.AddListener(ShowBikeControlToolTip);
+        moveToolTiplBtn.onClick.AddListener(ShowMoveToolTip);
+        monsterToolTiplBtn.onClick.AddListener(ShowMonsterInfoToolTip);
+        kickToolTiplBtn.onClick.AddListener(ShowKickToolTip);
+        bossToolTiplBtn.onClick.AddListener(ShowBossInfoToolTip);
+        reloadToolTiplBtn.onClick.AddListener(ShowReloadToolTip);
+        toolTipCloseBtn.onClick.AddListener(CloseToolTip);
     }
 
     private void OnEnable()
@@ -71,7 +99,8 @@ public class SettingUI : PopUpUI
 
     private void CloseSettingUi()
     {
-        CloseUI();
+        mainPanel.transform.DOMove(new Vector2(1300f,530f), 0.8f);
+        transform.DOMove(new Vector2(2950f,530f), 0.8f);
         GameManager.Sound.PlayUISfx();
     }
 
@@ -175,5 +204,59 @@ public class SettingUI : PopUpUI
         for (int i = 0; i < speedPanels.Length; i++)
             speedPanels[i].SetActive(i == t - 1);
         GameManager.Sound.PlayUISfx();
+    }
+
+    // ====== 툴팁 메뉴 ======
+    private void ShowToolTip()
+    {
+        // 버튼 모음 패널만 켜기/끄기 용도
+        ToolTip.SetActive(true);
+    }
+
+    private void ShowBulletToolTip()
+    {
+        TutorialUI.OpenWith(TutorialUI.Topic.Bullet);
+        GameManager.Sound.PlayUISfx();
+    }
+
+    private void ShowBikeControlToolTip()
+    {
+        TutorialUI.OpenWith(TutorialUI.Topic.BikeControl);
+        GameManager.Sound.PlayUISfx();
+    }
+
+    private void ShowMoveToolTip()
+    {
+        TutorialUI.OpenWith(TutorialUI.Topic.Move);
+        GameManager.Sound.PlayUISfx();
+    }
+
+    private void ShowMonsterInfoToolTip()
+    {
+        TutorialUI.OpenWith(TutorialUI.Topic.MonsterInfo);
+        GameManager.Sound.PlayUISfx();
+    }
+
+    private void ShowKickToolTip()
+    {
+        TutorialUI.OpenWith(TutorialUI.Topic.Kick);
+        GameManager.Sound.PlayUISfx();
+    }
+
+    private void ShowBossInfoToolTip()
+    {
+        TutorialUI.OpenWith(TutorialUI.Topic.BossInfo);
+        GameManager.Sound.PlayUISfx();
+    }
+
+    private void ShowReloadToolTip()
+    {
+        TutorialUI.OpenWith(TutorialUI.Topic.Reload);
+        GameManager.Sound.PlayUISfx();
+    }
+
+    private void CloseToolTip()
+    {
+        ToolTip.SetActive(false);
     }
 }
