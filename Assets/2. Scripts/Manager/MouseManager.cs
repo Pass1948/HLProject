@@ -258,16 +258,17 @@ public class MouseManager : MonoBehaviour
 
     private void OnClickBoss(Vector3Int cell)
     {
-
+        Debug.Log("Boss Clicked");
         HidePlayerRange();
         if (isMoving) return;
 
         var boss = useOverlapLookup ? FindAtCell<BaseBoss>(cell) : null;
-        // Debug.Log(boss.name);
+        Debug.Log("Boss Clicked2" + boss.bossName);
         if (boss == null) { HideBossPopup(); CancelSelection(); return; }
-
+  
         if (bossPopupVisible) HideBossPopup();
         else ShowBossPopup(boss);
+        Debug.Log("Boss Clicked3");
     }
 
     private void OnClickTerrain(Vector3Int destCell)
