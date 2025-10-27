@@ -5,5 +5,4 @@ using UnityEngine;
 public class SaveLoadManager : MonoBehaviour
 {
     public int nextSceneIndex = 0;
-    
 }
