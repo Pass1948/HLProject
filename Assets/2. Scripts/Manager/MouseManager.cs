@@ -69,7 +69,7 @@ public class MouseManager : MonoBehaviour
     private Vector3Int hoverCell;
     private bool hasHover;
 
-    private readonly Collider[] Hits = new Collider[24];
+    private readonly Collider[] Hits = new Collider[1000];
 
     public void CreateMouse()
     {
@@ -260,6 +260,7 @@ public class MouseManager : MonoBehaviour
 
         var boss = useOverlapLookup ? FindAtCell<BaseBoss>(cell) : null;
         Debug.Log($"[Mouse] Boss Selected? {(boss != null)} / cell {cell}");
+
         if (boss == null) { HideBossPopup(); CancelSelection(); return; }
   
         if (bossPopupVisible) HideBossPopup();
@@ -370,9 +371,9 @@ public void InputCancel()
 
         Vector3 center = tilemap.GetCellCenterWorld(cell);
         Vector3 halfExtents = new Vector3(
-            tilemap.cellSize.x * 1f * overlapShrink,
+            tilemap.cellSize.x * 0.2f * overlapShrink,
             overlapHeight * 2f,
-            tilemap.cellSize.y * 1f * overlapShrink
+            tilemap.cellSize.y * 0.2f * overlapShrink
         );
 
         int hitCount = Physics.OverlapBoxNonAlloc(
@@ -386,6 +387,7 @@ public void InputCancel()
                 || Hits[i] && Hits[i].TryGetComponent<BaseEnemy>(out _) 
                 || Hits[i] && Hits[i].TryGetComponent<BaseBoss>(out _))
             {
+                Debug.Log($"너 누구야 시발색히야" + Hits[i].name);
                 return Hits[i].GetComponentInParent<T>(true);
             }
   
