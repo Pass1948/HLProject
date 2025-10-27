@@ -30,8 +30,13 @@ public class MoveBossState : BaseBossState
 
         if (range > 0)
         {
+            Vector3 nextPos = GameManager.Map.tilemap.GetCellCenterWorld(path[0]);
+            GameObject dummyTarget = new GameObject("MoveLookTarget");
+            dummyTarget.transform.position = nextPos;
+            
+            animHandler.OnMove(true, dummyTarget.transform);
             controller.StartCoroutine(MoveAnim(path.GetRange(0, range)));
-            animHandler.OnMove(true);
+            GameObject.Destroy(dummyTarget, 0.1f);
         }
         else
         {
@@ -43,8 +48,17 @@ public class MoveBossState : BaseBossState
 
     public override void Exit()
     {
-        animHandler.OnMove(false);
+        // 이동 종료 시점의 위치
+        Vector3 finalPos = controller.transform.position + controller.transform.forward;
+    
+        // 임시 타겟 생성 (바라보는 방향 유지용)
+        GameObject dummy = new GameObject("LastLookTarget");
+        dummy.transform.position = finalPos;
+        
+        animHandler.OnMove(true, dummy.transform);
+        GameObject.Destroy(dummy, 0.1f);
         GameManager.Map.ClearPlayerRange();
+        
     }
 
     private int GetDistanceTarget(Vector3Int pos, Vector3Int target)
@@ -67,7 +81,7 @@ public class MoveBossState : BaseBossState
         
         controller.GridPos = newPos;
         
-        GameManager.Map.UpdateObjectPosition(oldPos, oldPos, newPos, newPos, TileID.Enemy);
+        GameManager.Map.UpdateObjectPosition(oldPos, oldPos, newPos, newPos, TileID.Boss);
         GameManager.Map.pathfinding.ResetMapData();
         controller.transform.position = GameManager.Map.tilemap.GetCellCenterWorld(newPos);
         

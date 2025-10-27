@@ -54,6 +54,7 @@ public class SpawnController : MonoBehaviour
     {
         // 튜토리얼 스테이지(7001)
         bool tutorialPlayerSpawn = (GameManager.Map.stageID == 7001);
+
         Vector2Int playerPos;
         Vector2Int vehiclePos;
 
@@ -333,11 +334,11 @@ public class SpawnController : MonoBehaviour
                 {
                     case 2003:
                         requiredStageId = 7002;
-                        bossPrefabName = "Boss"; // 7002 Boss (튜토리얼)
+                        bossPrefabName = "Torial"; // 7002 Boss (튜토리얼)
                         break;
                     case 2014:
                         requiredStageId = 7008;
-                        bossPrefabName = "Boss2"; // 7008 Boss
+                        bossPrefabName = "Torial"; // 7008 Boss
                         break;
                     case 2015:
                         requiredStageId = 7016;

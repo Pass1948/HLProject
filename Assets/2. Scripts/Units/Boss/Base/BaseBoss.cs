@@ -8,10 +8,14 @@ public class BaseBoss : MonoBehaviour
     public BossModel model;
     public BossController controller;
     public EnemyAnimHandler animHandler;
-
+    public BossFloatingUI floatingUI;
+    
     public int cooldown;
     public int patternPower;
     public int patternRange;
+
+    public string bossName;
+    public string bossDescription;
     
     public void InitBoss(EntityData data)
     {
@@ -21,11 +25,13 @@ public class BaseBoss : MonoBehaviour
         model.InitData(data);
         animHandler = GetComponent<EnemyAnimHandler>();
         controller = GetComponent<BossController>();
+        floatingUI = GetComponent<BossFloatingUI>();
         if (controller != null && animHandler != null)
         {
             controller.model = model;
             controller.animHandler = animHandler;
             controller.InitController(this);
+            floatingUI.Init(model);
         }
         else
         {
@@ -38,5 +44,15 @@ public class BaseBoss : MonoBehaviour
     protected virtual void SetBossTypePattern()
     {
     }
-    
+    public void ChenageAttribute()
+    {
+        if (model.attri == EnemyAttribute.High)
+        {
+            model.attri = EnemyAttribute.Low;
+        }
+        else
+        {
+            model.attri = EnemyAttribute.High;
+        }
+    }
 }

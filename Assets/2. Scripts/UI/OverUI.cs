@@ -23,6 +23,7 @@ public class OverUI : BaseUI
     private void MainmenuScene()
     {
         // 메인메뉴 (인트로?) 씬으로 
+        GameManager.TurnBased.turnSettingValue.isDeck = false;
         GameManager.ItemControl.ClearData();
         GameManager.SceneLoad.LoadScene(SceneType.Title);
     }

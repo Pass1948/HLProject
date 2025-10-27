@@ -33,8 +33,12 @@ public class MoveEnemyState : BaseEnemyState
 
         if (range > 0)
         {
+            Vector3 nextPos = GameManager.Map.tilemap.GetCellCenterWorld(path[0]);
+            GameObject dummyTarget = new GameObject("MoveLookTarget");
+            dummyTarget.transform.position = nextPos;
+            
+            animHandler.OnMove(true, dummyTarget.transform);
             controller.StartCoroutine(MoveAnim(path.GetRange(0, range)));
-            animHandler.OnMove(true);
         }
         else
         {
@@ -50,7 +54,14 @@ public class MoveEnemyState : BaseEnemyState
 
     public override void Exit()
     {
-        animHandler.OnMove(false);
+        Vector3 finalPos = controller.transform.position + controller.transform.forward;
+    
+        // 임시 타겟 생성 (바라보는 방향 유지용)
+        GameObject dummy = new GameObject("LastLookTarget");
+        dummy.transform.position = finalPos;
+        
+        animHandler.OnMove(true, dummy.transform);
+        GameObject.Destroy(dummy, 0.1f);
         GameManager.Map.ClearPlayerRange();
     }
 

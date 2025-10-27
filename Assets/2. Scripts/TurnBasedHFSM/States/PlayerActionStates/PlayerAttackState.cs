@@ -24,7 +24,7 @@ public class PlayerAttackState : PlayerActionState
         public override void Tick(float dt)
         {
             timer += dt;
-            if (timer > 0.1f) 
+            if (timer > 0.1f)
             {
                 ChangeState<A_Execute>();
             }
@@ -43,7 +43,7 @@ public class PlayerAttackState : PlayerActionState
         public override void Tick(float dt)
         {
             timer += dt;
-            if (timer > 0.1f) 
+            if (timer > 0.1f)
             {
                 ChangeState<A_Recover>();
             }
@@ -53,6 +53,22 @@ public class PlayerAttackState : PlayerActionState
         {
             // 범위내에 있는 적들 전원 공격
             var targets = GameManager.Map.CurrentEnemyTargets;
+            if (targets == null)
+            {
+                if (GameManager.Unit.boss.model == null) return;
+                    GameManager.Unit.ChangeHealth(
+                    GameManager.Unit.boss.model,
+                    GameManager.Unit.Player.playerModel.attack,
+                    turnSetVlaue.fireAmmo);
+                GameManager.UI.GetUI<BossInfoPopUpUI>().SetData(
+                    GameManager.Unit.boss.model.attri,
+                    GameManager.Unit.boss.model.rank,
+                    GameManager.Unit.boss.model.attack,
+                    GameManager.Unit.boss.model.moveRange,
+                    GameManager.Unit.boss.model.currentHealth,
+                    GameManager.Unit.boss.model.maxHealth);
+                return;
+            }
             if (targets != null && targets.Count > 0)
             {
                 foreach (var enemy in targets)
@@ -87,11 +103,16 @@ public class PlayerAttackState : PlayerActionState
         {
 
             timer += dt;
-            if (timer > 1f) 
+            if (timer > 1f)
             {
                 if (turnManager.EnemyDieCheck())
                 {
-                    ChangeState<WinState>();
+                    if (turnSetVlaue.isTutorial)
+                    {
+                        StageClearUI();
+                    }
+                    else
+                        ChangeState<WinState>();
                 }
                 else
                 {
@@ -99,5 +120,13 @@ public class PlayerAttackState : PlayerActionState
                 }
             }
         }
+        public void StageClearUI()
+        {
+            ResultUI backUI = GameManager.UI.GetUI<ResultUI>();
+            backUI.GetResultType(ResultType.Tutorial);
+            backUI.OpenUI();
+        }
+
+
     }
 }
