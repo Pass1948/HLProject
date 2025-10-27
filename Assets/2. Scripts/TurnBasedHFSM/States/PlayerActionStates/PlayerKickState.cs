@@ -51,11 +51,10 @@ public class PlayerKickState : PlayerActionState
         void ChangeAttirEnemy()
         {
             var targets = GameManager.Map.CurrentEnemyTargets;
-            if (targets == null)
+            if (targets != null && targets.Count <= 0)
             {
                 if (GameManager.Unit.boss == null) 
                     return;
-                Debug.Log("보스 어트리뷰트 변경");
                 GameManager.Unit.boss.ChenageAttribute();
                     GameManager.UI.GetUI<BossInfoPopUpUI>().SetData(
                         GameManager.Unit.boss.model.attri,
