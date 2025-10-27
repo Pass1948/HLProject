@@ -53,9 +53,9 @@ public class PlayerAttackState : PlayerActionState
         {
             // 범위내에 있는 적들 전원 공격
             var targets = GameManager.Map.CurrentEnemyTargets;
-            if (targets == null)
+            if (targets != null && targets.Count <= 0)
             {
-                if (GameManager.Unit.boss.model == null) return;
+                if (GameManager.Unit.boss == null) return;
                     GameManager.Unit.ChangeHealth(
                     GameManager.Unit.boss.model,
                     GameManager.Unit.Player.playerModel.attack,
@@ -67,7 +67,7 @@ public class PlayerAttackState : PlayerActionState
                     GameManager.Unit.boss.model.moveRange,
                     GameManager.Unit.boss.model.currentHealth,
                     GameManager.Unit.boss.model.maxHealth);
-                return;
+                GameManager.Unit.boss.controller.OnHitState();
             }
             if (targets != null && targets.Count > 0)
             {

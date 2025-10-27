@@ -44,10 +44,17 @@ public class ShopUI : BaseUI
     {
         shop = GameManager.Shop;
         player = GameManager.Unit.Player.playerHandler;
+
     }
 
     private void OnEnable()
     {
+        healButton.onClick.AddListener(PlayerHeal);
+        rerollButton.onClick.AddListener(OnReroll);
+        removeButton.onClick.AddListener(OnRemoveBulletClicked);
+        nextStageButton.onClick.AddListener(NextStage);
+        settingsButton.onClick.AddListener(OnSettingButton);
+        rellicInvenBtn.onClick.AddListener(OnOpenInven);
         shop.healCost = 4;
         shop.rerollCost = 2;
         // EventBus 구독
@@ -57,12 +64,6 @@ public class ShopUI : BaseUI
         GameManager.Event.Subscribe(EventType.ShopPlayerCardsConfim, RebuildPlayerBullets); // 소지 카드 체크
         GameManager.Event.Subscribe(EventType.ShopPlayerCardsConfim, PlayerHpCheck); // 체력 체크
 
-        healButton.onClick.AddListener(PlayerHeal);
-        rerollButton.onClick.AddListener(OnReroll);
-        removeButton.onClick.AddListener(OnRemoveBulletClicked);
-        nextStageButton.onClick.AddListener(NextStage);
-        settingsButton.onClick.AddListener(OnSettingButton);
-        rellicInvenBtn.onClick.AddListener(OnOpenInven);
         if (shop != null) Rebuild(shop.offers);
 
         RebuildPlayerBullets();
@@ -71,6 +72,12 @@ public class ShopUI : BaseUI
 
     private void OnDisable()
     {
+        healButton.onClick.RemoveListener(PlayerHeal);
+        rerollButton.onClick.RemoveListener(OnReroll);
+        removeButton.onClick.RemoveListener(OnRemoveBulletClicked);
+        nextStageButton.onClick.RemoveListener(NextStage);
+        settingsButton.onClick.RemoveListener(OnSettingButton);
+        rellicInvenBtn.onClick.RemoveListener(OnOpenInven);
         GameManager.Event.Unsubscribe<List<ShopManager.ShopItem>>(EventType.ShopOffersChanged, OnOffersChanged);
         // GameManager.Event.Unsubscribe<(List<Ammo>, List<PowderData>)>(EventType.ShopPowderBundlePrompt, OnPowderBundlePrompt);
         GameManager.Event.Unsubscribe<List<Ammo>>(EventType.ShopRemoveBulletPrompt, OnRemoveBulletPrompt);
@@ -166,7 +173,6 @@ public class ShopUI : BaseUI
                     UpdateRerollLabel();
                 });
                 spawned.Add(card.gameObject);
-                Debug.Log("이런 시발"+card.gameObject.name);
             }
 
             if (data.type == ShopItemType.SpecialTotem)

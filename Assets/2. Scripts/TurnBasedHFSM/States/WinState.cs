@@ -7,7 +7,7 @@ public class WinState : BaseTurnState
     public WinState() { }
     public override void OnEnter()
     {
-        if (GameManager.Unit.boss.model.isDie)
+        if (GameManager.Unit.boss!= null && GameManager.Unit.boss.model.isDie)
         {
             turnManager.ResetCount();
         }
