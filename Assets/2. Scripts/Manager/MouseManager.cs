@@ -220,7 +220,6 @@ public class MouseManager : MonoBehaviour
         }
 
         HideEnemyPopup();
-        if (isMoving) return;
 
         selectedPlayer = useOverlapLookup ? FindAtCell<BasePlayer>(cell) : null;
         selectedPlayerCell = cell;
@@ -246,10 +245,9 @@ public class MouseManager : MonoBehaviour
     private void OnClickEnemy(Vector3Int cell)
     {
         HidePlayerRange();
-        if (isMoving) return;
 
         var enemy = useOverlapLookup ? FindAtCell<BaseEnemy>(cell) : null;
-        Debug.Log(enemy.name);
+
         if (enemy == null) { HideEnemyPopup(); CancelSelection(); return; }
         if (enemyPopupVisible) HideEnemyPopup();
         else ShowEnemyPopup(enemy);
@@ -258,17 +256,14 @@ public class MouseManager : MonoBehaviour
 
     private void OnClickBoss(Vector3Int cell)
     {
-        Debug.Log("Boss Clicked");
         HidePlayerRange();
-        if (isMoving) return;
 
         var boss = useOverlapLookup ? FindAtCell<BaseBoss>(cell) : null;
-        Debug.Log("Boss Clicked2" + boss.bossName);
+        Debug.Log($"[Mouse] Boss Selected? {(boss != null)} / cell {cell}");
         if (boss == null) { HideBossPopup(); CancelSelection(); return; }
   
         if (bossPopupVisible) HideBossPopup();
         else ShowBossPopup(boss);
-        Debug.Log("Boss Clicked3");
     }
 
     private void OnClickTerrain(Vector3Int destCell)
@@ -293,7 +288,6 @@ public class MouseManager : MonoBehaviour
 
     public IEnumerator MoveAlongPath(Transform actor, Vector3Int currentCell, List<Vector3Int> path, int tileIdForActor)
     {
-        isMoving = true;
         GameManager.Unit.Player.animHandler.PlayMoveAnim(pointer);
         foreach (var nextCell in path)
         {
@@ -317,7 +311,6 @@ public class MouseManager : MonoBehaviour
         }
         map.ClearPlayerRange();
         GameManager.Unit.Player.animHandler.PlayMoveAnim(pointer);
-        isMoving = false;
     }
 
 
@@ -363,7 +356,6 @@ public void InputCancel()
         isAttacking = false;
         isKicking = false;
         isPlayer = false;
-        isMoving = isMoving ? false : true;
         HidePlayerRange();
         HideEnemyPopup();
         map.ClearPlayerRange();

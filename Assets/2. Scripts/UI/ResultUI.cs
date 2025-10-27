@@ -66,6 +66,7 @@ public class ResultUI : BaseUI
         }
         else if (result == ResultType.GameClear)
         {
+            if (isTutorial1 == true) return;
             gameClearUI.SetActive(true);
             tutorialUI1.SetActive(false);
             tutorialUI2.SetActive(false);
