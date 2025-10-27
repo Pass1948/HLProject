@@ -58,7 +58,9 @@ public class MouseManager : MonoBehaviour
     // UI/토글
     private bool playerRangeVisible = false;
     private BaseEnemy selectedEnemy;
+    private BaseBoss selectedBoss;
     private bool enemyPopupVisible = false;
+    private bool bossPopupVisible = false;
     public bool isMouse = false;
     public bool isShowMoveRange = true;  // ← 이동범위 보일 의도면 true로 두세요 (기본 false면 안 보입니다)
     public bool isShowRange = true;
@@ -143,6 +145,7 @@ public class MouseManager : MonoBehaviour
         bool cellIsEnemy = map.IsEnemy(cell);
         bool cellIsTerrain = map.IsMovable(cell);
         bool cellIsVehicle = map.IsVehicle(cell);
+        bool cellIsBoss = map.IsBoss(cell);
         // 공격
         if (isAttacking)
         {
@@ -193,6 +196,11 @@ public class MouseManager : MonoBehaviour
         if (cellIsTerrain || cellIsVehicle)
         {
             OnClickTerrain(cell);
+            return;
+        }
+        if (cellIsBoss)
+        {
+            OnClickBoss(cell);
             return;
         }
         CancelSelection();
@@ -246,6 +254,20 @@ public class MouseManager : MonoBehaviour
         if (enemyPopupVisible) HideEnemyPopup();
         else ShowEnemyPopup(enemy);
         
+    }
+
+    private void OnClickBoss(Vector3Int cell)
+    {
+
+        HidePlayerRange();
+        if (isMoving) return;
+
+        var boss = useOverlapLookup ? FindAtCell<BaseBoss>(cell) : null;
+        // Debug.Log(boss.name);
+        if (boss == null) { HideBossPopup(); CancelSelection(); return; }
+
+        if (bossPopupVisible) HideBossPopup();
+        else ShowBossPopup(boss);
     }
 
     private void OnClickTerrain(Vector3Int destCell)
@@ -367,8 +389,13 @@ public void InputCancel()
 
         for (int i = 0; i < hitCount; i++)
         {
-            if (Hits[i] && Hits[i].TryGetComponent<BasePlayer>(out _) || Hits[i] && Hits[i].TryGetComponent<BaseEnemy>(out _) || Hits[i] && Hits[i].TryGetComponent<BaseBoss>(out _))
+            if (Hits[i] && Hits[i].TryGetComponent<BasePlayer>(out _) 
+                || Hits[i] && Hits[i].TryGetComponent<BaseEnemy>(out _) 
+                || Hits[i] && Hits[i].TryGetComponent<BaseBoss>(out _))
+            {
                 return Hits[i].GetComponentInParent<T>(true);
+            }
+  
         }
 
         return null;
@@ -401,6 +428,24 @@ public void InputCancel()
         enemyPopupVisible = false;
         GameManager.UI.CloseUI<EnemyInfoPopUpUI>();
     }
+
+    private void ShowBossPopup(BaseBoss boss)
+    {
+        bossPopupVisible = true;
+        selectedBoss = boss;
+        GameManager.UI.GetUI<BossInfoPopUpUI>()
+            .SetData(boss.model.attri, boss.model.rank, boss.model.attack,
+                     boss.model.moveRange, boss.model.currentHealth, boss.model.maxHealth);
+        GameManager.UI.GetUI<BossInfoPopUpUI>().OnUIUpData();
+        GameManager.UI.OpenUI<BossInfoPopUpUI>();
+        GameManager.Sound.PlayUISfx();
+    }
+    private void HideBossPopup()
+    {
+        bossPopupVisible = false;
+        GameManager.UI.CloseUI<BossInfoPopUpUI>();
+    }
+
 
     private bool IsCellInAttackOrKickRange(Vector3Int cell)
     {

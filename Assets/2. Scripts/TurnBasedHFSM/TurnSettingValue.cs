@@ -15,7 +15,8 @@ public class TurnSettingValue : MonoBehaviour
     [Header("게임 화면 해상도")]
     public int windowPanelIndex = 0;
 
-    public bool isDeck = false;
+    public bool isDeck = true;
+    public bool isTutorial = false;
 
     [HideInInspector] public bool IsBasicDeck = false;
     [HideInInspector] public bool IsDiamondDeck = false;

@@ -11,7 +11,7 @@ public class BossFloatingUI : MonoBehaviour
     [SerializeField] private Slider hpSlider;
     [SerializeField] private Button infoButton;
     
-    private EnemyModel model;
+    private BossModel model;
 
     private Quaternion fixedRotation;
      
@@ -67,7 +67,7 @@ public class BossFloatingUI : MonoBehaviour
         rankText.text = rankStr;
     }
 
-    public void Init(EnemyModel model)
+    public void Init(BossModel model)
     {
         this.model = model;
     }

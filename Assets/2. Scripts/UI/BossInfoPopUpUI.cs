@@ -13,7 +13,7 @@ public class BossInfoPopUpUI : BaseUI
     [SerializeField] private TextMeshProUGUI rankText;
     [SerializeField] private Image hpBar;
     [SerializeField] private Button infoButton;
-    [SerializeField] private Image infoPanel;
+    [SerializeField] private GameObject infoPanel;
     [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField] private TextMeshProUGUI descriptionText;
     [SerializeField] private TextMeshProUGUI remainCooldownText;
@@ -30,19 +30,33 @@ public class BossInfoPopUpUI : BaseUI
     protected override void OnOpen()
     {
         base.OnOpen();
-        infoButton.onClick.AddListener(ToggleInfoPanel);
         UpdateUI();                                      // UI가 열려있으면 즉시 갱신
+    }
+    private void OnEnable()
+    {
+        infoButton.onClick.AddListener(ToggleInfoPanel);
+    }
+    private void OnDisable()
+    {
+        infoButton.onClick.RemoveListener(ToggleInfoPanel);
+    }
+
+    public void OnUIUpData()
+    {
+        nameText.text = GameManager.Unit.boss.bossName;
+        descriptionText.text = GameManager.Unit.boss.bossDescription;
+        remainCooldownText.text = GameManager.Unit.boss.controller.remainCooldown.ToString();
     }
 
     private void ToggleInfoPanel()
     {
         infoPanelOpen = !infoPanelOpen;
+        Debug.Log($"Info Panel Open: {infoPanelOpen}");
         InfoPanelControl(infoPanelOpen);
     }
-
     private void InfoPanelControl(bool open)
     {
-        infoPanel.gameObject.SetActive(open);
+        infoPanel.SetActive(open);
     }
 
     public void SetData(EnemyAttribute attr, int rank, int attack, int moveRange, int currentHp, int maxHp)
