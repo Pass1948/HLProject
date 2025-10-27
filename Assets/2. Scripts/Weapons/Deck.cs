@@ -33,8 +33,12 @@ public class Deck : MonoBehaviour
     {
         if (GameManager.TurnBased.turnSettingValue.isTutorial == true)
         {
+            if (GameManager.Shop.isTutorial1 == false)
+            {
+                BuildTutorialDeck_TR2();
+            }
+            else
             BuildTutorialDeck_TR1();
-
         }
         else
         {
@@ -208,35 +212,35 @@ public class Deck : MonoBehaviour
     // 튜토리얼 시작할 때 불러주면 됩니다
     public void BuildTutorialDeck_TR1()
     {
-        GameManager.ItemControl.drawPile.Clear();
+            GameManager.ItemControl.drawPile.Clear();
             GameManager.ItemControl.drawPile.Add(new Ammo { suit = Suit.Diamond, rank = 8 });
             GameManager.ItemControl.drawPile.Add(new Ammo { suit = Suit.Club, rank = 4 });
             GameManager.ItemControl.drawPile.Add(new Ammo { suit = Suit.Heart, rank = 4 });
             GameManager.ItemControl.drawPile.Add(new Ammo { suit = Suit.Spade, rank = 4 });
-        magazine.AddBullets(GameManager.ItemControl.drawPile);
+            magazine.AddBullets(GameManager.ItemControl.drawPile);
     }
 
     // TR2 시작할 때 불러주면 됩니다
     public void BuildTutorialDeck_TR2()
     {
         GameManager.ItemControl.drawPile.Clear();
-
         // A♣×3, K♠×3 넣기
         for (int i = 0; i < 3; i++) GameManager.ItemControl.drawPile.Add(new Ammo { suit = Suit.Club, rank = 1 }); // A = 1
         for (int i = 0; i < 3; i++) GameManager.ItemControl.drawPile.Add(new Ammo { suit = Suit.Spade, rank = 13 }); // K = 13
         reloadAmmo.RefreshDeckUI();
+
         // 손패 세팅 (2♦×3, 2♣×3)
         var hand = new List<Ammo>(6)
-    {
-        new Ammo { suit = Suit.Diamond, rank = 2 },
-        new Ammo { suit = Suit.Diamond, rank = 2 },
-        new Ammo { suit = Suit.Diamond, rank = 2 },
-        new Ammo { suit = Suit.Club,    rank = 2 },
-        new Ammo { suit = Suit.Club,    rank = 2 },
-        new Ammo { suit = Suit.Club,    rank = 2 },
-    };
-        magazine.ClearMagazine();
+            {
+                new Ammo { suit = Suit.Diamond, rank = 2 },
+                new Ammo { suit = Suit.Diamond, rank = 2 },
+                new Ammo { suit = Suit.Diamond, rank = 2 },
+                new Ammo { suit = Suit.Club,    rank = 2 },
+                new Ammo { suit = Suit.Club,    rank = 2 },
+                new Ammo { suit = Suit.Club,    rank = 2 },
+            };
         magazine.AddBullets(hand);
+        GameManager.Unit.Player.playerModel.moveRange = 3;
     }
 
     //피셔-예이츠 셔플방식

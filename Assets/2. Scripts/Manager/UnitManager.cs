@@ -111,7 +111,7 @@ public class UnitManager : MonoBehaviour
     public void CurrentStatReset()
     {
         curAttack = Player.playerModel.attack;
-      curAttackRange = Player.playerModel.attackRange;
+         curAttackRange = Player.playerModel.attackRange;
         curMoveRange = Player.playerModel.moveRange;
         curHealthRange = Player.playerModel.maxHealth;
         curMulligan = Player.playerModel.mulligan;
