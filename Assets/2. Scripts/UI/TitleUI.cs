@@ -5,6 +5,11 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
+static class TutorialSave
+{
+    public static bool IsTutorial = true;
+}
+
 public class TitleUI : BaseUI
 {
     [SerializeField] private Button startButton;
@@ -16,7 +21,11 @@ public class TitleUI : BaseUI
     [SerializeField] private RectTransform menuPanel;
     [SerializeField] private RectTransform logoPanel;
     
-    
+    //튜토리얼 관련
+    [SerializeField] private GameObject tutorialPopup;
+    [SerializeField] private Button tutorialYesBtn;
+    [SerializeField] private Button tutorialNoBtn;
+
     private AudioClip audioClip;
 
     private void Awake()
@@ -36,21 +45,37 @@ public class TitleUI : BaseUI
         settingButton.onClick.AddListener(OpenSetting);
         exitButton.onClick.AddListener(ExitButton);
         restartButton.onClick.AddListener(ReLoadPlay);
+        tutorialYesBtn.onClick.AddListener(TutorialYes);
+        tutorialNoBtn.onClick.AddListener(TutorialNo);
+    }
+    private void OnDisable()
+    {
+        startButton.onClick.RemoveListener(StartGame);
+        settingButton.onClick.RemoveListener(OpenSetting);
+        exitButton.onClick.RemoveListener(ExitButton);
+        restartButton.onClick.RemoveListener(ReLoadPlay);
     }
 
     private void StartGame()
     {
-        // TODO: 나중에 게임씬으로 바꿔주기
-        //게임 씬 로드하는건 DeckSelUI에 옮겨놓고 DeckSelUI를 키게 작업해놓겠습니다
-        //deckSelUI.SetActive(true);
         deckSelUI.transform.DOMove(new Vector2(1300f,530f), 0.8f);
         GameManager.Sound.PlayUISfx();
         menuPanel.transform.DOMove(new Vector2(2300f,530f), 0.8f);
+        GameManager.Sound.PlayUISfx();
+        if(TutorialSave.IsTutorial)
+        {
+            ShowTutorialPopup();
+            TutorialSave.IsTutorial = false;
+            return;
+        }
+
+        deckSelUI.SetActive(true);
     }
 
     private void OpenSetting()
     {
-        GameManager.UI.OpenPopUI<SettingUI>();
+        settingUI.transform.DOMove(new Vector2(1400f,540f), 0.8f);
+        menuPanel.transform.DOMove(new Vector2(2300f,530f), 0.8f);
         GameManager.Sound.PlayUISfx();
     }
 
@@ -68,5 +93,26 @@ public class TitleUI : BaseUI
 #endif        
 
         GameManager.Sound.PlayUISfx();
+    }
+
+    private void ShowTutorialPopup()
+    {
+        deckSelUI.SetActive(false);
+        tutorialPopup.SetActive(true);
+    }
+
+    private void TutorialYes()
+    {
+        //여기에 튜토리얼 스테이지 진입넣으면 됩니다
+        GameManager.TurnBased.turnSettingValue.isTutorial = true;
+        GameManager.UI.OpenUI<FadeInUI>();
+        GameManager.Map.TutorialStage();
+        GameManager.SceneLoad.LoadScene(SceneType.Test);
+    }
+
+    private void TutorialNo()
+    {
+        tutorialPopup.SetActive(false);
+        deckSelUI.SetActive(true);
     }
 }

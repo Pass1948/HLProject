@@ -45,8 +45,6 @@ public class ClearUI : BaseUI
         {
             GameManager.ItemControl.drawPile.Add(GameManager.ItemControl.discardPile[i]);
         }
-        Debug.Log("덱 숫자" + GameManager.ItemControl.drawPile.Count);
-        Debug.Log("버린덱 숫자" + GameManager.ItemControl.discardPile.Count);
         GameManager.ItemControl.discardPile.Clear();
     }
 }

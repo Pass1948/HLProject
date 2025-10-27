@@ -91,6 +91,11 @@ public class PlayerAttackState : PlayerActionState
             {
                 if (turnManager.EnemyDieCheck())
                 {
+                    if(turnSetVlaue.isTutorial)
+                    {
+                        StageClearUI();
+                    }
+                    else
                     ChangeState<WinState>();
                 }
                 else
@@ -99,5 +104,13 @@ public class PlayerAttackState : PlayerActionState
                 }
             }
         }
+        public void StageClearUI()
+        {
+            ResultUI backUI = GameManager.UI.GetUI<ResultUI>();
+            backUI.GetResultType(ResultType.Tutorial);
+            backUI.OpenUI();
+        }
+
+
     }
 }
