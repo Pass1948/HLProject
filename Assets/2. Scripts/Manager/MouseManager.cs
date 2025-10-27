@@ -224,12 +224,6 @@ public class MouseManager : MonoBehaviour
         selectedPlayer = useOverlapLookup ? FindAtCell<BasePlayer>(cell) : null;
         selectedPlayerCell = cell;
         selectedMoveRange = GameManager.Unit.Player.playerModel.moveRange;
-        // 디버그: 선택 확인
-        Debug.Log($"[Mouse] Player Selected? {(selectedPlayer != null)} / cell {cell}");
-        if (selectedPlayer == null)
-        {
-            Debug.LogWarning("[Mouse] 선택한 칸에서 플레이어 콜라이더를 찾지 못했습니다. unitDetectMask / OverlapBox 범위를 확인하세요.");
-        }
 
         if (!isShowRange) return;
 
@@ -259,7 +253,6 @@ public class MouseManager : MonoBehaviour
         HidePlayerRange();
 
         var boss = useOverlapLookup ? FindAtCell<BaseBoss>(cell) : null;
-        Debug.Log($"[Mouse] Boss Selected? {(boss != null)} / cell {cell}");
 
         if (boss == null) { HideBossPopup(); CancelSelection(); return; }
   
@@ -387,7 +380,6 @@ public void InputCancel()
                 || Hits[i] && Hits[i].TryGetComponent<BaseEnemy>(out _) 
                 || Hits[i] && Hits[i].TryGetComponent<BaseBoss>(out _))
             {
-                Debug.Log($"너 누구야 시발색히야" + Hits[i].name);
                 return Hits[i].GetComponentInParent<T>(true);
             }
   
