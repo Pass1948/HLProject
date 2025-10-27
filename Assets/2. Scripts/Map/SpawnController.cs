@@ -39,7 +39,7 @@ public class SpawnController : MonoBehaviour
 
     public void SpawnAllObjects(Stage stage)
     {
-        enemyPrefab = GameManager.Resource.Load<GameObject>(Path.Enemy + "NormalEnemy");
+        enemyPrefab = GameManager.Resource.Load<GameObject>(Path.Enemy + "Goblin");
         //obstaclePool.InitializePool(20);
 
         SpawnPlayer(stage);

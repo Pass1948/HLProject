@@ -372,9 +372,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 261508ee6715f8249ba0b399a88c33be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rankText: {fileID: 0}
-  attributeText: {fileID: 0}
-  hpSlider: {fileID: 0}
+  rankText: {fileID: 5500620726631854983}
+  attributeText: {fileID: 8010862159414015342}
+  hpSlider: {fileID: 1879709180176784023}
 --- !u!65 &8752767836141807240
 BoxCollider:
   m_ObjectHideFlags: 0
