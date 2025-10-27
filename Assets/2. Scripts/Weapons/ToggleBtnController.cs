@@ -94,10 +94,7 @@ public class ToggleBtnController : MonoBehaviour
 
     public void ToggleMove()
     {
-        if (GameManager.Mouse.isShowMoveRange)
-        {
             GameManager.Mouse.OnClickPlayer(GameManager.Map.GetPlayer3Position());
-        }
     }
 
     //가이드 UI패널을 토글함

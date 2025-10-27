@@ -104,6 +104,10 @@ public class TitleUI : BaseUI
     private void TutorialYes()
     {
         //여기에 튜토리얼 스테이지 진입넣으면 됩니다
+        GameManager.TurnBased.turnSettingValue.isTutorial = true;
+        GameManager.UI.OpenUI<FadeInUI>();
+        GameManager.Map.TutorialStage();
+        GameManager.SceneLoad.LoadScene(SceneType.Test);
     }
 
     private void TutorialNo()

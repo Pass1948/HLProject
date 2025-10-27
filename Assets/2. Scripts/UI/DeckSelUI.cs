@@ -83,7 +83,7 @@ public class DeckSelUI : MonoBehaviour
             Debug.Log("Select Your Deck!");
             return;
         }
-        GameManager.Event.Publish(EventType.SelectDeck);
+        GameManager.TurnBased.turnSettingValue.isDeck = false;
         GameManager.UI.OpenUI<FadeInUI>();
         GameManager.Map.NormalStage();
         GameManager.SceneLoad.LoadScene(SceneType.Test);
