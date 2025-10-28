@@ -8,7 +8,6 @@ public abstract class BaseItem : MonoBehaviour
 {
     public ItemModel itemModel;
     public List<ItemModel> relicItems = GameManager.ItemControl.relicItems;
-    public PlayerModel playerModel = GameManager.Unit.Player.playerModel;
     public EntityData entityData;
     protected int id;
     protected virtual void OnEnable()

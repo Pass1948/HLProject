@@ -33,7 +33,7 @@ public class GolemPatternState : PatternBossState
         {
             if (GameManager.Map.IsPlayer(cell))
             {
-                GameManager.Unit.ChangeHealth(GameManager.Unit.Player.playerModel, controller.model.attack);
+                GameManager.Unit.ChangeHealth(GameManager.Unit.Player.playerModel, controller.patternPower);
             }
         }
 

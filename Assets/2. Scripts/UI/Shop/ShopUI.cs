@@ -1,5 +1,6 @@
 using DG.Tweening;
 using System.Collections.Generic;
+using System.Runtime.ConstrainedExecution;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,7 +20,7 @@ public class ShopUI : BaseUI
     [SerializeField] private TextMeshProUGUI rerollCostText;
     [SerializeField] private TextMeshProUGUI playerMoneyText;
     [SerializeField] private TextMeshProUGUI healCost;
-
+    [SerializeField] private TextMeshProUGUI hpText;
 
     private int selectedBulletIndex = -1;
     private int maxHp;
@@ -55,6 +56,9 @@ public class ShopUI : BaseUI
         nextStageButton.onClick.AddListener(NextStage);
         settingsButton.onClick.AddListener(OnSettingButton);
         rellicInvenBtn.onClick.AddListener(OnOpenInven);
+        currentHp = GameManager.Unit.Player.playerModel.currentHealth;
+        maxHp = GameManager.Unit.Player.playerModel.maxHealth;
+        hpText.text = $"{currentHp}/{maxHp}";
         shop.healCost = 4;
         shop.rerollCost = 2;
         // EventBus 구독
@@ -256,8 +260,10 @@ public class ShopUI : BaseUI
     {
         currentHp = GameManager.Unit.Player.playerModel.currentHealth;
         maxHp = GameManager.Unit.Player.playerModel.maxHealth;
+        hpText.text = $"{currentHp}/{maxHp}";
         float fill = (float)currentHp / (float)maxHp;
         hpBar.fillAmount = fill;
+
     }
 
     private void OnReroll()
@@ -310,7 +316,7 @@ public class ShopUI : BaseUI
     private void PlayerMoneyText()
     {
         if (playerMoneyText != null)
-            playerMoneyText.text = "Ð" + player.playerMonney.ToString();
+            playerMoneyText.text = "Ð" + GameManager.Unit.Player.playerModel.monney.ToString();
     }
 
     // 세팅 버튼

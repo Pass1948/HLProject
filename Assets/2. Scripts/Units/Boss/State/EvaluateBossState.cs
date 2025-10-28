@@ -17,6 +17,13 @@ public class EvaluateBossState : BaseBossState
             return;
         }
 
+        if (controller.isStun)
+        {
+            Debug.Log("보스 스턴 중 공격 불가");
+            stateMachine.ChangeState(stateMachine.EndState);
+            return;
+        }
+
         stateMachine.ChangeState(stateMachine.DecideState);
     }
 
