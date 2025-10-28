@@ -68,7 +68,7 @@ public class AttackRangeDisplay : MonoBehaviour
         }
         ShowRange(newRange);
         // 범위를 MapManager로 보내 타겟 목록을 갱신
-        GameManager.Map.UpdateAttackTargets(newRange, enemies);
+        GameManager.Map.UpdateAttackTargets(newRange, GameManager.Unit.enemies);
     }
 
 

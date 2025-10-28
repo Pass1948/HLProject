@@ -9,7 +9,7 @@ public class BossFloatingUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI rankText;
     [SerializeField] private TextMeshProUGUI attributeText;
     [SerializeField] private Slider hpSlider;
-    [SerializeField] private Button infoButton;
+    // [SerializeField] private Button infoButton;
     
     private BossModel model;
 
@@ -31,7 +31,7 @@ public class BossFloatingUI : MonoBehaviour
     {
         if(model == null) Debug.Log("모델 없음");
         
-        hpSlider.maxValue = model.maxHealth;
+         hpSlider.maxValue = model.maxHealth;
         hpSlider.value = model.currentHealth;
         
         string attri = null;

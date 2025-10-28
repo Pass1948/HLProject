@@ -9,9 +9,13 @@ public class EndBossState : BaseBossState
 
     public override void Enter()
     {
+        
         controller.ReduceCooldown();
+        
+        if (controller.isStun) controller.ReduceStunTurn();
+        
         controller.CompleteTurn();
-
+        
         controller.startTurn = false;
         controller.isDone = true;
         stateMachine.ChangeState(stateMachine.IdleState);
