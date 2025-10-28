@@ -17,7 +17,8 @@ public class BossInfoPopUpUI : BaseUI
     [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField] private TextMeshProUGUI descriptionText;
     [SerializeField] private TextMeshProUGUI remainCooldownText;
-
+    [SerializeField] private TextMeshProUGUI currentHpText;
+    
     private bool infoPanelOpen = false;
     
     private EnemyAttribute attribute;
@@ -109,5 +110,6 @@ public class BossInfoPopUpUI : BaseUI
         attackText.text = attack.ToString();
         moveRangeText.text = moveRange.ToString();
         hpBar.fillAmount = currentHealth / (float)maxHealth;
+        currentHpText.text = currentHealth.ToString();
     }
 }

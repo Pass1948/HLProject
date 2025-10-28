@@ -54,5 +54,7 @@ public class BaseBoss : MonoBehaviour
         {
             model.attri = EnemyAttribute.High;
         }
+        
+        controller.StunStart();
     }
 }

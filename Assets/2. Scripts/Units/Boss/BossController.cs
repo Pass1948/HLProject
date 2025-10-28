@@ -26,6 +26,8 @@ public class BossController : MonoBehaviour
     public int remainCooldown;       // 쿨타임을 연산할 변수
     public int patternPower;         // 패턴 공격력
     public int patternRange;         // 패턴 공격 범위
+    public bool isStun;
+    public int stunTurn;
 
     public float moveDuration = 0.2f;
 
@@ -150,7 +152,7 @@ public class BossController : MonoBehaviour
     public void PatternCooldown()
     {
         isCooldown = true;
-        remainCooldown = cooldown;
+        remainCooldown = cooldown + 1;
     }
 
     public void ReduceCooldown()
@@ -162,6 +164,24 @@ public class BossController : MonoBehaviour
             {
                 isCooldown = false;
                 Debug.Log("패턴 쿨타임 해제됨");
+            }
+        }
+    }
+
+    public void StunStart()
+    {
+        isStun = true;
+        stunTurn = 2;
+    }
+
+    public void ReduceStunTurn()
+    {
+        if (isStun)
+        {
+            stunTurn--;
+            if (stunTurn <= 0)
+            {
+                isStun = false;
             }
         }
     }
