@@ -9,7 +9,6 @@ public class EndBossState : BaseBossState
 
     public override void Enter()
     {
-        
         controller.ReduceCooldown();
         
         if (controller.isStun) controller.ReduceStunTurn();

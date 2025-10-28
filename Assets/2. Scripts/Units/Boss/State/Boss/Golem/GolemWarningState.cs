@@ -26,7 +26,7 @@ public class GolemWarningState : WarningBossState
         controller.warningCells = range;
 
         controller.canPattern = true;
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(2f);
         
         stateMachine.ChangeState(stateMachine.EndState);
     }
