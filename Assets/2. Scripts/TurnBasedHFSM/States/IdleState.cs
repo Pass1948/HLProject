@@ -13,7 +13,6 @@ public class IdleState : BaseTurnState
         if (turnManager.isStarted == true)
         {
             timer =  turnSetVlaue.resetTime;
-            GameManager.UI.OpenUI<MainUI>();
         }
 
 
@@ -26,6 +25,7 @@ public class IdleState : BaseTurnState
             timer+= dt;
             if(timer>0.5f)
             {
+                GameManager.UI.OpenUI<MainUI>();
                 ChangeState<PlayerTurnState>();
             }
         }
