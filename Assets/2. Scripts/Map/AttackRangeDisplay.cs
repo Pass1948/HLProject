@@ -181,7 +181,7 @@ public class AttackRangeDisplay : MonoBehaviour
         }
     }
 
-    private List<Vector3Int> GetDiamondRange(Vector3Int direction)
+    private List<Vector3Int> GetDiamondRange(Vector3Int direction) // | // 증가하면 앞으로
     {
         Vector3Int playerPos = GetPlayerCellPosition();
         var range = new List<Vector3Int>();
@@ -193,7 +193,7 @@ public class AttackRangeDisplay : MonoBehaviour
         return range;
     }
 
-    private List<Vector3Int> GetHeartRange(Vector3Int direction)
+    private List<Vector3Int> GetHeartRange(Vector3Int direction) // / // 증가하면 대각선으로
     {
         Vector3Int playerPos = GetPlayerCellPosition();
         var range = new List<Vector3Int>();
@@ -227,7 +227,7 @@ public class AttackRangeDisplay : MonoBehaviour
     }
 
 
-    private List<Vector3Int> GetSpadeRange(Vector3Int direction)
+    private List<Vector3Int> GetSpadeRange(Vector3Int direction) // ㅗ // 증가하면 앞으로
     {
         Vector3Int playerPos = GetPlayerCellPosition();
         var range = new List<Vector3Int>();
@@ -247,7 +247,7 @@ public class AttackRangeDisplay : MonoBehaviour
         return range;
     }
 
-    private List<Vector3Int> GetCloverRange(Vector3Int direction)
+    private List<Vector3Int> GetCloverRange(Vector3Int direction) // ㅡ // 증가하면 대각선으로
     {
         Vector3Int playerPos = GetPlayerCellPosition();
         var range = new List<Vector3Int>();
