@@ -180,7 +180,6 @@ public class TurnBasedManager : MonoBehaviour
     // 큐에서 다음 적을 하나 꺼내어 턴 시작
     private void TryStartNextEnemy()
     {
-        if (monsterQueue.Count <= 0) return;
         while (monsterQueue.Count > 0)
         {
             var enemy = monsterQueue.Dequeue();
