@@ -17,7 +17,9 @@ public class EndBossState : BaseBossState
         
         controller.startTurn = false;
         controller.isDone = true;
+        GameManager.TurnBased.BossTrunCheck();
         stateMachine.ChangeState(stateMachine.IdleState);
+        
     }
 
     public override void Exit()
