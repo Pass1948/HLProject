@@ -93,5 +93,6 @@ public class ResultUI : BaseUI
         GameManager.TurnBased.turnSettingValue.isTutorial = false;
         GameManager.ItemControl.ClearData();
         GameManager.SceneLoad.LoadScene(SceneType.Title);
+        GameManager.SaveLoad.nextSceneIndex = 0;
     }
 }
