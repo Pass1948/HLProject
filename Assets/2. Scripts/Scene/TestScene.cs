@@ -21,9 +21,16 @@ public class TestScene : BaseScene
         var cam = GameManager.Resource.Create<GameObject>(Path.Camera + "MainCamera");
         CameraController cc = cam.GetComponent<CameraController>();
         cc.InitCamera();
-        if(GameManager.Stage.stageId >= 7002)
+        if (GameManager.Stage.stageId == 7001)
         {
-            GameManager.Unit.Vehicle.vehicleHandler.MountVehicle();
+            GameManager.Unit.Vehicle.vehicleModel.condition = VehicleCondition.Destruction;
+            GameManager.Unit.Vehicle.vehicleModel.currentHealth = 0;
+            GameManager.Unit.Vehicle.vehicleHandler.vehicleDestruction.SetActive(true);
+        }
+        if (GameManager.Stage.stageId >= 7002)
+        {     
+            GameManager.Unit.Vehicle.vehicleModel.currentHealth = 3;
+        GameManager.Unit.Vehicle.vehicleHandler.MountVehicle();
         }
         GameManager.TurnBased.ChangeStartTurn();
         GameManager.ItemControl.ItemDataSet();  // 아이템데이터 리스트 초기 세팅
