@@ -40,11 +40,14 @@ public class TutorialUI : PopUpUI
         rightButton.onClick.AddListener(NextPage);
         closeButton.onClick.AddListener(CloseUI);
     }
-
-    // ── 변경: Open(Topic) -> Init(Topic) (활성화는 하지 않음)
-    public void Init(Topic topic)
+    
+    public void Init(params Topic[] topics)
     {
-        _pages = BuildPagesFor(topic);
+        _pages.Clear();
+        foreach (var t in topics)
+        {
+            _pages.AddRange(BuildPagesFor(t));
+        }
         _index = 0;
         ApplyPage();
     }
@@ -210,4 +213,18 @@ public class TutorialUI : PopUpUI
 
         return list;
     }
+
+    public static void OpenTR1() //추가했습니다
+    { //추가했습니다
+        GameManager.UI.OpenPopUI<TutorialUI>(); //추가했습니다
+        var ui = GameManager.UI.GetPopUI<TutorialUI>(); //추가했습니다
+        ui?.Init(Topic.Bullet, Topic.BikeControl, Topic.Move, Topic.MonsterInfo); //추가했습니다
+    } //추가했습니다
+
+    public static void OpenTR2() //추가했습니다
+    { //추가했습니다
+        GameManager.UI.OpenPopUI<TutorialUI>(); //추가했습니다
+        var ui = GameManager.UI.GetPopUI<TutorialUI>(); //추가했습니다
+        ui?.Init(Topic.Kick, Topic.BossInfo, Topic.Reload); //추가했습니다
+    } //추가했습니다
 }
