@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,8 +15,18 @@ public class EnemyAnimHandler : MonoBehaviour
 
     [SerializeField] private Animator animator;
 
-    [SerializeField] float snap = 0.15f; 
+    [SerializeField] float snap = 0.15f;
     
+    // 오디오 추가
+    private AudioClip deathClip;
+    private AudioClip attackClip;
+
+    private void Awake()
+    {
+        deathClip = Resources.Load<AudioClip>(Path.Sound + "monster/Normal/NM_Death");
+        attackClip = Resources.Load<AudioClip>(Path.Sound + "monster/Normal/Goblin_Attack");
+    }
+
     public void OnMove(bool isMove, Transform target)
     {
         FaceToTarget4Dir(target);
@@ -25,6 +36,7 @@ public class EnemyAnimHandler : MonoBehaviour
     public void OnDie()
     {
         animator.SetBool(Die, true);
+        GameManager.Sound.PlaySfx(deathClip);
     }
 
     public void OnHit()
@@ -36,6 +48,7 @@ public class EnemyAnimHandler : MonoBehaviour
     {
         this.transform.LookAt(target);
         animator.SetTrigger(Attack);
+        GameManager.Sound.PlaySfx(attackClip);
     }
 
     public void OnWarning()
