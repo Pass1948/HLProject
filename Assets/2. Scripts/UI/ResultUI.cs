@@ -88,6 +88,7 @@ public class ResultUI : BaseUI
     private void MainmenuScene()
     {
         // 메인메뉴 (인트로?) 씬으로 
+        GameManager.UI.OpenUI<FadeInUI>();
         GameManager.Shop.isTutorial1 = true;
         GameManager.ItemControl.drawPile.Clear();
         GameManager.TurnBased.turnSettingValue.isTutorial = false;
