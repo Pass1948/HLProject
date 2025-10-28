@@ -1,8 +1,9 @@
+using DataTable;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using DataTable;
 using UnityEngine;
+using static UnityEditor.Progress;
 using Random = UnityEngine.Random;
 
 public class ShopManager : MonoBehaviour
@@ -207,6 +208,8 @@ public class ShopManager : MonoBehaviour
     // 돈내고 오퍼 전체 재생성
     public void TryReroll()
     {
+        if (!player.SpendGold(rerollCost))
+            return;
         player.SpendGold(rerollCost);
         rerollCost++;
         GenerateOffers();
@@ -214,6 +217,8 @@ public class ShopManager : MonoBehaviour
     }
     public void TryHeal()
     {
+        if (!player.SpendGold(healCost))
+            return;
         player.SpendGold(healCost);
         player.Heal(healCost*(int)0.5f);
         healCost++;
