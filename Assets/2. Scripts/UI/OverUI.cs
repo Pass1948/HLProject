@@ -8,10 +8,14 @@ public class OverUI : BaseUI
     [SerializeField] Button mainmenuButton;
 
     private TestScene testScene;
+
+    private void Awake()
+    {
+        mainmenuButton.onClick.AddListener(MainmenuScene);
+    }
     protected override void OnOpen()
     {
         base.OnOpen();
-        mainmenuButton.onClick.AddListener(MainmenuScene);
     }
 
     protected override void OnClose()

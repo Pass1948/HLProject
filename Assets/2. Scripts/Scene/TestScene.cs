@@ -15,13 +15,13 @@ public class TestScene : BaseScene
         _stage = new Stage();
         // Debug.Log("new Stage");
         // Debug.Log(GameManager.SaveLoad.nextSceneIndex);
-        _stage.InitStage(GameManager.SaveLoad.nextSceneIndex);
+        _stage.InitStage(GameManager.Stage.stageId);
         GameManager.UI.OpenUI<FadeOutUI>();
         GameManager.Map.CreateMap(_stage);
         var cam = GameManager.Resource.Create<GameObject>(Path.Camera + "MainCamera");
         CameraController cc = cam.GetComponent<CameraController>();
         cc.InitCamera();
-        if(GameManager.Map.stageID >= 7002)
+        if(GameManager.Stage.stageId >= 7002)
         {
             GameManager.Unit.Vehicle.vehicleHandler.MountVehicle();
         }

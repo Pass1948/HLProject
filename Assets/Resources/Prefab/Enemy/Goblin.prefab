@@ -372,9 +372,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 261508ee6715f8249ba0b399a88c33be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rankText: {fileID: 0}
-  attributeText: {fileID: 0}
-  hpSlider: {fileID: 0}
+  rankText: {fileID: 5500620726631854983}
+  attributeText: {fileID: 8010862159414015342}
+  hpSlider: {fileID: 1879709180176784023}
 --- !u!65 &8752767836141807240
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5035,6 +5035,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 8.98002
+      objectReference: {fileID: 0}
+    - target: {fileID: 4150942083692583419, guid: f3f26804650d6ff4bbb724bb568ae6de,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4150942083692583419, guid: f3f26804650d6ff4bbb724bb568ae6de,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4150942083692583419, guid: f3f26804650d6ff4bbb724bb568ae6de,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4150942083692583419, guid: f3f26804650d6ff4bbb724bb568ae6de,
         type: 3}
