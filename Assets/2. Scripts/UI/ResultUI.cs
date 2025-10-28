@@ -23,7 +23,6 @@ public class ResultUI : BaseUI
     [SerializeField] Button tutorialBtn1;
     [SerializeField] GameObject tutorialUI2;
     [SerializeField] Button tutorialBtn2;
-    bool isTutorial1 = false;
 
 
     public ResultType resulttype;
@@ -49,14 +48,14 @@ public class ResultUI : BaseUI
         }
         else if (result == ResultType.Tutorial)
         {
-            if(isTutorial1 == false)
+            if(GameManager.Shop.isTutorial1 == true)
             {
+                Debug.Log("튜토리얼 1");
                 tutorialUI1.SetActive(true);
-                tutorialUI2.SetActive(false);
                 clearUI.CloseUI();
                 overUI.CloseUI();
             }
-            else
+            if(GameManager.Shop.isTutorial1 == false)
             {
                 tutorialUI1.SetActive(false);
                 tutorialUI2.SetActive(true);
@@ -66,6 +65,7 @@ public class ResultUI : BaseUI
         }
         else if (result == ResultType.GameClear)
         {
+            if (GameManager.TurnBased.turnSettingValue.isTutorial == true) return;
             gameClearUI.SetActive(true);
             tutorialUI1.SetActive(false);
             tutorialUI2.SetActive(false);
@@ -76,7 +76,6 @@ public class ResultUI : BaseUI
 
     public void NextStage()
     {
-        isTutorial1 = true;
         GameManager.Shop.isTutorial1 = false;
         int nextStageIndex = GameManager.Shop.stage.GetCurrentStageIndex() + 1;
         GameManager.Unit.CurrentStatReset();
@@ -89,10 +88,12 @@ public class ResultUI : BaseUI
     private void MainmenuScene()
     {
         // 메인메뉴 (인트로?) 씬으로 
+        GameManager.UI.OpenUI<FadeInUI>();
         GameManager.Shop.isTutorial1 = true;
         GameManager.ItemControl.drawPile.Clear();
         GameManager.TurnBased.turnSettingValue.isTutorial = false;
         GameManager.ItemControl.ClearData();
         GameManager.SceneLoad.LoadScene(SceneType.Title);
+        GameManager.SaveLoad.nextSceneIndex = 0;
     }
 }

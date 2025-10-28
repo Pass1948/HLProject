@@ -11,7 +11,7 @@ public class EnemyInfoPopUpUI : BaseUI
     [SerializeField] TextMeshProUGUI attributeText;
     [SerializeField] TextMeshProUGUI rankText;
     [SerializeField] Image hpBar;
-    
+    [SerializeField] TextMeshProUGUI currentHpText;
     private EnemyAttribute attribute;
     private int rank;
     private int attack;
@@ -75,5 +75,6 @@ public class EnemyInfoPopUpUI : BaseUI
         attackText.text = attack.ToString();
         moveRangeText.text = moveRange.ToString();
         hpBar.fillAmount = currentHealth / (float)maxHealth;
+        currentHpText.text = currentHealth.ToString();
     }
 }
