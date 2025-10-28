@@ -51,7 +51,21 @@ public class PlayerKickState : PlayerActionState
         void ChangeAttirEnemy()
         {
             var targets = GameManager.Map.CurrentEnemyTargets;
-            if (targets != null && targets.Count > 0)
+            if (targets != null && targets.Count <= 0)
+            {
+                if (GameManager.Unit.boss == null) 
+                    return;
+                GameManager.Unit.boss.ChenageAttribute();
+                    GameManager.UI.GetUI<BossInfoPopUpUI>().SetData(
+                        GameManager.Unit.boss.model.attri,
+                        GameManager.Unit.boss.model.rank, 
+                        GameManager.Unit.boss.model.attack,
+                        GameManager.Unit.boss.model.moveRange, 
+                        GameManager.Unit.boss.model.currentHealth,
+                        GameManager.Unit.boss.model.maxHealth);
+                    return;
+            }
+                if (targets != null && targets.Count > 0)
             {
                 foreach (var enemy in targets)
                 {

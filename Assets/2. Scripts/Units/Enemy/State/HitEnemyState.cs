@@ -9,12 +9,12 @@ public class HitEnemyState : BaseEnemyState
     public override void Enter()
     {
         animHandler.OnHit();
-        // µ¥¹ÌÁö Àû¿ë½ÃÅ°±â
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Å°ï¿½ï¿½
     }
 
     public override void Excute()
     {
-        if(controller.model.currentHealth <=0)
+        if(controller.model.currentHealth <= 0)
         {
             controller.isDie = true;
             stateMachine.ChangeState(stateMachine.DieState);

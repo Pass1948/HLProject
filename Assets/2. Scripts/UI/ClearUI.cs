@@ -9,10 +9,20 @@ public class ClearUI : BaseUI
     [SerializeField] Transform rewardPanel;
     [SerializeField] RewardSlotUI[] slots;
 
+    private void OnEnable()
+    {
+        storeButton.onClick.AddListener(OpenStore);
+    }
+
+    private void OnDisable()
+    {
+        storeButton.onClick.RemoveListener(OpenStore);
+    }
+
+
     protected override void OnOpen()
     {
         base.OnOpen();
-        storeButton.onClick.AddListener(OpenStore);
     }
 
     protected override void OnClose()

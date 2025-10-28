@@ -1401,7 +1401,7 @@ MonoBehaviour:
   moveRangeText: {fileID: 5299809771931997973}
   attributeText: {fileID: 2820366463911701409}
   rankText: {fileID: 510389730332224726}
-  hpBar: {fileID: 7783068646278250374}
+  hpBar: {fileID: 7813418868908452355}
   infoButton: {fileID: 7119718189888534274}
   infoPanel: {fileID: 3021453937167456265}
   nameText: {fileID: 8557907102328214362}

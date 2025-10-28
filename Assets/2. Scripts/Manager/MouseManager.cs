@@ -69,7 +69,7 @@ public class MouseManager : MonoBehaviour
     private Vector3Int hoverCell;
     private bool hasHover;
 
-    private readonly Collider[] Hits = new Collider[24];
+    private readonly Collider[] Hits = new Collider[1000];
 
     public void CreateMouse()
     {
@@ -220,17 +220,10 @@ public class MouseManager : MonoBehaviour
         }
 
         HideEnemyPopup();
-        if (isMoving) return;
 
         selectedPlayer = useOverlapLookup ? FindAtCell<BasePlayer>(cell) : null;
         selectedPlayerCell = cell;
         selectedMoveRange = GameManager.Unit.Player.playerModel.moveRange;
-        // 디버그: 선택 확인
-        Debug.Log($"[Mouse] Player Selected? {(selectedPlayer != null)} / cell {cell}");
-        if (selectedPlayer == null)
-        {
-            Debug.LogWarning("[Mouse] 선택한 칸에서 플레이어 콜라이더를 찾지 못했습니다. unitDetectMask / OverlapBox 범위를 확인하세요.");
-        }
 
         if (!isShowRange) return;
 
@@ -246,10 +239,9 @@ public class MouseManager : MonoBehaviour
     private void OnClickEnemy(Vector3Int cell)
     {
         HidePlayerRange();
-        if (isMoving) return;
 
         var enemy = useOverlapLookup ? FindAtCell<BaseEnemy>(cell) : null;
-        Debug.Log(enemy.name);
+
         if (enemy == null) { HideEnemyPopup(); CancelSelection(); return; }
         if (enemyPopupVisible) HideEnemyPopup();
         else ShowEnemyPopup(enemy);
@@ -258,14 +250,12 @@ public class MouseManager : MonoBehaviour
 
     private void OnClickBoss(Vector3Int cell)
     {
-
         HidePlayerRange();
-        if (isMoving) return;
 
         var boss = useOverlapLookup ? FindAtCell<BaseBoss>(cell) : null;
-        // Debug.Log(boss.name);
-        if (boss == null) { HideBossPopup(); CancelSelection(); return; }
 
+        if (boss == null) { HideBossPopup(); CancelSelection(); return; }
+  
         if (bossPopupVisible) HideBossPopup();
         else ShowBossPopup(boss);
     }
@@ -292,7 +282,6 @@ public class MouseManager : MonoBehaviour
 
     public IEnumerator MoveAlongPath(Transform actor, Vector3Int currentCell, List<Vector3Int> path, int tileIdForActor)
     {
-        isMoving = true;
         GameManager.Unit.Player.animHandler.PlayMoveAnim(pointer);
         foreach (var nextCell in path)
         {
@@ -316,7 +305,6 @@ public class MouseManager : MonoBehaviour
         }
         map.ClearPlayerRange();
         GameManager.Unit.Player.animHandler.PlayMoveAnim(pointer);
-        isMoving = false;
     }
 
 
@@ -362,7 +350,6 @@ public void InputCancel()
         isAttacking = false;
         isKicking = false;
         isPlayer = false;
-        isMoving = isMoving ? false : true;
         HidePlayerRange();
         HideEnemyPopup();
         map.ClearPlayerRange();
@@ -377,9 +364,9 @@ public void InputCancel()
 
         Vector3 center = tilemap.GetCellCenterWorld(cell);
         Vector3 halfExtents = new Vector3(
-            tilemap.cellSize.x * 1f * overlapShrink,
+            tilemap.cellSize.x * 0.2f * overlapShrink,
             overlapHeight * 2f,
-            tilemap.cellSize.y * 1f * overlapShrink
+            tilemap.cellSize.y * 0.2f * overlapShrink
         );
 
         int hitCount = Physics.OverlapBoxNonAlloc(

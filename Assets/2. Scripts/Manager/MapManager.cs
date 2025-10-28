@@ -70,11 +70,11 @@ public class MapManager : MonoBehaviour
 
     public void TutorialStage()
     {
-        stageID = 7001;
+        GameManager.Stage.stageId = 7001;
     }
     public void NormalStage()
     {
-        stageID = 7003;
+        GameManager.Stage.stageId = 7003;
     }
 
     public void CreateMap(Stage stage)
