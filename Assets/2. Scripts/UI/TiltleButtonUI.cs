@@ -36,6 +36,15 @@ public class TiltleButtonUI : BaseUI, IPointerEnterHandler, IPointerExitHandler
     {
         target = 0f;
     }
+
+    public void OnExitButton()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
+    }
 }
 
 
