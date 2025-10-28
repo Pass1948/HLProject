@@ -10,11 +10,16 @@ public class EndBossState : BaseBossState
     public override void Enter()
     {
         controller.ReduceCooldown();
+        
+        if (controller.isStun) controller.ReduceStunTurn();
+        
         controller.CompleteTurn();
-
+        
         controller.startTurn = false;
         controller.isDone = true;
+        GameManager.TurnBased.BossTrunCheck();
         stateMachine.ChangeState(stateMachine.IdleState);
+        
     }
 
     public override void Exit()

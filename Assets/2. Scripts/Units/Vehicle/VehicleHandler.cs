@@ -7,7 +7,7 @@ public class VehicleHandler : MonoBehaviour
 
     [SerializeField] private int repairAmount = 3;
 
-    [SerializeField] private GameObject vehicleDestruction; // 부셔지면 띄우는 이미지
+    [SerializeField] public GameObject vehicleDestruction; // 부셔지면 띄우는 이미지
 
     public bool isMounted => GameManager.Unit.Player.playerModel.viecleBording == ViecleBording.On;
 

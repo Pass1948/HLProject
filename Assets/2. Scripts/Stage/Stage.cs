@@ -20,8 +20,7 @@ public class Stage
     {
         // Debug.Log("Stage : InitStage()");
         ClearAllData();
-       GameManager.Map.stageID += stageIndex;
-        stage = GameManager.Data.stageDataGroup.GetStageData(GameManager.Map.stageID);
+        stage = GameManager.Data.stageDataGroup.GetStageData(stageIndex);
         Debug.Log(stage.id);
         mapSize = stage.size;
         for (int i = 0; i < stage.enemyList.Count; i++)

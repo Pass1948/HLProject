@@ -39,21 +39,21 @@ public class SpawnController : MonoBehaviour
 
     public void SpawnAllObjects(Stage stage)
     {
-        enemyPrefab = GameManager.Resource.Load<GameObject>(Path.Enemy + "NormalEnemy");
+        enemyPrefab = GameManager.Resource.Load<GameObject>(Path.Enemy + "Goblin");
         //obstaclePool.InitializePool(20);
 
         SpawnPlayer(stage);
         // SpawnEnemys(stage.enemiesDict); 
 
-        SpawnEnemies(stage.enemiesDict, stage.eliteCnt, GameManager.Map.stageID);
+        SpawnEnemies(stage.enemiesDict, stage.eliteCnt, GameManager.Stage.stageId);
 
-        SpawnObstacles(stage.obstaclesDict, GameManager.Map.stageID);
+        SpawnObstacles(stage.obstaclesDict, GameManager.Stage.stageId);
     }
 
     private void SpawnPlayer(Stage stage)
     {
         // 튜토리얼 스테이지(7001)
-        bool tutorialPlayerSpawn = (GameManager.Map.stageID == 7001);
+        bool tutorialPlayerSpawn = (GameManager.Stage.stageId == 7001);
 
         Vector2Int playerPos;
         Vector2Int vehiclePos;

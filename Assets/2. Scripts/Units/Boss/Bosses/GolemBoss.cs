@@ -23,4 +23,11 @@ public class GolemBoss : BaseBoss
             new GolemPatternState(controller.stateMachine, controller, animHandler));
         
     }
+    
+    public override void ChenageAttribute()
+    {
+        base.ChenageAttribute();
+        
+        controller.StunStart();
+    }
 }

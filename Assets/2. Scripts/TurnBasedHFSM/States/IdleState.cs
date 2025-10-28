@@ -13,8 +13,10 @@ public class IdleState : BaseTurnState
         if (turnManager.isStarted == true)
         {
             timer =  turnSetVlaue.resetTime;
-
         }
+
+
+
     }
     public override void Tick(float dt)
     {
@@ -23,7 +25,6 @@ public class IdleState : BaseTurnState
             timer+= dt;
             if(timer>0.5f)
             {
-
                 GameManager.UI.OpenUI<MainUI>();
                 ChangeState<PlayerTurnState>();
             }

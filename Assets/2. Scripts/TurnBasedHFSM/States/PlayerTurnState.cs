@@ -33,6 +33,7 @@ public class PlayerTurnState : BaseTurnState
             GameManager.UI.CloseUI<PaseTurnUI>();
             MouseSet();
             didClose = true;// 한 번만 처리하게 설정
+
         }
     }
     public override void OnExit()
