@@ -40,7 +40,12 @@ public class TutorialUI : PopUpUI
         rightButton.onClick.AddListener(NextPage);
         closeButton.onClick.AddListener(CloseUI);
     }
-    
+
+    public override void CloseUI()
+    {
+        base.CloseUI();
+    }
+
     public void Init(params Topic[] topics)
     {
         _pages.Clear();
