@@ -55,7 +55,7 @@ public class PlayerKickState : PlayerActionState
             {
                 if (GameManager.Unit.boss == null) 
                     return;
-                GameManager.Unit.boss.ChenageAttribute();
+                ((GolemBoss)GameManager.Unit.boss).ChenageAttribute();
                     GameManager.UI.GetUI<BossInfoPopUpUI>().SetData(
                         GameManager.Unit.boss.model.attri,
                         GameManager.Unit.boss.model.rank, 

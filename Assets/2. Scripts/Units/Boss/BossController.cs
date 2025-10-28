@@ -172,6 +172,7 @@ public class BossController : MonoBehaviour
     {
         isStun = true;
         stunTurn = 2;
+        canPattern = false;
     }
 
     public void ReduceStunTurn()
