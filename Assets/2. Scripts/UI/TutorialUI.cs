@@ -214,17 +214,17 @@ public class TutorialUI : PopUpUI
         return list;
     }
 
-    public static void OpenTR1()
-    {
-        GameManager.UI.OpenPopUI<TutorialUI>();
-        var ui = GameManager.UI.GetPopUI<TutorialUI>();
-        ui?.Init(Topic.Bullet, Topic.BikeControl, Topic.Move, Topic.MonsterInfo);
-    }
+    public static void OpenTR1() //추가했습니다
+    { //추가했습니다
+        GameManager.UI.OpenPopUI<TutorialUI>(); //추가했습니다
+        var ui = GameManager.UI.GetPopUI<TutorialUI>(); //추가했습니다
+        ui?.Init(Topic.Bullet, Topic.BikeControl, Topic.Move, Topic.MonsterInfo); //추가했습니다
+    } //추가했습니다
 
-    public static void OpenTR2()
-    {
-        GameManager.UI.OpenPopUI<TutorialUI>();
-        var ui = GameManager.UI.GetPopUI<TutorialUI>();
-        ui?.Init(Topic.Kick, Topic.BossInfo, Topic.Reload);
-    }
+    public static void OpenTR2() //추가했습니다
+    { //추가했습니다
+        GameManager.UI.OpenPopUI<TutorialUI>(); //추가했습니다
+        var ui = GameManager.UI.GetPopUI<TutorialUI>(); //추가했습니다
+        ui?.Init(Topic.Kick, Topic.BossInfo, Topic.Reload); //추가했습니다
+    } //추가했습니다
 }
