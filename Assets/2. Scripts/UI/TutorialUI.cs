@@ -214,14 +214,14 @@ public class TutorialUI : PopUpUI
         return list;
     }
 
-    public static void OpenTR1()
+    public  void OpenTR1()
     {
         GameManager.UI.OpenPopUI<TutorialUI>();
         var ui = GameManager.UI.GetPopUI<TutorialUI>();
         ui?.Init(Topic.Bullet, Topic.BikeControl, Topic.Move, Topic.MonsterInfo);
     }
 
-    public static void OpenTR2()
+    public  void OpenTR2()
     {
         GameManager.UI.OpenPopUI<TutorialUI>();
         var ui = GameManager.UI.GetPopUI<TutorialUI>();
