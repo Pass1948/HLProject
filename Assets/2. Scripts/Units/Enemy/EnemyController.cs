@@ -151,12 +151,12 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    private IEnumerator SmoothRotate(Vector3 dir, float duration)
+    public IEnumerator SmoothRotate(Vector3 dir, float duration)
     {
         if (dir == Vector3.zero) yield break;
 
         Quaternion startRot = animHandler.modelTransform.rotation;
-        Quaternion targetRot = Quaternion.LookRotation(dir) * Quaternion.Euler(0, 180f, 0);
+        Quaternion targetRot = Quaternion.LookRotation(dir) * Quaternion.Euler(0, animHandler.rotationOffsetY, 0);
         float elapsed = 0f;
 
         while (elapsed < duration)

@@ -325,6 +325,7 @@ MonoBehaviour:
   animator: {fileID: 7664997117951843635}
   snap: 0.15
   modelTransform: {fileID: 2621495473957174968}
+  rotationOffsetY: 180
 --- !u!114 &349173171637048506
 MonoBehaviour:
   m_ObjectHideFlags: 0

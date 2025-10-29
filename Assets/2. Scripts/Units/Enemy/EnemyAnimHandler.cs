@@ -17,6 +17,8 @@ public class EnemyAnimHandler : MonoBehaviour
     [SerializeField] float snap = 0.15f;
 
     [SerializeField] public Transform modelTransform;
+
+    public float rotationOffsetY = 0f;
     
     public void OnMove(bool isMove, Vector3 target)
     {
