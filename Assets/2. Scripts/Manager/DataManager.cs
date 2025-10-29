@@ -1,8 +1,10 @@
-﻿using System;
+﻿using DataTable;
+using System;
 using System.Collections.Generic;
-using UnityEngine;
-using DataTable;
 using UGS;
+using Unity.Services.Analytics;
+using Unity.Services.Core;
+using UnityEngine;
 
 [Serializable]
 public class DataManager : MonoBehaviour
@@ -13,9 +15,15 @@ public class DataManager : MonoBehaviour
     public StageDataGroup stageDataGroup;
     public BulletDataGroup bulletDataGroup;
 
+    async void Awake()
+    {
+        await UnityServices.InitializeAsync();
+        AnalyticsService.Instance.StartDataCollection();
+    }
     private void Start()
     {
         UnityGoogleSheet.LoadAllData();
+
     }
 
     public void Initialize()
