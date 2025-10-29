@@ -17,11 +17,11 @@ public class RewardUI : MonoBehaviour
     // 스테이지 인트 예시
     private readonly Dictionary<int,int> stageRewards = new()
     {
-        {1, 10},
-        {2, 20},
-        {3, 30},
-        {4, 40},
-        {5, 50},
+        {1, 5},
+        {2, 5},
+        {3, 5},
+        {4, 5},
+        {5, 5},
     };
 
     public void Show(int stageId)
