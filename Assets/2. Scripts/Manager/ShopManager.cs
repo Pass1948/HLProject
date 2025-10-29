@@ -3,7 +3,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Progress;
 using Random = UnityEngine.Random;
 
 public class ShopManager : MonoBehaviour
@@ -220,7 +219,7 @@ public class ShopManager : MonoBehaviour
         if (!player.SpendGold(healCost))
             return;
         player.SpendGold(healCost);
-        player.Heal(healCost*(int)0.5f);
+        player.Heal(healCost/2);
         healCost++;
         GameManager.Sound.PlayShopSfx();
     }
