@@ -7,12 +7,12 @@ public class FullPoket : MulliganItem
     protected override void OnEnable()
     {
         base.OnEnable();    
-        AddMulligan(relicItems, 3003);
+        AddMulligan(relicItems, 3006);
     }
 
     private void OnDisable()
     {
-        RemoveMulligan(relicItems, 3003);
+        RemoveMulligan(relicItems, 3006);
     }
     private void OnDestroy()
     {

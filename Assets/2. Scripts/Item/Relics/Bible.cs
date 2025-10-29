@@ -8,16 +8,16 @@ public class Bible : HealthItem
     protected override void OnEnable()
     {
         base.OnEnable();   
-        AddHealth(relicItems, 3005);
+        AddHealth(relicItems, 3004);
     }
 
     private void OnDisable()
     {
-        RemoveHealth(relicItems, 3005);
+        RemoveHealth(relicItems, 3004);
     }
     private void OnDestroy()
     {
-        RemoveHealth(relicItems, 3005);
+        RemoveHealth(relicItems, 3004);
     }
 
 }
