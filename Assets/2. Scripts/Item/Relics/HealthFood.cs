@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FullPoket : MulliganItem
+public class HealthFood : MulliganItem
 {
     protected override void OnEnable()
     {
