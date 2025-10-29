@@ -107,6 +107,7 @@ public class SettingUI : PopUpUI
     private void BackToMainMenu()
     {
         Debug.Log("메인메뉴로 가기");
+        GameManager.TurnBased.turnSettingValue.isTutorial = false;
         GameManager.SceneLoad.LoadScene(SceneType.Title);
         GameManager.Sound.PlayUISfx();
     }
