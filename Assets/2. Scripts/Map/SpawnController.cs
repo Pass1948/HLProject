@@ -40,17 +40,17 @@ public class SpawnController : MonoBehaviour
     // 보스 ID - 프리팹 이름
     private readonly Dictionary<int, string> bossPrefabNames = new Dictionary<int, string>()
     {
-        { 2003, "Boss" },    // 스테이지 7002 보스
-        { 2014, "Boss" },    // 스테이지 7008 보스
-        { 2015, "Boss" },     // 스테이지 7016 보스
+        { 2003, "Torial" },    // 스테이지 7002 보스
+        { 2014, "Torial" },    // 스테이지 7008 보스
+        { 2015, "Torial" },     // 스테이지 7016 보스
     };
 
     // 보스 ID - 스테이지 ID
     private readonly Dictionary<int, int> bossStageMap = new Dictionary<int, int>()
     {
         { 2003, 7002 },
-        { 2014, 7008 },
-        { 2015, 7016 }
+      //  { 2014, 7008 },
+        { 2014, 7012 }
     };
 
     // MapManager의 Start에서 호출
@@ -125,7 +125,6 @@ public class SpawnController : MonoBehaviour
         
         GameManager.Map.SetObjectPosition(playerPos.x, playerPos.y, TileID.Player);
         GameManager.Map.SetObjectPosition(vehiclePos.x, vehiclePos.y, TileID.Vehicle);
-
     }
 
     // 장애물 스폰

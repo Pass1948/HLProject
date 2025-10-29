@@ -14,11 +14,15 @@ public class EnemyAnimHandler : MonoBehaviour
 
     [SerializeField] private Animator animator;
 
-    [SerializeField] float snap = 0.15f; 
+    [SerializeField] float snap = 0.15f;
+
+    [SerializeField] public Transform modelTransform;
+
+    public float rotationOffsetY = 0f;
     
-    public void OnMove(bool isMove, Transform target)
+    public void OnMove(bool isMove, Vector3 target)
     {
-        FaceToTarget4Dir(target);
+        FaceToTarget4Dir(target - transform.position);
         animator.SetBool(Move, isMove);
     }
 
@@ -53,24 +57,21 @@ public class EnemyAnimHandler : MonoBehaviour
         animator.SetBool(Stun, isStun);
     }
     
-    public void FaceToTarget4Dir(Transform target)  
+    public void FaceToTarget4Dir(Vector3 direction)
     {
-        if (target == null) return;
-
-        Vector3 dir = target.position - transform.position;
-        dir.y = 0f;
-        float ax = Mathf.Abs(dir.x); 
-        float az = Mathf.Abs(dir.z);
-
-        // 수평 우선적으로 상,화와 애매한 경계에서는 좌/우 쪽으로 더 쉽게 선택되도록함
+        direction.y = 0f;
+        if (direction == Vector3.zero) return;
+        
+        float ax = Mathf.Abs(direction.x);
+        float az = Mathf.Abs(direction.z);
         az /= (1f + snap);
 
         float angle;
         if (ax >= az)
-            angle = (dir.x >= 0f) ? 90f : -90f;   // 우 / 좌
+            angle = (direction.x >= 0f) ? 90f : -90f;   // 우 / 좌
         else
-            angle = (dir.z >= 0f) ? 0f  : 180f;   // 상 / 하
+            angle = (direction.z >= 0f) ? 0f  : 180f;   // 상 / 하
 
-        transform.rotation = Quaternion.Euler(0f, angle, 0f);
+        modelTransform.transform.rotation = Quaternion.Euler(0f, angle + 180f, 0f);
     }
 }

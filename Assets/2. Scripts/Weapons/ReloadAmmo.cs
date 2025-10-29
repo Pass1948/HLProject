@@ -26,7 +26,6 @@ public class ReloadAmmo : MonoBehaviour
     {
         FirstReload();
     }
-
     public void FirstReload()
     {
         if (deck != null)
@@ -40,6 +39,7 @@ public class ReloadAmmo : MonoBehaviour
                 magazine.AddBullets(draw);
             }
         }
+        RefreshDeckUI();
     }
 
     public void Reload()

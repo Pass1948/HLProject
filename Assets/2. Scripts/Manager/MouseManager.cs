@@ -52,7 +52,7 @@ public class MouseManager : MonoBehaviour
     public bool IsKicking { get => isKicking; set => isKicking = value; }
 
     // 내부 캐시
-    private Vector3Int lastCell = new Vector3Int(int.MinValue, int.MinValue, 0);
+    private Vector3Int lastCell = new Vector3Int(int.MinValue, int.MinValue, int.MinValue);
     private Vector3Int lastValidCell;
 
     // UI/토글
@@ -146,6 +146,7 @@ public class MouseManager : MonoBehaviour
         bool cellIsTerrain = map.IsMovable(cell);
         bool cellIsVehicle = map.IsVehicle(cell);
         bool cellIsBoss = map.IsBoss(cell);
+
         // 공격
         if (isAttacking)
         {
@@ -220,7 +221,7 @@ public class MouseManager : MonoBehaviour
         }
 
         HideEnemyPopup();
-
+        HideBossPopup();
         selectedPlayer = useOverlapLookup ? FindAtCell<BasePlayer>(cell) : null;
         selectedPlayerCell = cell;
         selectedMoveRange = GameManager.Unit.Player.playerModel.moveRange;
@@ -266,7 +267,7 @@ public class MouseManager : MonoBehaviour
 
         bool canMove = movePhaseActive && (selectedPlayer != null) && (destCell != selectedPlayerCell);
         if (!canMove) return;
-
+        GameManager.Map.pathfinding.ResetMapDataPlayer();
         var path = map.FindPath(selectedPlayerCell, destCell);
         if (path == null || path.Count > selectedMoveRange)
         {
@@ -328,7 +329,7 @@ public void InputCancel()
 
         if (usePlaneIfMiss)
         {
-            var plane = new Plane(Vector3.up, new Vector3(0f, groundY, 0f));
+            var plane = new Plane(Vector3.up, new Vector3(0f, groundY, groundY));
             if (plane.Raycast(ray, out float enter))
             { world = ray.GetPoint(enter); return true; }
         }
@@ -341,7 +342,7 @@ public void InputCancel()
     {
         int x = Mathf.Clamp(c.x, 0, map.mapWidth - 1);
         int y = Mathf.Clamp(c.y, 0, map.mapHeight - 1);
-        return new Vector3Int(x, y, 0);
+        return new Vector3Int(x, y, y);
     }
 
     private void CancelSelection()
@@ -352,6 +353,7 @@ public void InputCancel()
         isPlayer = false;
         HidePlayerRange();
         HideEnemyPopup();
+        HideBossPopup();
         map.ClearPlayerRange();
         GameManager.Map.attackRange.ClearAttackType();
         GameManager.Event.Publish(EventType.CancelAmmo);

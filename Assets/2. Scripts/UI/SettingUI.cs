@@ -94,20 +94,28 @@ public class SettingUI : PopUpUI
         masterVolumeBar.onValueChanged.RemoveListener(GameManager.Sound.SetMasterVolume);
         sfxVolumeBar.onValueChanged.RemoveListener(GameManager.Sound.SetSfxVolume);
         bgmVolumeBar.onValueChanged.RemoveListener(GameManager.Sound.SetBgmVolume);
+        masterVolumeBar.value = GameManager.Sound.masterVolume;
+        sfxVolumeBar.value = GameManager.Sound.sfxVolume;
+        bgmVolumeBar.value = GameManager.Sound.bgmVolume;
     }
 
 
     private void CloseSettingUi()
     {
-        mainPanel.transform.DOMove(new Vector2(1300f,530f), 0.8f);
-        transform.DOMove(new Vector2(2950f,530f), 0.8f);
+        mainPanel.transform.DOLocalMove(new Vector2(300, -24.92419f), 0.8f);
+        transform.DOLocalMove(new Vector2(1961, 0), 0.8f);
         GameManager.Sound.PlayUISfx();
     }
 
     private void BackToMainMenu()
     {
         Debug.Log("메인메뉴로 가기");
-        GameManager.SceneLoad.LoadScene(SceneType.Title);
+        GameManager.SaveLoad.nextSceneIndex = 0;
+        GameManager.Map.NormalStage();
+        GameManager.ItemControl.ClearData();
+        GameManager.Unit.isRiding = false;
+        GameManager.TurnBased.turnSettingValue.isTutorial = false;
+       GameManager.SceneLoad.LoadScene(SceneType.Title);
         GameManager.Sound.PlayUISfx();
     }
 
@@ -127,7 +135,7 @@ public class SettingUI : PopUpUI
     {
         GameManager.TurnBased.turnSettingValue.windowPanelIndex-= 1;
         if(GameManager.TurnBased.turnSettingValue.windowPanelIndex < 0)
-            GameManager.TurnBased.turnSettingValue.windowPanelIndex = windowPanels.Length;
+            GameManager.TurnBased.turnSettingValue.windowPanelIndex = 2;
         UpdateWindowView();
         GameManager.Sound.PlayUISfx();
     }

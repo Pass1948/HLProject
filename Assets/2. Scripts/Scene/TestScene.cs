@@ -27,11 +27,7 @@ public class TestScene : BaseScene
             GameManager.Unit.Vehicle.vehicleModel.currentHealth = 0;
             GameManager.Unit.Vehicle.vehicleHandler.vehicleDestruction.SetActive(true);
         }
-        if (GameManager.Stage.stageId >= 7002)
-        {     
-            GameManager.Unit.Vehicle.vehicleModel.currentHealth = 3;
-        GameManager.Unit.Vehicle.vehicleHandler.MountVehicle();
-        }
+
         GameManager.TurnBased.ChangeStartTurn();
         GameManager.ItemControl.ItemDataSet();  // 아이템데이터 리스트 초기 세팅
         GameManager.Mouse.CreateMouse();
@@ -43,6 +39,11 @@ public class TestScene : BaseScene
         if (GameManager.Unit.isInit == true)
         {
             GameManager.Unit.SetCurrentStat();
+        }
+        if (GameManager.Stage.stageId >= 7002)
+        {
+            GameManager.Unit.Vehicle.vehicleModel.currentHealth = 3;
+            GameManager.Unit.Vehicle.vehicleHandler.MountVehicle();
         }
     }
 

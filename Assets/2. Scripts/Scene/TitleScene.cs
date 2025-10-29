@@ -7,6 +7,8 @@ public class TitleScene : BaseScene
     public override void SceneEnter()
     {
         GameManager.UI.OpenUI<TitleUI>();
+        GameManager.ItemControl.drawPile.Clear();
+        GameManager.ItemControl.buyItems.Clear();
     }
     
     public override void SceneLoading()
