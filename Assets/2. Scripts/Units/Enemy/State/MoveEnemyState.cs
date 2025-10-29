@@ -11,14 +11,9 @@ public class MoveEnemyState : BaseEnemyState
 
     public override void Enter()
     {
-
-        //GameManager.Map.PlayerUpdateRange(controller.GridPos, controller.moveRange);
-
         Vector3Int start = controller.GridPos;
         Vector3Int dest = controller.TargetPos;
         List<Vector3Int> path = GameManager.Map.FindPath(start, dest);
-
-        //Debug.Log(dest);
         
         if (path == null || path.Count == 0)
         {
@@ -34,10 +29,8 @@ public class MoveEnemyState : BaseEnemyState
         if (range > 0)
         {
             Vector3 nextPos = GameManager.Map.tilemap.GetCellCenterWorld(path[0]);
-            GameObject dummyTarget = new GameObject("MoveLookTarget");
-            dummyTarget.transform.position = nextPos;
-            
-            animHandler.OnMove(true, dummyTarget.transform);
+
+            animHandler.OnMove(true, nextPos);
             controller.StartCoroutine(MoveAnim(path.GetRange(0, range)));
         }
         else
@@ -54,14 +47,7 @@ public class MoveEnemyState : BaseEnemyState
 
     public override void Exit()
     {
-        Vector3 finalPos = controller.transform.position + controller.transform.forward;
-    
-        // 임시 타겟 생성 (바라보는 방향 유지용)
-        GameObject dummy = new GameObject("LastLookTarget");
-        dummy.transform.position = finalPos;
-        
-        animHandler.OnMove(false, dummy.transform);
-        GameObject.Destroy(dummy, 0.1f);
+        animHandler.OnMove(false, controller.transform.position);
         GameManager.Map.ClearPlayerRange();
     }
 
