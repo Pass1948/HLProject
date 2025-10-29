@@ -44,8 +44,9 @@ public class EnemyModel : UnitModel
         currentHealth = maxHealth;
         attack = data.attack;
         minAttackRange = data.minAttackRange;
-        maxAttackRange = data.minAttackRange;
+        maxAttackRange = data.maxAttackRange;
         moveRange = data.moveRange;
+        Debug.Log("¾ÆÀÌµð" + id +"min" + minAttackRange + "Max"+ maxAttackRange);
     }
 }
 
