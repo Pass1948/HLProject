@@ -119,6 +119,7 @@ public class BossController : MonoBehaviour
         GameManager.TurnBased.ChangeTo<PlayerTurnState>();
     }
     
+
     public IEnumerator MoveAlongPath(List<Vector3Int> path)
     {
         if (path == null || path.Count == 0)
@@ -126,14 +127,49 @@ public class BossController : MonoBehaviour
             Debug.LogWarning("길이 비었음");
             yield break;
         }
+
+        // foreach (var cell in path)
+        // {
+        //     Vector3 targetPos = GameManager.Map.tilemap.GetCellCenterWorld(cell);
+        //     yield return StartCoroutine(MoveToPosition(targetPos, moveDuration));
+        // }
         
-        foreach (var cell in path)
+        for (int i = 0; i < path.Count; i++)
         {
-            Vector3 targetPos = GameManager.Map.tilemap.GetCellCenterWorld(cell);
+            Vector3 targetPos = GameManager.Map.tilemap.GetCellCenterWorld(path[i]);
+            
+            Vector3 dir = targetPos - transform.position;
+            dir.y = 0f;
+
+            if (dir != Vector3.zero)
+            {
+                // animHandler.FaceToTarget4Dir(dir);
+                yield return StartCoroutine(SmoothRotate(dir, 0.12f));
+            }
+
             yield return StartCoroutine(MoveToPosition(targetPos, moveDuration));
         }
     }
 
+    private IEnumerator SmoothRotate(Vector3 dir, float duration)
+    {
+        if (dir == Vector3.zero) yield break;
+
+        Quaternion startRot = animHandler.modelTransform.rotation;
+        Quaternion targetRot = Quaternion.LookRotation(dir) * Quaternion.Euler(0, 180f, 0);
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / duration);
+            animHandler.modelTransform.rotation = Quaternion.Slerp(startRot, targetRot, t);
+            yield return null;
+        }
+
+        animHandler.modelTransform.rotation = targetRot;
+    }
+    
     private IEnumerator MoveToPosition(Vector3 target, float duration)
     {
         Vector3 start = transform.position;
@@ -148,6 +184,7 @@ public class BossController : MonoBehaviour
 
         transform.position = target;
     }
+
 
     public void PatternCooldown()
     {

@@ -14,6 +14,9 @@ public class VehicleHandler : MonoBehaviour
     private int currentPlayerMoveRange;
     private int currentPlayerHP;
 
+    public Vector3Int vehiclePoison;
+
+
     private void Awake()
     {
         GameManager.Unit.Player.playerModel.viecleBording = ViecleBording.On;
@@ -24,10 +27,16 @@ public class VehicleHandler : MonoBehaviour
     }
     private void Start()
     {
+        SetPosition();
         GetEffectiveMoveRange();
         vehicleDestruction = GameManager.Resource.Create<GameObject>(Path.Player + "VehicleDistructionImage", transform);
         vehicleDestruction.SetActive(false);
         this.transform.forward = GameManager.Unit.Player.controller.transform.forward;
+    }
+
+    public void SetPosition()
+    {
+        vehiclePoison = new Vector3Int((int)transform.position.x, (int)transform.position.z, 0);
     }
 
     public void OnPositionForward()
@@ -77,6 +86,7 @@ public class VehicleHandler : MonoBehaviour
     // 오토바이 고치는 로직
     public void RepairVehicle()
     {
+
         GameManager.Unit.Vehicle.vehicleModel.currentHealth += repairAmount;
         if (GameManager.Unit.Vehicle.vehicleModel.currentHealth > 0)
         {

@@ -99,14 +99,15 @@ public class SettingUI : PopUpUI
 
     private void CloseSettingUi()
     {
-        mainPanel.transform.DOMove(new Vector2(1300f,530f), 0.8f);
-        transform.DOMove(new Vector2(2950f,530f), 0.8f);
+        mainPanel.transform.DOLocalMove(new Vector2(300, -24.92419f), 0.8f);
+        transform.DOLocalMove(new Vector2(1961, 0), 0.8f);
         GameManager.Sound.PlayUISfx();
     }
 
     private void BackToMainMenu()
     {
         Debug.Log("메인메뉴로 가기");
+        GameManager.TurnBased.turnSettingValue.isTutorial = false;
         GameManager.SceneLoad.LoadScene(SceneType.Title);
         GameManager.Sound.PlayUISfx();
     }
@@ -127,7 +128,7 @@ public class SettingUI : PopUpUI
     {
         GameManager.TurnBased.turnSettingValue.windowPanelIndex-= 1;
         if(GameManager.TurnBased.turnSettingValue.windowPanelIndex < 0)
-            GameManager.TurnBased.turnSettingValue.windowPanelIndex = windowPanels.Length;
+            GameManager.TurnBased.turnSettingValue.windowPanelIndex = 2;
         UpdateWindowView();
         GameManager.Sound.PlayUISfx();
     }
