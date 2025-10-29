@@ -83,6 +83,10 @@ public class Pathfinding
         Dictionary<Vector3Int, Node> allNodes = new Dictionary<Vector3Int, Node>();
 
         allNodes[start] = startNode;
+        
+        // 만약 길이 막혔다면 그나마 가장 가까운 곳
+        Node bestNode = startNode;
+        
         int safety = 50; // 세이프가드
         while (openSet.Count > 0 && safety-- > 0)
         {
@@ -100,12 +104,15 @@ public class Pathfinding
             // 현재 노드 처리
             openSet.Remove(currentNode);
             // 노드 위치를 닫힌 집합에 추가응
-            closedSet.Add(currentNode.Position);
+            closedSet.Add(currentNode.position);
             // 목표 지점에 착창, 도착 했으면 경로 반환
-            if (currentNode.Position == goal){ return RetracePath(currentNode);}
+            if (currentNode.position == goal)return RetracePath(currentNode);
+                
+            // 목표 지점에 근접한 곳
+            if(currentNode.hCost < bestNode.hCost) bestNode = currentNode;
 
             // 이웃 노드 탐색 (4방형 : 상ㅡ하ㅡ좌ㅡ우)
-            foreach (var neighbourPos in GetNeighbours(currentNode.Position))
+            foreach (var neighbourPos in GetNeighbours(currentNode.position))
             {
                 if (closedSet.Contains(neighbourPos) || blocked.Contains(neighbourPos))
                     continue; // 이미 방문했거나, 막힌 타일이면 무시
@@ -117,7 +124,7 @@ public class Pathfinding
                     Node neighbour = new Node(neighbourPos);
                     neighbour.gCost = newGCost;
                     neighbour.hCost = GetHeurustic(neighbourPos, goal);
-                    neighbour.Parent = currentNode;
+                    neighbour.parent = currentNode;
                     allNodes[neighbourPos] = neighbour;
                     openSet.Add(neighbour);
                     // 새로운 노드 발견
@@ -129,12 +136,13 @@ public class Pathfinding
                     if (newGCost < neighbour.gCost)
                     {
                         neighbour.gCost = newGCost;
-                        neighbour.Parent = currentNode;
+                        neighbour.parent = currentNode;
                     }
                 }
             }
         }
-        return new List<Vector3Int>(); // 경로 없음
+        // 목표에 못가면 가까운 곳에 감(가장 가까웠던 지점)
+        return (bestNode != startNode) ?  new List<Vector3Int>() : RetracePath(bestNode);
     }
 
     // 목표 노드에서 부모를 따라가며 경로 역추적
@@ -146,8 +154,8 @@ public class Pathfinding
         Node current = endNode;
         while (current != null)
         {
-            path.Add(current.Position);
-            current = current.Parent;
+            path.Add(current.position);
+            current = current.parent;
         }
         path.Reverse();  // 시작 -> 목표 순서로 정렬
         path.RemoveAt(0); // 첫 칸(시작 지점)은 빼도 됨
@@ -155,8 +163,6 @@ public class Pathfinding
     }
 
     // 휴리스틱 (맨해튼 거리 사용)
-    //a
-    //b
     private int GetHeurustic(Vector3Int a, Vector3Int b)
     {
         return Mathf.Abs(a.x - b.x) + Mathf.Abs(a.y - b.y);// 맨해튼 거리
@@ -167,10 +173,13 @@ public class Pathfinding
     //nodePos
     private IEnumerable<Vector3Int> GetNeighbours(Vector3Int nodePos)
     {
-        yield return new Vector3Int(nodePos.x + 1, nodePos.y, nodePos.z);
-        yield return new Vector3Int(nodePos.x - 1, nodePos.y, nodePos.z);
-        yield return new Vector3Int(nodePos.x, nodePos.y + 1, nodePos.z);
-        yield return new Vector3Int(nodePos.x, nodePos.y - 1, nodePos.z);
+        if (nodePos is { x: >= 0 and < 10, y: >= 0 and < 10 })
+        {
+            yield return new Vector3Int(nodePos.x + 1, nodePos.y, nodePos.z);
+            yield return new Vector3Int(nodePos.x - 1, nodePos.y, nodePos.z);
+            yield return new Vector3Int(nodePos.x, nodePos.y + 1, nodePos.z);
+            yield return new Vector3Int(nodePos.x, nodePos.y - 1, nodePos.z);
+        }
         
     }
 }
