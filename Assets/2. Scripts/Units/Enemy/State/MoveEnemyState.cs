@@ -11,14 +11,9 @@ public class MoveEnemyState : BaseEnemyState
 
     public override void Enter()
     {
-
-        //GameManager.Map.PlayerUpdateRange(controller.GridPos, controller.moveRange);
-
         Vector3Int start = controller.GridPos;
         Vector3Int dest = controller.TargetPos;
         List<Vector3Int> path = GameManager.Map.FindPath(start, dest);
-
-        //Debug.Log(dest);
         
         if (path == null || path.Count == 0)
         {
