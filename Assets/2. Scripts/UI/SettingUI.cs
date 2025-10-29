@@ -94,6 +94,9 @@ public class SettingUI : PopUpUI
         masterVolumeBar.onValueChanged.RemoveListener(GameManager.Sound.SetMasterVolume);
         sfxVolumeBar.onValueChanged.RemoveListener(GameManager.Sound.SetSfxVolume);
         bgmVolumeBar.onValueChanged.RemoveListener(GameManager.Sound.SetBgmVolume);
+        masterVolumeBar.value = GameManager.Sound.masterVolume;
+        sfxVolumeBar.value = GameManager.Sound.sfxVolume;
+        bgmVolumeBar.value = GameManager.Sound.bgmVolume;
     }
 
 
