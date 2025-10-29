@@ -36,9 +36,14 @@ public class Deck : MonoBehaviour
             if (GameManager.Shop.isTutorial1 == false)
             {
                 BuildTutorialDeck_TR2();
+                GameManager.UI.GetUI<TutorialUI>().OpenTR2();
             }
             else
-            BuildTutorialDeck_TR1();
+            {
+                BuildTutorialDeck_TR1();
+               GameManager.UI.GetUI<TutorialUI>().OpenTR1();
+            }
+  
         }
         else
         {
@@ -112,6 +117,7 @@ public class Deck : MonoBehaviour
 
         if (GameManager.TurnBased.turnSettingValue.IsBasicDeck == true)
         {
+            GameManager.ItemControl.drawPile.Clear();
             var deck = GameManager.Data.bulletDataGroup.GetBulletData(9005);
 
             for (int r = 1; r <= deck.max; r++)
@@ -126,6 +132,7 @@ public class Deck : MonoBehaviour
         //==============================
         if (GameManager.TurnBased.turnSettingValue.IsDiamondDeck == true)
         {
+            GameManager.ItemControl.drawPile.Clear();
             var deck2 = GameManager.Data.bulletDataGroup.GetBulletData(9003);
             Suit fixedSuit = (Suit)deck2.type;
             for (int r = 1; r <= deck2.max; r++)
@@ -140,6 +147,7 @@ public class Deck : MonoBehaviour
         //==============================
         if (GameManager.TurnBased.turnSettingValue.IsHeartDeck == true)
         {
+            GameManager.ItemControl.drawPile.Clear();
             var deck3 = GameManager.Data.bulletDataGroup.GetBulletData(9002);
             Suit fixedSuit2 = (Suit)deck3.type;
             for (int r = 1; r <= deck3.max; r++)
@@ -159,6 +167,7 @@ public class Deck : MonoBehaviour
         //==============================
         if (GameManager.TurnBased.turnSettingValue.IsSpadeDeck == true)
         {
+            GameManager.ItemControl.drawPile.Clear();
             var deck4 = GameManager.Data.bulletDataGroup.GetBulletData(9001);
             Suit fixedSuit3 = (Suit)deck4.type;
             for (int r = 1; r <= deck4.max; r++)
@@ -173,6 +182,7 @@ public class Deck : MonoBehaviour
         //==============================
         if (GameManager.TurnBased.turnSettingValue.IsClubDeck == true)
         {
+            GameManager.ItemControl.drawPile.Clear();
             var deck5 = GameManager.Data.bulletDataGroup.GetBulletData(9004);
             Suit fixedSuit4 = (Suit)deck5.type;
             for (int r = 1; r <= deck5.max; r++)

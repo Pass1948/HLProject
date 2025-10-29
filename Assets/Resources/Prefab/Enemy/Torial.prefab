@@ -543,6 +543,8 @@ MonoBehaviour:
   remainCooldown: 0
   patternPower: 0
   patternRange: 0
+  isStun: 0
+  stunTurn: 0
   moveDuration: 0.2
   warningCells: []
 --- !u!114 &4642609175905116444
@@ -559,6 +561,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 502977542811563850}
   snap: 0.15
+  modelTransform: {fileID: 5772141091297291568}
+  rotationOffsetY: 0
 --- !u!114 &7098805205336899199
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -574,7 +578,6 @@ MonoBehaviour:
   rankText: {fileID: 7344753550196202404}
   attributeText: {fileID: 6364612926952535774}
   hpSlider: {fileID: 4296335941838881095}
-  infoButton: {fileID: 0}
 --- !u!65 &1126754877502717321
 BoxCollider:
   m_ObjectHideFlags: 0

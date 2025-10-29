@@ -30,7 +30,7 @@ public class PlayerModel : UnitModel
         unitName = data.name;
         size = data.size;
         attack = data.attack;
-        attackRange = Random.Range(data.minAttackRange, data.maxAttackRange);
+        attackRange = 0;
         moveRange = data.moveRange;
         maxHealth = data.health;
         health= maxHealth;

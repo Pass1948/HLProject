@@ -26,6 +26,8 @@ public class Stage
         for (int i = 0; i < stage.enemyList.Count; i++)
         {
             enemiesDict.Add(stage.enemyList[i], stage.enemyCount[i]);
+            Debug.Log($"{stage.enemyList[i]}, {stage.enemyCount[i]}");
+            
         }
         for (int i = 0; i < stage.obstacleList.Count; i++)
         {

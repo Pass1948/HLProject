@@ -11,8 +11,11 @@ public class WinState : BaseTurnState
         {
             turnManager.ResetCount();
         }
-        StageClearUI();
-        turnManager.ResetCount();
+        if(GameManager.Unit.boss == null)
+        {
+            StageClearUI();
+            turnManager.ResetCount();
+        }
     }
     public void StageClearUI()
     {

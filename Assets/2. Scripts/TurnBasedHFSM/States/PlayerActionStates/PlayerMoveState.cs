@@ -59,6 +59,7 @@ public class PlayerMoveState : PlayerActionState
             timer += dt;
             if (timer > 0.1f)
             {
+                GameManager.Map.UpdateVehiclePosition(GameManager.Unit.Vehicle.vehicleHandler.vehiclePoison, GameManager.Unit.Vehicle.vehicleHandler.vehiclePoison);
                 ChangeState<PlayerChooseState>();
             }
         }

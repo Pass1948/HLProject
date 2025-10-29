@@ -1,8 +1,11 @@
-﻿using System;
+﻿using DataTable;
+using System;
 using System.Collections.Generic;
-using UnityEngine;
-using DataTable;
 using UGS;
+using Unity.Services.Analytics;
+using Unity.Services.Core;
+using Unity.Services.Core.Environments;
+using UnityEngine;
 
 [Serializable]
 public class DataManager : MonoBehaviour
@@ -10,14 +13,24 @@ public class DataManager : MonoBehaviour
     public EntityDataGroup entityDataGroup;
     public RelicDataGroup relicDataGroup;
     public ObstacleDataGroup obstacleDataGroup;
-    public EliteDataGroup eliteDataGroup;
-    public GateDataGroup gateDataGroup;
     public StageDataGroup stageDataGroup;
     public BulletDataGroup bulletDataGroup;
-
+    async void Awake()
+    {
+        try
+        {
+            await UnityServices.InitializeAsync();
+            AnalyticsService.Instance.StartDataCollection();
+        }
+        catch (Exception e)
+        {
+            Debug.LogException(e, this);
+        }
+    }
     private void Start()
     {
         UnityGoogleSheet.LoadAllData();
+
     }
 
     public void Initialize()
@@ -25,8 +38,6 @@ public class DataManager : MonoBehaviour
         entityDataGroup = new EntityDataGroup();
         relicDataGroup = new RelicDataGroup();
         obstacleDataGroup = new ObstacleDataGroup();
-        eliteDataGroup = new EliteDataGroup();
-        gateDataGroup = new GateDataGroup();
         stageDataGroup = new StageDataGroup();
         bulletDataGroup = new BulletDataGroup();
         

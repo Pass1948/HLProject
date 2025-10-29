@@ -10,7 +10,7 @@ public class MulliganItem : BaseItem
         {
             if (items[i].id == id)
             {
-                playerModel.reload +=items[i].addMulligan;
+                GameManager.Unit.Player.playerModel.reload +=items[i].addMulligan;
             }
         }
         
@@ -21,7 +21,7 @@ public class MulliganItem : BaseItem
         {
             if (items[i].id == id)
             {
-                playerModel.reload -=items[i].addMulligan;
+                GameManager.Unit.Player.playerModel.reload -=items[i].addMulligan;
             }
         }
     }

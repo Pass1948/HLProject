@@ -175,7 +175,6 @@ public class TurnBasedManager : MonoBehaviour
             currentEnemy = null;
         }
         TryStartNextEnemy();
-
     }
 
     // 큐에서 다음 적을 하나 꺼내어 턴 시작
@@ -194,16 +193,6 @@ public class TurnBasedManager : MonoBehaviour
                 enemy.controller.StartTurn();
                 currentEnemy = enemy;
                 return; // 현재 적이 완료되면 OnEnemyTurnEnded 로 이어짐
-            }
-        }
-
-        // 큐가 비었고 진행 중인 적이 없으면 적 턴 종료
-        if(GameManager.Unit.boss != null && GameManager.Unit.boss.controller != null)
-        {
-            if (GameManager.Unit.boss.controller.isDone)
-            {
-                OnEnemyTurnEnded();
-                ChangeTo<ClearCheckState>();    // 적 상태종료
             }
         }
 
@@ -270,5 +259,16 @@ public class TurnBasedManager : MonoBehaviour
 
         bool flagDead = (p.controller != null) && p.playerModel.die;
         return flagDead;
+    }
+
+    public void BossTrunCheck()
+    {
+        if (GameManager.Unit.boss != null && GameManager.Unit.boss.controller != null)
+        {
+            if (GameManager.Unit.boss.controller.isDone)
+            {
+                ChangeTo<ClearCheckState>();    // 적 상태종료
+            }
+        }
     }
 }

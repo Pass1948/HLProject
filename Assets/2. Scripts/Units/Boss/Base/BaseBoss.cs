@@ -44,7 +44,7 @@ public class BaseBoss : MonoBehaviour
     protected virtual void SetBossTypePattern()
     {
     }
-    public void ChenageAttribute()
+    public virtual void ChenageAttribute()
     {
         if (model.attri == EnemyAttribute.High)
         {
