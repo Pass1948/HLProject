@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UGS;
 using Unity.Services.Analytics;
 using Unity.Services.Core;
+using Unity.Services.Core.Environments;
 using UnityEngine;
 
 [Serializable]
@@ -14,11 +15,17 @@ public class DataManager : MonoBehaviour
     public ObstacleDataGroup obstacleDataGroup;
     public StageDataGroup stageDataGroup;
     public BulletDataGroup bulletDataGroup;
-
     async void Awake()
     {
-        await UnityServices.InitializeAsync();
-        AnalyticsService.Instance.StartDataCollection();
+        try
+        {
+            await UnityServices.InitializeAsync();
+            AnalyticsService.Instance.StartDataCollection();
+        }
+        catch (Exception e)
+        {
+            Debug.LogException(e, this);
+        }
     }
     private void Start()
     {

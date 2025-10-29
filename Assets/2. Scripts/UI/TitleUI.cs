@@ -1,8 +1,9 @@
-﻿using System;
+﻿using DG.Tweening;
+using MyBox;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using DG.Tweening;
-using MyBox;
+using Unity.Services.Analytics;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -88,7 +89,7 @@ public class TitleUI : BaseUI
     private void ExitButton()
     {
 #if UNITY_EDITOR
-        
+        AnalyticsService.Instance.StopDataCollection();
         Application.Quit();
         
 #endif        

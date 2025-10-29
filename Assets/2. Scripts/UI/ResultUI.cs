@@ -1,6 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Services.Analytics;
+using Unity.Services.Core;
+using Unity.Services.Core.Environments;
 using UnityEngine;
+using UnityEngine.Analytics;
 using UnityEngine.UI;
 
 public enum ResultType
@@ -23,11 +28,15 @@ public class ResultUI : BaseUI
     [SerializeField] Button tutorialBtn1;
     [SerializeField] GameObject tutorialUI2;
     [SerializeField] Button tutorialBtn2;
+   
 
 
     public ResultType resulttype;
 
-    private void Awake()
+   
+
+
+    private void Start()
     {
         tutorialBtn1.onClick.AddListener(NextStage);
         tutorialBtn2.onClick.AddListener(MainmenuScene);
@@ -36,6 +45,12 @@ public class ResultUI : BaseUI
 
     public void GetResultType(ResultType result)
     {
+        CustomEvent customEvent = new CustomEvent("GameClear")
+        {
+            { "GameClear", "ÀÌ¾æÈ£"}
+        };
+        AnalyticsService.Instance.RecordEvent(customEvent);
+
         if (result == ResultType.Clear)
         {
             overUI.CloseUI();

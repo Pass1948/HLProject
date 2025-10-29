@@ -1,6 +1,7 @@
 ﻿using MyBox;
 using System.Collections.Generic;
 using System.Resources;
+using Unity.Services.Analytics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
