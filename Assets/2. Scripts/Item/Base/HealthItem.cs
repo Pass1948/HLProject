@@ -10,8 +10,8 @@ public class HealthItem : BaseItem
         {
             if (items[i].id == id)
             {
-                playerModel.maxHealth += items[i].addMaxHealth;
-                playerModel.currentHealth += items[i].addMaxHealth;
+                GameManager.Unit.Player.playerModel.maxHealth += items[i].addMaxHealth;
+                GameManager.Unit.Player.playerModel.currentHealth += items[i].addMaxHealth;
             }
         }
         
@@ -22,7 +22,7 @@ public class HealthItem : BaseItem
         {
             if (items[i].id == id)
             {
-                playerModel.maxHealth -= items[i].addMaxHealth;
+                GameManager.Unit.Player.playerModel.maxHealth -= items[i].addMaxHealth;
             }
         }
     }
