@@ -125,7 +125,6 @@ public class SpawnController : MonoBehaviour
         
         GameManager.Map.SetObjectPosition(playerPos.x, playerPos.y, TileID.Player);
         GameManager.Map.SetObjectPosition(vehiclePos.x, vehiclePos.y, TileID.Vehicle);
-
     }
 
     // 장애물 스폰

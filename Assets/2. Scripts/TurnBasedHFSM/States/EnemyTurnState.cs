@@ -27,6 +27,7 @@ public class EnemyTurnState : BaseTurnState
                 turnManager.SwitchIsCamera();
             }
             GameManager.UI.CloseUI<PaseTurnUI>();
+            GameManager.Map.pathfinding.ResetMapData();
             turnManager.BeginEnemyPhase();      // 적 턴 시작
             didClose = true;
         }

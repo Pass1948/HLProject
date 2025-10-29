@@ -166,7 +166,20 @@ public class MapManager : MonoBehaviour
         {
             mapData[oldX.x, oldY.y] = TileID.Terrain;
         }
-        DumpMapData();
+       // DumpMapData();    //디버그용
+    }
+
+    // 내리거나 파괴될경우 오토바이로 인식
+    public void UpdateVehiclePosition(Vector3Int newX, Vector3Int newY)
+    {
+        Vector3Int vector3Int = new Vector3Int(newX.x, newY.y);
+
+        if (!IsPlayer(vector3Int))
+        {
+            GameManager.Map.SetObjectPosition(newX.x, newY.y, TileID.Vehicle);
+        }
+        Debug.Log("이시발 여기 무슨 아이디야" + newX+ newY + IsVehicle(vector3Int));
+        DumpMapData();    //디버그용
     }
 
     public void UpdateAttackTargets(List<Vector3Int> attackCells, List<BaseEnemy> enemies)
@@ -287,8 +300,6 @@ public class MapManager : MonoBehaviour
         int tileID = mapData[cell.x, cell.y];
         return tileID == TileID.Terrain;
     }
-
-
 
     public bool IsVehicle(Vector3Int cell)
     {

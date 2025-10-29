@@ -44,10 +44,11 @@ public class Pathfinding
                 int id = mapData[x, y];
 
                 // 벽, 적, 장애물 타일이면 막힌 좌표로 추가
-                if (id == TileID.Wall || id == TileID.Enemy || id == TileID.Obstacle)
+                if (id == TileID.Wall || id == TileID.Enemy || id == TileID.Obstacle || id == TileID.Vehicle)
                 {
                     blocked.Add(new Vector3Int(x, y, 0));
                 }
+                
             }
         }
     }
@@ -62,15 +63,7 @@ public class Pathfinding
         int[,] mapdata = GameManager.Map.mapData;
         int startID = mapdata[start.x, start.y];
 
-        // 만약에 애너미로 시작이 된다면
-        if (startID == TileID.Enemy)
-        {
-            // 오토바이를 막힌 벽으로 인식 해라.
-            if (GameManager.Map.mapData[start.x,start.y] == TileID.Vehicle && !blocked.Contains(start))
-            {
-                blocked.Add(start);
-            }
-        }
+     
         //탐색 후보군 (openSet) 과 이미 방문한 집합 (closedSet)
         List<Node> openSet = new List<Node>();
         HashSet<Vector3Int> closedSet = new HashSet<Vector3Int>();
@@ -83,7 +76,7 @@ public class Pathfinding
         Dictionary<Vector3Int, Node> allNodes = new Dictionary<Vector3Int, Node>();
 
         allNodes[start] = startNode;
-        int safety = 50; // 세이프가드
+        int safety =5000; // 세이프가드
         while (openSet.Count > 0 && safety-- > 0)
         {
             // openSet에서 fCost가 가장 낮은 노드를 선택
@@ -109,7 +102,8 @@ public class Pathfinding
             {
                 if (closedSet.Contains(neighbourPos) || blocked.Contains(neighbourPos))
                     continue; // 이미 방문했거나, 막힌 타일이면 무시
-                
+
+
                 int newGCost = currentNode.gCost + 1; // 모든 이동 비용이 1이라고 가정
                 if (!allNodes.ContainsKey(neighbourPos))
                 {
