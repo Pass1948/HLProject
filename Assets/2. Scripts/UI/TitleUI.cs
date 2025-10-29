@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using MyBox;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -33,12 +34,12 @@ public class TitleUI : BaseUI
         GameManager.Sound.PlayBGM(GameManager.Resource.Load<AudioClip>(Path.Sound + "BangPaladin"));
     }
 
+
     private void Start()
     {
-        menuPanel.transform.DOMove(new Vector2(1300f,530f), 0.8f);
-        logoPanel.transform.DOMove(new Vector2(0f,500f), 0.8f);
+        menuPanel.transform.DOLocalMove(new Vector2(300, -24.92419f), 0.8f);
+        logoPanel.transform.DOLocalMove(new Vector2(-960, -55.92401f), 0.8f);
     }
-
     private void OnEnable()
     {
         startButton.onClick.AddListener(StartGame);
@@ -58,9 +59,9 @@ public class TitleUI : BaseUI
 
     private void StartGame()
     {
-        deckSelUI.transform.DOMove(new Vector2(1300f,530f), 0.8f);
+        deckSelUI.transform.DOLocalMove(new Vector2(0, 0), 0.8f);
         GameManager.Sound.PlayUISfx();
-        menuPanel.transform.DOMove(new Vector2(2300f,530f), 0.8f);
+        menuPanel.transform.DOLocalMove(new Vector2(1268, -24.92419f), 0.8f);
         GameManager.Sound.PlayUISfx();
         if(TutorialSave.IsTutorial)
         {
@@ -74,8 +75,8 @@ public class TitleUI : BaseUI
 
     private void OpenSetting()
     {
-        settingUI.transform.DOMove(new Vector2(1400f,540f), 0.8f);
-        menuPanel.transform.DOMove(new Vector2(2300f,530f), 0.8f);
+        settingUI.transform.DOLocalMove(new Vector2(0, 0), 0.8f);
+        menuPanel.transform.DOLocalMove(new Vector2(1268, -24.92419f), 0.8f);
         GameManager.Sound.PlayUISfx();
     }
 
