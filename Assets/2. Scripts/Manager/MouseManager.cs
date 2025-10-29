@@ -220,7 +220,7 @@ public class MouseManager : MonoBehaviour
         }
 
         HideEnemyPopup();
-
+        HideBossPopup();
         selectedPlayer = useOverlapLookup ? FindAtCell<BasePlayer>(cell) : null;
         selectedPlayerCell = cell;
         selectedMoveRange = GameManager.Unit.Player.playerModel.moveRange;
@@ -352,6 +352,7 @@ public void InputCancel()
         isPlayer = false;
         HidePlayerRange();
         HideEnemyPopup();
+        HideBossPopup();
         map.ClearPlayerRange();
         GameManager.Map.attackRange.ClearAttackType();
         GameManager.Event.Publish(EventType.CancelAmmo);

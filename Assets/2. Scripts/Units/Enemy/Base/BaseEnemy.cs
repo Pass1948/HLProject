@@ -54,7 +54,6 @@ public class BaseEnemy : MonoBehaviour
     {
         if (stageId >= 7001 && stageId <= 7008)
         {
-            EliteData data = GameManager.Data.eliteDataGroup.GetEliteData(Random.Range(5001, 5004));
             // data.eliteName
             //     data.descript
             //         data.

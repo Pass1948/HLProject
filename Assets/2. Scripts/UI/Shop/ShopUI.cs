@@ -59,6 +59,8 @@ public class ShopUI : BaseUI
         currentHp = GameManager.Unit.Player.playerModel.currentHealth;
         maxHp = GameManager.Unit.Player.playerModel.maxHealth;
         hpText.text = $"{currentHp}/{maxHp}";
+        float fill = (float)currentHp / (float)maxHp;
+        hpBar.fillAmount = fill;
         shop.healCost = 4;
         shop.rerollCost = 2;
         // EventBus 구독
@@ -316,7 +318,7 @@ public class ShopUI : BaseUI
     private void PlayerMoneyText()
     {
         if (playerMoneyText != null)
-            playerMoneyText.text = "Ð" + player.playerMonney.ToString();
+            playerMoneyText.text = "Ð" + GameManager.Unit.Player.playerModel.monney.ToString();
     }
 
     // 세팅 버튼

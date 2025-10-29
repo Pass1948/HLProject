@@ -5,17 +5,11 @@ using UnityEngine.Serialization;
 
 public class PlayerHandler : MonoBehaviour
 {
-    public int playerMonney;
-    
     public List<Ammo> bullets = new();
     public List<Ammo> GetBullet() { return bullets;}
     
     public List<int> ownedRelics = new(); // 유물 리스트
  
-    private void Start()
-    {
-        playerMonney = 500000000;
-    }
     
     public void TakeDamage(int amount)
     {
@@ -52,20 +46,20 @@ public class PlayerHandler : MonoBehaviour
 
     public int GetGold()
     {
-        return playerMonney;
+        return GameManager.Unit.Player.playerModel.monney;
     }
 
     public void AddGold(int amount)
     {
-        playerMonney += amount;
+        GameManager.Unit.Player.playerModel.monney += amount;
         // 골드 추가시 여기에
     }
 
     public bool SpendGold(int amount)
     {
-        if (playerMonney >= amount)
+        if (GameManager.Unit.Player.playerModel.monney >= amount)
         {
-            playerMonney -= amount;
+            GameManager.Unit.Player.playerModel.monney -= amount;
             return true;
         }
         else

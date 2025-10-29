@@ -10,7 +10,7 @@ public class AttackItem : BaseItem
         {
             if (items[i].id == id)
             {
-                playerModel.attack +=items[i].addAttack;
+                GameManager.Unit.Player.playerModel.attack +=items[i].addAttack;
             }
         }
         
@@ -21,7 +21,7 @@ public class AttackItem : BaseItem
         {
             if (items[i].id == id)
             {
-                playerModel.attack -=items[i].addAttack;
+                GameManager.Unit.Player.playerModel.attack -=items[i].addAttack;
             }
         }
     }

@@ -8,15 +8,15 @@ public class Horn_RimmedGlasses : RangeItem
     protected override void OnEnable()
     {
         base.OnEnable();    
-        AddAttackRange(relicItems, 3005);
+        AddAttackRange(relicItems, 3003);
     }
 
     private void OnDisable()
     {
-        RemoveAttackRange(relicItems, 3005);
+        RemoveAttackRange(relicItems, 3003);
     }
     private void OnDestroy()
     {
-        RemoveAttackRange(relicItems, 3006);
+        RemoveAttackRange(relicItems, 3003);
     }
 }

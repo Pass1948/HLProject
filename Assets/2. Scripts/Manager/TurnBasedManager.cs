@@ -267,7 +267,6 @@ public class TurnBasedManager : MonoBehaviour
         {
             if (GameManager.Unit.boss.controller.isDone)
             {
-                Debug.Log("이런 싯팔이거 왜 실행 안대 개시발ClearCheckState Tick : " + GameManager.Unit.boss.controller.isDone);
                 ChangeTo<ClearCheckState>();    // 적 상태종료
             }
         }
