@@ -26,6 +26,7 @@ public class EnemyTurnState : BaseTurnState
             {
                 turnManager.SwitchIsCamera();
             }
+            GameManager.Map.UpdateVehiclePosition(GameManager.Unit.Vehicle.vehicleHandler.vehiclePoison, GameManager.Unit.Vehicle.vehicleHandler.vehiclePoison);
             GameManager.UI.CloseUI<PaseTurnUI>();
             GameManager.Map.pathfinding.ResetMapData();
             turnManager.BeginEnemyPhase();      // 적 턴 시작

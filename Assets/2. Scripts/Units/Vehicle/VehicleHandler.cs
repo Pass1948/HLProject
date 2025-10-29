@@ -36,7 +36,7 @@ public class VehicleHandler : MonoBehaviour
 
     public void SetPosition()
     {
-        vehiclePoison = new Vector3Int((int)transform.position.x, (int)transform.position.y, (int)transform.position.z);
+        vehiclePoison = new Vector3Int((int)transform.position.x, (int)transform.position.z, 0);
     }
 
     public void OnPositionForward()

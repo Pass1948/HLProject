@@ -173,13 +173,15 @@ public class MapManager : MonoBehaviour
     public void UpdateVehiclePosition(Vector3Int newX, Vector3Int newY)
     {
         Vector3Int vector3Int = new Vector3Int(newX.x, newY.y);
+        Debug.Log("이시발 여기 무슨 아이디야" + newX.x + newX.y + IsVehicle(vector3Int));
 
         if (!IsPlayer(vector3Int))
         {
-            GameManager.Map.SetObjectPosition(newX.x, newY.y, TileID.Vehicle);
+            mapData[newX.x, newY.y] = TileID.Vehicle;
         }
-        Debug.Log("이시발 여기 무슨 아이디야" + newX+ newY + IsVehicle(vector3Int));
-        DumpMapData();    //디버그용
+
+ 
+        //DumpMapData();    //디버그용
     }
 
     public void UpdateAttackTargets(List<Vector3Int> attackCells, List<BaseEnemy> enemies)

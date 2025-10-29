@@ -23,7 +23,6 @@ public class PlayerChooseState : BaseTurnState
         if (timer > turnSetVlaue.turnDelayTime)
         {
             GameManager.Unit.Vehicle.vehicleHandler.SetPosition();
-            GameManager.Map.UpdateVehiclePosition(GameManager.Unit.Vehicle.vehicleHandler.vehiclePoison, GameManager.Unit.Vehicle.vehicleHandler.vehiclePoison);
             GameManager.UI.OpenUI<MainUI>();
             didClose = true;// 한 번만 처리하게 설정
         }
