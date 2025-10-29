@@ -266,7 +266,7 @@ public class MouseManager : MonoBehaviour
 
         bool canMove = movePhaseActive && (selectedPlayer != null) && (destCell != selectedPlayerCell);
         if (!canMove) return;
-
+        GameManager.Map.pathfinding.ResetMapDataPlayer();
         var path = map.FindPath(selectedPlayerCell, destCell);
         if (path == null || path.Count > selectedMoveRange)
         {
