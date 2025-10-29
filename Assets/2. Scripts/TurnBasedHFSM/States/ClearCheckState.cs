@@ -18,7 +18,6 @@ public class ClearCheckState : BaseTurnState
         timer += dt;
         if (timer > turnSetVlaue.turnDelayTime)
         {
-            Debug.Log("이런 싯팔이거 왜 실행 안대 개시발ClearCheckState Tick : " + turnManager.IsPlayerDead());
             if (turnManager.IsPlayerDead())
             {
                 ChangeState<LoseState>();

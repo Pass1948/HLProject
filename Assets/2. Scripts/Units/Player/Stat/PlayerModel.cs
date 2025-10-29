@@ -20,7 +20,7 @@ public class PlayerModel : UnitModel
     public int reload;
     public int baseHealth;
     public int health;
-    public int monney = 10;
+    public int monney = 50000000;
     public bool die => currentHealth <= 0;
 
     public void InitData(EntityData data)
@@ -30,7 +30,7 @@ public class PlayerModel : UnitModel
         unitName = data.name;
         size = data.size;
         attack = data.attack;
-        attackRange = Random.Range(data.minAttackRange, data.maxAttackRange);
+        attackRange = 0;
         moveRange = data.moveRange;
         maxHealth = data.health;
         health= maxHealth;

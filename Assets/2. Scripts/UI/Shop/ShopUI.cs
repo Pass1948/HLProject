@@ -316,7 +316,7 @@ public class ShopUI : BaseUI
     private void PlayerMoneyText()
     {
         if (playerMoneyText != null)
-            playerMoneyText.text = "Ð" + player.playerMonney.ToString();
+            playerMoneyText.text = "Ð" + GameManager.Unit.Player.playerModel.monney.ToString();
     }
 
     // 세팅 버튼
