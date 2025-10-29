@@ -173,7 +173,6 @@ public class MapManager : MonoBehaviour
     public void UpdateVehiclePosition(Vector3Int newX, Vector3Int newY)
     {
         Vector3Int vector3Int = new Vector3Int(newX.x, newY.y);
-        Debug.Log("이시발 여기 무슨 아이디야" + newX.x + newX.y + IsVehicle(vector3Int));
 
         if (!IsPlayer(vector3Int))
         {
