@@ -1,10 +1,20 @@
 using System.Collections.Generic;
+using Unity.Services.Analytics;
 using UnityEngine;
 
 public class RewardUI : MonoBehaviour
 {
     public RewardSlotUI[] slots;
-    
+
+    private void OnEnable()
+    {
+        CustomEvent customEvent = new CustomEvent("reward")
+        {
+            { "stageReward", "reward1948"}
+        };
+        AnalyticsService.Instance.RecordEvent(customEvent);
+    }
+
     private void Start()
     {
         for (int i = 0; i < slots.Length; i++)
