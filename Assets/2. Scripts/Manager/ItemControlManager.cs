@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ItemControlManager : MonoBehaviour
@@ -149,6 +150,10 @@ public class ItemControlManager : MonoBehaviour
         drawPile.Clear();
         buyItems.Clear();
         Destroy(relicRoot.gameObject);
+        foreach (Transform child in transform)
+        {
+            Destroy(child.gameObject);
+        }
         ItemDataSet();
     }
 

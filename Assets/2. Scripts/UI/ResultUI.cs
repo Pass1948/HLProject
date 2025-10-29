@@ -89,10 +89,10 @@ public class ResultUI : BaseUI
     {
         // 메인메뉴 (인트로?) 씬으로 
         GameManager.UI.OpenUI<FadeInUI>();
-        GameManager.Shop.isTutorial1 = true;
-        GameManager.ItemControl.drawPile.Clear();
-        GameManager.TurnBased.turnSettingValue.isTutorial = false;
         GameManager.ItemControl.ClearData();
+        GameManager.Unit.isRiding = false;
+        GameManager.Shop.isTutorial1 = true;
+        GameManager.TurnBased.turnSettingValue.isTutorial = false;
         GameManager.SceneLoad.LoadScene(SceneType.Title);
         GameManager.SaveLoad.nextSceneIndex = 0;
     }

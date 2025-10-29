@@ -29,6 +29,7 @@ public class UnitManager : MonoBehaviour
     
    public bool isInit = false;
 
+    public bool isRiding = false;
     // =====[���� ���� ����� ����]=====
     public int curAttack;
     public int curAttackRange;

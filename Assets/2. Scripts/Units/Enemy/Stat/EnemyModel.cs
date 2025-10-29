@@ -46,6 +46,7 @@ public class EnemyModel : UnitModel
         minAttackRange = data.minAttackRange;
         maxAttackRange = data.maxAttackRange;
         moveRange = data.moveRange;
+        Debug.Log("¾ÆÀÌµð" + id +"min" + minAttackRange + "Max"+ maxAttackRange);
     }
 }
 
