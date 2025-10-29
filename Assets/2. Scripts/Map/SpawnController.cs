@@ -40,7 +40,7 @@ public class SpawnController : MonoBehaviour
     // 보스 ID - 프리팹 이름
     private readonly Dictionary<int, string> bossPrefabNames = new Dictionary<int, string>()
     {
-        { 2003, "Boss" },    // 스테이지 7002 보스
+        { 2003, "Torial" },    // 스테이지 7002 보스
         { 2014, "Boss" },    // 스테이지 7008 보스
         { 2015, "Boss" },     // 스테이지 7016 보스
     };

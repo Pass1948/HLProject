@@ -127,7 +127,7 @@ public class SettingUI : PopUpUI
     {
         GameManager.TurnBased.turnSettingValue.windowPanelIndex-= 1;
         if(GameManager.TurnBased.turnSettingValue.windowPanelIndex < 0)
-            GameManager.TurnBased.turnSettingValue.windowPanelIndex = windowPanels.Length;
+            GameManager.TurnBased.turnSettingValue.windowPanelIndex = 2;
         UpdateWindowView();
         GameManager.Sound.PlayUISfx();
     }
