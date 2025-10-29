@@ -61,7 +61,7 @@ public class TitleUI : BaseUI
     {
         deckSelUI.transform.DOLocalMove(new Vector2(0, 0), 0.8f);
         GameManager.Sound.PlayUISfx();
-        menuPanel.transform.DOLocalMove(new Vector2(1268, -24.92419f), 0.8f);
+        menuPanel.transform.DOLocalMove(new Vector2(2400, -24.92419f), 0.8f);
         GameManager.Sound.PlayUISfx();
         if(TutorialSave.IsTutorial)
         {
@@ -76,7 +76,7 @@ public class TitleUI : BaseUI
     private void OpenSetting()
     {
         settingUI.transform.DOLocalMove(new Vector2(0, 0), 0.8f);
-        menuPanel.transform.DOLocalMove(new Vector2(1268, -24.92419f), 0.8f);
+        menuPanel.transform.DOLocalMove(new Vector2(2400, -24.92419f), 0.8f);
         GameManager.Sound.PlayUISfx();
     }
 

@@ -99,8 +99,8 @@ public class SettingUI : PopUpUI
 
     private void CloseSettingUi()
     {
-        mainPanel.transform.DOMove(new Vector2(1300f,530f), 0.8f);
-        transform.DOMove(new Vector2(2950f,530f), 0.8f);
+        mainPanel.transform.DOLocalMove(new Vector2(300, -24.92419f), 0.8f);
+        transform.DOLocalMove(new Vector2(1961, 0), 0.8f);
         GameManager.Sound.PlayUISfx();
     }
 
