@@ -236,7 +236,8 @@ public class ItemControlManager : MonoBehaviour
         for (int r = 1; r <= slotCount; r++)
         {
             Suit fixedSuit = (Suit)UnityEngine.Random.Range(0, 4);
-            result.Add(new Ammo { suit = fixedSuit, rank = r });
+            int ra = (int)UnityEngine.Random.Range(1, 14);
+            result.Add(new Ammo { suit = fixedSuit, rank = ra});
         }
         return result;
     }
