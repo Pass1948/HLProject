@@ -24,7 +24,7 @@ public class MinosPatternState : PatternBossState
 
         // 중심 라인(3x4 중 중앙) 계산
         Vector3Int bossPos = controller.GridPos;
-        Vector3 forward = controller.transform.forward;
+        Vector3 forward = controller.warningCells[0];
         Vector3Int dir = DirectionToGrid(forward);
 
         for (int i = 1; i <= 4; i++)
@@ -54,7 +54,7 @@ public class MinosPatternState : PatternBossState
 
         // 경고 타일 제거
         GameManager.Map.attackRange.ClearRange();
-
+        controller.PatternCooldown();
         stateMachine.ChangeState(stateMachine.EndState);
     }
     
@@ -62,7 +62,7 @@ public class MinosPatternState : PatternBossState
     {
         dir.y = 0;
         if (Mathf.Abs(dir.x) > Mathf.Abs(dir.z))
-            return (dir.x > 0) ? Vector3Int.right : Vector3Int.left;
+            return (dir.x > 0) ? Vector3Int.left : Vector3Int.right;
         else
             return (dir.z > 0) ? Vector3Int.down : Vector3Int.up;
     }
