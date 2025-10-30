@@ -147,6 +147,7 @@ public class ItemControlManager : MonoBehaviour
         ItemIds = null;
         relicItems.Clear();
         powderItems.Clear();
+        discardPile.Clear();
         drawPile.Clear();
         buyItems.Clear();
         Destroy(relicRoot.gameObject);
