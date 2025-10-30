@@ -111,7 +111,7 @@ public class ResultUI : BaseUI
 
     private void MainmenuScene()
     {
-        // 占쏙옙占싸메댐옙 (占쏙옙트占쏙옙?) 占쏙옙占쏙옙占쏙옙 
+       
         GameManager.UI.OpenUI<FadeInUI>();
         GameManager.ItemControl.ClearData();
         GameManager.Unit.isRiding = false;
