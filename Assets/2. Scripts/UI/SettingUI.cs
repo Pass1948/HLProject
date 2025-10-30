@@ -109,6 +109,11 @@ public class SettingUI : PopUpUI
 
     private void BackToMainMenu()
     {
+        GameManager.TurnBased.turnSettingValue.IsBasicDeck = false;
+        GameManager.TurnBased.turnSettingValue.IsDiamondDeck = false;
+        GameManager.TurnBased.turnSettingValue.IsHeartDeck = false;
+        GameManager.TurnBased.turnSettingValue.IsSpadeDeck = false;
+        GameManager.TurnBased.turnSettingValue.IsClubDeck = false;
         Debug.Log("메인메뉴로 가기");
         GameManager.SaveLoad.nextSceneIndex = 0;
         GameManager.Map.NormalStage();

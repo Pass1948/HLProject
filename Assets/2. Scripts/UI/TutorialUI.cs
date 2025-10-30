@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using TMPro;
+using Unity.Services.Analytics;
 using UnityEngine;
 using UnityEngine.Analytics;
 using UnityEngine.UI;
@@ -47,20 +48,22 @@ public class TutorialUI : PopUpUI
         if (GameManager.Stage.stageId == 7001)
         {
             //TODO: tutorial1_popup_close
-            Analytics.CustomEvent("tutorial1_popup_close", new Dictionary<string, object>
-  {
-    { "onScreen", "튜토리얼 1 시작 팝업 닫기" },
-  });
+            CustomEvent customEvent = new CustomEvent("tutorial1_popup_close")
+        {
+            { "uiClick", "튜토리얼 1 시작 팝업 닫기"}
+        };
+            AnalyticsService.Instance.RecordEvent(customEvent);
 
         }
         if (GameManager.Stage.stageId == 7002)
         {
 
             //TODO: tutorial2_popup_close
-            Analytics.CustomEvent("tutorial2_popup_close", new Dictionary<string, object>
-  {
-    { "onScreen", "튜토리얼 2 시작 팝업 닫기" },
-  });
+            CustomEvent customEvent = new CustomEvent("tutorial2_popup_close")
+        {
+            { "uiClick", "튜토리얼 2 시작 팝업 닫기"}
+        };
+            AnalyticsService.Instance.RecordEvent(customEvent);
         }
         base.CloseUI();
     }
@@ -95,20 +98,21 @@ public class TutorialUI : PopUpUI
             if(GameManager.Stage.stageId == 7001)
             {
                 //TODO: tutorial1_popup_show
-                Analytics.CustomEvent("tutorial1_popup_show", new Dictionary<string, object>
-  {
-    { "onScreen", "튜토리얼 1 시작 팝업 출력" },
-  });
-
+                CustomEvent customEvent = new CustomEvent("tutorial1_popup_show")
+        {
+            { "onScreen", "튜토리얼 1 시작 팝업 출력"}
+        };
+                AnalyticsService.Instance.RecordEvent(customEvent);
             }
             if (GameManager.Stage.stageId == 7002)
             {
 
                 //TODO: tutorial2_popup_show
-                Analytics.CustomEvent("tutorial2_popup_show", new Dictionary<string, object>
-  {
-    { "onScreen", "튜토리얼 2 시작 팝업 출력" },
-  });
+                CustomEvent customEvent = new CustomEvent("tutorial2_popup_show")
+        {
+            { "onScreen", "튜토리얼 2 시작 팝업 출력"}
+        };
+                AnalyticsService.Instance.RecordEvent(customEvent);
             }
         }
     }
