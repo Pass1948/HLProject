@@ -60,13 +60,17 @@ public class ResultUI : BaseUI
         {
             if(GameManager.Shop.isTutorial1 == true)
             {
-                Debug.Log("튜토리얼 1");
                 tutorialUI1.SetActive(true);
                 clearUI.CloseUI();
                 overUI.CloseUI();
             }
             if(GameManager.Shop.isTutorial1 == false)
             {
+                //TODO: tutorial_finish_menu_click
+                Analytics.CustomEvent("tutorial_finish_menu_click", new Dictionary<string, object>
+  {
+    { "uiClick", "튜토리얼 2 메인 메뉴 버튼 클릭" },
+  });
                 tutorialUI1.SetActive(false);
                 tutorialUI2.SetActive(true);
                 clearUI.CloseUI();
@@ -86,6 +90,11 @@ public class ResultUI : BaseUI
 
     public void NextStage()
     {
+        //TODO: tutorial1_next_click
+        Analytics.CustomEvent("tutorial1_next_click", new Dictionary<string, object>
+  {
+    { "uiClick", "튜토리얼 1 다음 스테이지 버튼 클릭" },
+  });
         GameManager.Shop.isTutorial1 = false;
         int nextStageIndex = GameManager.Shop.stage.GetCurrentStageIndex() + 1;
         GameManager.Unit.CurrentStatReset();
