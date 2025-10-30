@@ -66,9 +66,9 @@ public class TitleUI : BaseUI
 
     private void StartGame()
     {
-        Analytics.CustomEvent("title_new_game_click", new Dictionary<string, object> // TODO: title_new_game_click
+        Analytics.CustomEvent("run_start_click", new Dictionary<string, object> // TODO: run_start_click
         {
-            { "uiClick", "타이틀 화면에서 새로 시작 버튼 클릭" },
+            { "///", "///" },
         });
 
         deckSelUI.transform.DOLocalMove(new Vector2(0, 0), 0.8f);

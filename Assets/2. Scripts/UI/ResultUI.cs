@@ -50,10 +50,6 @@ public class ResultUI : BaseUI
         {
             overUI.CloseUI();
             clearUI.OpenUI();
-            Analytics.CustomEvent("game_clear_popup", new Dictionary<string, object> // TODO : game_clear_popup
-            {
-                { "onScreen", "게임 클리어 팝업 출력" },
-            });
         }
         else if (result == ResultType.Over)
         {
@@ -84,6 +80,10 @@ public class ResultUI : BaseUI
         }
         else if (result == ResultType.GameClear)
         {
+            Analytics.CustomEvent("game_clear_popup", new Dictionary<string, object> // TODO : game_clear_popup
+            {
+                { "onScreen", "게임 클리어 팝업 출력" },
+            });
             if (GameManager.TurnBased.turnSettingValue.isTutorial == true) return;
             gameClearUI.SetActive(true);
             tutorialUI1.SetActive(false);
@@ -111,7 +111,7 @@ public class ResultUI : BaseUI
 
     private void MainmenuScene()
     {
-        // 占쏙옙占싸메댐옙 (占쏙옙트占쏙옙?) 占쏙옙占쏙옙占쏙옙 
+       
         GameManager.UI.OpenUI<FadeInUI>();
         GameManager.ItemControl.ClearData();
         GameManager.Unit.isRiding = false;

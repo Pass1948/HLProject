@@ -51,9 +51,9 @@ public class ShopUI : BaseUI
 
     private void OnEnable()
     {
-        Analytics.CustomEvent("shop_open_stage9", new Dictionary<string, object> // TODO : shop_open_stage9
+        Analytics.CustomEvent("shop_open_stage", new Dictionary<string, object> // TODO : shop_open_stage
         {
-            { "///", "///" },
+            { "onScreen", "상점 팝업 출력" },
         });
         GameManager.Sound.PlayBGM(GameManager.Resource.Create<AudioClip>(Path.Sound + "Buy some cards!"));
         healButton.onClick.AddListener(PlayerHeal);
@@ -84,10 +84,6 @@ public class ShopUI : BaseUI
 
     private void OnDisable()
     {
-        Analytics.CustomEvent("shop_close_stage9", new Dictionary<string, object> // TODO : shop_close_stage9
-        {
-            { "///", "///" },
-        });
         healButton.onClick.RemoveListener(PlayerHeal);
         rerollButton.onClick.RemoveListener(OnReroll);
         removeButton.onClick.RemoveListener(OnRemoveBulletClicked);
@@ -341,6 +337,10 @@ public class ShopUI : BaseUI
 
     private void NextStage()
     {
+        Analytics.CustomEvent("shop_close_stage", new Dictionary<string, object> // TODO : shop_close_stage9
+        {
+            { "uiClick", "상점 팝업 닫기" },
+        });
         // TODO: 여기에 추가해 주시면 됩니당.(JBS)
         int nextStageIndex = GameManager.Shop.stage.GetCurrentStageIndex() + 1;
         GameManager.Unit.CurrentStatReset();
