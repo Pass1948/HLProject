@@ -28,8 +28,6 @@ public class TitleUI : BaseUI
     [SerializeField] private Button tutorialYesBtn;
     [SerializeField] private Button tutorialNoBtn;
 
-    private AudioClip audioClip;
-
     private void Awake()
     {
         GameManager.Sound.PlayBGM(GameManager.Resource.Load<AudioClip>(Path.Sound + "BangPaladin"));

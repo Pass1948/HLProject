@@ -108,7 +108,7 @@ public class DeckSelUI : MonoBehaviour
         GameManager.TurnBased.turnSettingValue.IsHeartDeck = false;
         GameManager.TurnBased.turnSettingValue.IsSpadeDeck = false;
         GameManager.TurnBased.turnSettingValue.IsClubDeck = false;
-        gameObject.transform.DOMove(new Vector3(2400f, 530f, 0f), 0.8f);
+        gameObject.transform.DOLocalMove(new Vector3(2400f, 0f, 0f), 0.8f);
         titleUI.gameObject.transform.DOLocalMove(new Vector2(300, -24.92419f), 0.8f);
         GameManager.Sound.PlayUISfx();
     }
