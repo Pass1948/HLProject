@@ -9,14 +9,10 @@ public class IdleState : BaseTurnState
     
     public override void OnEnter() 
     {
-      
         if (turnManager.isStarted == true)
         {
             timer =  turnSetVlaue.resetTime;
         }
-
-
-
     }
     public override void Tick(float dt)
     {
