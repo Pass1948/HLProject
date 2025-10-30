@@ -5,7 +5,6 @@ using TMPro;
 using Unity.Services.Analytics;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEditor.Searcher.Searcher;
 
 public class ShopUI : BaseUI
 {

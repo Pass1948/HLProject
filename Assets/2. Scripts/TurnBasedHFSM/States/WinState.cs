@@ -11,6 +11,7 @@ public class WinState : BaseTurnState
     public override void OnEnter()
     {
             timer = turnSetVlaue.resetTime;
+        didClose = false;
     }
     public override void Tick(float dt)
     {
