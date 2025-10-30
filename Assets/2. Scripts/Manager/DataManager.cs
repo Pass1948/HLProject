@@ -1,4 +1,5 @@
 ﻿using DataTable;
+using MyBox;
 using System;
 using System.Collections.Generic;
 using UGS;
@@ -15,18 +16,7 @@ public class DataManager : MonoBehaviour
     public ObstacleDataGroup obstacleDataGroup;
     public StageDataGroup stageDataGroup;
     public BulletDataGroup bulletDataGroup;
-    async void Awake()
-    {
-        try
-        {
-            await UnityServices.InitializeAsync();
-            AnalyticsService.Instance.StartDataCollection();
-        }
-        catch (Exception e)
-        {
-            Debug.LogException(e, this);
-        }
-    }
+
     private void Start()
     {
         UnityGoogleSheet.LoadAllData();

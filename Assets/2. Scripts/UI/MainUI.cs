@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using TMPro;
+using Unity.Services.Analytics;
 using UnityEngine;
 using UnityEngine.Analytics;
 using UnityEngine.UI;
@@ -126,10 +127,11 @@ public class MainUI : BaseUI
     private void OnAnalyticsEvent(int v)
     {
         //TODO: stage_start
-        Analytics.CustomEvent("stage_start", new Dictionary<string, object>
-  {
-    { "stageValue", v },
-  });
+        CustomEvent customEvent = new CustomEvent("stage_start")
+        {
+            { "stageValue", v}
+        };
+        AnalyticsService.Instance.RecordEvent(customEvent);
     }
 
     

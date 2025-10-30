@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Resources;
 using Unity.Services.Analytics;
+using Unity.Services.Core;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -54,9 +55,10 @@ public class GameManager : MonoBehaviour
     
     private static SoundManager soundManager;
     public static SoundManager Sound => soundManager;
-
-    private void Awake()
+    async void Awake()
     {
+        await UnityServices.InitializeAsync();
+        AnalyticsService.Instance.StartDataCollection();
         if (instance != null) { Destroy(this); return; }
         instance = this;
         DontDestroyOnLoad(this);

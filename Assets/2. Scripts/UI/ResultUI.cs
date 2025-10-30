@@ -50,10 +50,6 @@ public class ResultUI : BaseUI
         {
             overUI.CloseUI();
             clearUI.OpenUI();
-            Analytics.CustomEvent("game_clear_popup", new Dictionary<string, object> // TODO : game_clear_popup
-            {
-                { "onScreen", "게임 클리어 팝업 출력" },
-            });
         }
         else if (result == ResultType.Over)
         {
@@ -72,10 +68,11 @@ public class ResultUI : BaseUI
             if(GameManager.Shop.isTutorial1 == false)
             {
                 //TODO: tutorial_finish_menu_click
-                Analytics.CustomEvent("tutorial_finish_menu_click", new Dictionary<string, object>
-  {
-    { "uiClick", "튜토리얼 2 메인 메뉴 버튼 클릭" },
-  });
+                CustomEvent customEvent = new CustomEvent("tutorial_finish_menu_click")
+        {
+            { "uiClick", "튜토리얼 2 메인 메뉴 버튼 클릭"}
+        };
+                AnalyticsService.Instance.RecordEvent(customEvent);
                 tutorialUI1.SetActive(false);
                 tutorialUI2.SetActive(true);
                 clearUI.CloseUI();
@@ -84,6 +81,13 @@ public class ResultUI : BaseUI
         }
         else if (result == ResultType.GameClear)
         {
+  
+            // TODO : game_clear_popup
+            CustomEvent customEvent = new CustomEvent("game_clear_popup")
+        {
+            { "onScreen", "게임 클리어 팝업 출력"}
+        };
+            AnalyticsService.Instance.RecordEvent(customEvent);
             if (GameManager.TurnBased.turnSettingValue.isTutorial == true) return;
             gameClearUI.SetActive(true);
             tutorialUI1.SetActive(false);
@@ -96,10 +100,11 @@ public class ResultUI : BaseUI
     public void NextStage()
     {
         //TODO: tutorial1_next_click
-        Analytics.CustomEvent("tutorial1_next_click", new Dictionary<string, object>
-  {
-    { "uiClick", "튜토리얼 1 다음 스테이지 버튼 클릭" },
-  });
+        CustomEvent customEvent = new CustomEvent("tutorial1_next_click")
+        {
+            { "uiClick", "튜토리얼 1 다음 스테이지 버튼 클릭"}
+        };
+        AnalyticsService.Instance.RecordEvent(customEvent);
         GameManager.Shop.isTutorial1 = false;
         int nextStageIndex = GameManager.Shop.stage.GetCurrentStageIndex() + 1;
         GameManager.Unit.CurrentStatReset();
