@@ -52,7 +52,7 @@ public class ResultUI : BaseUI
             clearUI.OpenUI();
             Analytics.CustomEvent("game_clear_popup", new Dictionary<string, object> // TODO : game_clear_popup
             {
-                { "///", "///" },
+                { "onScreen", "게임 클리어 팝업 출력" },
             });
         }
         else if (result == ResultType.Over)
