@@ -45,10 +45,6 @@ public class ResultUI : BaseUI
 
     public void GetResultType(ResultType result)
     {
-        Analytics.CustomEvent("GameClear", new Dictionary<string, object>
-  {
-    { "GameClear", "ÀÌ¾æÈ£" },
-  });
 
         if (result == ResultType.Clear)
         {
