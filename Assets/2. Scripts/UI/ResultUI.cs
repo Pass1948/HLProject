@@ -23,7 +23,7 @@ public class ResultUI : BaseUI
     [SerializeField] GameObject gameClearUI;
     [SerializeField] Button gameClearBtn;
 
-    //========[Æ©ï¿½ä¸®ï¿½ï¿½]========
+    //========[Æ©Åä¸®¾ó]========
     [SerializeField] GameObject tutorialUI1;
     [SerializeField] Button tutorialBtn1;
     [SerializeField] GameObject tutorialUI2;
@@ -45,14 +45,11 @@ public class ResultUI : BaseUI
 
     public void GetResultType(ResultType result)
     {
+
         if (result == ResultType.Clear)
         {
             overUI.CloseUI();
             clearUI.OpenUI();
-            Analytics.CustomEvent("game_clear_popup", new Dictionary<string, object>//TODO : game_clear_popup
-            {
-                { "///", "///" },
-            });
         }
         else if (result == ResultType.Over)
         {
@@ -63,7 +60,7 @@ public class ResultUI : BaseUI
         {
             if(GameManager.Shop.isTutorial1 == true)
             {
-                Debug.Log("Æ©ï¿½ä¸®ï¿½ï¿½ 1");
+                Debug.Log("Æ©Åä¸®¾ó 1");
                 tutorialUI1.SetActive(true);
                 clearUI.CloseUI();
                 overUI.CloseUI();
@@ -100,7 +97,7 @@ public class ResultUI : BaseUI
 
     private void MainmenuScene()
     {
-        // ï¿½ï¿½ï¿½Î¸Þ´ï¿½ (ï¿½ï¿½Æ®ï¿½ï¿½?) ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
+        // ¸ÞÀÎ¸Þ´º (ÀÎÆ®·Î?) ¾ÀÀ¸·Î 
         GameManager.UI.OpenUI<FadeInUI>();
         GameManager.ItemControl.ClearData();
         GameManager.Unit.isRiding = false;

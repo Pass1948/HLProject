@@ -29,11 +29,6 @@ public class RewardUI : MonoBehaviour
 
     public void Show(int stageId)
     {
-        Analytics.CustomEvent("reward", new Dictionary<string, object>
-  {
-    { "stageReward", "reaward1948" },
-  });
-
         int slotIndex = 0;
 
         if (stageRewards.TryGetValue(stageId, out int gold))
