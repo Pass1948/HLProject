@@ -68,7 +68,7 @@ public class TitleUI : BaseUI
     private void StartGame()
     {
         //TODO : stage_start
-        CustomEvent customEvent = new CustomEvent("stage_start")
+        CustomEvent customEvent = new CustomEvent("new_game_click")
         {
             { "uiClick", "‘새로 시작’ 버튼 클릭"}
         };
@@ -129,7 +129,7 @@ public class TitleUI : BaseUI
 
         CustomEvent customEvent = new CustomEvent("tutorial_popup_yes")
         {
-            { "onScreen", "튜토리얼 진행 선택(‘예’)"}
+            { "uiClick", "튜토리얼 진행 선택(‘예’)"}
         };
         AnalyticsService.Instance.RecordEvent(customEvent);
         //여기에 튜토리얼 스테이지 진입넣으면 됩니다

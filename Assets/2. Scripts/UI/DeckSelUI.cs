@@ -95,7 +95,7 @@ public class DeckSelUI : MonoBehaviour
         // TODO: run_start_click
         CustomEvent customEvent = new CustomEvent("run_start_click")
         {
-            { "onClick", "플레이 시작 버튼 클릭 (1스테이지로 진입)"}
+            { "uiClick", "플레이 시작 버튼 클릭 (1스테이지로 진입)"}
         };
         AnalyticsService.Instance.RecordEvent(customEvent);
 
@@ -139,7 +139,7 @@ public class DeckSelUI : MonoBehaviour
         // TODO : deck_select_confirm
         CustomEvent customEvent = new CustomEvent("deck_select_confirm")
         {
-            { "onClick", "시작 덱 선택 완료"}
+            { "uiClick", "시작 덱 선택 완료"}
         };
         AnalyticsService.Instance.RecordEvent(customEvent);
         GameManager.TurnBased.turnSettingValue.IsBasicDeck = true;
@@ -153,7 +153,7 @@ public class DeckSelUI : MonoBehaviour
         // TODO : deck_select_confirm
         CustomEvent customEvent = new CustomEvent("deck_select_confirm")
         {
-            { "onClick", "시작 덱 선택 완료"}
+            { "uiClick", "시작 덱 선택 완료"}
         };
         AnalyticsService.Instance.RecordEvent(customEvent);
         GameManager.TurnBased.turnSettingValue.IsDiamondDeck = true;
@@ -165,7 +165,7 @@ public class DeckSelUI : MonoBehaviour
         // TODO : deck_select_confirm
         CustomEvent customEvent = new CustomEvent("deck_select_confirm")
         {
-            { "onClick", "시작 덱 선택 완료"}
+            { "uiClick", "시작 덱 선택 완료"}
         };
         AnalyticsService.Instance.RecordEvent(customEvent);
         GameManager.TurnBased.turnSettingValue.IsHeartDeck = true;
@@ -177,7 +177,7 @@ public class DeckSelUI : MonoBehaviour
         // TODO : deck_select_confirm
         CustomEvent customEvent = new CustomEvent("deck_select_confirm")
         {
-            { "onClick", "시작 덱 선택 완료"}
+            { "uiClick", "시작 덱 선택 완료"}
         };
         AnalyticsService.Instance.RecordEvent(customEvent);
         GameManager.TurnBased.turnSettingValue.IsSpadeDeck = true;
@@ -188,7 +188,7 @@ public class DeckSelUI : MonoBehaviour
     {// TODO : deck_select_confirm
         CustomEvent customEvent = new CustomEvent("deck_select_confirm")
         {
-            { "onClick", "시작 덱 선택 완료"}
+            { "uiClick", "시작 덱 선택 완료"}
         };
         AnalyticsService.Instance.RecordEvent(customEvent);
         GameManager.TurnBased.turnSettingValue.IsClubDeck = true;

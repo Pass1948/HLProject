@@ -5,6 +5,7 @@ using TMPro;
 using Unity.Services.Analytics;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.Searcher.Searcher;
 
 public class ShopUI : BaseUI
 {
@@ -51,12 +52,8 @@ public class ShopUI : BaseUI
 
     private void OnEnable()
     {
-        // TODO : shop_open_stage
-        CustomEvent customEvent = new CustomEvent("shop_open_stage")
-        {
-            { "onScreen", "상점 팝업 출력"}
-        };
-        AnalyticsService.Instance.RecordEvent(customEvent);
+
+        OnAnalyticsEvent_open(GameManager.SaveLoad.nextSceneIndex);
         GameManager.Sound.PlayBGM(GameManager.Resource.Create<AudioClip>(Path.Sound + "Buy some cards!"));
         healButton.onClick.AddListener(PlayerHeal);
         rerollButton.onClick.AddListener(OnReroll);
@@ -98,6 +95,15 @@ public class ShopUI : BaseUI
         GameManager.Event.Unsubscribe(EventType.ShopPlayerCardsConfim, RebuildPlayerBullets);
         GameManager.Event.Unsubscribe(EventType.ShopPlayerCardsConfim, PlayerHpCheck);
         
+    }
+    private void OnAnalyticsEvent_open(int v)
+    {
+        // TODO : shop_open_stage
+        CustomEvent customEvent = new CustomEvent("shop_open_stage")
+        {
+            { "stageValue", v}
+        };
+        AnalyticsService.Instance.RecordEvent(customEvent);
     }
 
     // 이벤트 핸들러
@@ -339,12 +345,7 @@ public class ShopUI : BaseUI
 
     private void NextStage()
     {
-        // TODO : shop_close_stage
-        CustomEvent customEvent = new CustomEvent("shop_close_stage")
-        {
-            { "uiClick", "상점 팝업 닫기"}
-        };
-        AnalyticsService.Instance.RecordEvent(customEvent);
+        OnAnalyticsEvent_close(GameManager.SaveLoad.nextSceneIndex);
 
         // TODO: 여기에 추가해 주시면 됩니당.(JBS)
         int nextStageIndex = GameManager.Shop.stage.GetCurrentStageIndex() + 1;
@@ -353,6 +354,14 @@ public class ShopUI : BaseUI
         GameManager.Stage.stageId++;
         GameManager.SceneLoad.RestartScene();
     }
-
+    private void OnAnalyticsEvent_close(int v)
+    {
+        // TODO : shop_close_stage
+        CustomEvent customEvent = new CustomEvent("shop_close_stage")
+        {
+            { "stageValue", v}
+        };
+        AnalyticsService.Instance.RecordEvent(customEvent);
+    }
 
 }

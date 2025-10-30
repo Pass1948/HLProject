@@ -50,7 +50,7 @@ public class TutorialUI : PopUpUI
             //TODO: tutorial1_popup_close
             CustomEvent customEvent = new CustomEvent("tutorial1_popup_close")
         {
-            { "onScreen", "튜토리얼 1 시작 팝업 닫기"}
+            { "uiClick", "튜토리얼 1 시작 팝업 닫기"}
         };
             AnalyticsService.Instance.RecordEvent(customEvent);
 
@@ -61,7 +61,7 @@ public class TutorialUI : PopUpUI
             //TODO: tutorial2_popup_close
             CustomEvent customEvent = new CustomEvent("tutorial2_popup_close")
         {
-            { "onScreen", "튜토리얼 2 시작 팝업 닫기"}
+            { "uiClick", "튜토리얼 2 시작 팝업 닫기"}
         };
             AnalyticsService.Instance.RecordEvent(customEvent);
         }
