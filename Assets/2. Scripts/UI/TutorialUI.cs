@@ -82,22 +82,20 @@ public class TutorialUI : PopUpUI
         if (GameManager.Stage.stageId == 7001)
         {
             //TODO: tutorial1_popup_show
-            CustomEvent customEvent = new CustomEvent("tutorial1_popup_show")
+            AnalyticsService.Instance.RecordEvent(new CustomEvent("tutorial1_popup_show")
                 {
                     { "onScreen", "튜토리얼 1 시작 팝업 출력"},
-                 };
-            AnalyticsService.Instance.RecordEvent(customEvent);
+                 });
         }
 
         if (GameManager.Stage.stageId == 7002)
         {
 
             //TODO: tutorial2_popup_show
-            CustomEvent customEvent = new CustomEvent("tutorial2_popup_show")
+            AnalyticsService.Instance.RecordEvent(new CustomEvent("tutorial2_popup_show")
                 {
                         { "onScreen", "튜토리얼 2 시작 팝업 출력"}
-                };
-            AnalyticsService.Instance.RecordEvent(customEvent);
+                });
         }
     }
 
@@ -106,21 +104,19 @@ public class TutorialUI : PopUpUI
         if (GameManager.Stage.stageId == 7001)
         {
             //TODO: tutorial1_popup_close
-            CustomEvent customEvent = new CustomEvent("tutorial1_popup_close")
+            AnalyticsService.Instance.RecordEvent(new CustomEvent("tutorial1_popup_close")
         {
             { "uiClick", "튜토리얼 1 시작 팝업 닫기"}
-        };
-            AnalyticsService.Instance.RecordEvent(customEvent);
+        });
         }
         if (GameManager.Stage.stageId == 7002)
         {
 
             //TODO: tutorial2_popup_close
-            CustomEvent customEvent = new CustomEvent("tutorial2_popup_close")
+            AnalyticsService.Instance.RecordEvent(new CustomEvent("tutorial2_popup_close")
         {
             { "uiClick", "튜토리얼 2 시작 팝업 닫기"}
-        };
-            AnalyticsService.Instance.RecordEvent(customEvent);
+        });
         }
     }
 
