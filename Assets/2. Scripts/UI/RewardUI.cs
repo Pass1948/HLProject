@@ -29,7 +29,6 @@ public class RewardUI : MonoBehaviour
 
     public void Show(int stageId)
     {
-
         int slotIndex = 0;
 
         if (stageRewards.TryGetValue(stageId, out int gold))
