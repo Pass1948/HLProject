@@ -23,7 +23,7 @@ public class ResultUI : BaseUI
     [SerializeField] GameObject gameClearUI;
     [SerializeField] Button gameClearBtn;
 
-    //========[Ʃ�丮��]========
+    //========[튜占썰리占쏙옙]========
     [SerializeField] GameObject tutorialUI1;
     [SerializeField] Button tutorialBtn1;
     [SerializeField] GameObject tutorialUI2;
@@ -64,13 +64,18 @@ public class ResultUI : BaseUI
         {
             if(GameManager.Shop.isTutorial1 == true)
             {
-                Debug.Log("Ʃ�丮�� 1");
+
                 tutorialUI1.SetActive(true);
                 clearUI.CloseUI();
                 overUI.CloseUI();
             }
             if(GameManager.Shop.isTutorial1 == false)
             {
+                //TODO: tutorial_finish_menu_click
+                Analytics.CustomEvent("tutorial_finish_menu_click", new Dictionary<string, object>
+  {
+    { "uiClick", "튜토리얼 2 메인 메뉴 버튼 클릭" },
+  });
                 tutorialUI1.SetActive(false);
                 tutorialUI2.SetActive(true);
                 clearUI.CloseUI();
@@ -90,6 +95,11 @@ public class ResultUI : BaseUI
 
     public void NextStage()
     {
+        //TODO: tutorial1_next_click
+        Analytics.CustomEvent("tutorial1_next_click", new Dictionary<string, object>
+  {
+    { "uiClick", "튜토리얼 1 다음 스테이지 버튼 클릭" },
+  });
         GameManager.Shop.isTutorial1 = false;
         int nextStageIndex = GameManager.Shop.stage.GetCurrentStageIndex() + 1;
         GameManager.Unit.CurrentStatReset();
@@ -101,7 +111,7 @@ public class ResultUI : BaseUI
 
     private void MainmenuScene()
     {
-        // ���θ޴� (��Ʈ��?) ������ 
+        // 占쏙옙占싸메댐옙 (占쏙옙트占쏙옙?) 占쏙옙占쏙옙占쏙옙 
         GameManager.UI.OpenUI<FadeInUI>();
         GameManager.ItemControl.ClearData();
         GameManager.Unit.isRiding = false;
