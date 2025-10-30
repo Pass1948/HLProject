@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Services.Analytics;
 using UnityEngine;
+using UnityEngine.Analytics;
 using UnityEngine.UI;
 
 static class TutorialSave
@@ -58,6 +59,10 @@ public class TitleUI : BaseUI
 
     private void StartGame()
     {
+        Analytics.CustomEvent("run_start_click", new Dictionary<string, object> // TODO: run_start_click
+        {
+            { "///", "///" },
+        });
         deckSelUI.transform.DOLocalMove(new Vector2(0, 0), 0.8f);
         GameManager.Sound.PlayUISfx();
         menuPanel.transform.DOLocalMove(new Vector2(2400, -24.92419f), 0.8f);
@@ -68,6 +73,7 @@ public class TitleUI : BaseUI
             TutorialSave.IsTutorial = false;
             return;
         }
+        
 
         deckSelUI.SetActive(true);
     }

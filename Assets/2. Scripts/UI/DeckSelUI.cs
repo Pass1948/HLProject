@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Analytics;
 using UnityEngine.UI;
 
 public class DeckSelUI : MonoBehaviour
@@ -28,6 +30,7 @@ public class DeckSelUI : MonoBehaviour
 
     private void Awake()
     {
+        
         AutoRegisterPanels();
         leftBtn.onClick.AddListener(PrevDeck);
         rightBtn.onClick.AddListener(NextDeck);
@@ -40,6 +43,14 @@ public class DeckSelUI : MonoBehaviour
         gamePlayButton.onClick.AddListener(OnGameStart);
         UpdateView();
         selectedClip = GameManager.Resource.Load<AudioClip>(Path.Sound + "LOAD_CASSETTE_08");
+    }
+
+    private void OnEnable()
+    {
+        Analytics.CustomEvent("deck_select_enter", new Dictionary<string, object> // TODO : deck_select_enter
+        {
+            { "///", "///" },
+        });
     }
 
     private void OnSelectDeck()
@@ -78,6 +89,11 @@ public class DeckSelUI : MonoBehaviour
 
     public void OnGameStart()
     {
+        
+        Analytics.CustomEvent("run_start_click", new Dictionary<string, object> // TODO: run_start_click
+        {
+            { "///", "///" },
+        });
         if(!ISSelectDeck())
         {
             Debug.Log("Select Your Deck!");
@@ -115,6 +131,10 @@ public class DeckSelUI : MonoBehaviour
 
     private void IsBasic()
     {
+        Analytics.CustomEvent("deck_select_confirm", new Dictionary<string, object> // TODO : deck_select_confirm
+        {
+            { "///", "///" },
+        });
         GameManager.TurnBased.turnSettingValue.IsBasicDeck = true;
         //사실 다른 덱들의 불값도 false로 해줘야함(상호배제)
         //이 버튼을 눌렀을때 해당 데이터다라고 인식시켜야함
@@ -123,24 +143,40 @@ public class DeckSelUI : MonoBehaviour
 
     private void IsDiamond()
     {
+        Analytics.CustomEvent("deck_select_confirm", new Dictionary<string, object> // TODO : deck_select_confirm
+        {
+            { "///", "///" },
+        });
         GameManager.TurnBased.turnSettingValue.IsDiamondDeck = true;
         GameManager.Sound.PlayUISfx();
     }
 
     private void IsHeart()
     {
+        Analytics.CustomEvent("deck_select_confirm", new Dictionary<string, object> // TODO : deck_select_confirm
+        {
+            { "///", "///" },
+        });
         GameManager.TurnBased.turnSettingValue.IsHeartDeck = true;
         GameManager.Sound.PlayUISfx();
     }
 
     private void IsSpade()
     {
+        Analytics.CustomEvent("deck_select_confirm", new Dictionary<string, object> // TODO : deck_select_confirm
+        {
+            { "///", "///" },
+        });
         GameManager.TurnBased.turnSettingValue.IsSpadeDeck = true;
         GameManager.Sound.PlayUISfx();
     }
 
     private void IsClub()
     {
+        Analytics.CustomEvent("deck_select_confirm", new Dictionary<string, object> // TODO : deck_select_confirm
+        {
+            { "///", "///" },
+        });
         GameManager.TurnBased.turnSettingValue.IsClubDeck = true;
         GameManager.Sound.PlayUISfx();
     }
