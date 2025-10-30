@@ -1,8 +1,12 @@
-﻿using System;
+﻿using DataTable;
+using MyBox;
+using System;
 using System.Collections.Generic;
-using UnityEngine;
-using DataTable;
 using UGS;
+using Unity.Services.Analytics;
+using Unity.Services.Core;
+using Unity.Services.Core.Environments;
+using UnityEngine;
 
 [Serializable]
 public class DataManager : MonoBehaviour
@@ -16,6 +20,7 @@ public class DataManager : MonoBehaviour
     private void Start()
     {
         UnityGoogleSheet.LoadAllData();
+
     }
 
     public void Initialize()

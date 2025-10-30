@@ -1,10 +1,13 @@
 using System.Collections.Generic;
+using Unity.Services.Analytics;
 using UnityEngine;
+using UnityEngine.Analytics;
 
 public class RewardUI : MonoBehaviour
 {
     public RewardSlotUI[] slots;
-    
+
+
     private void Start()
     {
         for (int i = 0; i < slots.Length; i++)

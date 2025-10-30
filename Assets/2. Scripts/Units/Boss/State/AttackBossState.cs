@@ -11,6 +11,8 @@ public class AttackBossState : BaseBossState
 
     private List<GameObject> previewTiles = new List<GameObject>();
     
+    private AudioClip attack;
+    
     public AttackBossState(BossStateMachine stateMachine, BossController controller, EnemyAnimHandler animHandler) 
         : base(stateMachine, controller, animHandler) { }
 
@@ -45,6 +47,7 @@ public class AttackBossState : BaseBossState
         {
             GameManager.Unit.ChangeHealth(GameManager.Unit.Player.playerModel, controller.model.attack);
             animHandler.OnAttack(GameManager.Unit.Player.transform);
+            GameManager.Sound.PlayBossAttackSound();
         }
 
         ClearPreveiwTiles();

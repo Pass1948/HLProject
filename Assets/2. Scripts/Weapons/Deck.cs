@@ -35,8 +35,11 @@ public class Deck : MonoBehaviour
         {
             if (GameManager.Shop.isTutorial1 == false)
             {
-                BuildTutorialDeck_TR2();
-                GameManager.UI.GetUI<TutorialUI>().OpenTR2();
+                if(GameManager.Stage.stageId == 7002)
+                {
+                    BuildTutorialDeck_TR2();
+                    GameManager.UI.GetUI<TutorialUI>().OpenTR2();
+                }
             }
             else
             {

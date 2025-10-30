@@ -12,6 +12,7 @@ public class DieBossState : BaseBossState
         if (controller.isDie)
         {
             animHandler.OnDie();
+            GameManager.Sound.PlayBossDeathSound();
             Exit();
         }
     }

@@ -4,7 +4,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using TMPro;
+using Unity.Services.Analytics;
 using UnityEngine;
+using UnityEngine.Analytics;
 using UnityEngine.UI;
 
 public class MainUI : BaseUI
@@ -104,6 +106,7 @@ public class MainUI : BaseUI
         else
         {
             stageInfoText.text = $"Stage {(GameManager.SaveLoad.nextSceneIndex + 1).ToString()}";
+            OnAnalyticsEvent(GameManager.SaveLoad.nextSceneIndex);
         }
        
     }
@@ -119,6 +122,16 @@ public class MainUI : BaseUI
         RefreshPlayerHP();
         RefreshVehicleHP();
 
+    }
+    
+    private void OnAnalyticsEvent(int v)
+    {
+        //TODO: stage_start
+        CustomEvent customEvent = new CustomEvent("stage_start")
+        {
+            { "stageValue", v}
+        };
+        AnalyticsService.Instance.RecordEvent(customEvent);
     }
 
     

@@ -116,12 +116,12 @@ public class Pathfinding
             // 현재 노드 처리
             openSet.Remove(currentNode);
             // 노드 위치를 닫힌 집합에 추가응
-            closedSet.Add(currentNode.Position);
+            closedSet.Add(currentNode.position);
             // 목표 지점에 착창, 도착 했으면 경로 반환
-            if (currentNode.Position == goal){ return RetracePath(currentNode);}
+            if (currentNode.position == goal){ return RetracePath(currentNode);}
 
             // 이웃 노드 탐색 (4방형 : 상ㅡ하ㅡ좌ㅡ우)
-            foreach (var neighbourPos in GetNeighbours(currentNode.Position))
+            foreach (var neighbourPos in GetNeighbours(currentNode.position))
             {
                 if (closedSet.Contains(neighbourPos) || blocked.Contains(neighbourPos))
                     continue; // 이미 방문했거나, 막힌 타일이면 무시
@@ -134,7 +134,7 @@ public class Pathfinding
                     Node neighbour = new Node(neighbourPos);
                     neighbour.gCost = newGCost;
                     neighbour.hCost = GetHeurustic(neighbourPos, goal);
-                    neighbour.Parent = currentNode;
+                    neighbour.parent = currentNode;
                     allNodes[neighbourPos] = neighbour;
                     openSet.Add(neighbour);
                     // 새로운 노드 발견
@@ -146,7 +146,7 @@ public class Pathfinding
                     if (newGCost < neighbour.gCost)
                     {
                         neighbour.gCost = newGCost;
-                        neighbour.Parent = currentNode;
+                        neighbour.parent = currentNode;
                     }
                 }
             }
@@ -163,8 +163,8 @@ public class Pathfinding
         Node current = endNode;
         while (current != null)
         {
-            path.Add(current.Position);
-            current = current.Parent;
+            path.Add(current.position);
+            current = current.parent;
         }
         path.Reverse();  // 시작 -> 목표 순서로 정렬
         path.RemoveAt(0); // 첫 칸(시작 지점)은 빼도 됨

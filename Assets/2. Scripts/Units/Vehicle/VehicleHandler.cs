@@ -18,11 +18,23 @@ public class VehicleHandler : MonoBehaviour
 
     private void Awake()
     {
-        GameManager.Unit.Player.playerModel.viecleBording = ViecleBording.On;
-
-        GameManager.Unit.Vehicle.vehicleModel.condition = VehicleCondition.GetOff;
+        
         currentPlayerMoveRange = 1;
         currentPlayerHP = GameManager.Unit.Player.playerModel.currentHealth;
+        
+        MainGameInit();
+    }
+
+    private void MainGameInit()
+    {
+        GameManager.Unit.Player.playerModel.viecleBording = ViecleBording.On;
+        GameManager.Unit.Vehicle.vehicleModel.condition = VehicleCondition.Riding;
+    }
+
+    private void TutorialVehicleOffInit()
+    {
+        GameManager.Unit.Player.playerModel.viecleBording = ViecleBording.off;
+        GameManager.Unit.Vehicle.vehicleModel.condition = VehicleCondition.GetOff;
     }
     private void Start()
     {
