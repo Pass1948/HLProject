@@ -23,7 +23,7 @@ public class ResultUI : BaseUI
     [SerializeField] GameObject gameClearUI;
     [SerializeField] Button gameClearBtn;
 
-    //========[Æ©Åä¸®¾ó]========
+    //========[íŠœå ì°ë¦¬å ì™ì˜™]========
     [SerializeField] GameObject tutorialUI1;
     [SerializeField] Button tutorialBtn1;
     [SerializeField] GameObject tutorialUI2;
@@ -50,6 +50,10 @@ public class ResultUI : BaseUI
         {
             overUI.CloseUI();
             clearUI.OpenUI();
+            Analytics.CustomEvent("game_clear_popup", new Dictionary<string, object> // TODO : game_clear_popup
+            {
+                { "///", "///" },
+            });
         }
         else if (result == ResultType.Over)
         {
@@ -60,6 +64,7 @@ public class ResultUI : BaseUI
         {
             if(GameManager.Shop.isTutorial1 == true)
             {
+
                 tutorialUI1.SetActive(true);
                 clearUI.CloseUI();
                 overUI.CloseUI();
@@ -69,7 +74,7 @@ public class ResultUI : BaseUI
                 //TODO: tutorial_finish_menu_click
                 Analytics.CustomEvent("tutorial_finish_menu_click", new Dictionary<string, object>
   {
-    { "uiClick", "Æ©Åä¸®¾ó 2 ¸ŞÀÎ ¸Ş´º ¹öÆ° Å¬¸¯" },
+    { "uiClick", "íŠœí† ë¦¬ì–¼ 2 ë©”ì¸ ë©”ë‰´ ë²„íŠ¼ í´ë¦­" },
   });
                 tutorialUI1.SetActive(false);
                 tutorialUI2.SetActive(true);
@@ -93,7 +98,7 @@ public class ResultUI : BaseUI
         //TODO: tutorial1_next_click
         Analytics.CustomEvent("tutorial1_next_click", new Dictionary<string, object>
   {
-    { "uiClick", "Æ©Åä¸®¾ó 1 ´ÙÀ½ ½ºÅ×ÀÌÁö ¹öÆ° Å¬¸¯" },
+    { "uiClick", "íŠœí† ë¦¬ì–¼ 1 ë‹¤ìŒ ìŠ¤í…Œì´ì§€ ë²„íŠ¼ í´ë¦­" },
   });
         GameManager.Shop.isTutorial1 = false;
         int nextStageIndex = GameManager.Shop.stage.GetCurrentStageIndex() + 1;
@@ -106,7 +111,7 @@ public class ResultUI : BaseUI
 
     private void MainmenuScene()
     {
-        // ¸ŞÀÎ¸Ş´º (ÀÎÆ®·Î?) ¾ÀÀ¸·Î 
+        // å ì™ì˜™å ì‹¸ë©”ëŒì˜™ (å ì™ì˜™íŠ¸å ì™ì˜™?) å ì™ì˜™å ì™ì˜™å ì™ì˜™ 
         GameManager.UI.OpenUI<FadeInUI>();
         GameManager.ItemControl.ClearData();
         GameManager.Unit.isRiding = false;

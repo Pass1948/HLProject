@@ -66,11 +66,11 @@ public class TitleUI : BaseUI
 
     private void StartGame()
     {
-        //TODO: new_game_click
-        Analytics.CustomEvent("new_game_click", new Dictionary<string, object>
-  {
-    { "uiClick", "새로시작클릭" },
-  });
+        Analytics.CustomEvent("run_start_click", new Dictionary<string, object> // TODO: run_start_click
+        {
+            { "///", "///" },
+        });
+
         deckSelUI.transform.DOLocalMove(new Vector2(0, 0), 0.8f);
         GameManager.Sound.PlayUISfx();
         menuPanel.transform.DOLocalMove(new Vector2(2400, -24.92419f), 0.8f);
@@ -81,6 +81,7 @@ public class TitleUI : BaseUI
             TutorialSave.IsTutorial = false;
             return;
         }
+        
 
         deckSelUI.SetActive(true);
     }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.ConstrainedExecution;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Analytics;
 using UnityEngine.UI;
 
 public class ShopUI : BaseUI
@@ -50,6 +51,10 @@ public class ShopUI : BaseUI
 
     private void OnEnable()
     {
+        Analytics.CustomEvent("shop_open_stage9", new Dictionary<string, object> // TODO : shop_open_stage9
+        {
+            { "///", "///" },
+        });
         GameManager.Sound.PlayBGM(GameManager.Resource.Create<AudioClip>(Path.Sound + "Buy some cards!"));
         healButton.onClick.AddListener(PlayerHeal);
         rerollButton.onClick.AddListener(OnReroll);
@@ -79,6 +84,10 @@ public class ShopUI : BaseUI
 
     private void OnDisable()
     {
+        Analytics.CustomEvent("shop_close_stage9", new Dictionary<string, object> // TODO : shop_close_stage9
+        {
+            { "///", "///" },
+        });
         healButton.onClick.RemoveListener(PlayerHeal);
         rerollButton.onClick.RemoveListener(OnReroll);
         removeButton.onClick.RemoveListener(OnRemoveBulletClicked);
@@ -90,6 +99,7 @@ public class ShopUI : BaseUI
         GameManager.Event.Unsubscribe<List<Ammo>>(EventType.ShopRemoveBulletPrompt, OnRemoveBulletPrompt);
         GameManager.Event.Unsubscribe(EventType.ShopPlayerCardsConfim, RebuildPlayerBullets);
         GameManager.Event.Unsubscribe(EventType.ShopPlayerCardsConfim, PlayerHpCheck);
+        
     }
 
     // 이벤트 핸들러
