@@ -73,6 +73,11 @@ public class TitleUI : BaseUI
             { "uiClick", "‘새로 시작’ 버튼 클릭"}
         };
         AnalyticsService.Instance.RecordEvent(customEvent);
+        CustomEvent customEvent2 = new CustomEvent("title_new_game_click")
+        {
+            { "uiClick", "타이틀 화면에서 새로 시작 버튼 클릭"}
+        };
+        AnalyticsService.Instance.RecordEvent(customEvent2);
         deckSelUI.transform.DOLocalMove(new Vector2(0, 0), 0.8f);
         GameManager.Sound.PlayUISfx();
         menuPanel.transform.DOLocalMove(new Vector2(2400, -24.92419f), 0.8f);
@@ -103,11 +108,9 @@ public class TitleUI : BaseUI
     private void ExitButton()
     {
 #if UNITY_EDITOR
-        AnalyticsService.Instance.StopDataCollection();
         Application.Quit();
-        
-#endif        
 
+#endif        
         GameManager.Sound.PlayUISfx();
     }
 

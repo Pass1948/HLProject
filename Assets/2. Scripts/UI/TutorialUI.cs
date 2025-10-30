@@ -45,26 +45,6 @@ public class TutorialUI : PopUpUI
 
     public override void CloseUI()
     {
-        if (GameManager.Stage.stageId == 7001)
-        {
-            //TODO: tutorial1_popup_close
-            CustomEvent customEvent = new CustomEvent("tutorial1_popup_close")
-        {
-            { "uiClick", "튜토리얼 1 시작 팝업 닫기"}
-        };
-            AnalyticsService.Instance.RecordEvent(customEvent);
-
-        }
-        if (GameManager.Stage.stageId == 7002)
-        {
-
-            //TODO: tutorial2_popup_close
-            CustomEvent customEvent = new CustomEvent("tutorial2_popup_close")
-        {
-            { "uiClick", "튜토리얼 2 시작 팝업 닫기"}
-        };
-            AnalyticsService.Instance.RecordEvent(customEvent);
-        }
         base.CloseUI();
     }
 
@@ -95,25 +75,52 @@ public class TutorialUI : PopUpUI
         {
             Init(_pendingTopic);
             _hasPending = false;
-            if(GameManager.Stage.stageId == 7001)
-            {
-                //TODO: tutorial1_popup_show
-                CustomEvent customEvent = new CustomEvent("tutorial1_popup_show")
+        }
+    }
+    private void OnEnable()
+    {
+        if (GameManager.Stage.stageId == 7001)
         {
-            { "onScreen", "튜토리얼 1 시작 팝업 출력"}
-        };
-                AnalyticsService.Instance.RecordEvent(customEvent);
-            }
-            if (GameManager.Stage.stageId == 7002)
-            {
+            //TODO: tutorial1_popup_show
+            CustomEvent customEvent = new CustomEvent("tutorial1_popup_show")
+                {
+                    { "onScreen", "튜토리얼 1 시작 팝업 출력"},
+                 };
+            AnalyticsService.Instance.RecordEvent(customEvent);
+        }
 
-                //TODO: tutorial2_popup_show
-                CustomEvent customEvent = new CustomEvent("tutorial2_popup_show")
+        if (GameManager.Stage.stageId == 7002)
         {
-            { "onScreen", "튜토리얼 2 시작 팝업 출력"}
+
+            //TODO: tutorial2_popup_show
+            CustomEvent customEvent = new CustomEvent("tutorial2_popup_show")
+                {
+                        { "onScreen", "튜토리얼 2 시작 팝업 출력"}
+                };
+            AnalyticsService.Instance.RecordEvent(customEvent);
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (GameManager.Stage.stageId == 7001)
+        {
+            //TODO: tutorial1_popup_close
+            CustomEvent customEvent = new CustomEvent("tutorial1_popup_close")
+        {
+            { "uiClick", "튜토리얼 1 시작 팝업 닫기"}
         };
-                AnalyticsService.Instance.RecordEvent(customEvent);
-            }
+            AnalyticsService.Instance.RecordEvent(customEvent);
+        }
+        if (GameManager.Stage.stageId == 7002)
+        {
+
+            //TODO: tutorial2_popup_close
+            CustomEvent customEvent = new CustomEvent("tutorial2_popup_close")
+        {
+            { "uiClick", "튜토리얼 2 시작 팝업 닫기"}
+        };
+            AnalyticsService.Instance.RecordEvent(customEvent);
         }
     }
 
@@ -260,14 +267,14 @@ public class TutorialUI : PopUpUI
         return list;
     }
 
-    public  void OpenTR1()
+    public void OpenTR1()
     {
         GameManager.UI.OpenPopUI<TutorialUI>();
         var ui = GameManager.UI.GetPopUI<TutorialUI>();
         ui?.Init(Topic.Bullet, Topic.BikeControl, Topic.Move, Topic.MonsterInfo);
     }
 
-    public  void OpenTR2()
+    public void OpenTR2()
     {
         GameManager.UI.OpenPopUI<TutorialUI>();
         var ui = GameManager.UI.GetPopUI<TutorialUI>();
