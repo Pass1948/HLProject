@@ -26,8 +26,7 @@ public class EnemyAnimHandler : MonoBehaviour
         deathClip = Resources.Load<AudioClip>(Path.Sound + "monster/Normal/NM_Death");
         attackClip = Resources.Load<AudioClip>(Path.Sound + "monster/Normal/Goblin_Attack");
     }
-
-    public void OnMove(bool isMove, Transform target)
+    
     [SerializeField] public Transform modelTransform;
 
     public float rotationOffsetY = 0f;

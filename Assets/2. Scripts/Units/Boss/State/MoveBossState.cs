@@ -34,9 +34,7 @@ public class MoveBossState : BaseBossState
 
             animHandler.OnMove(true, nextPos);
             controller.StartCoroutine(MoveAnim(path.GetRange(0, range)));
-            GameObject.Destroy(dummyTarget, 0.1f);
             GameManager.Sound.PlayBossMoveSound();
-
         }
         else
         {
