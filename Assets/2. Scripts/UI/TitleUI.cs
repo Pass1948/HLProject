@@ -67,6 +67,12 @@ public class TitleUI : BaseUI
 
     private void StartGame()
     {
+        //TODO : stage_start
+        CustomEvent customEvent = new CustomEvent("stage_start")
+        {
+            { "uiClick", "‘새로 시작’ 버튼 클릭"}
+        };
+        AnalyticsService.Instance.RecordEvent(customEvent);
         deckSelUI.transform.DOLocalMove(new Vector2(0, 0), 0.8f);
         GameManager.Sound.PlayUISfx();
         menuPanel.transform.DOLocalMove(new Vector2(2400, -24.92419f), 0.8f);
