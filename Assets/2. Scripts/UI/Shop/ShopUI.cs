@@ -50,6 +50,7 @@ public class ShopUI : BaseUI
 
     private void OnEnable()
     {
+        GameManager.Sound.PlayBGM(GameManager.Resource.Create<AudioClip>(Path.Sound + "Buy some cards!"));
         healButton.onClick.AddListener(PlayerHeal);
         rerollButton.onClick.AddListener(OnReroll);
         removeButton.onClick.AddListener(OnRemoveBulletClicked);

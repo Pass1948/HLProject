@@ -45,7 +45,6 @@ public class ClearUI : BaseUI
     {
         OnAddPile();
         GameManager.UI.GetUI<ShopUI>();
-        GameManager.Sound.PlayBGM(GameManager.Resource.Create<AudioClip>(Path.Sound + "Buy some cards!"));
         GameManager.Sound.PlayUISfx();
     }
 

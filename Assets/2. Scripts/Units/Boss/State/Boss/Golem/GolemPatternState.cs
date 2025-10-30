@@ -26,6 +26,13 @@ public class GolemPatternState : PatternBossState
         }
 
         GameManager.Map.attackRange.ClearRange();
+        
+        Transform player = GameManager.Unit.Player.transform;
+        Vector3 dir = player.position - controller.transform.position;
+        dir.y = 0f;
+
+        controller.StartCoroutine(controller.SmoothRotate(dir, 0.12f));
+        controller.animHandler.OnAttack(player);
         animHandler.OnPattern();
         yield return new WaitForSeconds(1f);
 

@@ -13,17 +13,28 @@ public class VehicleHandler : MonoBehaviour
 
     private int currentPlayerMoveRange;
     private int currentPlayerHP;
-
     public Vector3Int vehiclePoison;
 
 
     private void Awake()
     {
-        GameManager.Unit.Player.playerModel.viecleBording = ViecleBording.On;
-
-        GameManager.Unit.Vehicle.vehicleModel.condition = VehicleCondition.GetOff;
+        
         currentPlayerMoveRange = 1;
         currentPlayerHP = GameManager.Unit.Player.playerModel.currentHealth;
+        
+        MainGameInit();
+    }
+
+    private void MainGameInit()
+    {
+        GameManager.Unit.Player.playerModel.viecleBording = ViecleBording.On;
+        GameManager.Unit.Vehicle.vehicleModel.condition = VehicleCondition.Riding;
+    }
+
+    private void TutorialVehicleOffInit()
+    {
+        GameManager.Unit.Player.playerModel.viecleBording = ViecleBording.off;
+        GameManager.Unit.Vehicle.vehicleModel.condition = VehicleCondition.GetOff;
     }
     private void Start()
     {
@@ -68,6 +79,7 @@ public class VehicleHandler : MonoBehaviour
         vehicleDestruction.transform.position = transform.position;
         if (GameManager.Unit.Vehicle.vehicleModel.currentHealth <= 0)
         {
+            GameManager.Unit.isRiding = false;
             GameManager.Unit.Vehicle.vehicleModel.condition = VehicleCondition.Destruction;
             GameManager.Unit.Player.playerModel.viecleBording = ViecleBording.off;
             GameManager.Unit.Vehicle.transform.SetParent(null);
@@ -100,11 +112,17 @@ public class VehicleHandler : MonoBehaviour
     //탑승 버튼
     public void MountVehicle()
     {
+    
         GameManager.Unit.Vehicle.vehicleModel.condition = VehicleCondition.Riding;
         GameManager.Unit.Player.playerModel.viecleBording = ViecleBording.On;
         transform.SetParent(GameManager.Unit.Player.transform);
         GameManager.Unit.Vehicle.transform.localPosition = Vector3.zero;
-        GameManager.Unit.Player.playerModel.moveRange += GameManager.Unit.Vehicle.vehicleModel.moveRange;
+        if (GameManager.Unit.isRiding == false)
+        {
+            GameManager.Unit.isRiding = true;
+ 
+            GameManager.Unit.Player.playerModel.moveRange += GameManager.Unit.Vehicle.vehicleModel.moveRange;
+        }
         //GameManager.Unit.Player.playerModel.health += GameManager.Unit.Vehicle.vehicleModel.health;
         GameManager.Map.mapData[(int)transform.position.x, (int)transform.position.y] = 0;
         GameManager.Unit.Player.animHandler.OnRiding();
@@ -112,6 +130,7 @@ public class VehicleHandler : MonoBehaviour
     // 내리는 버튼
     public void DismountVehicle()
     {
+        GameManager.Unit.isRiding = false;
         GameManager.Unit.Vehicle.vehicleModel.condition = VehicleCondition.GetOff;
         GameManager.Unit.Player.playerModel.viecleBording = ViecleBording.off;
         GameManager.Unit.Vehicle.transform.SetParent(null);

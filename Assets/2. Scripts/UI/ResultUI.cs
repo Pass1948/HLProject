@@ -1,6 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Services.Analytics;
+using Unity.Services.Core;
+using Unity.Services.Core.Environments;
 using UnityEngine;
+using UnityEngine.Analytics;
 using UnityEngine.UI;
 
 public enum ResultType
@@ -23,11 +28,15 @@ public class ResultUI : BaseUI
     [SerializeField] Button tutorialBtn1;
     [SerializeField] GameObject tutorialUI2;
     [SerializeField] Button tutorialBtn2;
+   
 
 
     public ResultType resulttype;
 
-    private void Awake()
+   
+
+
+    private void Start()
     {
         tutorialBtn1.onClick.AddListener(NextStage);
         tutorialBtn2.onClick.AddListener(MainmenuScene);
@@ -36,6 +45,7 @@ public class ResultUI : BaseUI
 
     public void GetResultType(ResultType result)
     {
+
         if (result == ResultType.Clear)
         {
             overUI.CloseUI();
@@ -89,10 +99,10 @@ public class ResultUI : BaseUI
     {
         // 메인메뉴 (인트로?) 씬으로 
         GameManager.UI.OpenUI<FadeInUI>();
-        GameManager.Shop.isTutorial1 = true;
-        GameManager.ItemControl.drawPile.Clear();
-        GameManager.TurnBased.turnSettingValue.isTutorial = false;
         GameManager.ItemControl.ClearData();
+        GameManager.Unit.isRiding = false;
+        GameManager.Shop.isTutorial1 = true;
+        GameManager.TurnBased.turnSettingValue.isTutorial = false;
         GameManager.SceneLoad.LoadScene(SceneType.Title);
         GameManager.SaveLoad.nextSceneIndex = 0;
     }

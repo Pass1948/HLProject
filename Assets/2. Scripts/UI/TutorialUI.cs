@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
+using UnityEngine;
+using UnityEngine.Analytics;
+using UnityEngine.UI;
 
 public class TutorialUI : PopUpUI
 {
@@ -73,6 +74,20 @@ public class TutorialUI : PopUpUI
         {
             Init(_pendingTopic);
             _hasPending = false;
+            if(GameManager.Stage.stageId == 7001)
+            {
+                //TODO: tutorial1_popup_show
+                Analytics.CustomEvent("tutorial1_popup_show", new Dictionary<string, object>
+  {
+    { "onScreen", "튜토리얼YES" },
+  });
+
+            }
+            if (GameManager.Stage.stageId == 7002)
+            {
+
+
+            }
         }
     }
 
