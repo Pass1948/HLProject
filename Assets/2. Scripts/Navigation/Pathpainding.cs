@@ -184,7 +184,7 @@ public class Pathfinding
     //nodePos
     private IEnumerable<Vector3Int> GetNeighbours(Vector3Int nodePos)
     {
-        if ((nodePos.x >= 0 && nodePos.x <= 10) && (nodePos.y >= 0 && nodePos.y <= 10))
+        if ((nodePos.x >= 0 && nodePos.x < 10) && (nodePos.y >= 0 && nodePos.y < 10))
         {
             yield return new Vector3Int(nodePos.x + 1, nodePos.y, nodePos.z);
             yield return new Vector3Int(nodePos.x - 1, nodePos.y, nodePos.z);

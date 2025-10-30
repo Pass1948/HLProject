@@ -47,8 +47,9 @@ public class EnemyAnimHandler : MonoBehaviour
         animator.SetTrigger(Warning);
     }
 
-    public void OnPattern()
+    public void OnPattern(Vector3Int from, Vector3Int to)
     {
+        FaceToGridDirection(from, to);
         animator.SetTrigger(Pattern);
     }
 
@@ -74,4 +75,19 @@ public class EnemyAnimHandler : MonoBehaviour
 
         modelTransform.transform.rotation = Quaternion.Euler(0f, angle + 180f, 0f);
     }
+    
+    public void FaceToGridDirection(Vector3Int start, Vector3Int dest)
+    {
+        Vector3Int diff = dest - start;
+
+        float angle;
+        if (Mathf.Abs(diff.x) > Mathf.Abs(diff.y))
+            angle = (diff.x > 0) ? 90f : -90f;
+        else
+            angle = (diff.y > 0) ? 0f : 180f;
+
+        // ✅ 모델 회전으로 일관성 유지
+        modelTransform.rotation = Quaternion.Euler(0f, angle + rotationOffsetY, 0f);
+    }
+    
 }
