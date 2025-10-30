@@ -120,6 +120,7 @@ public class TitleUI : BaseUI
     private void TutorialYes()
     {
         //TODO: tutorial_popup_yes
+
         CustomEvent customEvent = new CustomEvent("tutorial_popup_yes")
         {
             { "onScreen", "튜토리얼 진행 선택(‘예’)"}
