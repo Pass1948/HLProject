@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.ConstrainedExecution;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Analytics;
 using UnityEngine.UI;
 
 public class ShopUI : BaseUI
@@ -50,6 +51,11 @@ public class ShopUI : BaseUI
 
     private void OnEnable()
     {
+        Analytics.CustomEvent("shop_open_stage", new Dictionary<string, object> // TODO : shop_open_stage
+        {
+            { "onScreen", "상점 팝업 출력" },
+        });
+        GameManager.Sound.PlayBGM(GameManager.Resource.Create<AudioClip>(Path.Sound + "Buy some cards!"));
         healButton.onClick.AddListener(PlayerHeal);
         rerollButton.onClick.AddListener(OnReroll);
         removeButton.onClick.AddListener(OnRemoveBulletClicked);
@@ -89,6 +95,7 @@ public class ShopUI : BaseUI
         GameManager.Event.Unsubscribe<List<Ammo>>(EventType.ShopRemoveBulletPrompt, OnRemoveBulletPrompt);
         GameManager.Event.Unsubscribe(EventType.ShopPlayerCardsConfim, RebuildPlayerBullets);
         GameManager.Event.Unsubscribe(EventType.ShopPlayerCardsConfim, PlayerHpCheck);
+        
     }
 
     // 이벤트 핸들러
@@ -330,6 +337,10 @@ public class ShopUI : BaseUI
 
     private void NextStage()
     {
+        Analytics.CustomEvent("shop_close_stage", new Dictionary<string, object> // TODO : shop_close_stage9
+        {
+            { "uiClick", "상점 팝업 닫기" },
+        });
         // TODO: 여기에 추가해 주시면 됩니당.(JBS)
         int nextStageIndex = GameManager.Shop.stage.GetCurrentStageIndex() + 1;
         GameManager.Unit.CurrentStatReset();

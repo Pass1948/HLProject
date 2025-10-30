@@ -1,6 +1,12 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Resources/Prefab/Enemy/Minos.prefab.meta
 guid: 9a5b170a4574d494eb0e056a0d0ef696
 PrefabImporter:
+========
+guid: 33bb6ce0e26589e4bb28794a97560d3b
+folderAsset: yes
+DefaultImporter:
+>>>>>>>> Develop:Assets/10.Imports/10. Imports_v0.2.meta
   externalObjects: {}
   userData: 
   assetBundleName: 

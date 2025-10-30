@@ -49,8 +49,8 @@ public class SpawnController : MonoBehaviour
     private readonly Dictionary<int, int> bossStageMap = new Dictionary<int, int>()
     {
         { 2003, 7002 },
-        { 2014, 7008 },
-        { 2015, 7016 }
+      //  { 2014, 7008 },
+        { 2014, 7012 }
     };
 
     // MapManager의 Start에서 호출

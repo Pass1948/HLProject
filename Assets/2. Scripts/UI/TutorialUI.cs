@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
+using UnityEngine;
+using UnityEngine.Analytics;
+using UnityEngine.UI;
 
 public class TutorialUI : PopUpUI
 {
@@ -43,6 +44,24 @@ public class TutorialUI : PopUpUI
 
     public override void CloseUI()
     {
+        if (GameManager.Stage.stageId == 7001)
+        {
+            //TODO: tutorial1_popup_close
+            Analytics.CustomEvent("tutorial1_popup_close", new Dictionary<string, object>
+  {
+    { "onScreen", "튜토리얼 1 시작 팝업 닫기" },
+  });
+
+        }
+        if (GameManager.Stage.stageId == 7002)
+        {
+
+            //TODO: tutorial2_popup_close
+            Analytics.CustomEvent("tutorial2_popup_close", new Dictionary<string, object>
+  {
+    { "onScreen", "튜토리얼 2 시작 팝업 닫기" },
+  });
+        }
         base.CloseUI();
     }
 
@@ -73,6 +92,24 @@ public class TutorialUI : PopUpUI
         {
             Init(_pendingTopic);
             _hasPending = false;
+            if(GameManager.Stage.stageId == 7001)
+            {
+                //TODO: tutorial1_popup_show
+                Analytics.CustomEvent("tutorial1_popup_show", new Dictionary<string, object>
+  {
+    { "onScreen", "튜토리얼 1 시작 팝업 출력" },
+  });
+
+            }
+            if (GameManager.Stage.stageId == 7002)
+            {
+
+                //TODO: tutorial2_popup_show
+                Analytics.CustomEvent("tutorial2_popup_show", new Dictionary<string, object>
+  {
+    { "onScreen", "튜토리얼 2 시작 팝업 출력" },
+  });
+            }
         }
     }
 

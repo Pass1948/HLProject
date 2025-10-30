@@ -94,6 +94,9 @@ public class SettingUI : PopUpUI
         masterVolumeBar.onValueChanged.RemoveListener(GameManager.Sound.SetMasterVolume);
         sfxVolumeBar.onValueChanged.RemoveListener(GameManager.Sound.SetSfxVolume);
         bgmVolumeBar.onValueChanged.RemoveListener(GameManager.Sound.SetBgmVolume);
+        masterVolumeBar.value = GameManager.Sound.masterVolume;
+        sfxVolumeBar.value = GameManager.Sound.sfxVolume;
+        bgmVolumeBar.value = GameManager.Sound.bgmVolume;
     }
 
 
@@ -107,6 +110,8 @@ public class SettingUI : PopUpUI
     private void BackToMainMenu()
     {
         Debug.Log("메인메뉴로 가기");
+        GameManager.SaveLoad.nextSceneIndex = 0;
+        GameManager.Map.NormalStage();
         GameManager.ItemControl.ClearData();
         GameManager.Unit.isRiding = false;
         GameManager.TurnBased.turnSettingValue.isTutorial = false;

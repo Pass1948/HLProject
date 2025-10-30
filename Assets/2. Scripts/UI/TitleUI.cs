@@ -1,9 +1,12 @@
-﻿using System;
+﻿using DG.Tweening;
+using MyBox;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using DG.Tweening;
-using MyBox;
+using Unity.Services.Analytics;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Analytics;
 using UnityEngine.UI;
 
 static class TutorialSave
@@ -27,12 +30,11 @@ public class TitleUI : BaseUI
     [SerializeField] private Button tutorialYesBtn;
     [SerializeField] private Button tutorialNoBtn;
 
-    private AudioClip audioClip;
-
     private void Awake()
     {
         GameManager.Sound.PlayBGM(GameManager.Resource.Load<AudioClip>(Path.Sound + "BangPaladin"));
     }
+
 
 
     private void Start()
@@ -48,6 +50,11 @@ public class TitleUI : BaseUI
         restartButton.onClick.AddListener(ReLoadPlay);
         tutorialYesBtn.onClick.AddListener(TutorialYes);
         tutorialNoBtn.onClick.AddListener(TutorialNo);
+        //TODO: title_enter
+        Analytics.CustomEvent("title_enter", new Dictionary<string, object>
+  {
+    { "onScreen", "타이틀 진입" },
+  });
     }
     private void OnDisable()
     {
@@ -59,6 +66,11 @@ public class TitleUI : BaseUI
 
     private void StartGame()
     {
+        Analytics.CustomEvent("run_start_click", new Dictionary<string, object> // TODO: run_start_click
+        {
+            { "///", "///" },
+        });
+
         deckSelUI.transform.DOLocalMove(new Vector2(0, 0), 0.8f);
         GameManager.Sound.PlayUISfx();
         menuPanel.transform.DOLocalMove(new Vector2(2400, -24.92419f), 0.8f);
@@ -69,6 +81,7 @@ public class TitleUI : BaseUI
             TutorialSave.IsTutorial = false;
             return;
         }
+        
 
         deckSelUI.SetActive(true);
     }
@@ -88,7 +101,7 @@ public class TitleUI : BaseUI
     private void ExitButton()
     {
 #if UNITY_EDITOR
-        
+        AnalyticsService.Instance.StopDataCollection();
         Application.Quit();
         
 #endif        
@@ -98,12 +111,22 @@ public class TitleUI : BaseUI
 
     private void ShowTutorialPopup()
     {
+        //TODO: tutorial_popup_show
+        Analytics.CustomEvent("tutorial_popup_show", new Dictionary<string, object>
+  {
+    { "onScreen", "튜토리얼창열림" },
+  });
         deckSelUI.SetActive(false);
         tutorialPopup.SetActive(true);
     }
 
     private void TutorialYes()
     {
+        //TODO: tutorial_popup_yes
+        Analytics.CustomEvent("tutorial_popup_yes", new Dictionary<string, object>
+  {
+    { "uiClick", "튜토리얼YES" },
+  });
         //여기에 튜토리얼 스테이지 진입넣으면 됩니다
         GameManager.TurnBased.turnSettingValue.isTutorial = true;
         GameManager.UI.OpenUI<FadeInUI>();

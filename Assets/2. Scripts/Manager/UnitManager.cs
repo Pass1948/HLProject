@@ -37,6 +37,7 @@ public class UnitManager : MonoBehaviour
     public int curMulligan;
     public int curHealth;
     public int curHealthRange;
+    public int curMonney;
 
     // =====[���� ���� ����� ����]=====
     public int curVMoveRange;
@@ -111,6 +112,7 @@ public class UnitManager : MonoBehaviour
 
     public void CurrentStatReset()
     {
+        curMonney = Player.playerModel.monney;
         curAttack = Player.playerModel.attack;
          curAttackRange = Player.playerModel.attackRange;
         curMoveRange = Player.playerModel.moveRange;
@@ -123,6 +125,7 @@ public class UnitManager : MonoBehaviour
 
     public void SetCurrentStat()
     {
+        Player.playerModel.monney = curMonney;
         Player.playerModel.attack =curAttack;
         Player.playerModel.attackRange = curAttackRange;
         Player.playerModel.moveRange = curMoveRange;
