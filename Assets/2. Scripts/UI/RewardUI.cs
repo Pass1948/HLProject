@@ -20,11 +20,11 @@ public class RewardUI : MonoBehaviour
     // 스테이지 인트 예시
     private readonly Dictionary<int,int> stageRewards = new()
     {
-        {1, 5},
-        {2, 5},
-        {3, 5},
-        {4, 5},
-        {5, 5},
+        {1, GameManager.TurnBased.turnSettingValue.rewardGold},
+        {2, GameManager.TurnBased.turnSettingValue.rewardGold},
+        {3, GameManager.TurnBased.turnSettingValue.rewardGold},
+        {4, GameManager.TurnBased.turnSettingValue.rewardGold},
+        {5, GameManager.TurnBased.turnSettingValue.rewardGold},
     };
 
     public void Show(int stageId)

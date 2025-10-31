@@ -117,7 +117,7 @@ public class TitleUI : BaseUI
         AnalyticsService.Instance.RecordEvent(new CustomEvent("tutorial_popup_show")
         {
             { "onScreen", "튜토리얼 안내 팝업 표시됨"}
-        };);
+        });
         deckSelUI.SetActive(false);
         tutorialPopup.SetActive(true);
     }
