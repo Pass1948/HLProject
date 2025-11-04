@@ -29,6 +29,7 @@ public class UnitManager : MonoBehaviour
     
    public bool isInit = false;
 
+    public bool isRiding = false;
     // =====[���� ���� ����� ����]=====
     public int curAttack;
     public int curAttackRange;
@@ -36,6 +37,7 @@ public class UnitManager : MonoBehaviour
     public int curMulligan;
     public int curHealth;
     public int curHealthRange;
+    public int curMonney;
 
     // =====[���� ���� ����� ����]=====
     public int curVMoveRange;
@@ -55,16 +57,32 @@ public class UnitManager : MonoBehaviour
             switch (enemy.attri)
             {
                 case EnemyAttribute.High:
-                    if (enemy.rank == 13 && ammo.rank == 1)
+                    if(GameManager.ItemControl.sameNum == true)
                     {
-                        unit.currentHealth -= damage;
+                        if(enemy.rank == ammo.rank)
+                        {
+                            unit.currentHealth -= damage;
+                            break;
+                        }
                     }
-                    else if (enemy.rank < ammo.rank)
-                    {
-                        unit.currentHealth -= damage;
-                    }
+                        if (enemy.rank == 13 && ammo.rank == 1)
+                        {
+                            unit.currentHealth -= damage;
+                        }
+                        else if (enemy.rank < ammo.rank)
+                        {
+                            unit.currentHealth -= damage;
+                        }
                     break;
                 case EnemyAttribute.Low:
+                    if (GameManager.ItemControl.sameNum == true)
+                    {
+                        if (enemy.rank == ammo.rank)
+                        {
+                            unit.currentHealth -= damage;
+                            break;
+                        }
+                    }
                     if (enemy.rank == 1 && ammo.rank == 13)
                     {
                         unit.currentHealth -= damage;
@@ -110,6 +128,7 @@ public class UnitManager : MonoBehaviour
 
     public void CurrentStatReset()
     {
+        curMonney = Player.playerModel.monney;
         curAttack = Player.playerModel.attack;
          curAttackRange = Player.playerModel.attackRange;
         curMoveRange = Player.playerModel.moveRange;
@@ -122,6 +141,7 @@ public class UnitManager : MonoBehaviour
 
     public void SetCurrentStat()
     {
+        Player.playerModel.monney = curMonney;
         Player.playerModel.attack =curAttack;
         Player.playerModel.attackRange = curAttackRange;
         Player.playerModel.moveRange = curMoveRange;

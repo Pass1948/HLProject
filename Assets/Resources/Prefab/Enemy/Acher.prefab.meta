@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Resources/Prefab/Enemy/Acher.prefab.meta
 guid: 3a4e141ae23961a47a66b783dfe6695f
+========
+guid: 06ad733f0104ba44b94c06090717c789
+>>>>>>>> Develop:Assets/Resources/Prefab/UI/Elements/LoadingUI.prefab.meta
 PrefabImporter:
   externalObjects: {}
   userData: 

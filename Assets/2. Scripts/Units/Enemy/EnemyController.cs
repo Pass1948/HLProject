@@ -24,7 +24,6 @@ public class EnemyController : MonoBehaviour
     public bool startTurn =false;
 
     public float moveDuration = 0.2f;
-
     private void OnEnable()
     {
         GameManager.Event.Subscribe(EventType.EnemyTurnStart, StartTurn);
@@ -78,12 +77,17 @@ public class EnemyController : MonoBehaviour
     {
         stateMachine?.Excute();
 
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.F10))
         {
             isDie = true;
             stateMachine.ChangeState(stateMachine.DieState);
             GameManager.TurnBased.EnemyDieCheck();
         }
+/*        
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            animHandler.OnMove(true, GameManager.Unit.Player.transform.position);
+        }*/
     }
 
     public void OnHitState()
@@ -124,14 +128,48 @@ public class EnemyController : MonoBehaviour
             yield break;
         }
 
-
-        foreach (var cell in path)
+        // foreach (var cell in path)
+        // {
+        //     Vector3 targetPos = GameManager.Map.tilemap.GetCellCenterWorld(cell);
+        //     yield return StartCoroutine(MoveToPosition(targetPos, moveDuration));
+        // }
+        
+        for (int i = 0; i < path.Count; i++)
         {
-            Vector3 targetPos = GameManager.Map.tilemap.GetCellCenterWorld(cell);
+            Vector3 targetPos = GameManager.Map.tilemap.GetCellCenterWorld(path[i]);
+            
+            Vector3 dir = targetPos - transform.position;
+            dir.y = 0f;
+
+            if (dir != Vector3.zero)
+            {
+                // animHandler.FaceToTarget4Dir(dir);
+                yield return StartCoroutine(SmoothRotate(dir, 0.12f));
+            }
+
             yield return StartCoroutine(MoveToPosition(targetPos, moveDuration));
         }
     }
 
+    public IEnumerator SmoothRotate(Vector3 dir, float duration)
+    {
+        if (dir == Vector3.zero) yield break;
+
+        Quaternion startRot = animHandler.modelTransform.rotation;
+        Quaternion targetRot = Quaternion.LookRotation(dir) * Quaternion.Euler(0, animHandler.rotationOffsetY, 0);
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / duration);
+            animHandler.modelTransform.rotation = Quaternion.Slerp(startRot, targetRot, t);
+            yield return null;
+        }
+
+        animHandler.modelTransform.rotation = targetRot;
+    }
+    
     private IEnumerator MoveToPosition(Vector3 target, float duration)
     {
         Vector3 start = transform.position;

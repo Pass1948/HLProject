@@ -14,7 +14,8 @@ public class RangeItem : BaseItem
         {
             if (items[i].id == id)
             {
-                playerModel.moveRange +=items[i].addMoveRange;
+                GameManager.Unit.Player.playerModel.moveRange += items[i].addMoveRange;
+
             }
         }
         
@@ -25,7 +26,7 @@ public class RangeItem : BaseItem
         {
             if (items[i].id == id)
             {
-                playerModel.moveRange -=items[i].addMoveRange;
+                GameManager.Unit.Player.playerModel.moveRange -=items[i].addMoveRange;
             }
         }
     }
@@ -39,7 +40,8 @@ public class RangeItem : BaseItem
         {
             if (items[i].id == id)
             {
-                playerModel.attackRange +=items[i].addAttackRange;
+                GameManager.Unit.Player.playerModel.attackRange +=items[i].addAttackRange;
+                Debug.Log("내 사거리 싯팔" + items[i].addAttackRange + GameManager.Unit.Player.playerModel.attackRange);
             }
         }
         
@@ -50,7 +52,7 @@ public class RangeItem : BaseItem
         {
             if (items[i].id == id)
             {
-                playerModel.attackRange -=items[i].addAttackRange;
+                GameManager.Unit.Player.playerModel.attackRange -=items[i].addAttackRange;
             }
         }
     }

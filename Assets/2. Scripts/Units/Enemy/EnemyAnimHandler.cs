@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,17 +15,32 @@ public class EnemyAnimHandler : MonoBehaviour
 
     [SerializeField] private Animator animator;
 
-    [SerializeField] float snap = 0.15f; 
+    [SerializeField] float snap = 0.15f;
     
-    public void OnMove(bool isMove, Transform target)
+    // 오디오 추가
+    private AudioClip deathClip;
+    private AudioClip attackClip;
+
+    private void Awake()
     {
-        FaceToTarget4Dir(target);
+        deathClip = Resources.Load<AudioClip>(Path.Sound + "monster/Normal/NM_Death");
+        attackClip = Resources.Load<AudioClip>(Path.Sound + "monster/Normal/Goblin_Attack");
+    }
+    
+    [SerializeField] public Transform modelTransform;
+
+    public float rotationOffsetY = 0f;
+    
+    public void OnMove(bool isMove, Vector3 target)
+    {
+        FaceToTarget4Dir(target - transform.position);
         animator.SetBool(Move, isMove);
     }
 
     public void OnDie()
     {
         animator.SetBool(Die, true);
+        GameManager.Sound.PlaySfx(deathClip);
     }
 
     public void OnHit()
@@ -36,6 +52,7 @@ public class EnemyAnimHandler : MonoBehaviour
     {
         this.transform.LookAt(target);
         animator.SetTrigger(Attack);
+        GameManager.Sound.PlaySfx(attackClip);
     }
 
     public void OnWarning()
@@ -43,8 +60,9 @@ public class EnemyAnimHandler : MonoBehaviour
         animator.SetTrigger(Warning);
     }
 
-    public void OnPattern()
+    public void OnPattern(Vector3Int from, Vector3Int to)
     {
+        FaceToGridDirection(from, to);
         animator.SetTrigger(Pattern);
     }
 
@@ -53,24 +71,36 @@ public class EnemyAnimHandler : MonoBehaviour
         animator.SetBool(Stun, isStun);
     }
     
-    public void FaceToTarget4Dir(Transform target)  
+    public void FaceToTarget4Dir(Vector3 direction)
     {
-        if (target == null) return;
-
-        Vector3 dir = target.position - transform.position;
-        dir.y = 0f;
-        float ax = Mathf.Abs(dir.x); 
-        float az = Mathf.Abs(dir.z);
-
-        // 수평 우선적으로 상,화와 애매한 경계에서는 좌/우 쪽으로 더 쉽게 선택되도록함
+        direction.y = 0f;
+        if (direction == Vector3.zero) return;
+        
+        float ax = Mathf.Abs(direction.x);
+        float az = Mathf.Abs(direction.z);
         az /= (1f + snap);
 
         float angle;
         if (ax >= az)
-            angle = (dir.x >= 0f) ? 90f : -90f;   // 우 / 좌
+            angle = (direction.x >= 0f) ? 90f : -90f;   // 우 / 좌
         else
-            angle = (dir.z >= 0f) ? 0f  : 180f;   // 상 / 하
+            angle = (direction.z >= 0f) ? 0f  : 180f;   // 상 / 하
 
-        transform.rotation = Quaternion.Euler(0f, angle, 0f);
+        modelTransform.transform.rotation = Quaternion.Euler(0f, angle + 180f, 0f);
     }
+    
+    public void FaceToGridDirection(Vector3Int start, Vector3Int dest)
+    {
+        Vector3Int diff = dest - start;
+
+        float angle;
+        if (Mathf.Abs(diff.x) > Mathf.Abs(diff.y))
+            angle = (diff.x > 0) ? 90f : -90f;
+        else
+            angle = (diff.y > 0) ? 0f : 180f;
+
+        // ✅ 모델 회전으로 일관성 유지
+        modelTransform.rotation = Quaternion.Euler(0f, angle + rotationOffsetY, 0f);
+    }
+    
 }

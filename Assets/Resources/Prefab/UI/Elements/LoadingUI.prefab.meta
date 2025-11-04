@@ -1,0 +1,11 @@
+fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Resources/Prefab/Enemy/Acher.prefab.meta
+guid: faa04179915b96f4a972014ca3989f3c
+========
+guid: 06ad733f0104ba44b94c06090717c789
+>>>>>>>> Develop:Assets/Resources/Prefab/UI/Elements/LoadingUI.prefab.meta
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

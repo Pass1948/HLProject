@@ -13,10 +13,11 @@ public class BossController : MonoBehaviour
 
     public Vector3Int GridPos { get; set; }
     public Vector3Int TargetPos { get; set; }
-
+    
     public int moveRange;
     public int minAttackRange;
     public int maxAttackRange;
+    public bool canNormalAttack;
     public bool isDie;
     public bool isDone;
     public bool startTurn = false;
@@ -30,7 +31,7 @@ public class BossController : MonoBehaviour
     public int stunTurn;
 
     public float moveDuration = 0.2f;
-
+    
     // 골렘 패턴 공격범위 리스트
     public List<Vector3Int> warningCells = new List<Vector3Int>();
     
@@ -55,8 +56,9 @@ public class BossController : MonoBehaviour
         RunStateMachine();
     }
 
-    public void SetController(int cooldown, int patternPower, int patternRange)
+    public void SetController(bool normalAttack, int cooldown, int patternPower, int patternRange)
     {
+        this.canNormalAttack = normalAttack;
         this.cooldown = cooldown;
         this.remainCooldown = 0;
         this.patternPower = patternPower;
@@ -119,6 +121,7 @@ public class BossController : MonoBehaviour
         GameManager.TurnBased.ChangeTo<PlayerTurnState>();
     }
     
+
     public IEnumerator MoveAlongPath(List<Vector3Int> path)
     {
         if (path == null || path.Count == 0)
@@ -126,15 +129,50 @@ public class BossController : MonoBehaviour
             Debug.LogWarning("길이 비었음");
             yield break;
         }
+
+        // foreach (var cell in path)
+        // {
+        //     Vector3 targetPos = GameManager.Map.tilemap.GetCellCenterWorld(cell);
+        //     yield return StartCoroutine(MoveToPosition(targetPos, moveDuration));
+        // }
         
-        foreach (var cell in path)
+        for (int i = 0; i < path.Count; i++)
         {
-            Vector3 targetPos = GameManager.Map.tilemap.GetCellCenterWorld(cell);
+            Vector3 targetPos = GameManager.Map.tilemap.GetCellCenterWorld(path[i]);
+            
+            Vector3 dir = targetPos - transform.position;
+            dir.y = 0f;
+
+            if (dir != Vector3.zero)
+            {
+                // animHandler.FaceToTarget4Dir(dir);
+                yield return StartCoroutine(SmoothRotate(dir, 0.12f));
+            }
+
             yield return StartCoroutine(MoveToPosition(targetPos, moveDuration));
         }
     }
 
-    private IEnumerator MoveToPosition(Vector3 target, float duration)
+    public IEnumerator SmoothRotate(Vector3 dir, float duration)
+    {
+        if (dir == Vector3.zero) yield break;
+
+        Quaternion startRot = animHandler.modelTransform.rotation;
+        Quaternion targetRot = Quaternion.LookRotation(dir) * Quaternion.Euler(0, -animHandler.rotationOffsetY, 0);
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / duration);
+            animHandler.modelTransform.rotation = Quaternion.Slerp(startRot, targetRot, t);
+            yield return null;
+        }
+
+        animHandler.modelTransform.rotation = targetRot;
+    }
+    
+    public IEnumerator MoveToPosition(Vector3 target, float duration)
     {
         Vector3 start = transform.position;
         float elapsed = 0f;
@@ -148,6 +186,7 @@ public class BossController : MonoBehaviour
 
         transform.position = target;
     }
+
 
     public void PatternCooldown()
     {

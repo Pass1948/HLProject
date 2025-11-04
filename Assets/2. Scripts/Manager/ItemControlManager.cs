@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ItemControlManager : MonoBehaviour
@@ -42,6 +43,19 @@ public class ItemControlManager : MonoBehaviour
     [HideInInspector] public List<Ammo> drawPile = new(); // 구매한 총알 리스트
     [HideInInspector] public List<Ammo> discardPile = new();
     [HideInInspector] public List<Ammo> shopBullet = new();
+
+
+    // ===== 아이템 효과 관련 변수들 =====
+    [HideInInspector] public bool diamod = false;
+    [HideInInspector] public bool club = false;
+    [HideInInspector] public bool heart = false;
+    [HideInInspector] public bool spade = false;
+    [HideInInspector] public bool sameNum = false;
+    [HideInInspector] public bool ace = false;
+    [HideInInspector] public bool king = false;
+    [HideInInspector] public bool handSame = false;
+
+
     // =====================================================================
     // 아이템오브젝트 연동로직
     // =====================================================================
@@ -146,9 +160,14 @@ public class ItemControlManager : MonoBehaviour
         ItemIds = null;
         relicItems.Clear();
         powderItems.Clear();
+        discardPile.Clear();
         drawPile.Clear();
         buyItems.Clear();
         Destroy(relicRoot.gameObject);
+        foreach (Transform child in transform)
+        {
+            Destroy(child.gameObject);
+        }
         ItemDataSet();
     }
 
@@ -231,7 +250,8 @@ public class ItemControlManager : MonoBehaviour
         for (int r = 1; r <= slotCount; r++)
         {
             Suit fixedSuit = (Suit)UnityEngine.Random.Range(0, 4);
-            result.Add(new Ammo { suit = fixedSuit, rank = r });
+            int ra = (int)UnityEngine.Random.Range(1, 14);
+            result.Add(new Ammo { suit = fixedSuit, rank = ra});
         }
         return result;
     }

@@ -1,7 +1,9 @@
-﻿using System;
+﻿using DG.Tweening;
+using MyBox;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using DG.Tweening;
+using Unity.Services.Analytics;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,19 +28,18 @@ public class TitleUI : BaseUI
     [SerializeField] private Button tutorialYesBtn;
     [SerializeField] private Button tutorialNoBtn;
 
-    private AudioClip audioClip;
-
     private void Awake()
     {
         GameManager.Sound.PlayBGM(GameManager.Resource.Load<AudioClip>(Path.Sound + "BangPaladin"));
     }
 
+
+
     private void Start()
     {
-        menuPanel.transform.DOMove(new Vector2(1300f,530f), 0.8f);
-        logoPanel.transform.DOMove(new Vector2(0f,500f), 0.8f);
+        menuPanel.transform.DOLocalMove(new Vector2(300, -24.92419f), 0.8f);
+        logoPanel.transform.DOLocalMove(new Vector2(-960, -55.92401f), 0.8f);
     }
-
     private void OnEnable()
     {
         startButton.onClick.AddListener(StartGame);
@@ -47,6 +48,13 @@ public class TitleUI : BaseUI
         restartButton.onClick.AddListener(ReLoadPlay);
         tutorialYesBtn.onClick.AddListener(TutorialYes);
         tutorialNoBtn.onClick.AddListener(TutorialNo);
+        //TODO: title_enter
+
+        AnalyticsService.Instance.RecordEvent(new CustomEvent("title_enter")
+        {
+            { "onScreen", "타이틀 화면 진입"}
+        });
+
     }
     private void OnDisable()
     {
@@ -58,9 +66,18 @@ public class TitleUI : BaseUI
 
     private void StartGame()
     {
-        deckSelUI.transform.DOMove(new Vector2(1300f,530f), 0.8f);
+        //TODO : stage_start
+        AnalyticsService.Instance.RecordEvent(new CustomEvent("new_game_click")
+        {
+            { "uiClick", "‘새로 시작’ 버튼 클릭"}
+        });
+        AnalyticsService.Instance.RecordEvent(new CustomEvent("title_new_game_click")
+        {
+            { "uiClick", "타이틀 화면에서 새로 시작 버튼 클릭"}
+        });
+        deckSelUI.transform.DOLocalMove(new Vector2(0, 0), 0.8f);
         GameManager.Sound.PlayUISfx();
-        menuPanel.transform.DOMove(new Vector2(2300f,530f), 0.8f);
+        menuPanel.transform.DOLocalMove(new Vector2(2400, -24.92419f), 0.8f);
         GameManager.Sound.PlayUISfx();
         if(TutorialSave.IsTutorial)
         {
@@ -68,14 +85,15 @@ public class TitleUI : BaseUI
             TutorialSave.IsTutorial = false;
             return;
         }
+        
 
         deckSelUI.SetActive(true);
     }
 
     private void OpenSetting()
     {
-        settingUI.transform.DOMove(new Vector2(1400f,540f), 0.8f);
-        menuPanel.transform.DOMove(new Vector2(2300f,530f), 0.8f);
+        settingUI.transform.DOLocalMove(new Vector2(0, 0), 0.8f);
+        menuPanel.transform.DOLocalMove(new Vector2(2400, -24.92419f), 0.8f);
         GameManager.Sound.PlayUISfx();
     }
 
@@ -87,22 +105,31 @@ public class TitleUI : BaseUI
     private void ExitButton()
     {
 #if UNITY_EDITOR
-        
         Application.Quit();
-        
-#endif        
 
+#endif        
         GameManager.Sound.PlayUISfx();
     }
 
     private void ShowTutorialPopup()
     {
+        //TODO: tutorial_popup_show
+        AnalyticsService.Instance.RecordEvent(new CustomEvent("tutorial_popup_show")
+        {
+            { "onScreen", "튜토리얼 안내 팝업 표시됨"}
+        });
         deckSelUI.SetActive(false);
         tutorialPopup.SetActive(true);
     }
 
     private void TutorialYes()
     {
+        //TODO: tutorial_popup_yes
+
+        AnalyticsService.Instance.RecordEvent(new CustomEvent("tutorial_popup_yes")
+        {
+            { "uiClick", "튜토리얼 진행 선택(‘예’)"}
+        });
         //여기에 튜토리얼 스테이지 진입넣으면 됩니다
         GameManager.TurnBased.turnSettingValue.isTutorial = true;
         GameManager.UI.OpenUI<FadeInUI>();

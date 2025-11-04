@@ -9,10 +9,14 @@ public class SoundManager : MonoBehaviour
     AudioSource bgm;   // 루프용 (BGM)
     AudioSource sfx;   // 단발용 (SFX)
     
+    private AudioClip clip;
     private AudioClip uiClip;
     private AudioClip shopUiClip;
     private AudioClip cardClip;
     private AudioClip errorClip;
+    private AudioClip bossAttackClip;
+    private AudioClip bossDeathClip;
+    private AudioClip bossMoveClip;
 
     void Awake()
     {
@@ -20,6 +24,12 @@ public class SoundManager : MonoBehaviour
         cardClip = GameManager.Resource.Load<AudioClip>(Path.Sound + "Laptop_Keystroke_82");
         shopUiClip = GameManager.Resource.Load<AudioClip>(Path.Sound + "Coins In Sack Dropped on Wood");
         errorClip = GameManager.Resource.Load<AudioClip>(Path.Sound + "UIGlitch_Error Tone_03");
+        
+        bossAttackClip = GameManager.Resource.Load<AudioClip>(Path.Sound + "Sound/monster/Boss/Minos_Attack1");
+        bossDeathClip = GameManager.Resource.Load<AudioClip>(Path.Sound + "Sound/monster/Boss/DemonDeath");
+        bossMoveClip = GameManager.Resource.Load<AudioClip>(Path.Sound + "Sound/monster/Boss/BossMove1");
+        
+        
         ApplyVolumes();
         // BGM 소스
         var bgmGO = new GameObject("BGM_Source");
@@ -125,6 +135,33 @@ public class SoundManager : MonoBehaviour
     {
         sfx.clip = errorClip;
         if(sfx.clip == null || uiClip == null) return;
+        sfx.pitch = Mathf.Clamp(sfx.pitch, 0.1f, 3f);
+        sfx.volume = sfxVolume;
+        sfx.PlayOneShot(sfx.clip, Mathf.Clamp01(sfxVolume));
+    }
+    
+    //보스
+    public void PlayBossAttackSound()
+    {
+        sfx.clip = bossAttackClip;
+        if (sfx.clip == null) return;
+        sfx.pitch = Mathf.Clamp(sfx.pitch, 0.1f, 3f);
+        sfx.volume = sfxVolume;
+        sfx.PlayOneShot(sfx.clip, Mathf.Clamp01(sfxVolume));
+    }
+
+    public void PlayBossDeathSound()
+    {
+        sfx.clip = bossDeathClip;
+        if (sfx.clip == null) return;
+        sfx.pitch = Mathf.Clamp(sfx.pitch, 0.1f, 3f);
+        sfx.volume = sfxVolume;
+        sfx.PlayOneShot(sfx.clip, Mathf.Clamp01(sfxVolume));
+    }
+    public void PlayBossMoveSound()
+    {
+        sfx.clip = bossMoveClip;
+        if (sfx.clip == null) return;
         sfx.pitch = Mathf.Clamp(sfx.pitch, 0.1f, 3f);
         sfx.volume = sfxVolume;
         sfx.PlayOneShot(sfx.clip, Mathf.Clamp01(sfxVolume));

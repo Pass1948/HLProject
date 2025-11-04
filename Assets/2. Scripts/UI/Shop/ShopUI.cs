@@ -2,6 +2,7 @@ using DG.Tweening;
 using System.Collections.Generic;
 using System.Runtime.ConstrainedExecution;
 using TMPro;
+using Unity.Services.Analytics;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -50,6 +51,9 @@ public class ShopUI : BaseUI
 
     private void OnEnable()
     {
+
+        OnAnalyticsEvent_open(GameManager.SaveLoad.nextSceneIndex);
+        GameManager.Sound.PlayBGM(GameManager.Resource.Create<AudioClip>(Path.Sound + "Buy some cards!"));
         healButton.onClick.AddListener(PlayerHeal);
         rerollButton.onClick.AddListener(OnReroll);
         removeButton.onClick.AddListener(OnRemoveBulletClicked);
@@ -59,6 +63,8 @@ public class ShopUI : BaseUI
         currentHp = GameManager.Unit.Player.playerModel.currentHealth;
         maxHp = GameManager.Unit.Player.playerModel.maxHealth;
         hpText.text = $"{currentHp}/{maxHp}";
+        float fill = (float)currentHp / (float)maxHp;
+        hpBar.fillAmount = fill;
         shop.healCost = 4;
         shop.rerollCost = 2;
         // EventBus 구독
@@ -87,6 +93,15 @@ public class ShopUI : BaseUI
         GameManager.Event.Unsubscribe<List<Ammo>>(EventType.ShopRemoveBulletPrompt, OnRemoveBulletPrompt);
         GameManager.Event.Unsubscribe(EventType.ShopPlayerCardsConfim, RebuildPlayerBullets);
         GameManager.Event.Unsubscribe(EventType.ShopPlayerCardsConfim, PlayerHpCheck);
+        
+    }
+    private void OnAnalyticsEvent_open(int v)
+    {
+        // TODO : shop_open_stage
+        AnalyticsService.Instance.RecordEvent(new CustomEvent("shop_open_stage")
+        {
+            { "stageValue", v}
+        });
     }
 
     // 이벤트 핸들러
@@ -316,7 +331,7 @@ public class ShopUI : BaseUI
     private void PlayerMoneyText()
     {
         if (playerMoneyText != null)
-            playerMoneyText.text = "Ð" + player.playerMonney.ToString();
+            playerMoneyText.text = "Ð" + GameManager.Unit.Player.playerModel.monney.ToString();
     }
 
     // 세팅 버튼
@@ -328,6 +343,8 @@ public class ShopUI : BaseUI
 
     private void NextStage()
     {
+        OnAnalyticsEvent_close(GameManager.SaveLoad.nextSceneIndex);
+
         // TODO: 여기에 추가해 주시면 됩니당.(JBS)
         int nextStageIndex = GameManager.Shop.stage.GetCurrentStageIndex() + 1;
         GameManager.Unit.CurrentStatReset();
@@ -335,6 +352,13 @@ public class ShopUI : BaseUI
         GameManager.Stage.stageId++;
         GameManager.SceneLoad.RestartScene();
     }
-
+    private void OnAnalyticsEvent_close(int v)
+    {
+        // TODO : shop_close_stage
+        AnalyticsService.Instance.RecordEvent(new CustomEvent("shop_close_stage")
+        {
+            { "stageValue", v}
+        });
+    }
 
 }

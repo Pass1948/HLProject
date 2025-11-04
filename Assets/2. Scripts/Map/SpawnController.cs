@@ -14,7 +14,7 @@ public class SpawnController : MonoBehaviour
     private GameObject enemyPrefab;
     List<BaseBoss> bosses = new List<BaseBoss>();
     private GameObject bossPrefab;
-
+    
     // 일반 적 ID - 프리팹 이름
     private readonly Dictionary<int, string> enemyPrefabNames = new Dictionary<int, string>()
     {
@@ -22,23 +22,24 @@ public class SpawnController : MonoBehaviour
         { 2002, "Goblin" },
         { 2004, "Goblin" },
         { 2005, "Goblin" },
-        { 2006, "Acher" },
-        { 2007, "Acher" },
-        { 2008, "Acher" },
-        { 2009, "Acher" },
+        { 2006, "Goblin" },
+        { 2007, "Goblin" },
+        { 2008, "Goblin" },
+        { 2009, "Goblin" },
         { 2010, "Goblin" },
         { 2011, "Goblin" },
         { 2012, "Goblin" },
         { 2013, "Goblin" }
     };
-
+    
     // 보스 ID - 프리팹 이름
     private readonly Dictionary<int, string> bossPrefabNames = new Dictionary<int, string>()
     {
-        { 2003, "Torial" },    // 스테이지 7002 보스
-        { 2014, "Torial" },    // 스테이지 7008 보스
+        { 2003, "Torial" },     // 스테이지 7002 보스
+        { 2014, "Minos" },      // 스테이지 7008 보스
         { 2015, "Torial" },     // 스테이지 7016 보스
     };
+
     // 보스 ID - 스테이지 ID
     private readonly Dictionary<int, int> bossStageMap = new Dictionary<int, int>()
     {
@@ -46,6 +47,7 @@ public class SpawnController : MonoBehaviour
       //  { 2014, 7008 },
         { 2014, 7012 }
     };
+
     // MapManager의 Start에서 호출
     public void InitializeSpawnersAndPools()
     {
@@ -64,6 +66,7 @@ public class SpawnController : MonoBehaviour
     public void SpawnAllObjects(Stage stage)
     {
         SpawnPlayer(stage);
+
         SpawnEnemies(stage.enemiesDict, stage.eliteCnt, GameManager.Stage.stageId);
         SpawnObstacles(stage.obstaclesDict, GameManager.Stage.stageId);
     }
@@ -288,7 +291,9 @@ public class SpawnController : MonoBehaviour
     private void SpawnEnemies(Dictionary<int, int> enemies, int eliteCount, int stageId)
     {
         List<BaseEnemy> spawnedList = new List<BaseEnemy>();
+
         int enemySpawnedCount = 0;
+
         foreach (var enemy in enemies)
         {
             int entityId = enemy.Key;
@@ -301,20 +306,21 @@ public class SpawnController : MonoBehaviour
                 // 딕셔너리를 사용하여 보스 이름과 스테이지 ID를 확인
                 string bossPrefabName;
                 int requiredStageId;
-
+                
                 // 보스 프리팹 이름 확인
                 if (!bossPrefabNames.TryGetValue(entityId, out bossPrefabName))
                 {
                     Debug.LogError($"보스 ID {entityId}에 대한 프리팹 이름이 딕셔너리에 없습니다");
                     continue;
                 }
-
+                
                 // 보스 스폰 조건 (스테이지 ID 매칭) 확인
                 if (!bossStageMap.TryGetValue(entityId, out requiredStageId) || stageId != requiredStageId)
                 {
                     Debug.Log($"보스 {entityId}는 현재 스테이지({stageId})의 보스가 아닙니다");
                     continue;
                 }
+
                 // 프리팹 로드
                 bossPrefab = GameManager.Resource.Load<GameObject>(Path.Enemy + bossPrefabName);
                 if (bossPrefab == null)
@@ -367,23 +373,24 @@ public class SpawnController : MonoBehaviour
 
             // 튜토리얼 적 (2001,2002) / 일반 적 ID (2004-2013) 
             if ((entityId >= 2001 && entityId <= 2013) && entityId != 2003)
-            {
+            { 
                 // 일반 적 프리팹 이름 찾기 및 로드
                 string prefabName;
                 if (!enemyPrefabNames.TryGetValue(entityId, out prefabName))
                 {
                     Debug.LogError($"일반 적 ID {entityId}에 대한 프리팹 이름이 딕셔너리에 없습니다");
-                    continue;
+                    continue; 
                 }
-
+                
                 // localEnemyPrefab 변수에 로드
                 GameObject localEnemyPrefab = GameManager.Resource.Load<GameObject>(Path.Enemy + prefabName);
+
                 if (localEnemyPrefab == null)
                 {
                     Debug.LogError($"일반 적 프리팹 로드 실패: {Path.Enemy + prefabName}");
                     continue;
                 }
-
+                
                 // 스테이지 7001 고정 소환
                 if (stageId == 7001)
                 {
@@ -393,7 +400,7 @@ public class SpawnController : MonoBehaviour
                         if (enemySpawnedCount < tutorialEnemySpawn.Length)
                         {
                             Vector2Int fixedPos = tutorialEnemySpawn[enemySpawnedCount];
-
+                            
                             GameObject obj = Instantiate(localEnemyPrefab, transform);
                             BaseEnemy baseEnemy = obj.GetComponent<BaseEnemy>();
                             if (baseEnemy == null)

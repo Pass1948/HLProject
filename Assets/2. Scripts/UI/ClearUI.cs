@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Services.Analytics;
 using UnityEngine;
+using UnityEngine.Analytics;
 using UnityEngine.UI;
 
 public class ClearUI : BaseUI
@@ -12,8 +14,16 @@ public class ClearUI : BaseUI
     private void OnEnable()
     {
         storeButton.onClick.AddListener(OpenStore);
+        OnAnalyticsEvent(GameManager.SaveLoad.nextSceneIndex);
     }
-
+    private void OnAnalyticsEvent(int v)
+    {
+        //TODO: stage_clear_popup
+        AnalyticsService.Instance.RecordEvent(new CustomEvent("stage_clear_popup")
+        {
+            { "stageValue", v}
+        });
+    }
     private void OnDisable()
     {
         storeButton.onClick.RemoveListener(OpenStore);
@@ -43,11 +53,19 @@ public class ClearUI : BaseUI
     
     private void OpenStore()
     {
+        OnAnalyticsEvent_next(GameManager.SaveLoad.nextSceneIndex);
         OnAddPile();
         GameManager.UI.GetUI<ShopUI>();
-        GameManager.Sound.PlayBGM(GameManager.Resource.Create<AudioClip>(Path.Sound + "Buy some cards!"));
         GameManager.Sound.PlayUISfx();
     }
+    private void OnAnalyticsEvent_next(int v)    
+    {
+        //TODO: stage_next_click
+        AnalyticsService.Instance.RecordEvent(new CustomEvent("stage_next_click")
+        {
+            { "stageValue", v}
+        });
+    }   
 
     private void OnAddPile()
     {

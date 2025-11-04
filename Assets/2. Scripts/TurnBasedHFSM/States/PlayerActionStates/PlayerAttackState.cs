@@ -125,6 +125,7 @@ public class PlayerAttackState : PlayerActionState
             ResultUI backUI = GameManager.UI.GetUI<ResultUI>();
             backUI.GetResultType(ResultType.Tutorial);
             backUI.OpenUI();
+            ChangeState<IdleState>();
         }
 
 
