@@ -127,11 +127,10 @@ public class MainUI : BaseUI
     private void OnAnalyticsEvent(int v)
     {
         //TODO: stage_start
-        CustomEvent customEvent = new CustomEvent("stage_start")
+        AnalyticsService.Instance.RecordEvent(new CustomEvent("stage_start")
         {
             { "stageValue", v}
-        };
-        AnalyticsService.Instance.RecordEvent(customEvent);
+        });
     }
 
     
