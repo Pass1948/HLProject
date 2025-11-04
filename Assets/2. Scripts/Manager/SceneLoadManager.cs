@@ -36,6 +36,8 @@ public class SceneLoadManager : MonoBehaviour
 
     IEnumerator LoadSceneProcess(SceneType sceneType)
     {
+        GameManager.UI.OpenUI<LoadingUI>();
+        
         var scene = _scenes[sceneType];
         _currentScene?.SceneExit();
         
