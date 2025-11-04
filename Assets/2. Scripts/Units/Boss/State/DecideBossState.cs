@@ -26,6 +26,15 @@ public class DecideBossState : BaseBossState
                 return;
             }
         }
+        
+        if (controller.canNormalAttack && controller.isCooldown)
+        {
+            if (distance <= controller.maxAttackRange)
+                stateMachine.ChangeState(stateMachine.AttackState);
+            else
+                stateMachine.ChangeState(stateMachine.MoveState);
+            return;
+        }
 
         bool isPlayerInRange = distance <= controller.patternRange;
         Debug.Log(isPlayerInRange);
