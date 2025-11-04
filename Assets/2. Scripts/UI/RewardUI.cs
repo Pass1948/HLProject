@@ -6,19 +6,12 @@ using UnityEngine.Analytics;
 public class RewardUI : MonoBehaviour
 {
     public RewardSlotUI[] slots;
+    private Dictionary<int, int> stageRewards;    // 스테이지 인트 예시
 
 
     private void Start()
     {
-        for (int i = 0; i < slots.Length; i++)
-        {
-            slots[i].GetComponentInChildren<RewardSlotUI>();
-        }
-        // 디버깅 용 나중에 맵 스테이지 만들어지면 그때 제대로
-        Show(1);
-    }
-    // 스테이지 인트 예시
-    private readonly Dictionary<int,int> stageRewards = new()
+        stageRewards = new Dictionary<int, int>
     {
         {1, GameManager.TurnBased.turnSettingValue.rewardGold},
         {2, GameManager.TurnBased.turnSettingValue.rewardGold},
@@ -26,6 +19,13 @@ public class RewardUI : MonoBehaviour
         {4, GameManager.TurnBased.turnSettingValue.rewardGold},
         {5, GameManager.TurnBased.turnSettingValue.rewardGold},
     };
+        for (int i = 0; i < slots.Length; i++)
+        {
+            slots[i].GetComponentInChildren<RewardSlotUI>();
+        }
+        // 디버깅 용 나중에 맵 스테이지 만들어지면 그때 제대로
+        Show(1);
+    }
 
     public void Show(int stageId)
     {
