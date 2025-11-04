@@ -77,17 +77,17 @@ public class EnemyController : MonoBehaviour
     {
         stateMachine?.Excute();
 
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.F10))
         {
             isDie = true;
             stateMachine.ChangeState(stateMachine.DieState);
             GameManager.TurnBased.EnemyDieCheck();
         }
-        
+/*        
         if (Input.GetKeyDown(KeyCode.R))
         {
             animHandler.OnMove(true, GameManager.Unit.Player.transform.position);
-        }
+        }*/
     }
 
     public void OnHitState()

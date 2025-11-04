@@ -19,12 +19,10 @@ public class ClearUI : BaseUI
     private void OnAnalyticsEvent(int v)
     {
         //TODO: stage_clear_popup
-        CustomEvent customEvent = new CustomEvent("stage_clear_popup")
+        AnalyticsService.Instance.RecordEvent(new CustomEvent("stage_clear_popup")
         {
             { "stageValue", v}
-        };
-        AnalyticsService.Instance.RecordEvent(customEvent);
-
+        });
     }
     private void OnDisable()
     {
@@ -63,11 +61,10 @@ public class ClearUI : BaseUI
     private void OnAnalyticsEvent_next(int v)    
     {
         //TODO: stage_next_click
-        CustomEvent customEvent = new CustomEvent("stage_next_click")
+        AnalyticsService.Instance.RecordEvent(new CustomEvent("stage_next_click")
         {
             { "stageValue", v}
-        };
-        AnalyticsService.Instance.RecordEvent(customEvent);
+        });
     }   
 
     private void OnAddPile()

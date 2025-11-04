@@ -57,16 +57,32 @@ public class UnitManager : MonoBehaviour
             switch (enemy.attri)
             {
                 case EnemyAttribute.High:
-                    if (enemy.rank == 13 && ammo.rank == 1)
+                    if(GameManager.ItemControl.sameNum == true)
                     {
-                        unit.currentHealth -= damage;
+                        if(enemy.rank == ammo.rank)
+                        {
+                            unit.currentHealth -= damage;
+                            break;
+                        }
                     }
-                    else if (enemy.rank < ammo.rank)
-                    {
-                        unit.currentHealth -= damage;
-                    }
+                        if (enemy.rank == 13 && ammo.rank == 1)
+                        {
+                            unit.currentHealth -= damage;
+                        }
+                        else if (enemy.rank < ammo.rank)
+                        {
+                            unit.currentHealth -= damage;
+                        }
                     break;
                 case EnemyAttribute.Low:
+                    if (GameManager.ItemControl.sameNum == true)
+                    {
+                        if (enemy.rank == ammo.rank)
+                        {
+                            unit.currentHealth -= damage;
+                            break;
+                        }
+                    }
                     if (enemy.rank == 1 && ammo.rank == 13)
                     {
                         unit.currentHealth -= damage;
