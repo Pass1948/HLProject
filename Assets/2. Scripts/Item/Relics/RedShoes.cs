@@ -7,37 +7,29 @@ public class RedShoes : BaseItem
     protected override void OnEnable()
     {
         base.OnEnable();
-        Add(relicItems, 3013);
     }
 
-    private void OnDisable()
+    private void Update()
     {
-        Remove(relicItems, 3013);
-    }
-    private void OnDestroy()
-    {
-        Remove(relicItems, 3013);
+        AddFirst(relicItems, 3013);
     }
 
-    protected virtual void Add(List<ItemModel> items, int id)
+    protected virtual void AddFirst(List<ItemModel> items, int id)
     {
         for (int i = 0; i < items.Count; i++)
         {
             if (items[i].id == id)
             {
-                //GameManager.Unit.Player..maxHealth += items[i].addBikeHealth;
+                if(GameManager.TurnBased.turnCount <= 1)
+                {
+                    GameManager.Unit.Player.playerModel.moveRange += items[i].addMoveRange;
+                }
+                else
+                {
+                    GameManager.Unit.Player.playerModel.moveRange -= items[i].addMoveRange;
+                }
             }
         }
 
-    }
-    protected virtual void Remove(List<ItemModel> items, int id)
-    {
-        for (int i = 0; i < items.Count; i++)
-        {
-            if (items[i].id == id)
-            {
-                GameManager.Unit.Vehicle.vehicleModel.maxHealth -= items[i].addBikeHealth;
-            }
-        }
     }
 }

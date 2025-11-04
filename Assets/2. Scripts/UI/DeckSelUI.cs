@@ -62,9 +62,9 @@ public class DeckSelUI : MonoBehaviour
         Debug.Log($"[{EventType.SelectDeck}] 선택 덱: " +
         (GameManager.TurnBased.turnSettingValue.IsBasicDeck ? "Basic" :
         GameManager.TurnBased.turnSettingValue.IsDiamondDeck ? "Diamond" :
-        GameManager.TurnBased.turnSettingValue.IsHeartDeck ? "Heart" :
-        GameManager.TurnBased.turnSettingValue.IsSpadeDeck ? "Spade" :
-        GameManager.TurnBased.turnSettingValue.IsClubDeck ? "Club" :
+        GameManager.TurnBased.turnSettingValue.IsHeartDeck ? "heart" :
+        GameManager.TurnBased.turnSettingValue.IsSpadeDeck ? "spade" :
+        GameManager.TurnBased.turnSettingValue.IsClubDeck ? "club" :
         "None"));
         */
         if(!ISSelectDeck())

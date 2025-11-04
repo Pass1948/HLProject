@@ -2,17 +2,42 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShadowBullet : MonoBehaviour
+public class ShadowBullet : BaseItem
 {
-    // Start is called before the first frame update
-    void Start()
+    protected override void OnEnable()
     {
-        
+        base.OnEnable();
+        Add(relicItems, 3017);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnDisable()
     {
-        
+        Remove(relicItems, 3017);
+    }
+    private void OnDestroy()
+    {
+        Remove(relicItems, 3017);
+    }
+
+    protected virtual void Add(List<ItemModel> items, int id)
+    {
+        for (int i = 0; i < items.Count; i++)
+        {
+            if (items[i].id == id)
+            {
+                GameManager.ItemControl.spade = true;
+            }
+        }
+
+    }
+    protected virtual void Remove(List<ItemModel> items, int id)
+    {
+        for (int i = 0; i < items.Count; i++)
+        {
+            if (items[i].id == id)
+            {
+                GameManager.ItemControl.spade = false;
+            }
+        }
     }
 }
