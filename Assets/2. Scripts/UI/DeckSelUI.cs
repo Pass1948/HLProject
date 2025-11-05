@@ -72,7 +72,7 @@ public class DeckSelUI : MonoBehaviour
             Debug.Log("Select Your Deck!");
             return;
         }
-        GameManager.SceneLoad.LoadScene(SceneType.Test);
+        GameManager.SceneLoad.LoadScene(SceneType.GameScene);
         GameManager.Event.Publish(EventType.SelectDeck);
         GameManager.Sound.PlaySfx(selectedClip);
     }
@@ -105,7 +105,7 @@ public class DeckSelUI : MonoBehaviour
         GameManager.TurnBased.turnSettingValue.isDeck = false;
         GameManager.UI.OpenUI<FadeInUI>();
         GameManager.Map.NormalStage();
-        GameManager.SceneLoad.LoadScene(SceneType.Test);
+        GameManager.SceneLoad.LoadScene(SceneType.GameScene);
     }
 
     private void NextDeck()

@@ -134,7 +134,7 @@ public class TitleUI : BaseUI
         GameManager.TurnBased.turnSettingValue.isTutorial = true;
         GameManager.UI.OpenUI<FadeInUI>();
         GameManager.Map.TutorialStage();
-        GameManager.SceneLoad.LoadScene(SceneType.Test);
+        GameManager.SceneLoad.LoadScene(SceneType.GameScene);
     }
 
     private void TutorialNo()
