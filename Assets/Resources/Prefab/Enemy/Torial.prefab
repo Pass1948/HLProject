@@ -534,6 +534,7 @@ MonoBehaviour:
   moveRange: 0
   minAttackRange: 0
   maxAttackRange: 0
+  canNormalAttack: 0
   isDie: 0
   isDone: 0
   startTurn: 0

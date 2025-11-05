@@ -445,6 +445,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 5758160549951095835}
+  snap: 0.15
+  modelTransform: {fileID: 0}
+  rotationOffsetY: 0
 --- !u!114 &8273540929910058778
 MonoBehaviour:
   m_ObjectHideFlags: 0

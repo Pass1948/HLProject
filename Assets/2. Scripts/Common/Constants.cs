@@ -83,7 +83,6 @@ public static class Path
 {
     public const string Prefab = "Prefab/";
     public const string UI = Prefab + "UI/";
-    public const string UIElements = Prefab + "UI/Elements";
     public const string UISprites = Prefab + "UI/Sprites/";
     public const string Character = Prefab + "Character/";
     public const string Enemy = Prefab + "Enemy/";
@@ -92,10 +91,8 @@ public static class Path
     public const string Map = Prefab + "Map/";
     public const string Camera = Prefab + "Camera/";
     public const string Player = Prefab + "Player/";
-    public const string Weapon = Prefab + "Weapons/";
     public const string Mouse = Prefab + "Mouse/";
     public const string Obstacle = Prefab + "Obstacle/";
-    public const string Data = "Data/";
     public const string Sound = "Sound/";
 }
 

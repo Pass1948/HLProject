@@ -479,6 +479,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 0}
   animHandler: {fileID: 0}
+  floatingUI: {fileID: 0}
+  cooldown: 0
+  patternPower: 0
+  patternRange: 0
+  bossName: 
+  bossDescription: 
 --- !u!114 &-7874073719074947271
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -496,9 +502,18 @@ MonoBehaviour:
   moveRange: 0
   minAttackRange: 0
   maxAttackRange: 0
+  canNormalAttack: 0
   isDie: 0
   isDone: 0
   startTurn: 0
+  isCooldown: 0
+  canPattern: 0
+  cooldown: 0
+  remainCooldown: 0
+  patternPower: 0
+  patternRange: 0
+  isStun: 0
+  stunTurn: 0
   moveDuration: 0.2
   warningCells: []
 --- !u!114 &2972931693289029707
