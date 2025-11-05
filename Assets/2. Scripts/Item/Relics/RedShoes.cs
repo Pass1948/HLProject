@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class RedShoes : BaseItem
 {
+    bool isMove = false;
+
     protected override void OnEnable()
     {
         base.OnEnable();
@@ -20,12 +22,14 @@ public class RedShoes : BaseItem
         {
             if (items[i].id == id)
             {
-                if(GameManager.TurnBased.turnCount <= 1)
+                if(GameManager.TurnBased.turnCount <= 1 && !isMove)
                 {
+                    isMove = true;
                     GameManager.Unit.Player.playerModel.moveRange += items[i].addMoveRange;
                 }
                 else
                 {
+                    isMove = false;
                     GameManager.Unit.Player.playerModel.moveRange -= items[i].addMoveRange;
                 }
             }
