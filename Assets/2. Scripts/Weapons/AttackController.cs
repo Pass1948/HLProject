@@ -55,6 +55,7 @@ public class AttackController : MonoBehaviour
     //탄환버튼 OnClick
     public void SelectAmmo(Button btn)
     {
+        GameManager.Unit.Player.playerModel.attack = attacked;
         if (!GameManager.Mouse.isShowRange) return;
         if (btn == null)
         {
@@ -173,7 +174,6 @@ public class AttackController : MonoBehaviour
 
     public void Fire()
     {
-        GameManager.Unit.Player.playerModel.attack = attacked;
         if (!selectedAmmoBtn || !bullet)
         {
             return;
