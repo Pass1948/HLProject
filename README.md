@@ -22,7 +22,7 @@
 - 몬스터들을 전부 처치시 보상획득과 상점으로 이동합니다
 
 ## 🧰 개발 환경
-- **Engine**: Unity 2022.3.17f1 (LTS)
+- **Engine**: Unity 2022.3.62f2 (LTS)
 - **Language**: C#
 - **IDE**: JetBrains Rider / Visual Studio 2022
 - **Target**: Windows (PC) *(선택적으로 Android/iOS 확장 가능)*
