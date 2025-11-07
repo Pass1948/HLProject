@@ -8,10 +8,10 @@
 
 ## 🖼️ 게임 화면
 <p>게임 플레이 화면입니다.</p>
-- <img src="https://github.com/user-attachments/assets/7df0b24a-d2b1-4585-a91b-f0eb81d0adce" width="600"/>
-- <img src="https://github.com/user-attachments/assets/9fdfdda9-fb06-4202-ab9c-d15c7f8d12c2" width="600"/>
-- <img src="https://github.com/user-attachments/assets/45866d2f-0302-407e-a96e-747253371fb7" width="600"/>
-- <img src="https://github.com/user-attachments/assets/a8fa2821-38e2-4375-9738-8e4fc6f39670" width="600"/>
+ <img src="https://github.com/user-attachments/assets/7df0b24a-d2b1-4585-a91b-f0eb81d0adce" width="600"/>
+ <img src="https://github.com/user-attachments/assets/9fdfdda9-fb06-4202-ab9c-d15c7f8d12c2" width="600"/>
+ <img src="https://github.com/user-attachments/assets/45866d2f-0302-407e-a96e-747253371fb7" width="600"/>
+ <img src="https://github.com/user-attachments/assets/a8fa2821-38e2-4375-9738-8e4fc6f39670" width="600"/>
 
 ## 🕹️ 플레이 방법
 
@@ -30,7 +30,7 @@
 
 ---
 ## 🎀 턴플로우 차트
-- <img width="678" height="1705" alt="TurnBasedHFSM_v0 2 drawio (1)" src="https://github.com/user-attachments/assets/e1c34aca-9132-4fee-af56-557300bf83df" />
+<img width="700" height="1500" alt="TurnBasedHFSM_v0 2 drawio (2)" src="https://github.com/user-attachments/assets/5a34e4dc-2f50-42d8-a229-f01280b8bd94" />
 
 ## 🧩 게임 주요 기능
 
@@ -47,7 +47,7 @@
 
 ### 3) 유닛들 공통으로 사용하는 네비게이션 시스팀(A*알고리즘, 다익스트라)
 - A*와 다익스트라 알고리즘을 기용하여 유닛들이 타일맵위에서 대상을 탐색하고 경로설정하는 기능을 제작함
-<img src="https://github.com/user-attachments/assets/4656abad-e944-4344-a2d1-c8f8eebc2b51" width="600"/>
+ <img src="https://github.com/user-attachments/assets/4656abad-e944-4344-a2d1-c8f8eebc2b51" width="600"/>
 
 ### 4) UI
 - UIManager를 제작하여 BaseUI를 통해 상속으로 분류 및 관리
@@ -55,7 +55,7 @@
 - 옵션에 튜토리얼 이후 플레이어가 게임 규칙에 익숙치 않을것을 대비하여 툴팁UI를 넣음
 - 어느 Scene에서든 옵션은 킬수있음
 
-- <img src="https://github.com/user-attachments/assets/64d3df34-deed-4f85-a4a8-467d4b04bf8b" width="600"/>
-<img src="https://github.com/user-attachments/assets/71be619f-047c-4cd1-9f75-2d1a840e0d8b" width="600"/>
+ <img src="https://github.com/user-attachments/assets/64d3df34-deed-4f85-a4a8-467d4b04bf8b" width="600"/>
+ <img src="https://github.com/user-attachments/assets/71be619f-047c-4cd1-9f75-2d1a840e0d8b" width="600"/>
 
 
