@@ -50,11 +50,10 @@ public class TitleUI : BaseUI
         tutorialNoBtn.onClick.AddListener(TutorialNo);
         //TODO: title_enter
 
-        CustomEvent customEvent = new CustomEvent("title_enter")
+        AnalyticsService.Instance.RecordEvent(new CustomEvent("title_enter")
         {
             { "onScreen", "타이틀 화면 진입"}
-        };
-        AnalyticsService.Instance.RecordEvent(customEvent);
+        });
 
     }
     private void OnDisable()
@@ -68,11 +67,14 @@ public class TitleUI : BaseUI
     private void StartGame()
     {
         //TODO : stage_start
-        CustomEvent customEvent = new CustomEvent("new_game_click")
+        AnalyticsService.Instance.RecordEvent(new CustomEvent("new_game_click")
         {
             { "uiClick", "‘새로 시작’ 버튼 클릭"}
-        };
-        AnalyticsService.Instance.RecordEvent(customEvent);
+        });
+        AnalyticsService.Instance.RecordEvent(new CustomEvent("title_new_game_click")
+        {
+            { "uiClick", "타이틀 화면에서 새로 시작 버튼 클릭"}
+        });
         deckSelUI.transform.DOLocalMove(new Vector2(0, 0), 0.8f);
         GameManager.Sound.PlayUISfx();
         menuPanel.transform.DOLocalMove(new Vector2(2400, -24.92419f), 0.8f);
@@ -103,22 +105,19 @@ public class TitleUI : BaseUI
     private void ExitButton()
     {
 #if UNITY_EDITOR
-        AnalyticsService.Instance.StopDataCollection();
         Application.Quit();
-        
-#endif        
 
+#endif        
         GameManager.Sound.PlayUISfx();
     }
 
     private void ShowTutorialPopup()
     {
         //TODO: tutorial_popup_show
-        CustomEvent customEvent = new CustomEvent("tutorial_popup_show")
+        AnalyticsService.Instance.RecordEvent(new CustomEvent("tutorial_popup_show")
         {
             { "onScreen", "튜토리얼 안내 팝업 표시됨"}
-        };
-        AnalyticsService.Instance.RecordEvent(customEvent);
+        });
         deckSelUI.SetActive(false);
         tutorialPopup.SetActive(true);
     }
@@ -127,16 +126,15 @@ public class TitleUI : BaseUI
     {
         //TODO: tutorial_popup_yes
 
-        CustomEvent customEvent = new CustomEvent("tutorial_popup_yes")
+        AnalyticsService.Instance.RecordEvent(new CustomEvent("tutorial_popup_yes")
         {
             { "uiClick", "튜토리얼 진행 선택(‘예’)"}
-        };
-        AnalyticsService.Instance.RecordEvent(customEvent);
+        });
         //여기에 튜토리얼 스테이지 진입넣으면 됩니다
         GameManager.TurnBased.turnSettingValue.isTutorial = true;
         GameManager.UI.OpenUI<FadeInUI>();
         GameManager.Map.TutorialStage();
-        GameManager.SceneLoad.LoadScene(SceneType.Test);
+        GameManager.SceneLoad.LoadScene(SceneType.GameScene);
     }
 
     private void TutorialNo()

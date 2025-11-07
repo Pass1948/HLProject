@@ -49,11 +49,10 @@ public class DeckSelUI : MonoBehaviour
     private void OnEnable()
     {
         // TODO : deck_select_enter
-        CustomEvent customEvent = new CustomEvent("deck_select_enter")
+        AnalyticsService.Instance.RecordEvent(new CustomEvent("deck_select_enter")
         {
             { "onScreen", "시작 덱 선택 화면 진입"}
-        };
-        AnalyticsService.Instance.RecordEvent(customEvent);
+        });
     }
 
     private void OnSelectDeck()
@@ -63,9 +62,9 @@ public class DeckSelUI : MonoBehaviour
         Debug.Log($"[{EventType.SelectDeck}] 선택 덱: " +
         (GameManager.TurnBased.turnSettingValue.IsBasicDeck ? "Basic" :
         GameManager.TurnBased.turnSettingValue.IsDiamondDeck ? "Diamond" :
-        GameManager.TurnBased.turnSettingValue.IsHeartDeck ? "Heart" :
-        GameManager.TurnBased.turnSettingValue.IsSpadeDeck ? "Spade" :
-        GameManager.TurnBased.turnSettingValue.IsClubDeck ? "Club" :
+        GameManager.TurnBased.turnSettingValue.IsHeartDeck ? "heart" :
+        GameManager.TurnBased.turnSettingValue.IsSpadeDeck ? "spade" :
+        GameManager.TurnBased.turnSettingValue.IsClubDeck ? "club" :
         "None"));
         */
         if(!ISSelectDeck())
@@ -73,7 +72,7 @@ public class DeckSelUI : MonoBehaviour
             Debug.Log("Select Your Deck!");
             return;
         }
-        GameManager.SceneLoad.LoadScene(SceneType.Test);
+        GameManager.SceneLoad.LoadScene(SceneType.GameScene);
         GameManager.Event.Publish(EventType.SelectDeck);
         GameManager.Sound.PlaySfx(selectedClip);
     }
@@ -93,11 +92,10 @@ public class DeckSelUI : MonoBehaviour
     public void OnGameStart()
     {
         // TODO: run_start_click
-        CustomEvent customEvent = new CustomEvent("run_start_click")
+        AnalyticsService.Instance.RecordEvent(new CustomEvent("run_start_click")
         {
             { "uiClick", "플레이 시작 버튼 클릭 (1스테이지로 진입)"}
-        };
-        AnalyticsService.Instance.RecordEvent(customEvent);
+        });
 
         if (!ISSelectDeck())
         {
@@ -107,7 +105,7 @@ public class DeckSelUI : MonoBehaviour
         GameManager.TurnBased.turnSettingValue.isDeck = false;
         GameManager.UI.OpenUI<FadeInUI>();
         GameManager.Map.NormalStage();
-        GameManager.SceneLoad.LoadScene(SceneType.Test);
+        GameManager.SceneLoad.LoadScene(SceneType.GameScene);
     }
 
     private void NextDeck()
@@ -137,11 +135,10 @@ public class DeckSelUI : MonoBehaviour
     private void IsBasic()
     {
         // TODO : deck_select_confirm
-        CustomEvent customEvent = new CustomEvent("deck_select_confirm")
+        AnalyticsService.Instance.RecordEvent(new CustomEvent("deck_select_confirm")
         {
             { "uiClick", "시작 덱 선택 완료"}
-        };
-        AnalyticsService.Instance.RecordEvent(customEvent);
+        });
         GameManager.TurnBased.turnSettingValue.IsBasicDeck = true;
         //사실 다른 덱들의 불값도 false로 해줘야함(상호배제)
         //이 버튼을 눌렀을때 해당 데이터다라고 인식시켜야함
@@ -151,11 +148,10 @@ public class DeckSelUI : MonoBehaviour
     private void IsDiamond()
     {
         // TODO : deck_select_confirm
-        CustomEvent customEvent = new CustomEvent("deck_select_confirm")
+        AnalyticsService.Instance.RecordEvent(new CustomEvent("deck_select_confirm")
         {
             { "uiClick", "시작 덱 선택 완료"}
-        };
-        AnalyticsService.Instance.RecordEvent(customEvent);
+        });
         GameManager.TurnBased.turnSettingValue.IsDiamondDeck = true;
         GameManager.Sound.PlayUISfx();
     }
@@ -163,11 +159,10 @@ public class DeckSelUI : MonoBehaviour
     private void IsHeart()
     {
         // TODO : deck_select_confirm
-        CustomEvent customEvent = new CustomEvent("deck_select_confirm")
+        AnalyticsService.Instance.RecordEvent(new CustomEvent("deck_select_confirm")
         {
             { "uiClick", "시작 덱 선택 완료"}
-        };
-        AnalyticsService.Instance.RecordEvent(customEvent);
+        });
         GameManager.TurnBased.turnSettingValue.IsHeartDeck = true;
         GameManager.Sound.PlayUISfx();
     }
@@ -175,22 +170,20 @@ public class DeckSelUI : MonoBehaviour
     private void IsSpade()
     {
         // TODO : deck_select_confirm
-        CustomEvent customEvent = new CustomEvent("deck_select_confirm")
+        AnalyticsService.Instance.RecordEvent(new CustomEvent("deck_select_confirm")
         {
             { "uiClick", "시작 덱 선택 완료"}
-        };
-        AnalyticsService.Instance.RecordEvent(customEvent);
+        });
         GameManager.TurnBased.turnSettingValue.IsSpadeDeck = true;
         GameManager.Sound.PlayUISfx();
     }
 
     private void IsClub()
     {// TODO : deck_select_confirm
-        CustomEvent customEvent = new CustomEvent("deck_select_confirm")
+        AnalyticsService.Instance.RecordEvent(new CustomEvent("deck_select_confirm")
         {
             { "uiClick", "시작 덱 선택 완료"}
-        };
-        AnalyticsService.Instance.RecordEvent(customEvent);
+        });
         GameManager.TurnBased.turnSettingValue.IsClubDeck = true;
         GameManager.Sound.PlayUISfx();
     }

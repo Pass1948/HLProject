@@ -32,8 +32,7 @@ public class GolemPatternState : PatternBossState
         dir.y = 0f;
 
         controller.StartCoroutine(controller.SmoothRotate(dir, 0.12f));
-        controller.animHandler.OnAttack(player);
-        animHandler.OnPattern();
+        animHandler.OnPattern(controller.GridPos, controller.TargetPos);
         yield return new WaitForSeconds(1f);
 
         foreach (Vector3Int cell in attackCells)

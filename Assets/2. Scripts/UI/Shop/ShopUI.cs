@@ -98,11 +98,10 @@ public class ShopUI : BaseUI
     private void OnAnalyticsEvent_open(int v)
     {
         // TODO : shop_open_stage
-        CustomEvent customEvent = new CustomEvent("shop_open_stage")
+        AnalyticsService.Instance.RecordEvent(new CustomEvent("shop_open_stage")
         {
             { "stageValue", v}
-        };
-        AnalyticsService.Instance.RecordEvent(customEvent);
+        });
     }
 
     // 이벤트 핸들러
@@ -356,11 +355,10 @@ public class ShopUI : BaseUI
     private void OnAnalyticsEvent_close(int v)
     {
         // TODO : shop_close_stage
-        CustomEvent customEvent = new CustomEvent("shop_close_stage")
+        AnalyticsService.Instance.RecordEvent(new CustomEvent("shop_close_stage")
         {
             { "stageValue", v}
-        };
-        AnalyticsService.Instance.RecordEvent(customEvent);
+        });
     }
 
 }

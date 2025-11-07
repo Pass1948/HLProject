@@ -16,7 +16,7 @@ public class GolemBoss : BaseBoss
         bossName = model.unitName;
         bossDescription = $"2턴 마다 강력한\n내려찍기를 준비합니다.\n\n발차기를 이용해 균형을 잃게하여\n기절 시킬 수 있습니다.";
 
-        controller.SetController(cooldown, patternPower, patternRange);
+        controller.SetController(false, cooldown, patternPower, patternRange);
         
         controller.stateMachine.SetPattern(
             new GolemWarningState(controller.stateMachine, controller, animHandler),

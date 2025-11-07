@@ -4,7 +4,7 @@ using GoogleSheet.Core.Type;
 public enum SceneType
 {
     Title,
-    Test,
+    GameScene,
 }
 
 public enum EventType

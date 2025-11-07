@@ -43,6 +43,19 @@ public class ItemControlManager : MonoBehaviour
     [HideInInspector] public List<Ammo> drawPile = new(); // 구매한 총알 리스트
     [HideInInspector] public List<Ammo> discardPile = new();
     [HideInInspector] public List<Ammo> shopBullet = new();
+
+
+    // ===== 아이템 효과 관련 변수들 =====
+    [HideInInspector] public bool diamod = false;
+    [HideInInspector] public bool club = false;
+    [HideInInspector] public bool heart = false;
+    [HideInInspector] public bool spade = false;
+    [HideInInspector] public bool sameNum = false;
+    [HideInInspector] public bool ace = false;
+    [HideInInspector] public bool king = false;
+    [HideInInspector] public bool handSame = false;
+
+
     // =====================================================================
     // 아이템오브젝트 연동로직
     // =====================================================================

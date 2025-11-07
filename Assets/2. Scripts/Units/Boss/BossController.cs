@@ -13,10 +13,11 @@ public class BossController : MonoBehaviour
 
     public Vector3Int GridPos { get; set; }
     public Vector3Int TargetPos { get; set; }
-
+    
     public int moveRange;
     public int minAttackRange;
     public int maxAttackRange;
+    public bool canNormalAttack;
     public bool isDie;
     public bool isDone;
     public bool startTurn = false;
@@ -30,7 +31,7 @@ public class BossController : MonoBehaviour
     public int stunTurn;
 
     public float moveDuration = 0.2f;
-
+    
     // 골렘 패턴 공격범위 리스트
     public List<Vector3Int> warningCells = new List<Vector3Int>();
     
@@ -55,8 +56,9 @@ public class BossController : MonoBehaviour
         RunStateMachine();
     }
 
-    public void SetController(int cooldown, int patternPower, int patternRange)
+    public void SetController(bool normalAttack, int cooldown, int patternPower, int patternRange)
     {
+        this.canNormalAttack = normalAttack;
         this.cooldown = cooldown;
         this.remainCooldown = 0;
         this.patternPower = patternPower;
@@ -170,7 +172,7 @@ public class BossController : MonoBehaviour
         animHandler.modelTransform.rotation = targetRot;
     }
     
-    private IEnumerator MoveToPosition(Vector3 target, float duration)
+    public IEnumerator MoveToPosition(Vector3 target, float duration)
     {
         Vector3 start = transform.position;
         float elapsed = 0f;

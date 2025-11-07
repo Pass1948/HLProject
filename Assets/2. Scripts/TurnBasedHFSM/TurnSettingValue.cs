@@ -18,6 +18,8 @@ public class TurnSettingValue : MonoBehaviour
     public bool isDeck = true;
     public bool isTutorial = false;
 
+    public int rewardGold = 5;
+
     [HideInInspector] public bool IsBasicDeck = false;
     [HideInInspector] public bool IsDiamondDeck = false;
     [HideInInspector] public bool IsHeartDeck = false;
