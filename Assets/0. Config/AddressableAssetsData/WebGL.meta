@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/4. Animations/Enemy/Acher.meta
+guid: 5b22bbccd4ce40341ab5c9a0400061eb
+========
 guid: 0a8f34e8b94e3f94a9932446f3ee35ba
+>>>>>>>> Develop:Assets/0. Config/AddressableAssetsData/WebGL.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

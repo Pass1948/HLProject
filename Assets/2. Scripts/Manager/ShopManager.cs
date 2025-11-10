@@ -31,7 +31,7 @@ public class ShopManager : MonoBehaviour
     public int healCost;                  // 현재 힐 비용
     public bool canRemoveBullet;          // 탄환 제거 사용 가능 여부
     public int powderBundleLeft;          // 화역 꾸러미 남은 개수
-
+    public int bulletCount;
     public Stage stage;
 
     public bool isTutorial1 = true;
@@ -110,8 +110,8 @@ public class ShopManager : MonoBehaviour
     private int GetBulletOfferCount()
     {
         //TODO: 유물,버프에 의해 슬롯이 증가되면 여기서 계산.
-        int baseCount = 5;
-        int bonusCount = 0;
+        int baseCount = 3;
+        int bonusCount = bulletCount;
         return baseCount + bonusCount;
     }
 

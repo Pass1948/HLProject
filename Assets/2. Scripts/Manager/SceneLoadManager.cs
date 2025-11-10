@@ -16,7 +16,7 @@ public class SceneLoadManager : MonoBehaviour
     private void Awake()
     {
         _scenes.Add(SceneType.Title, new TitleScene());
-        _scenes.Add(SceneType.Test, new TestScene());
+        _scenes.Add(SceneType.GameScene, new TestScene());
     }
 
     public void LoadScene(SceneType sceneType)
@@ -36,6 +36,8 @@ public class SceneLoadManager : MonoBehaviour
 
     IEnumerator LoadSceneProcess(SceneType sceneType)
     {
+        GameManager.UI.OpenUI<LoadingUI>();
+        
         var scene = _scenes[sceneType];
         _currentScene?.SceneExit();
         

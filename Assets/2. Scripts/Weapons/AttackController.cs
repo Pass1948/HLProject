@@ -6,7 +6,7 @@ public class AttackController : MonoBehaviour
 {
     [SerializeField] private RectTransform slotContainer;
     [SerializeField] private RectTransform discardBg;
-
+    int attacked = 0;
     private RectTransform bullet;
     private Button selectedAmmoBtn;
     private Image selectBulletBg;
@@ -18,6 +18,10 @@ public class AttackController : MonoBehaviour
     private AudioClip reroadCancelSound;
 
     [SerializeField] private int AmmoCount = 6;
+    List<Ammo> handAmmoList = new List<Ammo>();
+
+
+
     public int Capacity => AmmoCount;
     public Ammo fireAmmo;
     //UI에서 쓰는 선택상태
@@ -30,7 +34,7 @@ public class AttackController : MonoBehaviour
         reroadSound = GameManager.Resource.Load<AudioClip>(Path.Sound + "CASSETTE_RATTLE_12");
         reroadCancelSound = GameManager.Resource.Load<AudioClip>(Path.Sound + "LOAD_CASSETTE_08");
         GameManager.Event.Subscribe(EventType.EmptyAmmo, EmptyAmmo);
-
+        attacked = GameManager.Unit.Player.playerModel.attack;
     }
     private void OnDisable()
     {
@@ -51,6 +55,7 @@ public class AttackController : MonoBehaviour
     //탄환버튼 OnClick
     public void SelectAmmo(Button btn)
     {
+        GameManager.Unit.Player.playerModel.attack = attacked;
         if (!GameManager.Mouse.isShowRange) return;
         if (btn == null)
         {
@@ -113,6 +118,10 @@ public class AttackController : MonoBehaviour
         {
             Suit suit = bulletView.ammo.suit;
             int rank = bulletView.ammo.rank;
+
+            AddBulletAttack(bulletView);
+            AddBulletAttack2(bulletView);
+            AddBulletAttack3(bulletView);
             GameManager.Map.attackRange.SetAttackRange(suit, rank);
             GameManager.Mouse.HidePlayerRange();
             GameManager.Mouse.IsAttacking = true;
@@ -124,6 +133,44 @@ public class AttackController : MonoBehaviour
         }
         GameManager.Sound.PlaySfx(reroadCancelSound);
     }
+    // 탄환 속성별 효과 메서드
+    void AddBulletAttack(BulletView bulletView)
+    {
+        var suit = bulletView.ammo.suit;
+        int baseAttack = GameManager.Unit.Player.playerModel.attack;
+        bool isBonusApplied =
+      (GameManager.ItemControl.diamod && suit == Suit.Diamond) ||
+      (GameManager.ItemControl.heart && suit == Suit.Heart) ||
+      (GameManager.ItemControl.spade && suit == Suit.Spade) ||
+      (GameManager.ItemControl.club && suit == Suit.Club);
+        GameManager.Unit.Player.playerModel.attack = isBonusApplied ? baseAttack + 1 : baseAttack;
+    }
+
+    void AddBulletAttack2(BulletView bulletView)
+    {
+        var rank = bulletView.ammo.rank;
+        int baseAttack = GameManager.Unit.Player.playerModel.attack;
+        bool isBonusApplied =
+      (GameManager.ItemControl.ace && rank == 1) ||
+      (GameManager.ItemControl.king && rank == 13);
+        GameManager.Unit.Player.playerModel.attack = isBonusApplied ? baseAttack + 2 : baseAttack;
+    }
+
+    void AddBulletAttack3(BulletView bulletView)
+    {
+        if(!GameManager.ItemControl.handSame) return;
+
+            int baseAttack = GameManager.Unit.Player.playerModel.attack;
+            for (int i = 0; i < handAmmoList.Count; i++)
+            {
+                if (bulletView.ammo == handAmmoList[i])
+                {
+                    baseAttack += 1;
+                }
+            }
+            GameManager.Unit.Player.playerModel.attack = baseAttack;
+    }
+
 
     public void Fire()
     {
@@ -157,6 +204,13 @@ public class AttackController : MonoBehaviour
             bullet.SetParent(discardBg, false);
             bullet.localScale = Vector3.one;
             view.RefreshLabel();
+            for (int i = 0; i < handAmmoList.Count; i++)
+            {
+                if(view.ammo == handAmmoList[i])
+                {
+                    handAmmoList.Remove(handAmmoList[i]);
+                }
+            }
         }
         else
         {
@@ -231,6 +285,8 @@ public class AttackController : MonoBehaviour
             foreach (var a in ammos)
             {
                SpawnOne(a);
+                handAmmoList.Clear();
+               handAmmoList.Add(a);
             }
         }
     }
