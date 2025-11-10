@@ -4,7 +4,8 @@
 
 ## 🎮 게임 소개
 **『HIGHWAY&LOW』**는 성기사가 오토바이 타고 샷건으로 마왕을 잡기 위한 여정을 그린 3D 턴제로그라이크 덱빌딩 게임입니다.
-
+(브로셔)
+https://www.notion.so/teamsparta/5-_Highway-Low-2992dc3ef51480b9a0c1d253fa829a6a?source=copy_link
 
 ## 🖼️ 게임 화면
 <p>게임 플레이 화면입니다.</p>
